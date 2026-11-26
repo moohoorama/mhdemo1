@@ -81,7 +81,7 @@ def main() -> None:
         f"github.com/ebitengine/gomobile/cmd/gobind@{gomobile[1]}", env=env)
     run(tool_dir / "gomobile", "init", env=env)
     aar = out / "srpg.aar"
-    tags = ["-tags", "release"] if args.release else []
+    tags = ["-tags", "release,mobile" if args.release else "mobile"]
     run(tool_dir / "ebitenmobile", "bind", "-target", args.targets, "-androidapi", "23", *tags,
         "-javapkg", "com.orca.srpg", "-trimpath",
         "-ldflags=-s -w -extldflags=-Wl,-z,max-page-size=16384", "-o", aar, "./mobile", env=env)

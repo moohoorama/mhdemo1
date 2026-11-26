@@ -72,6 +72,7 @@
 | [tools-build.md](tools-build.md) | 에셋 빌드 명령, Android 빌드 |
 | [system-architecture.md](system-architecture.md) | 패키지 구조, 데이터 번들, 결정성 |
 | [system-save.md](system-save.md) | 저장, 자동 저장, 호환 |
+| [system-chronicle.md](system-chronicle.md) | 지난 이야기: 도달한 장·전투마다 숨은 저장, 줄(진행), 다시 하기 |
 
 ## 해야 할 일
 

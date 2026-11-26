@@ -178,54 +178,23 @@
   "c13-xiaopei": {
    "Map": "S_xiaopei_office",
    "Music": "azure-cloud",
-   "Nodes": ["c13-xiaopei", "c13-x01", "c13-x02", "c13-x03", "c13-x04", "c13-x05", "c13-x06", "c13-x07", "c13-x08", "c13-x09", "c13-x10", "c13-x11", "c13-x-notice", "c13-x12", "c13-x13", "c13-x14", "c13-x15", "c13-x16", "c13-x17", "c13-x18", "c13-x19", "c13-x20", "c13-x21", "c13-x22"],
+   "Nodes": ["c13-xiaopei", "c13-x01", "c13-x02", "c13-x03", "c13-x04", "c13-x12", "c13-x13", "c13-x15", "c13-x16", "c13-x17", "c13-x18", "c13-x19", "c13-x20", "c13-x23", "c13-x24", "c13-x21", "c13-x22", "c13-x25", "c13-x26"],
    "Cast": {
-    "유비": {"At": [2, 1], "Face": "SW"},
+    "유비": {"At": [2, 1], "Face": "SW", "Stay": true},
     "관우": {"At": [1, 3], "Face": "NE"},
     "손건": {"At": [2, 3], "Face": "NE"},
     "조운": {"At": [3, 3], "Face": "NW"},
     "간옹": {"At": [4, 2], "Face": "SW"},
-    "장비": {"At": [2, 7], "Face": "NE", "Off": true}
+    "장비": {"At": [2, 4], "Face": "NE"}
    },
    "Beats": {
-    "c13-x06": [
-     [
-      [{"Actor": "장비", "Say": "형~~~~!"}],
-      [{"Actor": "장비", "Enter": [2, 7], "Move": [2, 4], "Speed": 2}, {"Actor": "장비", "Face": "NE"}]
-     ]
-    ],
-    "c13-x09": [
-     [
-      [{"Actor": "유비", "Play": "action"}]
-     ]
-    ],
-    "c13-x12": [
-     [
-      [{"Actor": "조운", "Move": [3, 2]}, {"Actor": "조운", "Face": "NW"}]
-     ]
-    ],
-    "c13-x16": [
-     [
-      [{"Actor": "조운", "Play": "action"}]
-     ]
-    ],
-    "c13-x21": [
-     [
-     ],
-     [
-      [{"Actor": "간옹", "Via": [[6, 2], [6, 4], [4, 4]], "Move": [4, 7], "Exit": true}]
-     ]
-    ],
-    "c13-x22": [
-     [
-      [{"Actor": "장비", "Play": "action"}]
-     ]
-    ]
+    "c13-x12": [[[{"Actor": "조운", "Move": [3, 2], "Face": "NW"}]]],
+    "c13-x21": [[], [[{"Actor": "간옹", "Via": [[6, 2], [6, 4], [4, 4]], "Move": [4, 7], "Exit": true}]]]
    }
   },
   "c13-farewell": {
    "Map": "S_xiaopei",
-   "Nodes": ["c13-farewell", "c13-f01", "c13-f02"],
+   "Nodes": ["c13-farewell", "c13-f01", "c13-f01b", "c13-f02"],
    "Cast": {
     "조운": {"At": [9, 1], "Face": "SW", "Sprite": "zhaoyun"},
     "유비": {"At": [9, 3], "Face": "NE"},
@@ -237,10 +206,8 @@
     "고순": {"At": [11, 4], "Face": "NE", "If": ["flag:flag-gaoshun"]}
    },
    "Beats": {
-    "c13-f01": [
-     [
-      [{"Actor": "조운", "Play": "attack"}]
-     ],
+    "c13-f01b": [
+     [],
      [
       [{"Actor": "조운", "Face": "NE"}],
       [{"Actor": "조운", "Move": [9, -6], "Exit": true}],

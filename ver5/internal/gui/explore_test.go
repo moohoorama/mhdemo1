@@ -84,6 +84,9 @@ func TestMansionDialogueReturnsToExploreWithoutErrorSound(t *testing.T) {
 	g.S.Engine, err = core.Restore(g.S.Data, s)
 	require.NoError(t, err)
 	require.True(t, g.enterScene(g.S.View()))
+	for i := 0; i < 600 && (g.sceneBusy() || g.scene.actors["유비"].walk != nil || len(g.scene.paths["유비"]) > 0); i++ {
+		g.updateScene(1.0 / 60) // the event's cast walks to its places first
+	}
 	g.faceSpeaker("장비")
 	require.Equal(t, "E", g.scene.actors["유비"].dir)
 

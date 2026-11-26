@@ -4,88 +4,297 @@
  "Map": "map_redcliff.json",
  "Boats": true,
  "Night": true,
- "Max": 8,
+ "Max": 7,
  "Required": [
-  "liubei"
+  "liubei",
+  "zhugeliang"
  ],
- "TurnLimit": 16,
+ "TurnLimit": 22,
  "Faction": "wei",
  "Allies": [
   {
-   "X": 17,
-   "Y": 15
+   "X": 34,
+   "Y": 10
   },
   {
-   "X": 18,
-   "Y": 15
+   "X": 35,
+   "Y": 10
   },
   {
-   "X": 16,
-   "Y": 16
+   "X": 34,
+   "Y": 11
   },
   {
-   "X": 19,
-   "Y": 16
+   "X": 35,
+   "Y": 11
   },
   {
-   "X": 15,
-   "Y": 16
+   "X": 36,
+   "Y": 11
   },
   {
-   "X": 17,
-   "Y": 17
+   "X": 35,
+   "Y": 12
   },
   {
-   "X": 20,
-   "Y": 15
-  },
-  {
-   "X": 19,
-   "Y": 17
+   "X": 36,
+   "Y": 12
   }
  ],
+ "Recommend": {
+  "liubei": {
+   "X": 34,
+   "Y": 10
+  },
+  "zhugeliang": {
+   "X": 35,
+   "Y": 10
+  }
+ },
  "Enemies": [
   {
-   "Character": "caimao",
-   "X": 20,
-   "Y": 7,
-   "Rank": "commander",
-   "Group": "east-flotilla",
-   "Shift": -0.12,
-   "HPPct": 85,
-   "Policy": "react",
-   "Facing": "SW"
+   "Character": "caocao",
+   "X": 22,
+   "Y": 16,
+   "Rank": "boss",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NW",
+   "Traits": [
+    "versatile",
+    "civil_martial",
+    "ambition",
+    "feint"
+   ]
   },
   {
-   "Character": "zhangyun",
-   "X": 7,
-   "Y": 9,
-   "Rank": "officer",
-   "Group": "west-flotilla",
-   "Shift": -0.12,
-   "HPPct": 85,
+   "Character": "caoren",
+   "X": 16,
+   "Y": 13,
+   "Rank": "commander",
+   "Group": "cao-land",
+   "Shift": 0,
    "Policy": "hold",
    "Facing": "SW"
   },
   {
-   "Character": "troop_archer",
-   "X": 5,
-   "Y": 10,
-   "Rank": "troop",
-   "Group": "west-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
+   "Character": "xuchu",
+   "X": 20,
+   "Y": 15,
+   "Rank": "officer",
+   "Group": "cao-land",
+   "Shift": 0,
    "Policy": "hold",
    "Facing": "SW"
   },
   {
    "Character": "troop_footman",
-   "X": 8,
+   "X": 12,
+   "Y": 11,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 15,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 16,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 16,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 14,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 23,
+   "Y": 13,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 24,
+   "Y": 16,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 10,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 17,
+   "Y": 11,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 11,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 24,
    "Y": 12,
    "Rank": "troop",
-   "Group": "west-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 23,
+   "Y": 15,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 16,
+   "Y": 8,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 17,
+   "Y": 7,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 19,
+   "Y": 8,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 21,
+   "Y": 9,
+   "Rank": "troop",
+   "Group": "cao-land",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "caimao",
+   "X": 5,
+   "Y": 11,
+   "Rank": "officer",
+   "Group": "cao-fleet",
+   "Shift": -0.15,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 16,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 16,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
+   "Y": 17,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
+   "Y": 15,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
    "Policy": "hold",
    "Facing": "SW"
   },
@@ -93,76 +302,187 @@
    "Character": "troop_footman",
    "X": 7,
    "Y": 13,
-   "Rank": "troop",
-   "Group": "west-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
    "Policy": "hold",
    "Facing": "SW"
   },
   {
-   "Character": "troop_archer",
-   "X": 17,
+   "Character": "troop_footman",
+   "X": 3,
    "Y": 9,
-   "Rank": "troop",
-   "Group": "east-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
-   "Policy": "react",
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
    "Facing": "SW"
   },
   {
    "Character": "troop_footman",
-   "X": 19,
-   "Y": 10,
-   "Rank": "troop",
-   "Group": "east-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
-   "Policy": "react",
+   "X": 6,
+   "Y": 9,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
    "Facing": "SW"
   },
   {
    "Character": "troop_archer",
-   "X": 22,
-   "Y": 7,
-   "Rank": "troop",
-   "Group": "east-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
-   "Policy": "react",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 23,
-   "Y": 10,
-   "Rank": "troop",
-   "Group": "east-flotilla",
-   "Shift": -0.12,
-   "HPPct": 65,
-   "Policy": "react",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 23,
-   "Y": 5,
-   "Rank": "troop",
-   "Group": "landing",
-   "Shift": -0.12,
-   "HPPct": 65,
+   "X": 8,
+   "Y": 15,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
    "Policy": "hold",
    "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 6,
+   "Y": 14,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 13,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 4,
+   "Y": 11,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 9,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 4,
+   "Y": 8,
+   "Rank": "recruit",
+   "Group": "cao-fleet",
+   "Shift": -0.08,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "zhangyun",
+   "X": 30,
+   "Y": 10,
+   "Rank": "officer",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 30,
+   "Y": 8,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 30,
+   "Y": 12,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 29,
+   "Y": 11,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 29,
+   "Y": 13,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 29,
+   "Y": 8,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 29,
+   "Y": 10,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 28,
+   "Y": 12,
+   "Rank": "troop",
+   "Group": "zhang-fleet",
+   "Shift": -0.07,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "jing"
   }
  ],
  "Victory": [
   {
    "If": [
-    "defeated:caimao",
-    "at:liubei:81"
+    "defeated:caocao"
    ],
-   "Text": "채모의 배를 물리고 유비가 오림 나루에 닿는다"
+   "Text": "조조군을 북쪽으로 물리친다"
   }
  ],
  "Defeat": [
@@ -173,98 +493,340 @@
    "Text": "유비 퇴각"
   }
  ],
+ "Sub": [
+  {
+   "ID": "zhangyun",
+   "Text": "장윤 수군을 물리친다",
+   "If": [
+    "defeated:zhangyun"
+   ],
+   "Flag": "flag-b27r-zhangyun",
+   "Reward": {
+    "copper_spear": 1,
+    "rice": 1
+   }
+  }
+ ],
  "Areas": [
   {
    "ID": 81,
+   "Name": "북쪽 퇴로",
    "Rect": {
-    "X": 19,
-    "Y": 4,
-    "W": 3,
+    "X": 14,
+    "Y": 0,
+    "W": 10,
     "H": 2
    },
-   "Name": "오림 나루",
-   "Description": "채모를 물리친 뒤 유비가 닿으면 승리"
+   "Description": "조조 본대의 퇴로"
+  },
+  {
+   "ID": 82,
+   "Name": "선봉 함선",
+   "Rect": {
+    "X": 5,
+    "Y": 15,
+    "W": 4,
+    "H": 3
+   },
+   "Description": "황개의 화선이 들이받는 곳"
+  },
+  {
+   "ID": 83,
+   "Name": "서쪽 선단",
+   "Rect": {
+    "X": 3,
+    "Y": 8,
+    "W": 5,
+    "H": 7
+   },
+   "Description": "바람을 타고 불길이 번지는 조조군 수군"
+  },
+  {
+   "ID": 84,
+   "Name": "강변 진채",
+   "Rect": {
+    "X": 10,
+    "Y": 14,
+    "W": 7,
+    "H": 4
+   },
+   "Description": "오군이 불을 옮겨 붙이는 육상 진채"
+  },
+  {
+   "ID": 85,
+   "Name": "서북쪽 진채",
+   "Rect": {
+    "X": 10,
+    "Y": 9,
+    "W": 6,
+    "H": 4
+   },
+   "Description": "강변에서 불길이 번지는 조조군 진채"
+  },
+  {
+   "ID": 86,
+   "Name": "서쪽 물길",
+   "Rect": {
+    "X": 1,
+    "Y": 0,
+    "W": 7,
+    "H": 2
+   },
+   "Description": "조조 수군의 북쪽 퇴로"
+  },
+  {
+   "ID": 87,
+   "Name": "강하 앞 물길",
+   "Rect": {
+    "X": 28,
+    "Y": 6,
+    "W": 5,
+    "H": 13
+   },
+   "Description": "장윤이 가로막은 물길"
+  },
+  {
+   "ID": 88,
+   "Name": "강하 북쪽 물길",
+   "Rect": {
+    "X": 29,
+    "Y": 0,
+    "W": 4,
+    "H": 2
+   },
+   "Description": "장윤 수군이 물러나는 곳"
   }
  ],
  "Lights": [
   {
-   "X": 19,
-   "Y": 5
+   "X": 5,
+   "Y": 11
+  },
+  {
+   "X": 8,
+   "Y": 15
+  },
+  {
+   "X": 22,
+   "Y": 16
   },
   {
    "X": 23,
-   "Y": 5
+   "Y": 13
   },
   {
-   "X": 17,
-   "Y": 15
-  }
- ],
- "Events": [
+   "X": 33,
+   "Y": 10
+  },
   {
-   "ID": "liuqi-pursuit",
-   "If": [
-    "defeated:caimao",
-    "!defeated:liuqi"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liuqi",
-       "Text": "채모! 아버님의 부고를 감춘 값을……!"
-      }
-     ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "face",
-        "Unit": "liuqi",
-        "Facing": "NE"
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "liuqi",
-        "Motion": "hit"
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "remove",
-     "Targets": [
-      "liuqi"
-     ]
-    }
-   ]
+   "X": 36,
+   "Y": 8
+  },
+  {
+   "X": 6,
+   "Y": 21
+  },
+  {
+   "X": 13,
+   "Y": 23
+  },
+  {
+   "X": 30,
+   "Y": 10
   }
  ],
  "Party": [
   {
    "Character": "liuqi",
-   "X": 20,
-   "Y": 14,
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "liuqi",
+   "X": 34,
+   "Y": 13,
    "Rank": "officer",
-   "Facing": "NE"
+   "Group": "jiangxia",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "liuqi"
+  },
+  {
+   "Character": "huanggai",
+   "X": 7,
+   "Y": 21,
+   "Rank": "officer",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "zhouyu",
+   "X": 12,
+   "Y": 23,
+   "Rank": "commander",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "chengpu",
+   "X": 9,
+   "Y": 23,
+   "Rank": "officer",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 4,
+   "Y": 21,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 23,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 10,
+   "Y": 24,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 22,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 23,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 23,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
   },
   {
    "Character": "troop_archer",
-   "X": 21,
-   "Y": 15,
-   "AI": true,
-   "Policy": "react",
-   "Faction": "shu",
+   "X": 5,
+   "Y": 22,
    "Rank": "troop",
-   "Facing": "NE"
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 8,
+   "Y": 22,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 10,
+   "Y": 21,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 11,
+   "Y": 24,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 22,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 24,
+   "Rank": "troop",
+   "Group": "wu-fleet",
+   "Shift": 0,
+   "Policy": "hold",
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "wu"
   }
  ],
  "Armies": [
@@ -274,13 +836,369 @@
    "Ally": true
   },
   {
-   "Faction": "wei",
-   "Name": "양양 수군"
+   "Faction": "wu",
+   "Name": "강동 수군",
+   "Ally": true
   },
   {
    "Faction": "liuqi",
-   "Name": "강하 수군",
+   "Name": "강하군",
    "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  },
+  {
+   "Faction": "jing",
+   "Name": "양양 수군"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "fire-ships",
+   "Do": [
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "look",
+        "To": {
+         "X": 7,
+         "Y": 19
+        },
+        "Seconds": 0.35
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caimao",
+       "Text": "황개의 배다. 항복하러 오는군. 길을 열어라."
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "huanggai",
+        "To": {
+         "X": 7,
+         "Y": 18
+        },
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "huanggai",
+        "Text": "불을 붙이시오!"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 82,
+     "State": "F",
+     "Turns": 4
+    },
+    {
+     "Kind": "damage",
+     "Targets": [
+      "cao-fleet@area:82"
+     ],
+     "Value": 35
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caimao",
+       "Text": "불이다! 물을 퍼라! 옆 배에 옮겨붙기 전에 꺼라!"
+      }
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "ganning",
+       "X": 4,
+       "Y": 18,
+       "Rank": "officer",
+       "Group": "wu-fleet",
+       "Shift": 0,
+       "Policy": "hold",
+       "Facing": "NE",
+       "AI": true,
+       "Faction": "wu"
+      },
+      {
+       "Character": "handang",
+       "X": 10,
+       "Y": 19,
+       "Rank": "officer",
+       "Group": "wu-fleet",
+       "Shift": 0,
+       "Policy": "hold",
+       "Facing": "NE",
+       "AI": true,
+       "Faction": "wu"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "ganning",
+       "Text": "불 붙은 적선부터 쳐라!"
+      },
+      {
+       "Actor": "handang",
+       "Text": "강가 진채에도 불을 놓으시오!"
+      }
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 84,
+     "State": "F",
+     "Turns": 4
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "look",
+        "To": {
+         "X": 5,
+         "Y": 11
+        },
+        "Seconds": 0.35
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 83,
+     "State": "F",
+     "Turns": 4
+    },
+    {
+     "Kind": "terrain",
+     "Area": 85,
+     "State": "F",
+     "Turns": 4
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caimao",
+       "Text": "바람이다! 동남풍이 불길을 밀고 온다!"
+      },
+      {
+       "Actor": "caoren",
+       "Text": "강변의 불이 위쪽 진채까지 옮았습니다!"
+      },
+      {
+       "Actor": "caocao",
+       "Text": "모두 당장 물러나라! 북쪽으로 가라. 목숨부터 보존해라!"
+      }
+     ]
+    },
+    {
+     "Kind": "damage",
+     "Targets": [
+      "cao-fleet"
+     ],
+     "Value": 30
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "confusion",
+     "Turns": 3
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "attack",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "defense",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "mind",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "morale",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "agility",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "speed",
+     "Value": -2
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-fleet",
+      "cao-land"
+     ],
+     "Stat": "range",
+     "Value": -1
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cao-fleet"
+     ],
+     "Policy": "flee",
+     "GoalArea": 86
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cao-land"
+     ],
+     "Policy": "flee",
+     "GoalArea": 81
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "wu-fleet"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhouyu",
+       "Text": "조조의 배가 흐트러졌소. 수군은 전진하시오!"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "look",
+        "To": {
+         "X": 30,
+         "Y": 10
+        },
+        "Seconds": 0.35
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangyun",
+       "Text": "우리 배에는 불이 닿지 않았다! 유비가 건너지 못하게 막아라!"
+      },
+      {
+       "Actor": "zhugeliang",
+       "Text": "장윤의 배만 건너면 적의 북쪽 길에 닿습니다. 서두르십시오."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "jiangxia-advances",
+   "If": [
+    "at:player:87"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "liuqi"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "jiangxia-crosses",
+   "If": [
+    "defeated:zhangyun"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "zhang-fleet"
+     ],
+     "Policy": "flee",
+     "GoalArea": 88
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "장윤의 배가 돌아선다! 물길을 건너 조조군을 쳐라!"
+      }
+     ]
+    }
+   ]
   }
  ]
 }

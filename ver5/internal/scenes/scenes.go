@@ -64,6 +64,8 @@ type Step struct {
 	Follow    string    // the camera keeps on this actor from now on ("-" stops)
 	Place     []float64 // the actor is at [u, v] at once (in the dark of a fade: time has passed)
 	IfWalking bool      // the step runs only while its actor is still on its way (a line for players who read fast)
+	Surge     string    // the flood of this baked surge (assets/graphics/effects/flood) plays, led by the actor across the ford; the rest of the cast stands on the cliff over the dam
+	Army      []string  // with Surge: the cast keys of a footman and a horseman, whose sprites and faction the army that wades the ford wears
 	Bound     *bool     // false unties a bound prisoner (the rope comes off and he may gesture again), true binds one
 }
 
@@ -86,7 +88,7 @@ type Actor struct {
 	Off     bool     // starts off the stage, until a step Enters it
 	Hold    bool     // never turns by itself toward whoever speaks
 	Pose    string   // the motion it rests in (sit, lie, kneel …) instead of standing idle
-	Stay    bool     // on an explore walk's own stage: stands where the walk left it, with no At or Face of its own
+	Stay    bool     // on an explore walk's own stage: stands where the walk left it, whatever its At and Face (those are for the scene opened off the walk)
 	If      []string // stands only when these story conditions hold (an officer who lived through an earlier battle)
 	Bound   bool     // a prisoner with a rope round his arms: walks and turns, but never gestures, bows or plays a motion
 }
@@ -96,6 +98,7 @@ type Scene struct {
 	ID             string `json:"-"`
 	Map            string
 	Time           string
+	Cut            bool               `json:",omitempty"` // fade into a fresh scene even when the map stays the same
 	Glow           string             // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
 	Music          string             // the theme while it plays (assets/music/themes, no extension): a light-hearted scene's own; empty goes by the map
 	Grass          *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's

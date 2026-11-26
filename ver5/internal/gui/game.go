@@ -38,8 +38,6 @@ type Game struct {
 	sound           *soundBank      // nil: silent (EnableSound)
 	tracedTheme     string          // the theme last written to sfxTrace
 	show            *suigongShow    // the flood a battle's cutscene is playing over its field
-	prelude         *suigongPrelude // the flood played before a battle node's preparation: the engine it plays on is a copy
-	preludeNode     string          // the battle node whose prelude has been tried
 	unitsHeld       bool            // a demo moves the units itself: they are not put back on their rules-state cells each frame
 	sfxCalls        int             // cues asked for so far: a plain click sounds only when what it did made none
 	accepting       bool            // window cleanup inside an approved action is silent
@@ -137,6 +135,7 @@ type Game struct {
 	gearAdvice                equipmentAdviceCache
 	equip                     equipState
 	waypoints                 waypointList
+	chron                     chronicleView
 	jumpNode                  string          // the waypoint the difficulty window starts at; none starts a new game
 	jumpLevel                 int             // the waypoint setup: the party's level; none is the next battle's
 	jumpFlags                 map[string]bool // the waypoint setup: the battle flags left on
@@ -806,7 +805,7 @@ func (g *Game) Update() error {
 		}
 	}
 	g.updateFlings()
-	logInput := g.updateTableDrag() || g.updateWheelLists() || g.updateBattleLog() || g.updateUnitList() || g.updateWaypoints() || g.updateShopList()
+	logInput := g.updateTableDrag() || g.updateWheelLists() || g.updateBattleLog() || g.updateUnitList() || g.updateWaypoints() || g.updateChronicle() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -820,11 +819,8 @@ func (g *Game) Update() error {
 	playing := g.S.Screen == "playing"
 	g.updateCampaignAuto()
 	if playing && !g.autoplay && !g.campaignActive() && !g.popupPending() {
-		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" {
-			g.startPrelude(o)
-			if g.show == nil && g.sortieForced(o) {
-				g.startSortie()
-			}
+		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" && g.sortieForced(o) {
+			g.startSortie()
 		}
 	}
 	if g.autoplay && len(g.modals) > 0 && g.modals[0].t > 1.2 {
@@ -1168,13 +1164,13 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 		}
 		g.jumpNode = ""
 		g.openOverlay("difficulty")
-	}}, {"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }}}
+	}}, {"장면 이동", func() { g.waypoints = waypointList{}; g.openOverlay("waypoints") }}}
 	cont := menuItem{label: "이어하기"}
 	if slot, ok := g.S.Store.Latest(); ok {
 		cont.click = func() { g.request(session.Request{Op: "load", Slot: slot}) }
 	}
 	items = append(items[:1], append([]menuItem{cont}, items[1:]...)...)
-	items = append(items, menuItem{"불러오기", func() { g.openOverlay("load") }})
+	items = append(items, menuItem{"불러오기", func() { g.openOverlay("load") }}, menuItem{"지난 이야기", func() { g.openOverlay("chronicle") }})
 	if g.Debug {
 		items = append(items, menuItem{"일기토", func() { _ = g.OpenDuel("", "", true) }},
 			menuItem{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }})

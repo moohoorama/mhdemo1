@@ -17,126 +17,273 @@
    "Place": "강하 · 나루"
   },
   {
-   "ID": "c27-back-guanyu",
+   "ID": "c27-guanyu-at-jiangxia",
    "Kind": "join",
    "Character": "guanyu",
    "Event": "back-guanyu-27"
   },
   {
-   "ID": "c27-back-zhugeliang",
-   "Kind": "join",
-   "Character": "zhugeliang",
-   "Event": "back-zhugeliang-27"
-  },
-  {
    "ID": "c27-a01",
    "Kind": "say",
    "Speaker": "liuqi",
-   "Text": "숙부, 강하는 작지만 군사 일만과 배가 있습니다. 숙부의 것처럼 쓰십시오."
+   "Text": "숙부, 강하는 작지만 성과 배가 있습니다. 우선 군사들부터 쉬게 하십시오."
   },
   {
    "ID": "c27-a02",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "조카의 성일세. 나는 잠깐 머무는 손님이고."
+   "Text": "덕분에 한진을 건넜네. 흩어진 군사들도 나루에 모이고 있소."
   },
   {
    "ID": "c27-a03",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "주공, 공자는 병이 깊습니다."
+   "Speaker": "sunqian",
+   "Text": "주공, 강동에서 온 전갈입니다. 군사께서 손 장군을 만나셨답니다."
   },
   {
    "ID": "c27-a04",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "강하의 군사는 공자의 이름으로 움직이되, 움직이는 손은 주공이셔야 합니다."
+   "Speaker": "sunqian",
+   "Text": "주유 도독이 수군을 이끌고 번구로 오고 있으니, 주공도 와서 함께 의논하자고 하셨습니다."
   },
   {
    "ID": "c27-a05",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "……또 남의 이름인가."
+   "Text": "운장, 익덕. 조카를 도와 강하를 지키게. 자룡과 숙지, 두 사람은 나와 가세."
   },
   {
    "ID": "c27-a06",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "남의 이름이기에 형주 사람들이 문을 엽니다."
+   "Speaker": "guanyu",
+   "Text": "형님이 돌아오실 때까지 성을 지키겠습니다."
   },
   {
    "ID": "c27-a07",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "주공, 저는 강동에 다녀오겠습니다. 손 장군과 함께 조조를 막겠습니다."
+   "Speaker": "huojun",
+   "Text": "남군 지강 사람 곽준입니다. 강릉은 조조에게 문을 열었습니다. 저는 형의 부곡을 데리고 나왔습니다."
   },
   {
-   "ID": "c27-b00",
-   "Kind": "narrate",
-   "Text": "며칠 뒤, 제갈량이 강하 진영으로 돌아왔다."
-  },
-  {
-   "ID": "c27-chaisang",
-   "Kind": "scene",
-   "Place": "강하 · 진영"
-  },
-  {
-   "ID": "c27-b01",
-   "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "주공, 손 장군이 싸우기로 했습니다. 주유 도독이 수군을 이끌고 옵니다."
-  },
-  {
-   "ID": "c27-b05",
-   "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "도독은 주공께 번구에서 기다리라 했습니다. 강 위쪽으로 오는 양양 수군은 우리가 맡겠다고 했습니다."
-  },
-  {
-   "ID": "c27-b06",
+   "ID": "c27-a08",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "그럼 번구로 가세. 배에서 직접 살피겠소."
-  },
-  {
-   "ID": "c27-camp",
-   "Kind": "scene",
-   "Place": "강하 · 진영"
-  },
-  {
-   "ID": "c27-c01",
-   "Kind": "say",
-   "Speaker": "huojun",
-   "Text": "남군 지강 사람 곽준입니다. 강릉은 싸워 보지도 않고 조조에게 문을 열었습니다."
-  },
-  {
-   "ID": "c27-c02",
-   "Kind": "say",
-   "Speaker": "huojun",
-   "Text": "그 꼴은 못 보겠어서 형의 부곡을 데리고 나왔습니다."
-  },
-  {
-   "ID": "c27-c03",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "강릉 사람들은 어찌 되었소?"
-  },
-  {
-   "ID": "c27-c04",
-   "Kind": "say",
-   "Speaker": "huojun",
-   "Text": "조조의 수군이 되었습니다. 채모가 그들을 이끌고 내려옵니다."
+   "Text": "먼 길 오셨소. 부곡부터 쉬게 하시오. 여기서는 그대들과 함께 막겠소."
   },
   {
    "ID": "c27-join-huojun",
    "Kind": "join",
    "Character": "huojun",
-   "Event": "join-huojun"
+   "Event": "c27-join-huojun"
   },
   {
-   "ID": "c27-redcliff-walk",
+   "ID": "c27-bengkou-walk",
    "Kind": "explore",
    "Explore": "explore27_redcliff"
+  },
+  {
+   "ID": "c27-bengkou",
+   "Kind": "scene",
+   "Place": "번구 · 오군 진영"
+  },
+  {
+   "ID": "c27-b01",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "오군의 수군을 맡은 주유요. 배가 도착하는 대로 현덕 공을 뵙고 싶었소."
+  },
+  {
+   "ID": "c27-b02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "유비 현덕이오. 자룡과 숙지는 내 곁에서 군사를 이끄는 사람들입니다."
+  },
+  {
+   "ID": "c27-b03",
+   "Kind": "say",
+   "Speaker": "lusu",
+   "Text": "노숙입니다. 이쪽은 정보 장군과 황개 장군입니다."
+  },
+  {
+   "ID": "c27-b04",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공, 강동에서 가져온 지도입니다. 강하까지 길을 표시해 두었습니다."
+  },
+  {
+   "ID": "c27-b05",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "조조의 큰 배는 서쪽에 모여 있소. 물 위는 우리가 맡겠소."
+  },
+  {
+   "ID": "c27-b06",
+   "Kind": "say",
+   "Speaker": "chengpu",
+   "Text": "본대가 움직여도 장윤의 배는 강하 앞 물길에 남을 겁니다. 그곳을 지나야 뭍으로 나갈 수 있소."
+  },
+  {
+   "ID": "c27-b07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "강하 앞 물길은 우리가 열겠소. 조조의 육군이 움직이면 뭍에서 맞겠습니다."
+  },
+  {
+   "ID": "c27-b08",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "도독의 수군이 먼저 움직일 때 강하도 나서야 합니다. 늦으면 북쪽 큰길이 열립니다."
+  },
+  {
+   "ID": "c27-b09",
+   "Kind": "say",
+   "Speaker": "huanggai",
+   "Text": "때가 되면 배부터 움직일 겁니다. 그때 뭍에서 길을 잡아 주시오."
+  },
+  {
+   "ID": "c27-b10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군사, 함께 강하로 돌아갑시다. 낯선 군에 홀로 두고 가자니 마음이 쓰이오."
+  },
+  {
+   "ID": "c27-b11",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "수군이 이겨야 저희도 움직일 수 있습니다. 여기서 도독을 돕다가, 때가 정해지면 바로 돌아가겠습니다."
+  },
+  {
+   "ID": "c27-b12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 자룡은 군사 곁에 남게. 숙지, 자네는 나와 돌아가세."
+  },
+  {
+   "ID": "c27-bengkou-depart",
+   "Kind": "narrate",
+   "Text": "유비는 진도와 함께 강하로 돌아가는 배에 올랐다."
+  },
+  {
+   "ID": "c27-home-walk",
+   "Kind": "explore",
+   "Explore": "explore27_jiangxia"
+  },
+  {
+   "ID": "c27-return",
+   "Kind": "scene",
+   "Place": "강하 · 관청"
+  },
+  {
+   "ID": "c27-r01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군사! 자룡도 무사하구나."
+  },
+  {
+   "ID": "c27-r02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공, 시간이 없습니다. 지금 전군을 모아 주십시오."
+  },
+  {
+   "ID": "c27-muster",
+   "Kind": "scene",
+   "Place": "강하 · 관청"
+  },
+  {
+   "ID": "c27-m01",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주유 도독이 곧 화공을 씁니다. 불이 붙는 즉시 우리도 조조의 육군과 퇴로를 쳐야 합니다."
+  },
+  {
+   "ID": "c27-m02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "장 장군은 화용도 어귀의 갈밭에, 조 장군은 거기서 북쪽으로 난 샛길에 매복하십시오."
+  },
+  {
+   "ID": "c27-m03",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공과 유 공자께서는 본군을 이끌고 장윤의 수군부터 치십시오. 물길을 열면 달아나는 적의 뒤를 잡을 수 있습니다."
+  },
+  {
+   "ID": "c27-m04",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "관 장군께서는 강하를 지켜 주십시오."
+  },
+  {
+   "ID": "c27-m05",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "조조를 치는 일에 나를 어찌 빼시오. 내 적토마를 따라잡을 말은 없소."
+  },
+  {
+   "ID": "c27-m06",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "그 적토마를 조조가 주지 않았습니까. 막상 만나면 옛 정 때문에 길을 열어 주실까 염려됩니다."
+  },
+  {
+   "ID": "c27-m07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "내가 조조를 보내 준다면 이 목을 바치겠소. 군령으로 적으시오."
+  },
+  {
+   "ID": "c27-m08",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "그럼 강하 북쪽에서 강을 건너 화용도로 가십시오. 조조가 그 길로 올 겁니다."
+  },
+  {
+   "ID": "c27-m09",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "알겠소. 지금 떠나겠소."
+  },
+  {
+   "ID": "c27-m10",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "자룡, 우리도 바로 가세. 저 양반한테 늦었다는 소리 듣겠슈."
+  },
+  {
+   "ID": "c27-m11",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "주공, 길목에서 기다리겠습니다."
+  },
+  {
+   "ID": "c27-march",
+   "Kind": "narrate",
+   "Text": "세 장수가 각자 맡은 길로 떠났다. 유비와 유기는 강하에 남은 군사를 나루로 모았다."
+  },
+  {
+   "ID": "c27-leave-guanyu",
+   "Kind": "leave",
+   "Character": "guanyu",
+   "Event": "c27-leave-guanyu"
+  },
+  {
+   "ID": "c27-leave-zhangfei",
+   "Kind": "leave",
+   "Character": "zhangfei",
+   "Event": "c27-leave-zhangfei"
+  },
+  {
+   "ID": "c27-leave-zhaoyun",
+   "Kind": "leave",
+   "Character": "zhaoyun",
+   "Event": "c27-leave-zhaoyun"
+  },
+  {
+   "ID": "c27-back-zhugeliang",
+   "Kind": "join",
+   "Character": "zhugeliang",
+   "Event": "c27-back-zhugeliang"
   },
   {
    "ID": "c27-redcliff-battle",
@@ -145,159 +292,298 @@
    "Text": "적벽 전투 — 출전 준비"
   },
   {
-   "ID": "c27-chibi",
-   "Kind": "scene",
-   "Place": "적벽 · 강 위"
-  },
-  {
-   "ID": "c27-d01",
-   "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "조조는 뭍으로 달아납니다. 오림 뒤는 갈대 늪이고, 늪을 벗어나는 길은 화용도 하나입니다."
-  },
-  {
-   "ID": "c27-d02",
-   "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "익덕은 먼저 건너가 늪 어귀를 막으십시오. 주공께서는 뒤에서 쫓으십시오."
-  },
-  {
-   "ID": "c27-d03",
-   "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "운장은 화용도 끝에 서십시오."
-  },
-  {
-   "ID": "c27-d04",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "알겠소."
-  },
-  {
-   "ID": "c27-leave-guanyu",
-   "Kind": "leave",
-   "Character": "guanyu",
-   "Event": "leave-guanyu-27"
-  },
-  {
-   "ID": "c27-battle",
-   "Kind": "battle",
-   "Stage": "B27",
-   "Text": "화용도 전투 — 출전 준비"
-  },
-  {
-   "ID": "c27-retreat-walk",
-   "Kind": "explore",
-   "Explore": "explore27_retreat"
-  },
-  {
    "ID": "c27-end-camp",
    "Kind": "scene",
-   "Place": "강하 · 진영"
-  },
-  {
-   "ID": "c27-back-guanyu2",
-   "Kind": "join",
-   "Character": "guanyu",
-   "Event": "back-guanyu-27b"
-  },
-  {
-   "ID": "c27-report-result",
-   "Kind": "branch",
-   "Cases": [
-    {
-     "If": [
-      "flag:flag-b27-caocao"
-     ],
-     "Next": "c27-f01-won"
-    }
-   ],
-   "Else": "c27-f01"
+   "Place": "강하 · 관청"
   },
   {
    "ID": "c27-f01",
    "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "형님, 조조와 장료가 화용도로 왔습니다. 제가 길을 열어 주었습니다."
+   "Speaker": "zhugeliang",
+   "Text": "조조가 북쪽으로 물러갔습니다. 강하에 남은 배와 군사부터 세어 보겠습니다."
+  },
+  {
+   "ID": "c27-booty",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-b27r-zhangyun"
+     ],
+     "Next": "c27-f02"
+    }
+   ],
+   "Else": "c27-f03"
   },
   {
    "ID": "c27-f02",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "주공께서 맡기신 길입니다. 군령을 어긴 일은 밝히고 넘어가야 합니다."
+   "Speaker": "liubei",
+   "Text": "장윤의 배에서 건진 병장기는 나루에 내려 두게. 부서진 것은 대장간으로 보내고."
   },
   {
    "ID": "c27-f03",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "군사, 운장을 그 길에 세운 것도 그대였소. 벌은 나중에 정하겠소.",
-   "Next": "c27-f04"
-  },
-  {
-   "ID": "c27-f01-won",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "형님. 화용도에서 기다렸으나 조조는 그 길로 오지 않았습니다.",
-   "Next": "c27-f04"
+   "Speaker": "soldier",
+   "Text": "주공! 유기 공자께서 적의 화살을 맞았습니다. 의원이 와 있으나 위태롭습니다."
   },
   {
    "ID": "c27-f04",
    "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "채모 그놈도 살아서 내뺐슈. 조카님만 화살 맞고."
+   "Speaker": "liubei",
+   "Text": "공자가 어디서 화살을 맞았느냐?"
   },
   {
    "ID": "c27-f05",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "조카는 어떤가."
+   "Speaker": "soldier",
+   "Text": "물러나는 채모의 배를 보시고 쫓으셨습니다. 아버님의 원수를 갚겠다 하셨는데, 채모가 쏜 화살이……."
   },
   {
    "ID": "c27-f06",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "의원 말로는 일어나 앉기도 어렵다네. 강하의 일은 당분간 우리가 봐야 하네."
+   "Speaker": "liubei",
+   "Text": "내가 가 보겠네. 군사, 여기는 부탁하오."
   },
   {
    "ID": "c27-f07",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "주공, 조조는 북으로 갔고 주유는 강릉의 조인에게 묶일 것입니다."
+   "Speaker": "zhangfei",
+   "Text": "군사! 갈밭에서 기다렸더니 제 발로 오더구먼유. 적병은 흩어지고 군량 수레는 우리가 거뒀슈."
   },
   {
    "ID": "c27-f08",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "강하의 군사와 배는 이제 주공의 손에 있습니다."
+   "Speaker": "zhaoyun",
+   "Text": "북쪽 샛길에서 적의 후위를 물리쳤습니다. 군사들이 거둔 깃발과 갑옷은 밖에 내려놓았습니다."
   },
   {
    "ID": "c27-f09",
    "Kind": "say",
    "Speaker": "zhugeliang",
-   "Text": "강동에서 사람이 와 형주가 누구 땅이냐 묻거든 이렇게 답하시면 됩니다."
+   "Text": "관 장군, 조조는 그 길로 왔습니까?"
   },
   {
    "ID": "c27-f10",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "\"유경승의 아들이 살아 있는 한, 형주는 그 아들의 땅이다.\""
+   "Speaker": "guanyu",
+   "Text": "왔습니다. 수급은 얻지 못했습니다."
   },
   {
    "ID": "c27-f11",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "……조카가 안채에서 나오지 못하는 동안은, 그 말이 내 방패가 되겠군."
+   "Speaker": "zhugeliang",
+   "Text": "싸우다 대장을 놓치는 일도 있지요. 그럼 포로나 거둔 물자는 있습니까?"
   },
   {
    "ID": "c27-f12",
    "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "장수도 병사도, 거둔 것도 없습니다."
+  },
+  {
+   "ID": "c27-f13",
+   "Kind": "say",
    "Speaker": "zhugeliang",
-   "Text": "방패이고, 땅입니다. 스무 해 만에 처음 얻으신 땅입니다."
+   "Text": "싸우지 않으셨습니까?"
+  },
+  {
+   "ID": "c27-f14",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……."
+  },
+  {
+   "ID": "c27-f15",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "모두 보내 주셨습니까?"
+  },
+  {
+   "ID": "c27-f16",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……그렇습니다."
+  },
+  {
+   "ID": "c27-f17",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "관 장군의 군령장을 가져오시오. 군법대로 물을 것이니, 형을 집행할 군사들을 부르시오."
+  },
+  {
+   "ID": "c27-f18",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "둘째 형을 벤다고유? 군사, 지금 그게 무슨 소리여!"
+  },
+  {
+   "ID": "c27-f19",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "군사, 주공께 먼저 아뢰어야 하지 않겠습니까?"
+  },
+  {
+   "ID": "c27-f20",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕. 물러서라. 군사의 말이 옳다."
+  },
+  {
+   "ID": "c27-f21",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "밖에서 다 들리오. 무슨 일이오?"
+  },
+  {
+   "ID": "c27-f22",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "관 장군이 조조를 보내 주었습니다. 군령을 어기면 목을 내놓겠다고 온 군 앞에서 약속하셨습니다."
+  },
+  {
+   "ID": "c27-f23",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장이 죽는다면 나도 죽겠소. 서로 그렇게 맹세했소."
+  },
+  {
+   "ID": "c27-f24",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공, 일어나십시오. 주공께서 군령을 거두시면 다음에는 누구에게 이 약속을 지키라 하겠습니까?"
+  },
+  {
+   "ID": "c27-f25",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군령을 가벼이 여기는 게 아니오. 허나 운장은 나와 한 몸이오."
+  },
+  {
+   "ID": "c27-f26",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "그렇기에 관 장군도 주공도 지키셔야 합니다. 의기만으로 모인 군사라면 의기로 흩어질 수도 있습니다."
+  },
+  {
+   "ID": "c27-f27",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "이제는 법을 세워 백성을 지킬 나라를 얻으셔야 합니다. 가까운 사람부터 약속을 어기면 누가 그 법을 믿겠습니까?"
+  },
+  {
+   "ID": "c27-law-path",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "choice:c24-path=빠른 길"
+     ],
+     "Next": "c27-f28"
+    }
+   ],
+   "Else": "c27-f28n"
+  },
+  {
+   "ID": "c27-f28",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "옳소. 융중에서 내가 힘을 얻는 길을 택하고도 이제 와 내 정에 끌렸소. 나부터 벌하는 게 맞소.",
+   "Next": "c27-f29"
+  },
+  {
+   "ID": "c27-f28n",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "옳소. 힘을 갖추겠다 해 놓고 내 군령부터 사사로이 다뤘소. 나부터 벌하는 게 맞소."
+  },
+  {
+   "ID": "c27-f29",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님."
+  },
+  {
+   "ID": "c27-f30",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "저도 죄가 있습니다. 관 장군이 조조에게 진 은혜를 잊지 못하리라 알면서도, 따로 길을 막을 군사를 두지 않았습니다."
+  },
+  {
+   "ID": "c27-f31",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그럼 내 공을 내놓을 테니 둘째 형의 벌에 보태 주슈. 내 이름은 공로 장부에서 빼면 되잖유."
+  },
+  {
+   "ID": "c27-f32",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "제 공도 함께 거두어 주십시오."
+  },
+  {
+   "ID": "c27-f33",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "오늘 거둔 공으로 이번 허물을 덮읍시다. 다음 군령부터는 나도 이 자리의 말을 지키겠소."
+  },
+  {
+   "ID": "c27-f34",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "저도 다시는 군령을 어기지 않겠습니다."
+  },
+  {
+   "ID": "c27-f35",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "나도 그러겄슈."
+  },
+  {
+   "ID": "c27-f36",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "명심하겠습니다."
+  },
+  {
+   "ID": "c27-f37",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "알겠습니다. 군령장에는 그대로 적어 두겠습니다. 오늘은 돌아온 군사들에게 술을 내시지요."
+  },
+  {
+   "ID": "c27-f38",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "아자, 술이다! 헌화, 어디 갔슈!"
+  },
+  {
+   "ID": "c27-feast",
+   "Kind": "narrate",
+   "Text": "장비가 간옹을 찾으며 관청을 나섰다."
+  },
+  {
+   "ID": "c27-back-guanyu",
+   "Kind": "join",
+   "Character": "guanyu",
+   "Event": "c27-back-guanyu"
+  },
+  {
+   "ID": "c27-back-zhangfei",
+   "Kind": "join",
+   "Character": "zhangfei",
+   "Event": "c27-back-zhangfei"
+  },
+  {
+   "ID": "c27-back-zhaoyun",
+   "Kind": "join",
+   "Character": "zhaoyun",
+   "Event": "c27-back-zhaoyun"
   },
   {
    "ID": "c27-card",
    "Kind": "narrate",
-   "Text": "2장 주유천하\n끝",
+   "Text": "2막 주유천하\n끝",
    "Card": true
   },
   {
@@ -333,11 +619,6 @@
   },
   {
    "ID": "c27-redcliff-out",
-   "Kind": "back",
-   "Leave": true
-  },
-  {
-   "ID": "c27-retreat-out",
    "Kind": "back",
    "Leave": true
   }

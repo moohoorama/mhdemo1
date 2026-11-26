@@ -189,3 +189,30 @@ func (e *Engine) arrive(node string, level int) {
 	e.events = nil
 	e.enter()
 }
+
+// Reached is the last waypoint (content.Waypoints) the story arrived at: a chapter's start when a node of a chapter
+// other than the one from stood in was entered (a branch may go into the middle of a chapter, 25장 → 25v장, so
+// the first node of it need not be passed), or a battle entered. from is the node the engine stood at before
+// the last command, empty for a game just begun. It is empty when the story arrived at none, and a node
+// re-entered inside its own chapter (an explore returning from a talk) is not an arrival. Read it right after
+// the command or construction that told Entered.
+func (e *Engine) Reached(from string) string {
+	chapter := -1
+	if from != "" {
+		chapter = e.data.ChapterIndex(from)
+	}
+	out := ""
+	for _, id := range e.entered {
+		if ci := e.data.ChapterIndex(id); ci >= 0 && ci != chapter {
+			out, chapter = e.data.Chapters[ci].Nodes[0], ci
+		}
+		if id != from && e.data.Node(id).Kind == "battle" {
+			out = id
+		}
+	}
+	return out
+}
+
+// ClearLine drops the chronicle line a restored state carried: the session that loaded it keeps the line itself
+// and stamps it on what it saves, so the engine's own snapshots stay what they were before the state was saved.
+func (e *Engine) ClearLine() { e.state.Run, e.state.Steps = "", 0 }

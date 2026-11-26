@@ -282,7 +282,7 @@ chapters:
 	}
 	var ids []string
 	for _, id := range append(append([]string{}, st.Required...), joined...) {
-		if slices.Contains(joined, id) && !slices.Contains(ids, id) && !slices.Contains(st.Reserve, id) && len(ids) < st.Max {
+		if slices.Contains(joined, id) && !slices.Contains(ids, id) && !slices.Contains(st.Reserve, id) && !slices.Contains(st.Excluded, id) && len(ids) < st.Max {
 			ids = append(ids, id)
 		}
 	}

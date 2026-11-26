@@ -83,23 +83,10 @@
    "Text": "……부인?"
   },
   {
-   "ID": "c26-b06",
-   "Kind": "say",
-   "Speaker": "xiahouen",
-   "Text": "하후은이다. 그 품에 든 것이 무엇이냐!"
-  },
-  {
-   "ID": "c26-qinggang",
-   "Kind": "grant",
-   "Item": "qinggang_sword",
-   "Count": 1,
-   "Event": "grant-qinggang_sword"
-  },
-  {
-   "ID": "c26-b07",
+   "ID": "c26-run",
    "Kind": "say",
    "Speaker": "zhaoyun",
-   "Text": "좋은 검이군. 가져가야겠다."
+   "Text": "공자님, 제 품에 꼭 붙어 계십시오. 다리만 건너면 됩니다."
   },
   {
    "ID": "c26-battle",

@@ -1,22 +1,27 @@
-# 적벽 · 오림 앞 강과 상륙지 (B27R)
-h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
-h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
-h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
-d-- d-- d-- d-- d-- d-- d-- h-- h-- h-- h-- h-- h-- h-- h-- h-- d-- d-- d-- l-- l-- l-- l-- l-- d-- d--
-d-- d-- d-- d-- d-- d-- d-- d-- d-- d-e d-- d-- d-- d-- dkF d-- w-- dkF d-- l-- l-- l-- l-- l-- d-- d--
-d-- d-- d-- d-- dkF d-- d-- d-- d-- d-- d-- dkF w-- w-- w-- w-- w-- w-- w-- l-- l-- l-- l-- l-- dkF d-e
-d-- d-- d-- d-- d-- d-- d-- dkF d-- d-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d--
-w-- w-- w-- d-- d-- d-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- s-- s-- s-- d-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- s-- d-- s-- s-- s-- s-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+# 적벽 · 강동 수군과 강하의 북쪽 퇴로 (B27R)
+w-- w-- w-- w-- w-- w-- w-- w-- u-- u-- u-- u-- u-- u-- d-- g-- g-- l-- l-- l-- g-- d-- g-- u-- u-- u-- u-- u-- u-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- u-- u-- u-- u-- u-- u-- g-- d-- g-- l-- l-- l-- g-- g-- d-- u-- u-- u-- u-- u-- u-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- u-- u-- u-- u-- u-- u-- g-- g-- d-- l-- l-- l-- g-- g-- g-- u-- u-- u-- u-- u-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- d-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- d-- g-- d-- g-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- d-- g-- g-- g-- g-- d-- g-- d-- g-- l-- l-- l-- d-- g-- g-- g-- g-- g-- g-- d-- w-- w-- w-- g-- d-- d-- d-- d-- d-- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- g-- d-- g-- g-- g-- g-- g-- g-- d-- l-- l-- l-- g-- d-- g-- d-- g-- g-- g-- g-- w-- w-- w-- g-- g-- d-- d-- d-- d-- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- g-- d-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- d-- g-- g-- g-- w-- w-- w-- d-- g-- d-- d-- d-- d-- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- d-- g-- g-- g-- l-- l-- l-- d-- g-- g-- g-- g-- d-- g-- g-- w-- w-- w-- g-- d-- d-- d-- d-- d-- d-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- g-- g-- g-- g-- d-- g-- g-- l-- l-- l-- g-- d-- g-- g-- g-- g-- d-- g-- d-- w-- w-- w-- g-- d-- d-- d-- go- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- d-- g-- g-- g-- g-- d-- g-- l-- l-- l-- g-- g-- d-- g-- g-- g-- g-- g-- g-- w-- w-- w-- g-- go- d-- d-- d-- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- d-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- d-- g-- d-- g-- g-- g-- w-- w-- w-- g-- d-- d-- d-- d-- d-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- g-- dk- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- d-- g-- w-- w-- w-- d-- g-- d-- d-- d-- d-- go- d-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- dk- g-- g-- d-- w-- w-- w-- g-- g-- d-- d-- d-- d-- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- w-- w-- w-- g-- g-- d-- d-- d-- d-- g-- g-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- d-- g-- g-- g-- g-- l-- l-- l-- g-- dk- g-- g-- d-- g-- g-- g-- w-- w-- w-- d-- g-- d-- d-- d-- d-- g-- d-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- d-- d-- d-- dk- d-- d-- l-- l-- l-- d-- d-- d-- d-- d-- d-- d-- d-- w-- w-- w-- d-- d-- d-- d-- d-- d-- d-- d-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- d-- d-- d-- d-- d-- dk- l-- l-- l-- d-- d-- d-- d-- dk- d-- d-- d-- w-- w-- w-- d-- d-- d-- d-- d-- d-- d-- d-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- w-- w-- w-- d-- d-- d-- d-- d-- d-- d-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- w-- w-- w-- d-- d-- d-- d-- d-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--

@@ -1,11 +1,15 @@
 # c25-start  S_xuzhou_room  ch25  origin -1 -1
 #####################
 ###...Cdl###...Cdl...Lnt
-###......Liu.........Dsk
-###......Lei............
+###......Liuwm1......Dsk
+###...el1...............
 ###..................Pot
 ###.....................
    .....................
 
-Liu 유표  (sit)
-Lei 유비
+Liu 유표  (bed)
+el1 의원#1  (commoner_elder)
+wm1 시녀#1  (commoner_woman)
+Lei 유비  (off stage, enters later (cell 2 2))
+
+# c25-a01: Lei -> 2 2

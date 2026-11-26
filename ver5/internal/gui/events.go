@@ -12,7 +12,7 @@ import (
 func (g *Game) eventText(e core.Event) (line string, important bool) {
 	a, t := g.name(e.Actor), g.name(e.Target)
 	switch e.Kind {
-	case "autosave-failed":
+	case "autosave-failed", "chronicle-failed":
 		return e.Text, true
 	case "speech":
 		lines := []string{}
@@ -168,6 +168,8 @@ var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": tru
 // the battle-long "-down" ones their cut, the rest their turns.
 func statusText(id string, s core.Status) string {
 	switch {
+	case id == "reprisal":
+		return fmt.Sprintf("보복 %d (+%d%%)", s.Turns, s.Turns*5)
 	case id == "speed" && s.Value < 0:
 		return fmt.Sprintf("이동력 %+d %d", s.Value, s.Turns)
 	case percentStatus[id]:

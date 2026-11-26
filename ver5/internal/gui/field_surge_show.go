@@ -48,6 +48,10 @@ type suigongShow struct {
 	white   float64
 	extras  []string // ids of the soldiers this show made for itself
 	stands  map[string]bool
+	node    string  // the story node the scene's show plays in: the white holds until the story has left it
+	change  func()  // what happens once, in the dark the story's scene fades to (the army appears, the cast steps aside)
+	hold    float64 // when the white began to clear, once the show is over
+	scene   *scene  // the story scene the show plays in, whose cast are its units; nil in a battle, over the field's units
 	saved   struct {
 		zoom, camX, camY, speech float64
 		unitsHeld                bool
@@ -58,6 +62,9 @@ type suigongShow struct {
 
 // suigongClearSecs is how long the white takes to clear when the show hands the battle back.
 const suigongClearSecs = .7
+
+// A story scene darkens for sceneDarken seconds before the flood's first shot and lights up in sceneLighten.
+const sceneDarken, sceneLighten = .35, .5
 
 // suigongStands are the cells on the right cliff over the dam where the first two of the units a show names stand,
 // looking down the river.
@@ -70,11 +77,20 @@ var suigongStands = []content.Point{
 // (cells from suigongArmy) that stand on the ford's rows, stands name the units on the cliff (in the cells of
 // suigongStands), order is what one of them shouts, lines are the other bubbles. The units the field shows are put
 // where the show wants them now.
-func (g *Game) newSuigongShow(surge *Surge, stands []string, order suigongLine, lines []suigongLine) (*suigongShow, error) {
+func (g *Game) newSuigongShow(surge *Surge, stands []string, order suigongLine, lines []suigongLine, sc *scene) (*suigongShow, error) {
 	s := &suigongShow{g: g, surge: surge, hill: float64(g.field.A.CliffRise), swept: map[string]*suigongWash{}, cried: map[string]bool{},
-		soldier: map[[2]int]*unitVis{}, start: map[string]float64{}, stands: map[string]bool{}}
+		soldier: map[[2]int]*unitVis{}, start: map[string]float64{}, stands: map[string]bool{}, scene: sc}
 	s.saved.zoom, s.saved.camX, s.saved.camY, s.saved.speech, s.saved.unitsHeld = g.zoom, g.camX, g.camY, g.player.SpeechScale, g.unitsHeld
 	g.unitsHeld = true // the soldiers walk on their own, the rules state keeps them on their start cells
+	if sc != nil {
+		for _, id := range stands { // a scene's cast already stands on the cliff, where its map lifts them
+			s.stands[id] = true
+			if u := sc.actors[id]; u != nil {
+				s.hill = max(s.hill, u.lift)
+			}
+		}
+		return s, s.arrange(order, lines)
+	}
 	for i, id := range stands[:min(len(stands), len(suigongStands))] {
 		s.stands[id] = true
 		if u := g.vis[id]; u != nil {
@@ -85,10 +101,18 @@ func (g *Game) newSuigongShow(surge *Surge, stands []string, order suigongLine, 
 	return s, s.arrange(order, lines)
 }
 
+// units are what the show moves about: a scene's cast, or the battle field's units.
+func (s *suigongShow) units() map[string]*unitVis {
+	if s.scene != nil {
+		return s.scene.actors
+	}
+	return s.g.vis
+}
+
 // arrange files the soldiers and lays out the cues.
 func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 	g := s.g
-	for _, u := range g.vis {
+	for _, u := range s.units() {
 		if !u.ally && u.v >= suigongFord {
 			s.soldier[[2]int{int(u.u), int(u.v)}] = u
 			s.start[u.id] = u.u
@@ -99,6 +123,7 @@ func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 	}
 	s.tCut = tBurst + (s.surge.Cut()-surgeBreak)/surgeRate // the shot changes from the dam to the ford
 	s.end = s.tCut + fordWater + fordWhite + fordHold
+	s.hold = s.end
 	cue := func(at float64, fn func()) { s.cues = append(s.cues, suigongCue{at, fn}) }
 	sound := func(at float64, name string, vol float64) { cue(at, func() { g.sfxVol(name, vol) }) }
 	sound(tShake, "boulder", 1)
@@ -114,7 +139,7 @@ func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 	if order.text != "" {
 		cue(order.at, func() {
 			g.showBattleSpeech([]content.Speech{{Actor: order.unit, Text: order.text}})
-			if u := g.vis[order.unit]; u != nil {
+			if u := s.units()[order.unit]; u != nil {
 				u.play("attack")
 			}
 		})
@@ -125,7 +150,11 @@ func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 		cue(s.tCut+c.at, func() {
 			if u := s.soldier[[2]int{c.u + marchLead, c.v}]; u != nil {
 				s.cried[u.id] = true
-				g.player.Speech = append(g.player.Speech, &battleBubble{actor: u.id, name: "조조군", text: c.text, typing: startTyping(g.textSeconds)})
+				if s.scene != nil {
+					s.scene.emotes[u.id] = &emote{text: c.text, life: 1.6}
+				} else {
+					g.player.Speech = append(g.player.Speech, &battleBubble{actor: u.id, name: "조조군", text: c.text, typing: startTyping(g.textSeconds)})
+				}
 			}
 		})
 	}
@@ -171,7 +200,10 @@ func (w *suigongWash) carry(u *unitVis, t float64) {
 func (s *suigongShow) at(t float64) {
 	g := s.g
 	if s.over {
-		s.dark, s.white = 0, 1-suigongPhase(t, s.end, s.end+suigongClearSecs)
+		if s.scene != nil && g.S.View().Node == s.node {
+			s.hold = t // the story goes on to the next node under the white
+		}
+		s.dark, s.white = 0, 1-suigongPhase(t, s.hold, s.hold+suigongClearSecs)
 		return
 	}
 	for s.next < len(s.cues) && s.cues[s.next].at <= t {
@@ -184,12 +216,22 @@ func (s *suigongShow) at(t float64) {
 	}
 	g.field.Surge, g.field.SurgeT = s.surge, st
 	s.dark = math.Min(suigongPhase(t, tFadeOut, tBlack), 1-suigongPhase(t, tBlack, tFadeIn))
+	if s.scene != nil { // the story's scene darkens to the ford and the army, which stand there once it is black
+		s.dark = math.Max(s.dark, math.Min(suigongPhase(t, 0, sceneDarken), 1-suigongPhase(t, sceneDarken, sceneDarken+sceneLighten)))
+		if t >= sceneDarken && s.change != nil {
+			s.change()
+			s.change = nil
+		}
+	}
 	s.white = suigongPhase(t, tBurst-.06, tBurst) * (1 - suigongPhase(t, tBurst, tBurst+flashSecs))
 	s.white = math.Max(s.white, suigongSmooth(suigongPhase(t, s.tCut+fordWater, s.tCut+fordWater+fordWhite)))
 	if t >= s.end {
 		s.finish()
 		s.white = 1
 		return
+	}
+	if s.scene != nil && t < sceneDarken {
+		return // the scene's own shot, darkening
 	}
 	g.setZoomImmediate(4)
 	switch {
@@ -216,7 +258,7 @@ func (s *suigongShow) at(t float64) {
 		g.camY += amp * .7 * math.Cos(f*1.9+1)
 	}
 	marching := t < tBlack || t >= s.tCut
-	for id, u := range g.vis {
+	for id, u := range s.units() {
 		u.actor = true
 		if s.stands[id] {
 			u.lift, u.front, u.dir = s.hill, 40, "SW"
@@ -266,20 +308,25 @@ func (s *suigongShow) finish() {
 	}
 	s.over = true
 	for _, id := range s.extras {
-		delete(g.vis, id)
+		delete(s.units(), id)
+		if s.scene != nil {
+			delete(s.scene.extra, id)
+			delete(s.scene.free, id)
+			delete(s.scene.emotes, id)
+		}
 	}
 	s.extras = nil
 	g.unitsHeld = s.saved.unitsHeld
 	g.player.SpeechScale = s.saved.speech
 	g.player.Speech, g.player.Fading = nil, nil
 	g.field.Surge, g.field.SurgeT = nil, 0
-	for _, u := range g.vis {
+	for _, u := range s.units() {
 		u.actor, u.front, u.shakeT, u.fade = false, 0, 0, 0
 	}
-	if o := g.S.View(); o.Map != nil {
+	if o := g.S.View(); o.Map != nil && s.scene == nil {
 		g.sync(o)
 	}
-	for _, u := range g.vis {
+	for _, u := range s.units() {
 		u.play(u.rest())
 	}
 	g.setZoomImmediate(s.saved.zoom)
@@ -300,35 +347,12 @@ func (s *suigongShow) overlay(dst *ebiten.Image) {
 func (s *suigongShow) Advance(dt float64) bool {
 	s.clock += dt
 	s.at(s.clock)
-	return s.over && s.clock >= s.Length()
+	return s.over && s.clock >= s.hold+suigongClearSecs
 }
 
 // suigongSeconds is how long the show of surge takes.
 func suigongSeconds(surge *Surge) float64 {
 	return tBurst + (surge.Cut()-surgeBreak)/surgeRate + fordWater + fordWhite + fordHold + suigongClearSecs
-}
-
-// suigongGroupOf is the cutscene group of a stage's events that plays a flood, in the shape the replay hands it over
-// (the name of the surge, the group), or "" if there is none.
-func suigongGroupOf(st content.Stage) (string, []core.CutStep) {
-	for _, e := range st.Events {
-		for _, a := range e.Do {
-			for _, group := range a.Steps {
-				var out []core.CutStep
-				name := ""
-				for _, step := range group {
-					if step.Kind == "surge" {
-						name = step.Text
-					}
-					out = append(out, core.CutStep{Kind: step.Kind, Unit: step.Unit, Text: step.Text, Facing: step.Facing, Seconds: step.Seconds, NoFocus: step.NoFocus})
-				}
-				if name != "" {
-					return name, out
-				}
-			}
-		}
-	}
-	return "", nil
 }
 
 // beginSuigong starts the flood show of the surge called name over the battle. The group tells the cast: the unit of
@@ -405,7 +429,7 @@ func (g *Game) beginSuigong(name string, group []core.CutStep) {
 			rest = append(rest, l)
 		}
 	}
-	show, err := g.newSuigongShow(surge, stands, order, rest)
+	show, err := g.newSuigongShow(surge, stands, order, rest, nil)
 	if err != nil {
 		for _, id := range extras {
 			delete(g.vis, id)

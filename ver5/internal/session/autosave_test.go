@@ -169,3 +169,31 @@ func TestAutosaveBeforeSortie(t *testing.T) {
 	assert.Equal(t, content.Spot{Area: "street", At: [2]int{2, 3}, Face: "NW"}, o.Spot)
 	assert.Equal(t, []string{"auto-scenario1"}, s.Store.Slots())
 }
+
+func TestAutosaveOnMarkedExploreEntry(t *testing.T) {
+	s := setup(t)
+	s.Data.Nodes = []content.Node{
+		{ID: "intro", Kind: "narrate", Text: "farewell"},
+		{ID: "walk", Kind: "explore", Explore: "explore01", Autosave: true},
+		{ID: "after", Kind: "narrate", Text: "after"},
+	}
+	s.Data.Chapters = []content.Chapter{{ID: "1", File: "x.json", Nodes: []string{"intro", "walk", "after"}}}
+	s.Data.Campaign.Start = "intro"
+	s.Data.Explores = map[string]*content.Explore{"explore01": {
+		Hero: "hero", Start: content.Spot{Area: "street", At: [2]int{5, 5}, Face: "SE"},
+		Areas: map[string]*content.ExploreArea{"street": {Map: "S_a", Name: "거리", At: [2]int{5, 5}}},
+	}}
+	require.NoError(t, s.Data.Validate())
+	request(t, s, Request{Op: "new", Seed: 1})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "next"}})
+	saved, err := s.Store.Load("auto-scenario1")
+	require.NoError(t, err)
+	assert.Equal(t, "walk", saved.Node)
+	assert.Equal(t, "walk", saved.Explore)
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "walk", Option: "street", X: 2, Y: 3, Target: "NW"}})
+	assert.Equal(t, []string{"auto-scenario1"}, s.Store.Slots())
+	request(t, s, Request{Op: "load", Slot: "auto-scenario1", Discard: true})
+	assert.Equal(t, "walk", s.Engine.Observe().Node)
+	assert.Equal(t, content.Spot{Area: "street", At: [2]int{5, 5}, Face: "SE"}, s.Engine.Observe().Spot)
+	assert.Equal(t, []string{"auto-scenario1"}, s.Store.Slots())
+}

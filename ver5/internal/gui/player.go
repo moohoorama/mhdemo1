@@ -486,12 +486,18 @@ func (g *Game) perform(a *replay.Action) []beat {
 					}
 				}
 				add(.15, func() {})
+				counterCommand := core.Command{Kind: "attack"}
+				for _, event := range k.events {
+					if event.Kind == "counter-spell" {
+						counterCommand = core.Command{Kind: "skill", Skill: event.Text}
+					}
+				}
 				for _, part := range splitDouble(k.events) {
 					crit := false
 					for _, e := range part {
 						crit = crit || e.Kind == "critical"
 					}
-					g.swing(add, back, aim, core.Command{Kind: "attack"}, part, crit)
+					g.swing(add, back, aim, counterCommand, part, crit)
 				}
 			}
 		case "item":
@@ -716,7 +722,7 @@ func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) 
 	struck := map[string]string{}
 	hurtBy := map[string]int{} // 1 + the counter whose swing last hurt each unit, 0 for the attack's own
 	for _, e := range events {
-		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double")
+		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double" || e.Kind == "counter-spell")
 		switch {
 		case back && (len(counters) == 0 || counters[len(counters)-1].by != e.Actor):
 			counters = append(counters, counter{by: e.Actor, events: []core.Event{e}})

@@ -385,6 +385,7 @@ STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan
 STORY_POSES['xiahoudun'] = ['sit', 'fist']
 STORY_POSES['jianyong'] = ['sit']
 STORY_POSES['taoqian'] = ['sit', 'bed']  # 도겸 on his sickbed (서주 양도, his last words)
+STORY_POSES['liuyan'] = ['sit', 'bed']  # 유표 (who wears 유언's look) on his sickbed (25장, 형주를 맡기려 할 때)
 STORY_POSES.update(child_boy=['bow'], child_girl=['bow'])
 ACTION = {'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
 for _key, (_name, _look, _battle, _colors) in STORY.items():
@@ -448,6 +449,9 @@ RETOUCH = {
         (27, 37, 'e#eedd'),
         (28, 37, 'ee#ed')],
 }
+# 유표's sleeping head: the same cap, beard and face as 도겸's
+RETOUCH[('liuyan', 'bed', 'SW')] = RETOUCH[('taoqian', 'bed', 'SW')]
+RETOUCH[('liuyan', 'bed', 'NW')] = RETOUCH[('taoqian', 'bed', 'NW')]
 
 
 # a head of its own for a pose: 조조 seated pulls the 삿갓 down and forward over his eyes

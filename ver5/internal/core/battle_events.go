@@ -135,6 +135,12 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					}
 				}
 			}
+		case "lockmove":
+			for _, t := range a.Targets {
+				for _, u := range e.matching(t) {
+					u.MoveLocked = a.Value == 1
+				}
+			}
 		case "move":
 			for _, m := range e.moveTogether(a.Moves) {
 				e.events = append(e.events, Event{Kind: "move", Actor: m.u.ID, Path: m.path, Facing: m.facing})
@@ -544,9 +550,8 @@ func (e *Engine) standing(target string) *Unit {
 	return nil
 }
 
-// playCutscene applies a cutscene's end state (positions and facings; hit points and the rest stay
-// as they are) and sends the replay what it came to, step by step. Steps about units that are not on
-// the field are left out; a group's moves are carried out together.
+// playCutscene applies a cutscene's end state and sends the replay what it came to, step by step.
+// Steps about units that are not on the field are left out; a group's moves are carried out together.
 func (e *Engine) playCutscene(groups [][]content.Step) {
 	var out [][]CutStep
 	for _, group := range groups {
@@ -578,6 +583,7 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 		}
 		var steps []CutStep
 		for _, st := range group {
+			from := len(steps)
 			for _, u := range e.matching(st.Unit) {
 				if u.HP <= 0 && st.Kind != "wait" && st.Kind != "look" {
 					continue
@@ -597,16 +603,29 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 					}
 					steps = append(steps, CutStep{Kind: "face", Unit: u.ID, Facing: u.Facing})
 				case "say":
-					steps = append(steps, CutStep{Kind: "say", Unit: u.ID, Text: st.Text})
+					steps = append(steps, CutStep{Kind: "say", Unit: u.ID, Text: st.Text, Seconds: st.Seconds})
 				case "leave":
 					steps = append(steps, CutStep{Kind: "leave", Unit: u.ID, Path: e.leave(u)})
+				case "fall":
+					u.HP = 0
+					steps = append(steps, CutStep{Kind: "fall", Unit: u.ID})
 				}
+			}
+			for i := from; i < len(steps); i++ {
+				steps[i].NoFocus = st.NoFocus
 			}
 			if st.Kind == "wait" {
 				steps = append(steps, CutStep{Kind: "wait", Seconds: st.Seconds})
 			}
-			if st.Kind == "look" {
-				steps = append(steps, CutStep{Kind: "look", Path: []content.Point{*st.To}, Seconds: st.Seconds})
+			if st.Kind == "surge" {
+				lead := ""
+				if m := e.matching(st.Unit); len(m) > 0 {
+					lead = m[0].ID
+				}
+				steps = append(steps, CutStep{Kind: "surge", Unit: lead, Text: st.Text})
+			}
+			if st.Kind == "look" || st.Kind == "dust" {
+				steps = append(steps, CutStep{Kind: st.Kind, Path: []content.Point{*st.To}, Seconds: st.Seconds})
 			}
 		}
 		if len(steps) > 0 {

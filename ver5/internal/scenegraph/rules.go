@@ -111,7 +111,7 @@ func ExploreIssues(d *content.Data, env Env, file string, x *content.Explore) []
 			add("error", RuleExitReturn, where, fmt.Sprintf("%s 의 출구 %q 로 들어가면 %s 에서 %s 로 돌아오는 출구가 없습니다 (나오면 %s). 일부러 돌아올 수 없는 길이면 출구에 OneWay 를 적습니다", a.Name, e.Name, t.Name, a.Name, back))
 		}
 		out = append(out, populationIssues(env, where, a)...)
-		out = append(out, shopIssues(d, where, a, x)...)
+		out = append(out, shopIssues(d, file, where, a, x)...)
 		out = append(out, residenceIssues(env, where, a, x)...)
 		keys := make([]string, 0, len(a.People))
 		for k := range a.People {
@@ -293,14 +293,23 @@ func populationIssues(env Env, where string, a *content.ExploreArea) []Issue {
 	return out
 }
 
-// noticeNear reports whether a person who mutters (Chatter) and tells topic stands within dist small tiles of at.
-func noticeNear(a *content.ExploreArea, topic string, at [2]int, dist int) bool {
-	for _, p := range a.People {
-		if p.Notice == topic && p.Chatter != "" && max(abs(p.At[0]-at[0]), abs(p.At[1]-at[1])) <= dist {
-			return true
+// noticeNear is the person who mutters (Chatter) and tells topic, standing within dist small tiles of at; nil if none.
+func noticeNear(a *content.ExploreArea, topic string, at [2]int, dist int) *content.ExplorePerson {
+	for _, k := range sortedPeople(a) {
+		if p := a.People[k]; p.Notice == topic && p.Chatter != "" && max(abs(p.At[0]-at[0]), abs(p.At[1]-at[1])) <= dist {
+			return p
 		}
 	}
-	return false
+	return nil
+}
+
+func sortedPeople(a *content.ExploreArea) []string {
+	keys := make([]string, 0, len(a.People))
+	for k := range a.People {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
 }
 
 func abs(x int) int {
@@ -311,22 +320,104 @@ func abs(x int) int {
 }
 
 // shopNoticeDist is how close to a shop's door the person telling of its new stock stands, in small tiles.
-const shopNoticeDist = 10
+const shopNoticeDist = 6
 
-// shopIssues asks, for every shop with new stock (Mark "red"), someone near the door of the building telling so.
-func shopIssues(d *content.Data, where string, a *content.ExploreArea, x *content.Explore) []Issue {
+// unspaced is text without spaces, for finding an item's name in a line however the line breaks the name.
+func unspaced(text string) string { return strings.ReplaceAll(text, " ", "") }
+
+// missingNames are the names none of the texts mention.
+func missingNames(names []string, texts ...string) []string {
+	var out []string
+	for _, n := range names {
+		if !slices.ContainsFunc(texts, func(t string) bool { return strings.Contains(unspaced(t), unspaced(n)) }) {
+			out = append(out, n)
+		}
+	}
+	return out
+}
+
+// productNumberRe is a numeral the text states as a value: a digit, or a Sino-Korean numeral with a unit of
+// money or share ("이천 냥", "삼십 퍼센트"). A comparison like "한 급 위", a measure like "한 줌" and words that contain
+// a numeral syllable like "만만치 않소" are not.
+var productNumberRe = regexp.MustCompile(`[0-9０-９]+|[일이삼사오육칠팔구십백천만]+\s*(?:냥|푼|퍼센트|%)`)
+
+// productNumber is the first product value a shop advert states, or "".
+func productNumber(text string) string { return productNumberRe.FindString(text) }
+
+// shopIssues holds the telling of new stock to what the story says is new. Where a shop sells something no walk
+// before it sold (content.Data.NewStock), a person outdoors near its door tells so in bubbles and, talked to, tells
+// each new good by name, standing in front of the building and turned to the door or to the street. A person who
+// tells of a shop's stock (Notice "shop:<id>") but not at its door, or of a shop with nothing new, is wrong: old
+// goods are not cried again, and a crier does not stand inside the shop.
+func shopIssues(d *content.Data, file, where string, a *content.ExploreArea, x *content.Explore) []Issue {
 	var out []Issue
+	warn := func(shop, msg string) {
+		out = append(out, Issue{Level: "warn", Rule: RuleShopNotice, Where: where, Subject: shop, Msg: msg})
+	}
+	doors := map[string]bool{}
 	for _, e := range a.Exits {
 		room := x.Areas[e.To]
 		if room == nil {
 			continue
 		}
-		for _, p := range room.People {
-			if p.Shop == "" || d.Shops[p.Shop].Mark != "red" || noticeNear(a, "shop:"+p.Shop, e.At, shopNoticeDist) {
+		for _, k := range sortedPeople(room) {
+			shop := room.People[k].Shop
+			if shop == "" {
 				continue
 			}
-			out = append(out, Issue{Level: "warn", Rule: RuleShopNotice, Where: where, Subject: p.Shop,
-				Msg: fmt.Sprintf("%s (%s)에 새 물건이 들어왔는데, 입구 근처 %d칸 안에 이를 말풍선으로 알리는 사람(Notice %q, Chatter)이 없습니다", e.Name, d.Shops[p.Shop].Name, shopNoticeDist, "shop:"+p.Shop)})
+			doors[shop] = true
+			stock := d.NewStock(file, shop)
+			if len(stock) == 0 {
+				continue
+			}
+			var names []string
+			for _, id := range stock {
+				names = append(names, d.StockName(id))
+			}
+			crier := noticeNear(a, "shop:"+shop, e.At, shopNoticeDist)
+			if crier == nil {
+				warn(shop, fmt.Sprintf("%s (%s)에 새 물건(%s)이 들어왔는데, 입구 근처 %d칸 안에 이를 말풍선으로 알리는 사람(Notice %q, Chatter)이 없습니다", e.Name, d.Shops[shop].Name, strings.Join(names, ", "), shopNoticeDist, "shop:"+shop))
+				continue
+			}
+			var talk []string
+			for _, l := range crier.Talk {
+				talk = append(talk, l[1])
+			}
+			if len(talk) == 0 {
+				warn(shop, fmt.Sprintf("%s 앞에서 새 물건을 알리는 사람에게 말을 걸어도 할 말이 없습니다. 새 물건(%s)을 설명해야 합니다", e.Name, strings.Join(names, ", ")))
+			}
+			if miss := missingNames(names, strings.Join(talk, " ")); len(talk) > 0 && len(miss) > 0 {
+				warn(shop, fmt.Sprintf("%s 앞에서 말을 걸었을 때 새 물건 %s 의 설명이 없습니다", e.Name, strings.Join(miss, ", ")))
+			}
+			for _, text := range append(append([]string{}, talk...), strings.Split(crier.Chatter, "|")...) {
+				if num := productNumber(text); num != "" {
+					warn(shop, fmt.Sprintf("%s 앞의 안내 %q 에 상품 수치 %q 이(가) 있습니다. 값·회복량·능력치 숫자는 데이터가 바뀌면 어긋나므로 적지 않습니다", e.Name, text, num))
+				}
+			}
+			if miss := missingNames(names, strings.Split(crier.Chatter, "|")...); len(miss) > 0 {
+				warn(shop, fmt.Sprintf("%s 앞의 말풍선에 새 물건 %s 이(가) 없습니다", e.Name, strings.Join(miss, ", ")))
+			}
+			front := e.At[1] - 2
+			if e.Object != nil {
+				front = e.Object[1]
+			}
+			toDoor := content.Toward(content.Point{X: crier.At[0], Y: crier.At[1]}, content.Point{X: e.At[0], Y: e.At[1]})
+			switch {
+			case crier.At == e.At || crier.At[1] < front:
+				warn(shop, fmt.Sprintf("%s 앞의 알리는 사람(%v)이 문 자리이거나 건물 뒤에 서 있습니다. 건물 앞 길에 세웁니다", e.Name, crier.At))
+			case crier.Face != toDoor && crier.Face != "SW":
+				warn(shop, fmt.Sprintf("%s 앞의 알리는 사람이 %s 를 봅니다. 문(%s)이나 길(SW) 쪽을 봐야 합니다", e.Name, crier.Face, toDoor))
+			}
+		}
+	}
+	for _, k := range sortedPeople(a) {
+		shop, ok := strings.CutPrefix(a.People[k].Notice, "shop:")
+		switch {
+		case !ok:
+		case !doors[shop]:
+			warn(shop, fmt.Sprintf("%s 은(는) 상점 %s 의 물건을 알리지만 그 가게 입구가 있는 바깥이 아닙니다. 가게 안이 아니라 입구 앞 길에 세웁니다", k, shop))
+		case len(d.NewStock(file, shop)) == 0:
+			warn(shop, fmt.Sprintf("%s 은(는) 상점 %s 의 물건을 알리는데, 이 탐험 앞에서 이미 팔던 물건뿐입니다. 이미 판 물건은 다시 알리지 않습니다", k, shop))
 		}
 	}
 	return out

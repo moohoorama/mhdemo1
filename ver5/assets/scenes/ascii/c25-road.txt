@@ -4,15 +4,16 @@ Pil#####################Pil
 ###..................Map...
 ###Wpn...Dsk............Jar
 ###WpnJiaZhu...TblTbl......
-###Arm...Liu...............
+###Arm.....................
 PilLnt.....................
 
-Liu 유비
+Liu 유비  (off stage, enters later (cell 2 4))
 Jia 간옹
 Zha 장비  (off stage, enters later (cell 2 6))
 Son 송충  (off stage, enters later (cell 2 6))
 Zhu 제갈량
 
+# c25-yr-00: Liu -> 2 4
 # c25-b01: Zha -> 3 4
 # c25-b01: Son -> 3 5
 # c25-b08: Son -> 2 6 and leaves

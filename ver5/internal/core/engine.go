@@ -22,10 +22,13 @@ type Engine struct {
 	units            *ecs.Map1[Unit]
 	charIDs, unitIDs map[string]ecs.Entity
 	events           []Event
-	turnStarted      string // the faction whose turn this command began, for turnstart conditions
-	lastActor        string // who the command in progress is for, so a duel knows who moved to meet whom
-	caster           string // who is using a skill now, and the spell points it began with (인내)
+	entered          []string // the nodes enter walked through since the engine was made or the last command (Entered)
+	turnStarted      string   // the faction whose turn this command began, for turnstart conditions
+	lastActor        string   // who the command in progress is for, so a duel knows who moved to meet whom
+	caster           string   // who is using a skill now, and the spell points it began with (인내)
 	castMP           int
+	reprisalActor    string
+	reprisalBonus    float64
 	immortal         string // who no blow brings below 1 HP (SetImmortal, simulators only)
 	unchecked        bool   // a test fixture that bends the rules: Apply skips the restore check of tests
 	// the experience a command earns, gathered by officer and given at its end in one sum each (Apply)
@@ -371,6 +374,17 @@ func (e *Engine) fxOf(c *Character, key string) float64 {
 	for _, t := range e.traits(c) {
 		n += e.data.Traits[t].Effects[key]
 	}
+	if strings.HasPrefix(key, content.FxStatIncrease) {
+		if d := e.char(c.Deputy); d != nil && !d.Dead {
+			seen := map[string]bool{}
+			for _, t := range append(slices.Clone(innate(d)), d.Learned...) {
+				if !seen[t] && contains(append(slices.Clone(innate(c)), c.Learned...), t) {
+					n += e.data.Traits[t].Effects[key]
+					seen[t] = true
+				}
+			}
+		}
+	}
 	return n
 }
 func (e *Engine) has(u *Unit, key string) bool { return e.fx(u, key) != 0 }
@@ -460,6 +474,11 @@ func (e *Engine) skills(c *Character) []string {
 
 // enter runs what a scenario node does on arrival: a preparation picks its stage, join and grant act once.
 // enter runs the story from the current node up to the next one that waits for the player (or the end).
+// Entered lists the nodes the story walked through to reach where the engine stands: from the engine's making
+// when nothing has been applied, else during the last command. A node passed over without a line (a scene's
+// place, a set) is in it too, so a point of the story is told even when the player never stood on it.
+func (e *Engine) Entered() []string { return slices.Clone(e.entered) }
+
 func (e *Engine) enter() {
 	for {
 		if e.state.Node == "" {
@@ -467,6 +486,7 @@ func (e *Engine) enter() {
 			return
 		}
 		n := e.data.Node(e.state.Node)
+		e.entered = append(e.entered, n.ID)
 		switch n.Kind {
 		case "battle":
 			e.state.Stage = e.data.StageIndex(n.Stage)
@@ -793,6 +813,7 @@ func (e *Engine) execute(c Command) error {
 	}
 	switch c.Kind {
 	case "wait":
+		delete(u.Status, "reprisal")
 		u.Moved = true
 		u.Acted = true
 		u.Done = true
@@ -824,6 +845,7 @@ func (e *Engine) execute(c Command) error {
 			err = e.useSkill(u, c)
 		}
 		if err == nil {
+			delete(u.Status, "reprisal")
 			u.Moved, u.Acted, u.Done = true, true, true
 			e.standFast(u)
 		}
@@ -846,13 +868,13 @@ func (e *Engine) prepare(c Command) error {
 		}
 		seen := map[string]bool{}
 		for _, id := range c.Deployment {
-			if ch := e.char(id); ch == nil || ch.Dead || e.isDeputy(id) || seen[id] || !e.def(ch).Playable {
+			if ch := e.char(id); ch == nil || ch.Dead || e.isDeputy(id) || seen[id] || !e.def(ch).Playable || contains(s.Excluded, id) {
 				return fail("InvalidDeployment")
 			}
 			seen[id] = true
 		}
 		for _, id := range keys(e.charIDs) {
-			if e.def(e.char(id)).Lord && !seen[id] {
+			if e.def(e.char(id)).Lord && !seen[id] && !contains(s.Excluded, id) {
 				return fail("InvalidDeployment")
 			}
 		}
@@ -887,7 +909,9 @@ func (e *Engine) prepare(c Command) error {
 	if c.Kind != "start" {
 		return fail("UnknownCommand")
 	}
-	if st := e.data.Stages[e.state.Stage]; e.sortieSize(e.state.Deployment) < 1 || e.sortieSize(e.state.Deployment) > st.Max || !e.requiredIn(st, e.state.Deployment) {
+	if st := e.data.Stages[e.state.Stage]; e.sortieSize(e.state.Deployment) < 1 || e.sortieSize(e.state.Deployment) > st.Max || !e.requiredIn(st, e.state.Deployment) || slices.ContainsFunc(e.state.Deployment, func(id string) bool {
+		return contains(st.Excluded, id)
+	}) {
 		return fail("InvalidDeployment")
 	}
 	// Remove prior transient units and enemies from the preparation checkpoint.
@@ -1149,7 +1173,7 @@ func (e *Engine) settle() {
 	}
 	goals := e.battleGoals()
 	loss = loss || !alive["ally"] || e.anyGoal(goals.Defeat)
-	win := e.anyGoal(goals.Victory) || fielded["enemy"] && !alive["enemy"]
+	win := e.anyGoal(goals.Victory) || !stage.StrictVictory && fielded["enemy"] && !alive["enemy"]
 	if !loss && !win {
 		return
 	}
@@ -1285,7 +1309,9 @@ func (e *Engine) addReserve(s content.Stage) {
 // keeps the highest-levelled of the rest (the lord always goes); the player changes it from there. The stage's
 // reserve officers go on top of Max.
 func (e *Engine) fitSortie(s content.Stage) {
-	ids := slices.DeleteFunc(slices.Clone(e.state.Deployment), func(id string) bool { return contains(s.Reserve, id) })
+	ids := slices.DeleteFunc(slices.Clone(e.state.Deployment), func(id string) bool {
+		return contains(s.Reserve, id) || contains(s.Excluded, id)
+	})
 	for i := len(s.Required) - 1; i >= 0; i-- {
 		id := s.Required[i]
 		if o := e.char(id); o != nil && !o.Dead && !e.isDeputy(id) && !contains(ids, id) {

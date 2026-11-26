@@ -182,13 +182,10 @@
   "c26-village": {
    "Map": "S_village_burnt",
    "Time": "dawn",
-   "Nodes": ["c26-village", "c26-b01", "c26-b02", "c26-b03", "c26-b04", "c26-b05", "c26-b06", "c26-b07"],
+   "Nodes": ["c26-village", "c26-b01", "c26-b02", "c26-b03", "c26-b04", "c26-b05", "c26-run"],
    "Cast": {
     "조운": {"At": [4, 4], "Face": "SE"},
-    "미 부인": {"At": [8, 4], "Face": "NW"},
-    "하후은": {"At": [4, 0], "Face": "SW", "Off": true},
-    "조조군#1": {"At": [3, 0], "Face": "SW", "Sprite": "light_cavalry", "Faction": "wei", "Off": true},
-    "조조군#2": {"At": [5, 0], "Face": "SW", "Sprite": "light_cavalry", "Faction": "wei", "Off": true}
+    "미 부인": {"At": [8, 4], "Face": "NW"}
    },
    "Beats": {
     "c26-b01": [
@@ -203,15 +200,9 @@
       [{"CamAt": [6, 4]}, {"Actor": "조운", "Face": "SE"}]
      ]
     ],
-    "c26-b06": [
+    "c26-run": [
      [
-      [{"Actor": "하후은", "Enter": [11, 3], "Move": [8, 3], "Face": "NW"}, {"Actor": "조조군#1", "Enter": [11, 3], "Move": [9, 2], "After": 0.4, "Face": "NW"}, {"Actor": "조조군#2", "Enter": [11, 3], "Via": [[8, 3]], "Move": [8, 2], "After": 0.8, "Face": "NW"}],
-      [{"Actor": "조운", "Face": "SE"}]
-     ],
-     [
-      [{"Actor": "조운", "Strike": "하후은", "React": "hit", "Crit": true}],
-      [{"Actor": "하후은", "Dead": true}],
-      [{"Actor": "조조군#1", "Move": [12, 2], "Exit": true, "Speed": 2}, {"Actor": "조조군#2", "Move": [12, 3], "Exit": true, "Speed": 2}]
+      [{"Actor": "조운", "Via": [[4, 4]], "Move": [4, 6], "Face": "SW"}]
      ]
     ]
    }

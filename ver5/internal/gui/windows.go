@@ -16,7 +16,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "관리", "unit": "부대", "waypoints": "장면 이동", "difficulty": "난이도"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "관리", "unit": "부대", "waypoints": "장면 이동", "chronicle": "지난 이야기", "difficulty": "난이도"}
 
 func (g *Game) popupPending() bool {
 	return len(g.overlays) > 0 || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -48,6 +48,9 @@ func (g *Game) openOverlay(name string) bool {
 	g.autoplay = false
 	if name == "save" || name == "load" {
 		g.openSaves(name)
+	}
+	if name == "chronicle" {
+		g.openChronicle()
 	}
 	return true
 }
@@ -176,6 +179,10 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 		w, h = 1100, 720
 	case "waypoints":
 		w, h = waypointW, waypointH
+	case "chronicle":
+		w, h = chronicleW, chronicleH
+	case "menu":
+		h += 54
 	case "difficulty":
 		w, h = 640, 84+len(g.difficulties())*difficultyRowH
 	}
@@ -237,6 +244,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 			{"게임으로", func() { g.closeOverlays(); g.request(session.Request{Op: "resume"}) }},
 			{"저장", func() { g.openOverlay("save") }},
 			{"불러오기", func() { g.openOverlay("load") }},
+			{"지난 이야기", func() { g.openOverlay("chronicle") }},
 			{"설정", func() { g.openOverlay("settings") }},
 			{"시작 메뉴", func() {
 				g.request(session.Request{Op: "title"})
@@ -253,6 +261,8 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 		g.saveWindow(dst, name, x, y, w, h)
 	case "waypoints":
 		g.waypointWindow(dst, x, y, w, h)
+	case "chronicle":
+		g.chronicleWindow(dst, x, y, w, h)
 	case "difficulty":
 		g.difficultyWindow(dst, x, y, w)
 	case "settings":

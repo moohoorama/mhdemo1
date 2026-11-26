@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Changban, Red Cliffs and Huarong battle terrain. Run from ver5."""
+"""Build the Changban and Red Cliffs battle terrain. Run from ver5."""
 
 import json
 import math
@@ -55,64 +55,32 @@ def changban_rows():
 
 
 def redcliff_rows():
-    width, depth = 26, 21
+    width, depth = 40, 26
     rows = []
     for y in range(depth):
         row = []
+        west_bank = 8 + y // 6 + (y % 7 == 6)
+        east_bank = 27 + (y % 9 in (0, 1, 8))
+        south_bank = 18 + (y % 4 == 3)
         for x in range(width):
-            shore = 5 + round(1.6 * math.cos((x - 4) / 4))
-            if y <= shore:
-                if 19 <= x <= 23 and y >= 3:
-                    cell = 'l--'
-                elif y <= 2 or y <= 3 and 7 <= x <= 15:
-                    cell = 'h--'
-                else:
-                    cell = 'd--'
-            elif 8 <= x <= 16 and abs(y - (11 - (x - 8) // 5)) <= (1 if 10 <= x <= 14 else 0):
-                cell = 'd--' if x in (9, 15) else 's--'
-            else:
+            on_mainland = west_bank <= x <= east_bank and y <= south_bank
+            on_jiangxia = east_bank + 4 <= x <= 38 and 4 <= y <= 18 - (x > 36)
+            if not (on_mainland or on_jiangxia):
                 cell = 'w--'
-            row.append(cell)
-        rows.append(row)
-    for x in range(19, 24):
-        rows[5][x] = 'l--'
-    for x, y, tile in ((4, 5, 'dkF'), (7, 6, 'dkF'), (11, 5, 'dkF'), (14, 4, 'dkF'),
-                       (17, 4, 'dkF'), (24, 5, 'dkF'), (25, 5, 'd-e'), (9, 4, 'd-e')):
-        rows[y][x] = tile
-    return rows
-
-
-def huarong_rows():
-    width, depth = 32, 22
-    rows = []
-    for y in range(depth):
-        row = []
-        for x in range(width):
-            lane = 8 + round(2.5 * math.sin((x - 6) / 6)) + x // 12
-            if x >= 29 + (y % 7) // 3:
-                cell = 'w--'
-            elif x <= 5 and abs(y - 7) > 2:
-                cell = 'h--' if abs(y - 7) < 6 and x > 1 else 'n--'
-            elif x >= 24:
-                cell = 'd--' if 8 <= y <= 17 else 'g--'
-            elif abs(y - lane) <= 1:
+            elif y <= 2 and (x < 14 or x > 22):
+                cell = 'u--'
+            elif on_mainland and ((17 <= x <= 19 and y <= 16) or (13 <= x <= 24 and 11 <= y <= 13)):
                 cell = 'l--'
-            elif 6 <= x <= 10 and 3 <= y <= 11 or 14 <= x <= 21 and 14 <= y <= 16:
-                cell = 'g--' if (x * 7 + y * 3) % 5 else 'gt-'
-            elif y <= 2 or y >= 18:
-                cell = 'u--' if (x + y) % 3 else 'gt-'
-            elif abs(y - lane) <= 3 or abs(y - 14) <= 1:
-                cell = 's--' if (x * 3 + y * 7) % 5 else 'st-'
+            elif y >= 15 or 33 <= x <= 36 or (x * 11 + y * 7) % 19 < 4:
+                cell = 'd--'
             else:
-                cell = 'w--' if (x + y) % 9 < 6 else 's--'
+                cell = 'g--'
             row.append(cell)
         rows.append(row)
-    for x in range(6):
-        rows[7][x] = 'l--'
-        rows[8][x] = 'l--'
-    for x, y, tile in ((28, 8, 'dkF'), (28, 14, 'dkF'), (27, 17, 'dkF'),
-                       (26, 7, 'd-e'), (25, 15, 'd-e'), (17, 11, 'd-w'), (20, 12, 'd-w')):
-        rows[y][x] = tile
+    for x, y in ((12, 11), (14, 15), (16, 16), (21, 14), (24, 12), (24, 16)):
+        rows[y][x] = 'dk-'
+    for x, y in ((33, 9), (36, 8), (37, 11)):
+        rows[y][x] = 'go-'
     return rows
 
 
@@ -162,88 +130,139 @@ def place_changban(stage):
     return stage
 
 
-def place_huarong(stage):
-    """Stage both groups and Cao Cao's retreat between the landing and the mountain pass."""
-    areas = {area['ID']: area for area in stage['Areas']}
-    for key, rect in {
-        1:(24, 10, 3, 4), 2:(6, 5, 2, 3), 30:(0, 6, 2, 4),
-        31:(8, 5, 5, 6), 32:(15, 7, 9, 7),
-    }.items():
-        areas[key]['Rect'] = dict(zip(('X','Y','W','H'),rect))
-    areas[30]['Description'] = '산목 쪽 끝. 조조가 닿으면 빠져나간다'
-    for unit, (x, y) in zip(stage['Allies'], (
-        (25,11), (26,12), (24,10), (25,12), (24,12), (26,13), (6,6), (7,6), (6,7),
-    ), strict=True):
-        unit.update(X=x,Y=y)
-    stage['Recommend'] = {'liubei': {'X': 25, 'Y': 11}, 'zhangfei': {'X': 6, 'Y': 6}}
-    stage['Lights'] = [dict(X=x,Y=y) for x,y in ((27,12),(25,14),(7,7),(1,7))]
-    for unit, (x, y) in zip(stage['Enemies'], (
-        (15,10), (14,10), (15,9), (19,11),
-        (12,9), (13,9), (13,10), (14,9), (16,10),
-        (17,9), (16,9), (17,10), (18,10), (17,11),
-        (21,11), (20,11), (18,11), (20,12),
-    ), strict=True):
-        unit.update(X=x,Y=y,Facing='NW')
-    for event in stage['Events']:
-        if event['ID'] == 'ambush':
-            event['Do'][0]['Steps'][0][0]['Facing'] = 'SE'
-    return stage
-
-
 def redcliff_stage():
-    def spawn(character, x, y, rank='troop', group=None, shift=0):
-        if group is None:
-            group = 'west-flotilla' if x < 14 else 'east-flotilla'
-        return dict(Character=character, X=x, Y=y, Rank=rank, Group=group,
-                    Shift=shift, HPPct=65 if rank == 'troop' else 85,
-                    Policy='hold' if group in ('west-flotilla', 'landing') else 'react',
-                    Facing='SW')
+    def point(x, y):
+        return dict(X=x, Y=y)
 
+    def area(key, name, x, y, width, height, description):
+        return dict(ID=key, Name=name, Rect=dict(X=x, Y=y, W=width, H=height),
+                    Description=description)
+
+    def spawn(character, x, y, group, policy, facing, rank='troop', shift=0, **extra):
+        return dict(Character=character, X=x, Y=y, Rank=rank, Group=group,
+                    Shift=shift, Policy=policy, Facing=facing, **extra)
+
+    def say(*lines):
+        return dict(Kind='say', Lines=[dict(Actor=actor, Text=text) for actor, text in lines])
+
+    def focus(x, y):
+        return dict(Kind='cutscene', Steps=[[dict(Kind='look', To=point(x, y), Seconds=0.35)]])
+
+    def flame(key):
+        return dict(Kind='terrain', Area=key, State='F', Turns=4)
+
+    fire_targets = ['cao-fleet', 'cao-land']
     return {
-        'ID':'B27R', 'Name':'적벽 전투', 'Map':'map_redcliff.json', 'Boats':True, 'Night':True,
-        'Max':8, 'Required':['liubei'], 'TurnLimit':16, 'Faction':'wei',
-        'Allies':[dict(X=x,Y=y) for x,y in ((17,15),(18,15),(16,16),(19,16),(15,16),(17,17),(20,15),(19,17))],
-        'Enemies':[
-            spawn('caimao', 20, 7, 'commander', shift=-0.12), spawn('zhangyun', 7, 9, 'officer', shift=-0.12),
-            spawn('troop_archer',5,10,shift=-0.12), spawn('troop_footman',8,12,shift=-0.12),
-            spawn('troop_footman',7,13,shift=-0.12), spawn('troop_archer',17,9,shift=-0.12),
-            spawn('troop_footman',19,10,shift=-0.12),
-            spawn('troop_archer',22,7,shift=-0.12), spawn('troop_footman',23,10,shift=-0.12),
-            spawn('troop_footman',23,5,group='landing',shift=-0.12),
+        'ID': 'B27R', 'Name': '적벽 전투', 'Map': 'map_redcliff.json', 'Boats': True, 'Night': True,
+        'Max': 7, 'Required': ['liubei', 'zhugeliang'], 'TurnLimit': 22, 'Faction': 'wei',
+        'Allies': [point(x, y) for x, y in ((34, 10), (35, 10), (34, 11), (35, 11), (36, 11),
+                                          (35, 12), (36, 12))],
+        'Recommend': {'liubei': point(34, 10), 'zhugeliang': point(35, 10)},
+        'Enemies': [
+            # The routed army's debuff must survive Cao Cao's automatic command buffs.
+            spawn('caocao', 22, 16, 'cao-land', 'hold', 'NW', 'boss',
+                  Traits=['versatile', 'civil_martial', 'ambition', 'feint']),
+            spawn('caoren', 16, 13, 'cao-land', 'hold', 'SW', 'commander'),
+            spawn('xuchu', 20, 15, 'cao-land', 'hold', 'SW', 'officer'),
+            *[spawn('troop_footman', x, y, 'cao-land', 'hold', 'SW')
+              for x, y in ((12, 11), (14, 15), (16, 16), (20, 16), (21, 14), (23, 13), (24, 16))],
+            *[spawn('troop_archer', x, y, 'cao-land', 'hold', 'SW')
+              for x, y in ((15, 10), (17, 11), (21, 11), (24, 12), (23, 15))],
+            *[spawn('troop_cavalry', x, y, 'cao-land', 'hold', 'NE')
+              for x, y in ((16, 8), (17, 7), (19, 8), (21, 9))],
+            spawn('caimao', 5, 11, 'cao-fleet', 'hold', 'SW', 'officer', -0.15),
+            *[spawn('troop_footman', x, y, 'cao-fleet', 'hold', 'SW', 'recruit', -0.08)
+              for x, y in ((7, 16), (6, 16), (5, 17), (5, 15), (7, 13), (3, 9), (6, 9))],
+            *[spawn('troop_archer', x, y, 'cao-fleet', 'hold', 'SW', 'recruit', -0.08)
+              for x, y in ((8, 15), (6, 14), (5, 13), (4, 11), (5, 9), (4, 8))],
+            spawn('zhangyun', 30, 10, 'zhang-fleet', 'hold', 'SE', 'officer', -0.07, Faction='jing'),
+            *[spawn('troop_footman', x, y, 'zhang-fleet', 'hold', 'SE', shift=-0.07, Faction='jing')
+              for x, y in ((30, 8), (30, 12), (29, 11), (29, 13))],
+            *[spawn('troop_archer', x, y, 'zhang-fleet', 'hold', 'SE', shift=-0.07, Faction='jing')
+              for x, y in ((29, 8), (29, 10), (28, 12))],
         ],
-        'Victory':[{'If':['defeated:caimao','at:liubei:81'], 'Text':'채모의 배를 물리고 유비가 오림 나루에 닿는다'}],
-        'Defeat':[{'If':['defeated:liubei'],'Text':'유비 퇴각'}],
-        'Areas':[{'ID':81,'Rect':{'X':19,'Y':4,'W':3,'H':2},'Name':'오림 나루',
-                  'Description':'채모를 물리친 뒤 유비가 닿으면 승리'}],
-        'Lights':[{'X':19,'Y':5},{'X':23,'Y':5},{'X':17,'Y':15}],
+        'Victory': [{'If': ['defeated:caocao'], 'Text': '조조군을 북쪽으로 물리친다'}],
+        'Defeat': [{'If': ['defeated:liubei'], 'Text': '유비 퇴각'}],
+        'Sub': [{'ID': 'zhangyun', 'Text': '장윤 수군을 물리친다', 'If': ['defeated:zhangyun'],
+                 'Flag': 'flag-b27r-zhangyun', 'Reward': {'copper_spear': 1, 'rice': 1}}],
+        'Areas': [
+            area(81, '북쪽 퇴로', 14, 0, 10, 2, '조조 본대의 퇴로'),
+            area(82, '선봉 함선', 5, 15, 4, 3, '황개의 화선이 들이받는 곳'),
+            area(83, '서쪽 선단', 3, 8, 5, 7, '바람을 타고 불길이 번지는 조조군 수군'),
+            area(84, '강변 진채', 10, 14, 7, 4, '오군이 불을 옮겨 붙이는 육상 진채'),
+            area(85, '서북쪽 진채', 10, 9, 6, 4, '강변에서 불길이 번지는 조조군 진채'),
+            area(86, '서쪽 물길', 1, 0, 7, 2, '조조 수군의 북쪽 퇴로'),
+            area(87, '강하 앞 물길', 28, 6, 5, 13, '장윤이 가로막은 물길'),
+            area(88, '강하 북쪽 물길', 29, 0, 4, 2, '장윤 수군이 물러나는 곳'),
+        ],
+        'Lights': [point(x, y) for x, y in ((5, 11), (8, 15), (22, 16), (23, 13), (33, 10), (36, 8),
+                                          (6, 21), (13, 23), (30, 10))],
+        'Party': [
+            spawn('liuqi', 34, 13, 'jiangxia', 'hold', 'NW', 'officer', AI=True, Faction='liuqi'),
+            spawn('huanggai', 7, 21, 'wu-fleet', 'hold', 'NE', 'officer', AI=True, Faction='wu'),
+            spawn('zhouyu', 12, 23, 'wu-fleet', 'hold', 'NW', 'commander', AI=True, Faction='wu'),
+            spawn('chengpu', 9, 23, 'wu-fleet', 'hold', 'NE', 'officer', AI=True, Faction='wu'),
+            *[spawn('troop_footman', x, y, 'wu-fleet', 'hold', 'NE', AI=True, Faction='wu')
+              for x, y in ((4, 21), (7, 23), (10, 24), (11, 22), (13, 23), (15, 23))],
+            *[spawn('troop_archer', x, y, 'wu-fleet', 'hold', 'NE', AI=True, Faction='wu')
+              for x, y in ((5, 22), (8, 22), (10, 21), (11, 24), (13, 22), (14, 24))],
+        ],
+        'Armies': [{'Faction': 'shu', 'Name': '유비군', 'Ally': True},
+                   {'Faction': 'wu', 'Name': '강동 수군', 'Ally': True},
+                   {'Faction': 'liuqi', 'Name': '강하군', 'Ally': True},
+                   {'Faction': 'wei', 'Name': '조조군'},
+                   {'Faction': 'jing', 'Name': '양양 수군'}],
         'Events': [
-            {'ID': 'liuqi-pursuit', 'If': ['defeated:caimao', '!defeated:liuqi'],
-             'Do': [
-                 {'Kind': 'say', 'Lines': [
-                     {'Actor': 'liuqi', 'Text': '채모! 아버님의 부고를 감춘 값을……!'},
-                 ]},
-                 {'Kind': 'cutscene', 'Steps': [
-                     [{'Kind': 'face', 'Unit': 'liuqi', 'Facing': 'NE'}],
-                     [{'Kind': 'play', 'Unit': 'liuqi', 'Motion': 'hit'}],
-                 ]},
-                 {'Kind': 'remove', 'Targets': ['liuqi']},
-             ]},
+            {'ID': 'fire-ships', 'Do': [
+                focus(7, 19),
+                say(('caimao', '황개의 배다. 항복하러 오는군. 길을 열어라.')),
+                dict(Kind='cutscene', Steps=[
+                    [dict(Kind='move', Unit='huanggai', To=point(7, 18), Facing='NE')],
+                    [dict(Kind='say', Unit='huanggai', Text='불을 붙이시오!')],
+                ]),
+                flame(82),
+                dict(Kind='damage', Targets=['cao-fleet@area:82'], Value=35),
+                say(('caimao', '불이다! 물을 퍼라! 옆 배에 옮겨붙기 전에 꺼라!')),
+                dict(Kind='spawn', Spawns=[
+                    spawn('ganning', 4, 18, 'wu-fleet', 'hold', 'NE', 'officer', AI=True, Faction='wu'),
+                    spawn('handang', 10, 19, 'wu-fleet', 'hold', 'NE', 'officer', AI=True, Faction='wu'),
+                ]),
+                say(('ganning', '불 붙은 적선부터 쳐라!'), ('handang', '강가 진채에도 불을 놓으시오!')),
+                flame(84),
+                focus(5, 11),
+                flame(83),
+                flame(85),
+                say(('caimao', '바람이다! 동남풍이 불길을 밀고 온다!'),
+                    ('caoren', '강변의 불이 위쪽 진채까지 옮았습니다!'),
+                    ('caocao', '모두 당장 물러나라! 북쪽으로 가라. 목숨부터 보존해라!')),
+                dict(Kind='damage', Targets=['cao-fleet'], Value=30),
+                dict(Kind='buff', Targets=fire_targets, Stat='confusion', Turns=3),
+                *[dict(Kind='buff', Targets=fire_targets, Stat=stat, Value=-20)
+                  for stat in ('attack', 'defense', 'mind', 'morale', 'agility')],
+                dict(Kind='buff', Targets=fire_targets, Stat='speed', Value=-2),
+                dict(Kind='buff', Targets=fire_targets, Stat='range', Value=-1),
+                dict(Kind='ai', Targets=['cao-fleet'], Policy='flee', GoalArea=86),
+                dict(Kind='ai', Targets=['cao-land'], Policy='flee', GoalArea=81),
+                dict(Kind='ai', Targets=['wu-fleet'], Policy='assault'),
+                say(('zhouyu', '조조의 배가 흐트러졌소. 수군은 전진하시오!')),
+                focus(30, 10),
+                say(('zhangyun', '우리 배에는 불이 닿지 않았다! 유비가 건너지 못하게 막아라!'),
+                    ('zhugeliang', '장윤의 배만 건너면 적의 북쪽 길에 닿습니다. 서두르십시오.')),
+            ]},
+            {'ID': 'jiangxia-advances', 'If': ['at:player:87'], 'Do': [
+                dict(Kind='ai', Targets=['liuqi'], Policy='assault'),
+            ]},
+            {'ID': 'jiangxia-crosses', 'If': ['defeated:zhangyun'], 'Do': [
+                dict(Kind='ai', Targets=['zhang-fleet'], Policy='flee', GoalArea=88),
+                say(('liubei', '장윤의 배가 돌아선다! 물길을 건너 조조군을 쳐라!')),
+            ]},
         ],
-        'Party':[
-            dict(Character='liuqi', X=20, Y=14, AI=True, Policy='hold',
-                 Faction='liuqi', Rank='officer', Facing='NE'),
-            dict(Character='troop_archer', X=21, Y=15, AI=True, Policy='react',
-                 Faction='shu', Rank='troop', Facing='NE'),
-        ],
-        'Armies':[{'Faction':'shu','Name':'유비군','Ally':True},{'Faction':'wei','Name':'양양 수군'},
-                  {'Faction':'liuqi','Name':'강하 수군','Ally':True}],
     }
 
 
 def main():
     write_map('map_changban', changban_rows(), '장판파 · 굽은 강과 남쪽 둑 (B26, B25V)')
-    write_map('map_redcliff', redcliff_rows(), '적벽 · 오림 앞 강과 상륙지 (B27R)')
-    write_map('map27', huarong_rows(), '화용도 · 오림에서 산목까지 이어지는 늪길 (B27)')
+    write_map('map_redcliff', redcliff_rows(), '적벽 · 강동 수군과 강하의 북쪽 퇴로 (B27R)')
     (HERO / 'stage27r.json').write_text(json.dumps(redcliff_stage(), ensure_ascii=False, indent=1) + '\n')
 
 

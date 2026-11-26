@@ -4,10 +4,19 @@
    "Map": "S_xuzhou_room",
    "Nodes": ["c25-sick-news", "c25-start", "c25-a01", "c25-a02", "c25-a03", "c25-a04"],
    "Cast": {
-    "유표": {"At": [2, 1], "Face": "SE", "Pose": "sit", "Hold": true},
-    "유비": {"At": [2, 2], "Face": "NE"}
+    "유표": {"At": [2, 1], "Face": "SE", "Hold": true, "Pose": "bed"},
+    "의원#1": {"At": [1, 2], "Face": "NE", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "시녀#1": {"At": [3, 1], "Face": "SW", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "유비": {"At": [2, 2], "Face": "NE", "Off": true}
    },
+   "Ambient": [{"CamAt": [3, 2]}],
    "Beats": {
+    "c25-a01": [
+     [
+      [{"Actor": "유비", "Enter": [3, 7], "Via": [[3, 4]], "Move": [2, 2], "Speed": 1.6}, {"Actor": "의원#1", "Face": "SE"}],
+      [{"Actor": "유비", "Face": "NE"}, {"Actor": "의원#1", "Face": "NE"}]
+     ]
+    ],
     "c25-a03": [
      [
       [{"Actor": "유비", "Emote": "…"}]
@@ -17,15 +26,21 @@
   },
   "c25-road": {
    "Map": "S_xiaopei_office",
-   "Nodes": ["c25-road", "c25-yr-01", "c25-yr-02", "c25-b01", "c25-b02", "c25-b03", "c25-b04", "c25-b05", "c25-b06", "c25-b07", "c25-b08"],
+   "Nodes": ["c25-road", "c25-yr-00", "c25-yr-00b", "c25-yr-00c", "c25-yr-01", "c25-yr-02", "c25-b01", "c25-b02", "c25-b03", "c25-b04", "c25-b05", "c25-b06", "c25-b07", "c25-b08"],
    "Cast": {
-    "유비": {"At": [2, 4], "Face": "NE"},
+    "유비": {"At": [2, 4], "Face": "NE", "Stay": true},
     "간옹": {"At": [1, 3], "Face": "SE"},
     "장비": {"At": [2, 6], "Face": "NE", "Off": true},
     "송충": {"At": [2, 6], "Face": "NE", "Off": true},
     "제갈량": {"At": [2, 3], "Face": "SW"}
    },
    "Beats": {
+    "c25-yr-00": [
+     [
+      [{"Actor": "유비", "Move": [2, 4], "Speed": 1.6}, {"Actor": "제갈량", "Face": "SW"}, {"Actor": "간옹", "Face": "SE"}],
+      [{"Actor": "유비", "Face": "NE"}, {"Actor": "제갈량", "Play": "action"}]
+     ]
+    ],
     "c25-b01": [
      [
       [{"Actor": "장비", "Enter": [2, 6], "Via": [[2, 5], [3, 5]], "Move": [3, 4], "Face": "NW"}, {"Actor": "송충", "Enter": [2, 6], "Via": [[2, 5]], "Move": [3, 5], "Face": "NW", "After": 0.45}],
@@ -81,16 +96,20 @@
    }
   },
   "c25-dike": {
-   "Map": "S_bridge",
+   "Map": "S_baihe_dike",
    "Time": "night",
    "Nodes": ["c25-dike", "c25-d01", "c25-d02"],
-   "Ambient": [{"CamAt": [6, 7]}],
+   "Ambient": [{"CamAt": [18, 8]}],
    "Cast": {
-    "관우": {"At": [5, 7], "Face": "SE"},
-    "미축": {"At": [7, 7], "Face": "NW"},
-    "병사#1": {"At": [3, 8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
-    "병사#2": {"At": [9, 8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
-    "병사#3": {"At": [6, 9], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"}
+    "관우": {"At": [19, 7], "Face": "SE"},
+    "미축": {"At": [20, 7], "Face": "NW"},
+    "병사#1": {"At": [13, 8], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#2": {"At": [16, 8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#3": {"At": [15, 8], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#4": {"At": [21, 11], "Face": "NW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#5": {"At": [9, 9], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#6": {"At": [23, 11], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#7": {"At": [22, 9], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"}
    },
    "Beats": {
     "c25-d01": [
@@ -460,16 +479,20 @@
    }
   },
   "c25-dike2": {
-   "Map": "S_bridge",
+   "Map": "S_baihe_dike",
    "Time": "night",
    "Nodes": ["c25-dike2", "c25-d14", "c25-d15", "c25-d16", "c25-d17", "c25-d18", "c25-d19", "c25-d20"],
-   "Ambient": [{"CamAt": [6, 7]}],
+   "Ambient": [{"CamAt": [18, 8]}],
    "Cast": {
-    "관우": {"At": [5, 7], "Face": "NE"},
-    "미축": {"At": [7, 7], "Face": "NW"},
-    "병사#1": {"At": [3, 8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
-    "병사#2": {"At": [9, 8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
-    "병사#3": {"At": [6, 9], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"}
+    "관우": {"At": [19, 7], "Face": "NE"},
+    "미축": {"At": [20, 7], "Face": "NW"},
+    "병사#1": {"At": [13, 8], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#2": {"At": [16, 8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#3": {"At": [15, 8], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#4": {"At": [21, 11], "Face": "NW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#5": {"At": [9, 9], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#6": {"At": [23, 11], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#7": {"At": [22, 9], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"}
    },
    "Beats": {
     "c25-d14": [
@@ -510,7 +533,7 @@
     ],
     "c25-e04": [
      [
-      [{"Zoom": 1}, {"CamAt": [8.7, 7.6]}],
+      [{"Zoom": 1}, {"CamAt": [9, 8]}],
       [{"Effect": "bigfire", "At": [-0.5, 2.0]}, {"Shake": 0.6}],
       [{"Effect": "bigfire", "At": [9.5, -0.5]}, {"Shake": 0.5}],
       [{"Effect": "bigfire", "At": [9.5, 14.0]}, {"Shake": 0.5}],
@@ -520,31 +543,34 @@
     ]
    }
   },
-  "c25-ford": {
-   "Map": "S_yanjin",
-   "Time": "night",
-   "Nodes": ["c25-ford", "c25-e05", "c25-e06"],
-   "Ambient": [{"CamAt": [11, 33]}],
+  "c25-flood": {
+   "Map": "S_baihe_dike",
+   "Nodes": ["c25-flood", "c25-e05"],
+   "NoSkip": ["c25-e05"],
+   "Ambient": [{"CamAt": [15, 33.5]}],
    "Cast": {
-    "조홍": {"At": [14, 32], "Face": "NW"},
-    "관우": {"At": [6, 33], "Face": "SE"},
-    "미축": {"At": [6, 35], "Face": "SE"},
-    "조인군#1": {"At": [13, 31], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조인군#2": {"At": [13, 33], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조인군#3": {"At": [15, 31], "Face": "NW", "Sprite": "light_cavalry", "Faction": "wei"},
-    "조인군#4": {"At": [15, 33], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조인군#5": {"At": [14, 30], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조인군#6": {"At": [14, 34], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조인군#7": {"At": [16, 32], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"}
+    "조홍": {"At": [21, 32], "Face": "NW"},
+    "조인군#1": {"At": [20, 30], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#2": {"At": [20, 34], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#3": {"At": [22, 31], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#4": {"At": [22, 33], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#5": {"At": [23, 30], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#6": {"At": [23, 35], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#7": {"At": [24, 32], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#8": {"At": [21, 36], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#9": {"At": [19, 32], "Face": "NW", "Sprite": "light_cavalry", "Faction": "wei"},
+    "조인군#10": {"At": [22, 35], "Face": "NW", "Sprite": "light_cavalry", "Faction": "wei"},
+    "관우": {"At": [19, 7], "Face": "SW", "Sprite": "guanyu_heavy_cavalry", "Mount": "red_hare"},
+    "미축": {"At": [20, 7], "Face": "SW"}
    },
    "Beats": {
-    "c25-e06": [
+    "c25-e05": [
      [
-      [{"Actor": "관우", "Play": "action"}]
+      [{"Actor": "조홍", "Move": [8, 32], "Speed": 1.1, "Free": true}, {"Actor": "조인군#1", "Move": [8, 30], "Speed": 1, "Free": true, "After": 0.25}, {"Actor": "조인군#2", "Move": [8, 34], "Speed": 1, "Free": true, "After": 0.45}, {"Actor": "조인군#3", "Move": [8, 31], "Speed": 1, "Free": true, "After": 0.65}, {"Actor": "조인군#4", "Move": [8, 33], "Speed": 1, "Free": true, "After": 0.85}, {"Actor": "조인군#5", "Move": [8, 30], "Speed": 1, "Free": true, "After": 1.05}, {"Actor": "조인군#6", "Move": [8, 35], "Speed": 1, "Free": true, "After": 1.25}, {"Actor": "조인군#7", "Move": [8, 32], "Speed": 1, "Free": true, "After": 1.45}, {"Actor": "조인군#8", "Move": [8, 36], "Speed": 1, "Free": true, "After": 1.65}, {"Actor": "조인군#9", "Move": [8, 32], "Speed": 1, "Free": true, "After": 1.85}, {"Actor": "조인군#10", "Move": [8, 35], "Speed": 1, "Free": true, "After": 2.05}],
+      [{"Wait": 2.6}]
      ],
      [
-      [{"Shake": 1.2}, {"Effect": "steam", "At": [13, 32]}, {"Effect": "steam", "At": [14, 34]}, {"Effect": "steam", "At": [15, 30]}],
-      [{"Actor": "조홍", "Emote": "!"}, {"Actor": "조인군#1", "Say": "물이다!"}, {"Actor": "조인군#1", "Play": "hit", "After": 0.15}, {"Actor": "조인군#2", "Play": "hit", "After": 0.3}, {"Actor": "조인군#3", "Play": "hit", "After": 0.44999999999999996}, {"Actor": "조인군#4", "Play": "hit", "After": 0.6}, {"Actor": "조인군#5", "Play": "hit", "After": 0.75}, {"Actor": "조인군#6", "Play": "hit", "After": 0.8999999999999999}, {"Actor": "조인군#7", "Play": "hit", "After": 1.05}]
+      [{"Surge": "suigong", "Actor": "조홍", "Army": ["조인군#1", "조인군#9"]}, {"Actor": "관우", "Play": "attack", "After": 4.1}, {"Actor": "관우", "Say": "지금이다!", "After": 4.2}]
      ]
     ]
    }

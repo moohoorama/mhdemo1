@@ -222,12 +222,13 @@
     "유비": {"Stay": true},
     "동자": {"Stay": true},
     "서서": {"At": [6, 2], "Face": "NW", "Off": true},
-    "장비": {"At": [5, 3], "Face": "NW", "Off": true}
+    "장비": {"At": [5, 3], "Face": "NW", "Stay": true}
    },
    "Beats": {
     "c23-a01": [
      [
-      [{"Actor": "서서", "Enter": [10, 2], "Move": [6, 2]}, {"Actor": "장비", "Enter": [10, 3], "Move": [5, 3], "After": 0.4}]
+      [{"Actor": "서서", "Enter": [10, 2], "Move": [6, 2]}, {"Actor": "장비", "Move": [5, 3], "After": 0.4}],
+      [{"Actor": "장비", "Face": "NW"}]
      ]
     ],
     "c23-a03": [
@@ -256,13 +257,14 @@
    "Cast": {
     "유비": {"Stay": true},
     "제갈균": {"Stay": true},
-    "관우": {"At": [6, 2], "Face": "NW", "Off": true},
-    "장비": {"At": [5, 3], "Face": "NW", "Off": true}
+    "관우": {"At": [6, 2], "Face": "NW", "Stay": true},
+    "장비": {"At": [5, 3], "Face": "NW", "Stay": true}
    },
    "Beats": {
     "c23-b01": [
      [
-      [{"Actor": "관우", "Enter": [10, 2], "Move": [6, 2]}, {"Actor": "장비", "Enter": [10, 3], "Move": [5, 3], "After": 0.4}]
+      [{"Actor": "관우", "Move": [6, 2]}, {"Actor": "장비", "Move": [5, 3], "After": 0.4}],
+      [{"Actor": "관우", "Face": "NW"}, {"Actor": "장비", "Face": "NW"}]
      ]
     ],
     "c23-b03": [

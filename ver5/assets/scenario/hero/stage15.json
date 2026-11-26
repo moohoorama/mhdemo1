@@ -547,7 +547,7 @@
   {
    "ID": "cao-main",
    "If": [
-    "round>=3",
+    "round>=4",
     "defeated:xiahoudun",
     "turnstart:ally"
    ],
@@ -556,24 +556,9 @@
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "xiahouyuan",
-       "X": 2,
-       "Y": 9,
-       "Group": "cao",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE",
-       "Equipment": [
-        "short_bow",
-        "leather_armor"
-       ]
-      },
-      {
        "Character": "caoren",
        "X": 2,
-       "Y": 13,
+       "Y": 7,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -584,7 +569,7 @@
       {
        "Character": "xuhuang",
        "X": 2,
-       "Y": 15,
+       "Y": 9,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -595,7 +580,7 @@
       {
        "Character": "yujin",
        "X": 2,
-       "Y": 17,
+       "Y": 11,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -606,7 +591,7 @@
       {
        "Character": "xuchu",
        "X": 2,
-       "Y": 11,
+       "Y": 5,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -617,7 +602,7 @@
       {
        "Character": "lidian",
        "X": 1,
-       "Y": 9,
+       "Y": 3,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -628,7 +613,7 @@
       {
        "Character": "xunyu",
        "X": 0,
-       "Y": 9,
+       "Y": 3,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -639,7 +624,7 @@
       {
        "Character": "xunyou",
        "X": 0,
-       "Y": 16,
+       "Y": 10,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -650,7 +635,7 @@
       {
        "Character": "guojia",
        "X": 0,
-       "Y": 15,
+       "Y": 9,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -661,7 +646,7 @@
       {
        "Character": "chengyu",
        "X": 0,
-       "Y": 17,
+       "Y": 11,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -672,7 +657,7 @@
       {
        "Character": "troop_footman",
        "X": 2,
-       "Y": 10,
+       "Y": 4,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -684,7 +669,7 @@
       {
        "Character": "troop_footman",
        "X": 2,
-       "Y": 12,
+       "Y": 6,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -696,7 +681,7 @@
       {
        "Character": "troop_footman",
        "X": 2,
-       "Y": 14,
+       "Y": 8,
        "Group": "cao",
        "AI": true,
        "Policy": "assault",
@@ -704,51 +689,6 @@
        "Side": "ally",
        "Facing": "SE",
        "Shift": -0.07
-      },
-      {
-       "Character": "troop_archer",
-       "X": 1,
-       "Y": 15,
-       "Group": "cao",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_archer",
-       "X": 1,
-       "Y": 17,
-       "Group": "cao",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_archer",
-       "X": 1,
-       "Y": 16,
-       "Group": "cao",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE",
-       "Shift": -0.07
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "xiahouyuan",
-       "Text": "형님의 원수를 갚아라! 여포군을 쓸어버려라!"
       }
      ]
     },

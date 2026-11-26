@@ -105,7 +105,6 @@
     "장비": {"At": [28, 18], "Face": "NE"},
     "간옹": {"At": [29, 18], "Face": "NE"},
     "병사#1": {"At": [17, 10], "Face": "SW", "Sprite": "light_infantry", "Faction": "yuan"},
-    "병사#2": {"At": [26, 21], "Face": "NW", "Sprite": "light_infantry", "Faction": "yuan"},
     "손견": {"Off": true, "At": [38, 17], "Face": "NW"},
     "황개": {"Off": true, "At": [38, 17], "Face": "NW"},
     "정보": {"Off": true, "At": [38, 17], "Face": "NW"},
@@ -118,7 +117,7 @@
    "Beats": {
     "c08-s2": [
      [
-      [{"CamAt": [26, 17]}, {"Zoom": 3}, {"Actor": "병사#1", "Patrol": [17, 4]}, {"Actor": "병사#2", "Patrol": [22, 21]}],
+      [{"CamAt": [26, 17]}, {"Zoom": 3}, {"Actor": "병사#1", "Patrol": [17, 4]}],
       [{"Wait": 1.5}]
      ]
     ],
@@ -130,9 +129,9 @@
     ],
     "c08-s5": [
      [
-      [{"Prop": ["grain_cart", 39, 18]}],
+      [{"Prop": ["grain_cart", 39, 18]}, {"Actor": "관우", "Move": [26, 19], "Speed": 1.0}, {"Actor": "유비", "Move": [27, 19], "Speed": 1.0}, {"Actor": "장비", "Move": [28, 19], "Speed": 1.0}, {"Actor": "간옹", "Move": [29, 19], "Speed": 1.0}],
       [{"Prop": ["grain_cart", "원술군#1"]}, {"Actor": "원술군#1", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.7, "Exit": true}, {"Actor": "원술", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.7, "Exit": true, "After": 1.0}],
-      [{"Actor": "공손찬", "Enter": [1, 17], "Via": [[3, 17], [26, 17]], "Move": [27, 16], "Speed": 1.0}],
+      [{"Actor": "공손찬", "Enter": [1, 17], "Via": [[3, 17], [26, 17]], "Move": [27, 16], "Speed": 1.0}, {"Actor": "관우", "Move": [26, 18], "Speed": 1.0, "Face": "NE"}, {"Actor": "유비", "Move": [27, 18], "Speed": 1.0, "Face": "NE"}, {"Actor": "장비", "Move": [28, 18], "Speed": 1.0, "Face": "NE"}, {"Actor": "간옹", "Move": [29, 18], "Speed": 1.0, "Face": "NE"}],
       [{"Actor": "공손찬", "Face": "SW"}, {"Actor": "유비", "Face": "NE"}]
      ]
     ],

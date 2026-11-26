@@ -1,141 +1,916 @@
 {
  "Scenes": {
-  "c27-chaisang": {
-   "Map": "S_guangling_camp",
-   "Nodes": ["c27-chaisang", "c27-b01", "c27-b05", "c27-b06"],
+  "c27-detour": {
+   "Map": "S_changban",
+   "Time": "dusk",
+   "Nodes": [
+    "c27-detour",
+    "c27-detour-line"
+   ],
+   "Ambient": [
+    {
+     "CamAt": [
+      7,
+      4
+     ]
+    }
+   ],
    "Cast": {
-    "유비": {"At": [6, 6], "Face": "SE"},
-    "제갈량": {"At": [12, 6], "Face": "NW", "Off": true}
+    "유비": {
+     "At": [
+      6,
+      6
+     ],
+     "Face": "SE"
+    },
+    "간옹": {
+     "At": [
+      8,
+      6
+     ],
+     "Face": "NW"
+    }
+   },
+   "Beats": {}
+  },
+  "c27-arrive": {
+   "Map": "S_jiangxia_harbor",
+   "Nodes": [
+    "c27-arrive",
+    "c27-a01",
+    "c27-a02",
+    "c27-a03",
+    "c27-a04",
+    "c27-a05",
+    "c27-a06",
+    "c27-a07",
+    "c27-a08"
+   ],
+   "Ambient": [
+    {
+     "CamAt": [
+      7,
+      5
+     ]
+    }
+   ],
+   "Cast": {
+    "유비": {
+     "At": [
+      6,
+      8
+     ],
+     "Face": "NE"
+    },
+    "장비": {
+     "At": [
+      8,
+      8
+     ],
+     "Face": "NW"
+    },
+    "간옹": {
+     "At": [
+      5,
+      8
+     ],
+     "Face": "NE"
+    },
+    "유기": {
+     "At": [
+      6,
+      6
+     ],
+     "Face": "SW"
+    },
+    "관우": {
+     "At": [
+      5,
+      6
+     ],
+     "Face": "SW"
+    },
+    "조운": {
+     "At": [
+      7,
+      9
+     ],
+     "Face": "NE"
+    },
+    "진도": {
+     "At": [
+      6,
+      9
+     ],
+     "Face": "NE"
+    },
+    "손건": {
+     "At": [
+      10,
+      9
+     ],
+     "Face": "NW",
+     "Off": true
+    },
+    "곽준": {
+     "At": [
+      10,
+      9
+     ],
+     "Face": "NW",
+     "Off": true
+    }
    },
    "Beats": {
-    "c27-b01": [
+    "c27-a03": [
      [
-      [{"Actor": "제갈량", "Move": [8, 6], "Face": "NW", "Enter": [12, 6]}]
+      [
+       {
+        "Actor": "손건",
+        "Enter": [
+         10,
+         9
+        ],
+        "Move": [
+         8,
+         9
+        ],
+        "Face": "NW"
+       },
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       }
+      ]
+     ]
+    ],
+    "c27-a05": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Face": "NE"
+       },
+       {
+        "Actor": "관우",
+        "Face": "SW"
+       },
+       {
+        "Actor": "장비",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c27-a07": [
+     [
+      [
+       {
+        "Actor": "곽준",
+        "Enter": [
+         10,
+         8
+        ],
+        "Move": [
+         8,
+         8
+        ],
+        "Face": "NW"
+       },
+       {
+        "Actor": "손건",
+        "Move": [
+         9,
+         9
+        ],
+        "Face": "NW"
+       },
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       }
+      ]
      ]
     ]
    }
   },
-  "c27-camp": {
+  "c27-bengkou": {
    "Map": "S_guangling_camp",
-   "Nodes": ["c27-camp", "c27-c01", "c27-c02", "c27-c03", "c27-c04"],
+   "Nodes": [
+    "c27-bengkou",
+    "c27-b01",
+    "c27-b02",
+    "c27-b03",
+    "c27-b04",
+    "c27-b05",
+    "c27-b06",
+    "c27-b07",
+    "c27-b08",
+    "c27-b09",
+    "c27-b10",
+    "c27-b11",
+    "c27-b12",
+    "c27-bengkou-depart"
+   ],
    "Cast": {
-    "유비": {"At": [6, 6], "Face": "SE"},
-    "장비": {"At": [6, 5], "Face": "SE"},
-    "제갈량": {"At": [5, 7], "Face": "SE"},
-    "간옹": {"At": [4, 6], "Face": "SE"},
-    "곽준": {"At": [12, 6], "Face": "NW", "Off": true},
-    "부곡#1": {"At": [12, 5], "Face": "NW", "Sprite": "guards", "Faction": "shu", "Off": true},
-    "부곡#2": {"At": [12, 7], "Face": "NW", "Sprite": "guards", "Faction": "shu", "Off": true}
+    "주유": {
+     "At": [
+      8,
+      7
+     ],
+     "Face": "SW"
+    },
+    "노숙": {
+     "At": [
+      9,
+      7
+     ],
+     "Face": "SW"
+    },
+    "정보": {
+     "At": [
+      10,
+      7
+     ],
+     "Face": "SW"
+    },
+    "황개": {
+     "At": [
+      11,
+      7
+     ],
+     "Face": "SW"
+    },
+    "유비": {
+     "At": [
+      8,
+      10
+     ],
+     "Face": "NE"
+    },
+    "제갈량": {
+     "At": [
+      9,
+      9
+     ],
+     "Face": "NE"
+    },
+    "조운": {
+     "At": [
+      10,
+      10
+     ],
+     "Face": "NE"
+    },
+    "진도": {
+     "At": [
+      11,
+      10
+     ],
+     "Face": "NE"
+    }
    },
    "Beats": {
-    "c27-c01": [
+    "c27-b04": [
      [
-      [{"Actor": "곽준", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}, {"Actor": "부곡#1", "Enter": [13, 6], "Via": [[9, 6]], "Move": [9, 5], "After": 0.6, "Face": "NW"}, {"Actor": "부곡#2", "Enter": [13, 6], "Via": [[10, 6]], "Move": [9, 7], "After": 1.2, "Face": "NW"}]
+      [
+       {
+        "Actor": "제갈량",
+        "Face": "NW"
+       },
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       }
+      ]
+     ]
+    ],
+    "c27-b05": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Face": "NE"
+       },
+       {
+        "Actor": "제갈량",
+        "Face": "NE"
+       },
+       {
+        "Actor": "주유",
+        "Face": "SW"
+       }
+      ]
+     ]
+    ],
+    "c27-b10": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       },
+       {
+        "Actor": "제갈량",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c27-b12": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       },
+       {
+        "Actor": "조운",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c27-bengkou-depart": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Move": [
+         8,
+         12
+        ],
+        "Face": "SW",
+        "Exit": true
+       },
+       {
+        "Actor": "진도",
+        "Move": [
+         11,
+         12
+        ],
+        "Face": "SW",
+        "Exit": true
+       }
+      ]
      ]
     ]
    }
   },
-  "c27-chibi": {
-   "Map": "S_chibi_fleet",
-   "Time": "night",
-   "Nodes": ["c27-chibi", "c27-d01", "c27-d02", "c27-d03", "c27-d04"],
-   "Ambient": [{"CamAt": [9, 5]}, {"Effect": "fire", "At": [3.5, 0.5]}, {"Effect": "smallfire", "At": [7, 2]}, {"Effect": "fire", "At": [10, 0]}, {"Effect": "fire", "At": [14, 1.5]}, {"Effect": "smoke", "At": [3.8, 0.5]}, {"Effect": "smoke", "At": [10.3, 0]}, {"Effect": "smoke", "At": [14.2, 1.5]}],
+  "c27-return": {
+   "Cut": true,
+   "Map": "S_xiaopei_office",
+   "Nodes": [
+    "c27-return",
+    "c27-r01",
+    "c27-r02"
+   ],
    "Cast": {
-    "유비": {"At": [7, 9], "Face": "NE"},
-    "제갈량": {"At": [8, 9], "Face": "NW"},
-    "관우": {"At": [6, 9], "Face": "SE"},
-    "장비": {"At": [8, 10], "Face": "NE"}
+    "유비": {
+     "At": [
+      3.25,
+      2.75
+     ],
+     "Face": "SW"
+    },
+    "제갈량": {
+     "At": [
+      3.25,
+      4.75
+     ],
+     "Face": "NE",
+     "Off": true
+    },
+    "조운": {
+     "At": [
+      4.25,
+      4.75
+     ],
+     "Face": "NE",
+     "Off": true
+    }
    },
    "Beats": {
-    "c27-d01": [
+    "c27-r01": [
      [
-      [{"Actor": "제갈량", "Face": "NE"}]
+      [
+       {
+        "Actor": "제갈량",
+        "Enter": [
+         3.25,
+         4.75
+        ],
+        "Move": [
+         3.25,
+         4.25
+        ],
+        "Face": "NE"
+       },
+       {
+        "Actor": "조운",
+        "Enter": [
+         4.25,
+         4.75
+        ],
+        "Face": "NW"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c27-muster": {
+   "Map": "S_xiaopei_office",
+   "Nodes": [
+    "c27-muster",
+    "c27-m01",
+    "c27-m02",
+    "c27-m03",
+    "c27-m04",
+    "c27-m05",
+    "c27-m06",
+    "c27-m07",
+    "c27-m08",
+    "c27-m09",
+    "c27-m10",
+    "c27-m11",
+    "c27-march"
+   ],
+   "Cast": {
+    "유비": {
+     "At": [
+      3.25,
+      2.75
+     ],
+     "Face": "SW"
+    },
+    "유기": {
+     "At": [
+      4.25,
+      2.75
+     ],
+     "Face": "NW"
+    },
+    "제갈량": {
+     "At": [
+      2.25,
+      3.75
+     ],
+     "Face": "SE"
+    },
+    "관우": {
+     "At": [
+      4.25,
+      4.75
+     ],
+     "Face": "NW"
+    },
+    "장비": {
+     "At": [
+      3.25,
+      4.75
+     ],
+     "Face": "NE"
+    },
+    "조운": {
+     "At": [
+      2.25,
+      4.75
+     ],
+     "Face": "NE"
+    },
+    "진도": {
+     "At": [
+      1.25,
+      4.75
+     ],
+     "Face": "NE"
+    },
+    "간옹": {
+     "At": [
+      4.25,
+      1.75
+     ],
+     "Face": "SW"
+    },
+    "손건": {
+     "At": [
+      3.75,
+      1.75
+     ],
+     "Face": "SW"
+    }
+   },
+   "Beats": {
+    "c27-m05": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Face": "NW"
+       },
+       {
+        "Actor": "제갈량",
+        "Face": "SE"
+       }
+      ]
      ]
     ],
-    "c27-d02": [
+    "c27-m10": [
      [
-      [{"Actor": "제갈량", "Face": "SW"}, {"Actor": "장비", "Face": "NE"}]
+      [
+       {
+        "Actor": "관우",
+        "Move": [
+         4.25,
+         5.25
+        ],
+        "Face": "SW",
+        "Exit": true
+       },
+       {
+        "Actor": "장비",
+        "Face": "NW"
+       }
+      ]
      ]
     ],
-    "c27-d03": [
+    "c27-march": [
      [
-      [{"Actor": "제갈량", "Face": "NW"}]
+      [
+       {
+        "Actor": "장비",
+        "Move": [
+         3.25,
+         5.25
+        ],
+        "Face": "SW",
+        "Exit": true
+       },
+       {
+        "Actor": "조운",
+        "Move": [
+         2.25,
+         5.25
+        ],
+        "Face": "SW",
+        "Exit": true
+       }
+      ]
      ]
     ]
    }
   },
   "c27-end-camp": {
-   "Map": "S_guangling_camp",
-   "Nodes": ["c27-end-camp", "c27-f01", "c27-f02", "c27-f03", "c27-f01-won", "c27-f04", "c27-f05", "c27-f06", "c27-f07", "c27-f08", "c27-f09", "c27-f10", "c27-f11", "c27-f12"],
+   "Map": "S_xiaopei_office",
+   "Nodes": [
+    "c27-end-camp",
+    "c27-f01",
+    "c27-booty",
+    "c27-f02",
+    "c27-f03",
+    "c27-f04",
+    "c27-f05",
+    "c27-f06",
+    "c27-f07",
+    "c27-f08",
+    "c27-f09",
+    "c27-f10",
+    "c27-f11",
+    "c27-f12",
+    "c27-f13",
+    "c27-f14",
+    "c27-f15",
+    "c27-f16",
+    "c27-f17",
+    "c27-f18",
+    "c27-f19",
+    "c27-f20",
+    "c27-f21",
+    "c27-f22",
+    "c27-f23",
+    "c27-f24",
+    "c27-f25",
+    "c27-f26",
+    "c27-f27",
+    "c27-law-path",
+    "c27-f28",
+    "c27-f28n",
+    "c27-f29",
+    "c27-f30",
+    "c27-f31",
+    "c27-f32",
+    "c27-f33",
+    "c27-f34",
+    "c27-f35",
+    "c27-f36",
+    "c27-f37",
+    "c27-f38",
+    "c27-feast"
+   ],
    "Cast": {
-    "유비": {"At": [6, 6], "Face": "SE"},
-    "장비": {"At": [6, 5], "Face": "SE"},
-    "제갈량": {"At": [5, 7], "Face": "SE"},
-    "간옹": {"At": [4, 6], "Face": "SE"},
-    "관우": {"At": [12, 6], "Face": "NW", "Off": true}
-   },
-   "Beats": {
-    "c27-f01": [
-     [
-      [{"Actor": "관우", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}],
-      [{"Actor": "유비", "Face": "SE"}]
-     ]
-    ],
-    "c27-f01-won": [
-     [
-      [{"Actor": "관우", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}],
-      [{"Actor": "유비", "Face": "SE"}]
-     ]
-    ],
-    "c27-f04": [
-     [
-      [{"Actor": "장비", "Face": "SE"}]
-     ]
-    ],
-    "c27-f11": [
-     [
-      [{"Actor": "유비", "Emote": "…"}]
-     ]
-    ]
-   }
-  },
-  "c27-arrive": {
-   "Map": "S_jiangxia_harbor",
-   "Nodes": ["c27-arrive", "c27-a01", "c27-a02", "c27-a03", "c27-a04", "c27-a05", "c27-a06", "c27-a07"],
-   "Ambient": [{"CamAt": [7, 5]}],
-   "Cast": {
-    "유비": {"At": [6, 8], "Face": "NE"},
-    "장비": {"At": [8, 8], "Face": "NW"},
-    "간옹": {"At": [5, 8], "Face": "NE"},
-    "유기": {"At": [6, 6], "Face": "SW"},
-    "관우": {"At": [5, 6], "Face": "SW"},
-    "제갈량": {"At": [7, 7], "Face": "SW"}
-   },
-   "Beats": {
-    "c27-a03": [
-     [
-      [{"Actor": "제갈량", "Move": [7, 8], "Face": "NW"}, {"Actor": "유비", "Face": "SE"}]
-     ]
-    ],
-    "c27-a07": [
-     [
+    "유비": {
+     "At": [
+      3.25,
+      2.75
      ],
-     [
-      [{"Actor": "제갈량", "Via": [[7, 7], [6, 7]], "Move": [6, 2], "Face": "NE", "Exit": true}]
-     ]
-    ]
-   }
-  },
-  "c27-detour": {
-   "Map": "S_changban",
-   "Time": "dusk",
-   "Nodes": ["c27-detour", "c27-detour-line"],
-   "Ambient": [{"CamAt": [7, 4]}],
-   "Cast": {
-    "유비": {"At": [6, 6], "Face": "SE"},
-    "간옹": {"At": [8, 6], "Face": "NW"}
+     "Face": "SW"
+    },
+    "제갈량": {
+     "At": [
+      2.25,
+      3.75
+     ],
+     "Face": "SE"
+    },
+    "간옹": {
+     "At": [
+      3.75,
+      1.75
+     ],
+     "Face": "SW"
+    },
+    "군사#1": {
+     "At": [
+      3.25,
+      4.75
+     ],
+     "Face": "NE",
+     "Off": true,
+     "Sprite": "guards",
+     "Faction": "shu"
+    },
+    "군사#2": {
+     "At": [
+      4.25,
+      4.75
+     ],
+     "Face": "NW",
+     "Off": true,
+     "Sprite": "guards",
+     "Faction": "shu"
+    },
+    "장비": {
+     "At": [
+      4.25,
+      4.75
+     ],
+     "Face": "NW",
+     "Off": true
+    },
+    "조운": {
+     "At": [
+      3.25,
+      4.75
+     ],
+     "Face": "NW",
+     "Off": true
+    },
+    "관우": {
+     "At": [
+      1.75,
+      4.75
+     ],
+     "Face": "NE",
+     "Off": true
+    }
    },
    "Beats": {
+    "c27-f03": [
+     [
+      [
+       {
+        "Actor": "군사#1",
+        "Enter": [
+         3.25,
+         4.75
+        ],
+        "Move": [
+         3.25,
+         4.25
+        ],
+        "Face": "NE"
+       }
+      ]
+     ]
+    ],
+    "c27-f07": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Move": [
+         3.25,
+         5.25
+        ],
+        "Face": "SW",
+        "Exit": true
+       },
+       {
+        "Actor": "군사#1",
+        "Move": [
+         4.25,
+         5.25
+        ],
+        "Face": "SW",
+        "Exit": true
+       }
+      ],
+      [
+       {
+        "Actor": "장비",
+        "Enter": [
+         4.25,
+         4.75
+        ],
+        "Move": [
+         4.25,
+         4.25
+        ],
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c27-f08": [
+     [
+      [
+       {
+        "Actor": "조운",
+        "Enter": [
+         3.25,
+         4.75
+        ],
+         "Move": [2.75, 4.75],
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c27-f09": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Enter": [
+         1.75,
+         4.75
+        ],
+        "Move": [
+         1.75,
+         4.25
+        ],
+        "Face": "NE"
+       },
+       {
+        "Actor": "제갈량",
+        "Face": "SW"
+       }
+      ]
+     ]
+    ],
+    "c27-f18": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Move": [
+         3.75,
+         4.25
+        ],
+        "Face": "NW"
+       },
+       {
+        "Actor": "군사#2",
+        "Enter": [
+         4.75,
+         4.75
+        ],
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c27-f21": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Enter": [
+         3.25,
+         5.25
+        ],
+        "Move": [
+         3.25,
+         2.75
+        ],
+        "Via": [],
+        "Face": "SW"
+       }
+      ]
+     ]
+    ],
+    "c27-f23": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Face": "NW",
+        "Pose": "prostrate"
+       },
+       {
+        "Actor": "제갈량",
+        "Face": "SE"
+       }
+      ]
+     ]
+    ],
+    "c27-f24": [
+     [
+      [
+       {
+        "Actor": "제갈량",
+        "Face": "SE",
+        "Pose": "prostrate"
+       }
+      ]
+     ]
+    ],
+    "c27-f25": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Pose": "idle"
+       },
+       {
+        "Actor": "제갈량",
+        "Pose": "idle"
+       }
+      ]
+     ]
+    ],
+    "c27-f29": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Move": [
+         2.25,
+         4.25
+        ],
+        "Face": "NE"
+       },
+       {
+        "Actor": "장비",
+        "Face": "NE"
+       }
+      ]
+     ]
+    ],
+    "c27-f31": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Face": "NW"
+       },
+       {
+        "Actor": "제갈량",
+        "Face": "SE"
+       }
+      ]
+     ]
+    ],
+    "c27-f38": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Face": "NE"
+       },
+       {
+        "Actor": "간옹",
+        "Face": "SW"
+       }
+      ]
+     ]
+    ],
+    "c27-feast": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Move": [
+         4.25,
+         5.25
+        ],
+        "Face": "SW",
+        "Exit": true
+       }
+      ]
+     ]
+    ]
    }
   }
  }

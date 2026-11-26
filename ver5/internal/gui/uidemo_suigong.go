@@ -2,7 +2,14 @@ package gui
 
 import (
 	"fmt"
+	"maps"
 	"math"
+	"slices"
+
+	"srpg/internal/content"
+	"srpg/internal/core"
+	"srpg/internal/mapedit"
+	"srpg/internal/scenes"
 )
 
 func init() { demos["suigong"] = demoSuigong }
@@ -125,8 +132,8 @@ const (
 	fordHold                  = .8  // seconds the white stays after
 )
 
-// demoSuigong plays the flood a stage opens with (the cutscene group with the step "surge", B25's "suigong" event) as
-// the battle's first picture, on a battle map, in two shots at four times zoom
+// demoSuigong plays the flood (suigongDemoGroup) as a battle's first picture, on a battle map (the story plays it in a
+// scene, the step "Surge"), in two shots at four times zoom
 // that never show the same ground: the ford where the army wades, then the dam and 관우 on the cliff over it, who
 // orders it broken; the view scrolls to the dam, which shakes, flashes and bursts; the view cuts to the ford, where
 // the army's north-east corner fills the left and bottom of the screen and soldiers turn and cry out as the water
@@ -136,13 +143,48 @@ const (
 //	SRPG_SFX_TRACE=reports/uidemo/suigong.sfx go run ./cmd/_uidemo-vm -ui suigong -stage B25 -frames 937 -mp4 reports/uidemo/suigong.mp4
 //	python3 tools/sfx/dub.py reports/uidemo/suigong.sfx reports/uidemo/suigong.mp4 reports/uidemo/suigong_dub.mp4 --no-music
 func demoSuigong(d *Demo) error {
-	if err := d.battle(d.stage); err != nil {
-		return err
-	}
 	g := d.g
-	name, group := suigongGroupOf(g.S.Data.Stages[g.S.Data.StageIndex(d.stage)])
+	name, group := g.suigongDemoGroup()
 	if name == "" {
-		return fmt.Errorf("suigong: stage %s plays no flood", d.stage)
+		return fmt.Errorf("suigong: no scene plays a flood")
+	}
+	var leader string
+	for _, st := range group {
+		if st.Kind == "surge" {
+			leader = st.Unit
+		}
+	}
+	err := d.battleWith(d.stage, func(doc *mapedit.Document) { // the flood's own ground in place of the stage's map
+		data := g.S.Data
+		if err := doc.Resize(mapedit.Rect{X: 0, Y: 0, W: suigongW, H: suigongH}); err != nil {
+			panic(err)
+		}
+		G, S, T := byte(content.LayerGround), byte(content.LayerStructure), byte(content.LayerState)
+		doc.Visual = mapedit.Rect{X: -4, Y: -4, W: suigongW + 8, H: suigongH + 8}
+		for y := -4; y < suigongH+4; y++ {
+			for x := -4; x < suigongW+4; x++ {
+				doc.Paint(data, x, y, S, '-')
+				doc.Paint(data, x, y, T, '-')
+				doc.Paint(data, x, y, G, suigongGround(x, y))
+			}
+		}
+		doc.Props, doc.Decorations = nil, nil
+		doc.Stage.Events, doc.Stage.Duels, doc.Stage.Recommend, doc.Stage.Areas, doc.Stage.Sub, doc.Stage.Groups = nil, nil, nil, nil, nil, nil
+		doc.Stage.Forced, doc.Stage.Night = true, false
+		doc.Stage.Allies = nil
+		for i := range 10 {
+			doc.Stage.Allies = append(doc.Stage.Allies, content.Point{X: suigongW - 1 - i%3, Y: suigongH - 1 - i/3})
+		}
+		for i := range doc.Stage.Enemies { // the stage's goals keep its officers; they and the soldiers stand off the flood's shots
+			e := &doc.Stage.Enemies[i]
+			e.X, e.Y, e.Policy, e.GoalArea, e.Group = suigongW-1-i%3, i/3, "hold", 0, ""
+		}
+		if !slices.ContainsFunc(doc.Stage.Enemies, func(e content.Spawn) bool { return e.Character == leader }) {
+			doc.Stage.Enemies = append(doc.Stage.Enemies, content.Spawn{Character: leader, X: suigongRiver - 1, Y: suigongFord, Facing: "NW", Policy: "hold"})
+		}
+	})
+	if err != nil {
+		return err
 	}
 	g.beginSuigong(name, group)
 	if g.show == nil {
@@ -177,4 +219,37 @@ func (g *Game) marchCell(u *unitVis, from, phase float64) {
 	if first {
 		u.animT = phase * stepTime
 	}
+}
+
+// suigongDemoGroup is the flood of the story's scene (the step "Surge" of the scenes) as the cast of a battle
+// cutscene's group, for the dev demo on a battle map: the step's actor leads the army, the rest of the scene's cast
+// stand on the cliff, and the scene's Say steps are the bubbles at their After seconds.
+func (g *Game) suigongDemoGroup() (string, []core.CutStep) {
+	for _, sc := range g.scenes.Scenes {
+		for _, lines := range sc.Beats {
+			for _, groups := range lines {
+				for _, group := range groups {
+					for _, st := range group {
+						if st.Surge == "" {
+							continue
+						}
+						id := func(key string) string { id, _, _ := g.character(scenes.Base(key)); return id }
+						out := []core.CutStep{{Kind: "surge", Unit: id(st.Actor), Text: st.Surge}}
+						for _, key := range slices.Sorted(maps.Keys(sc.Cast)) {
+							if key != st.Actor && !scenes.Extra(key) {
+								out = append(out, core.CutStep{Kind: "face", Unit: id(key), Facing: sc.Cast[key].Face, NoFocus: true})
+							}
+						}
+						for _, say := range group {
+							if say.Say != "" {
+								out = append(out, core.CutStep{Kind: "say", Unit: id(say.Actor), Text: say.Say, Seconds: say.After, NoFocus: true})
+							}
+						}
+						return st.Surge, out
+					}
+				}
+			}
+		}
+	}
+	return "", nil
 }

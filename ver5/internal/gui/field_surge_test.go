@@ -26,7 +26,7 @@ func TestSuigongDemo(t *testing.T) {
 		assert.NotEmpty(t, f.surgeItems(), "the gorge's rock and the water behind the dam")
 	})
 	t.Run("관우 and 미축 stand on the cliff over the dam, looking down the river", func(t *testing.T) {
-		_, group := suigongGroupOf(d.g.S.Data.Stages[d.g.S.Data.StageIndex("B25")])
+		_, group := d.g.suigongDemoGroup()
 		var stands []string
 		for _, st := range group {
 			if st.Kind == "face" {

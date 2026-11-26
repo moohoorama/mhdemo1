@@ -386,32 +386,103 @@ func TestTalkShareRuleCountsWhoCanBeTalkedTo(t *testing.T) {
 	assert.Equal(t, []string{"warn population"}, run(area("이유", 6, 4)), "a reason where none is needed")
 }
 
-func shopData() *content.Data {
+// shopWalk is a story of two walks: "w0" of the first chapter, which opens with the stock of the "plain" shop, and
+// "w" of the second, a street with a door to a smithy whose "iron" shop adds a sword and a bow to it.
+func shopWalk(crier *content.ExplorePerson, shop string) (*content.Data, *content.Explore) {
 	d := rulesData()
-	d.Shops = map[string]content.Shop{"iron": {Name: "대장간", Mark: "red"}, "plain": {Name: "대장간"}}
-	return d
+	d.Chapters = []content.Chapter{{ID: "1", Nodes: []string{"n0"}}, {ID: "2", Nodes: []string{"n1"}}}
+	d.Nodes = []content.Node{{ID: "n0", Kind: "explore", Explore: "w0"}, {ID: "n1", Kind: "explore", Explore: "w"}}
+	d.Equipment = map[string]content.Equipment{"rod": {Name: "막대"}, "iron_sword": {Name: "철검", Price: 2400}, "long_bow": {Name: "대궁", Price: 2400}}
+	d.Items = map[string]content.Item{}
+	d.Shops = map[string]content.Shop{"plain": {Name: "대장간", Items: []string{"rod"}}, "iron": {Name: "대장간", Items: []string{"rod", "iron_sword", "long_bow"}}}
+	d.Explores = map[string]*content.Explore{"w0": {Areas: map[string]*content.ExploreArea{"a": {People: map[string]*content.ExplorePerson{"주인": {Shop: "plain"}}}}}}
+	street := &content.ExploreArea{Name: "거리", Exits: []content.ExploreExit{{Name: "대장간", At: [2]int{10, 10}, Object: &[2]int{10, 8}, To: "smithy"}}, People: map[string]*content.ExplorePerson{}}
+	smithy := &content.ExploreArea{Name: "대장간", Exits: []content.ExploreExit{{Name: "거리로", To: "street"}}, People: map[string]*content.ExplorePerson{"주인": {Shop: shop}}}
+	if crier != nil {
+		street.People["외치는 사람"] = crier
+	}
+	x := &content.Explore{Areas: map[string]*content.ExploreArea{"street": street, "smithy": smithy}}
+	d.Explores["w"] = x
+	return d, x
 }
 
 func TestAShopWithNewStockIsAnnouncedNearItsDoor(t *testing.T) {
-	walk := func(shop string, crier *content.ExplorePerson) *content.Explore {
-		street := &content.ExploreArea{Name: "거리", Exits: []content.ExploreExit{{Name: "대장간", At: [2]int{10, 10}, To: "smithy"}}, People: map[string]*content.ExplorePerson{}}
-		if crier != nil {
-			street.People["외치는 사람"] = crier
-		}
-		return &content.Explore{Areas: map[string]*content.ExploreArea{"street": street,
-			"smithy": {Name: "대장간", Exits: []content.ExploreExit{{Name: "거리로", To: "street"}}, People: map[string]*content.ExplorePerson{"주인": {Shop: shop}}}}}
+	good := func() *content.ExplorePerson {
+		return &content.ExplorePerson{At: [2]int{12, 11}, Face: "SW", Notice: "shop:iron",
+			Chatter: "철검 팝니다!|대궁도 있소!",
+			Talk:    []content.Line{{"점원", "철검은 쇠로 벼린 칼이오. 구리검보다 한 급 위요."}, {"점원", "대궁은 시위가 굵은 큰 활이오. 한 줌 쥐어 보시오."}}}
 	}
-	near := &content.ExplorePerson{At: [2]int{12, 9}, Notice: "shop:iron", Chatter: "새 쇠가 들어왔소!"}
-	far := &content.ExplorePerson{At: [2]int{40, 9}, Notice: "shop:iron", Chatter: "새 쇠가 들어왔소!"}
-	mute := &content.ExplorePerson{At: [2]int{12, 9}, Notice: "shop:iron"}
-	wrong := &content.ExplorePerson{At: [2]int{12, 9}, Notice: "shop:other", Chatter: "허허"}
-	run := func(x *content.Explore) []Issue { return shopIssues(shopData(), "w", x.Areas["street"], x) }
-	assert.Empty(t, run(walk("iron", near)))
-	assert.Len(t, run(walk("iron", nil)), 1, "nobody tells")
-	assert.Len(t, run(walk("iron", far)), 1, "too far from the door")
-	assert.Len(t, run(walk("iron", mute)), 1, "a notice with no bubble")
-	assert.Len(t, run(walk("iron", wrong)), 1, "telling of something else")
-	assert.Empty(t, run(walk("plain", nil)), "a shop with no new stock needs no crier")
+	tweak := func(f func(p *content.ExplorePerson)) *content.ExplorePerson { p := good(); f(p); return p }
+	run := func(crier *content.ExplorePerson, shop string) []Issue {
+		d, x := shopWalk(crier, shop)
+		return shopIssues(d, "w", "w/street", x.Areas["street"], x)
+	}
+	cases := []struct {
+		name    string
+		crier   *content.ExplorePerson
+		shop    string
+		wantMsg string // "" for no issue
+	}{
+		{"a crier near the door telling every new good", good(), "iron", ""},
+		{"nobody tells", nil, "iron", "말풍선으로 알리는 사람"},
+		{"too far from the door", tweak(func(p *content.ExplorePerson) { p.At = [2]int{30, 11} }), "iron", "말풍선으로 알리는 사람"},
+		{"a notice with no bubble", tweak(func(p *content.ExplorePerson) { p.Chatter = "" }), "iron", "말풍선으로 알리는 사람"},
+		{"telling of another shop", tweak(func(p *content.ExplorePerson) { p.Notice = "shop:plain" }), "iron", "말풍선으로 알리는 사람"},
+		{"talking says nothing", tweak(func(p *content.ExplorePerson) { p.Talk = nil }), "iron", "할 말이 없습니다"},
+		{"a price in the talk", tweak(func(p *content.ExplorePerson) { p.Talk[1][1] = "대궁은 큰 활이오. 값은 2400이오." }), "iron", "상품 수치 \"2400\""},
+		{"a price spaced like the shop UI", tweak(func(p *content.ExplorePerson) { p.Talk[1][1] = "대궁은 큰 활이오. 값은 2 400이오." }), "iron", "상품 수치"},
+		{"a price in the bubbles", tweak(func(p *content.ExplorePerson) { p.Chatter = "철검 2400냥!|대궁도 있소!" }), "iron", "상품 수치"},
+		{"a price in words", tweak(func(p *content.ExplorePerson) {
+			p.Talk[1][1] = "대궁은 큰 활이오. 값은 이천사백 냥이오."
+		}), "iron", "상품 수치"},
+		{"a stat amount", tweak(func(p *content.ExplorePerson) { p.Talk[0][1] = "철검은 공격을 30 올리오." }), "iron", "상품 수치 \"30\""},
+		{"a rank and a handful are not values", tweak(func(p *content.ExplorePerson) {
+			p.Talk[0][1] = "철검은 구리검보다 한 급 위인 칼이오. 한 줌 쇠로 벼렸으니 값도 만만치 않소."
+		}), "iron", ""},
+		{"talking leaves a new good out", tweak(func(p *content.ExplorePerson) { p.Talk = p.Talk[:1] }), "iron", "대궁 의 설명이 없습니다"},
+		{"the bubbles leave a new good out", tweak(func(p *content.ExplorePerson) { p.Chatter = "철검 팝니다!" }), "iron", "말풍선에 새 물건 대궁"},
+		{"a bubble spells the name with a space", tweak(func(p *content.ExplorePerson) { p.Chatter = "철 검 팝니다!|대 궁도 있소!" }), "iron", ""},
+		{"behind the building", tweak(func(p *content.ExplorePerson) { p.At = [2]int{12, 5} }), "iron", "건물 뒤"},
+		{"on the door tile", tweak(func(p *content.ExplorePerson) { p.At = [2]int{10, 10} }), "iron", "건물 뒤"},
+		{"turned away from the door and the street", tweak(func(p *content.ExplorePerson) { p.Face = "NE" }), "iron", "문(NW)이나 길(SW)"},
+		{"turned to the door", tweak(func(p *content.ExplorePerson) { p.Face = "NW" }), "iron", ""},
+		{"old goods are not cried again", tweak(func(p *content.ExplorePerson) { p.Notice = "shop:plain" }), "plain", "이미 팔던 물건"},
+		{"a shop with no new stock needs no crier", nil, "plain", ""},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			issues := run(c.crier, c.shop)
+			if c.wantMsg == "" {
+				assert.Empty(t, issues)
+				return
+			}
+			require.NotEmpty(t, issues)
+			assert.Contains(t, issues[0].Msg, c.wantMsg)
+			assert.Equal(t, RuleShopNotice, issues[0].Rule)
+		})
+	}
+
+	t.Run("the lines hold when the shop's prices change", func(t *testing.T) {
+		d, x := shopWalk(good(), "iron")
+		before := shopIssues(d, "w", "w/street", x.Areas["street"], x)
+		d.Equipment["iron_sword"] = content.Equipment{Name: "철검", Price: 9000}
+		d.Equipment["long_bow"] = content.Equipment{Name: "대궁", Price: 1}
+		assert.Empty(t, before)
+		assert.Empty(t, shopIssues(d, "w", "w/street", x.Areas["street"], x))
+	})
+	t.Run("a crier standing inside the shop", func(t *testing.T) {
+		d, x := shopWalk(nil, "iron")
+		x.Areas["smithy"].People["점원#1"] = good()
+		issues := shopIssues(d, "w", "w/smithy", x.Areas["smithy"], x)
+		require.Len(t, issues, 1)
+		assert.Contains(t, issues[0].Msg, "입구가 있는 바깥이 아닙니다")
+	})
+	t.Run("the first chapter holds the opening stock", func(t *testing.T) {
+		d, x := shopWalk(nil, "iron")
+		d.Chapters = d.Chapters[:1]
+		d.Nodes = []content.Node{{ID: "n0", Kind: "explore", Explore: "w"}}
+		assert.Empty(t, shopIssues(d, "w", "w/street", x.Areas["street"], x))
+	})
 }
 
 func newsData() (*content.Data, *content.Explore) {

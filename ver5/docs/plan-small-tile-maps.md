@@ -8,7 +8,6 @@
 | 맵 | 지금 쓰는 곳 | 형식 2 사본 | 특이 글자 |
 |---|---|---|---|
 | S_army_camp | 2·14장 장면 | | |
-| S_bridge | (빌드 스크립트·문서만) | | `b` 다리 |
 | S_castle_out, S_castle_out_open | 2·4·12장 장면 | | `b` 해자 다리, 성벽 줄 |
 | S_castle_town_burnt | (빌드 스크립트·문서만) | | 성벽 줄 |
 | S_checkpoint_closed | (빌드 스크립트·문서만) | | 높은 땅, 성벽 줄 |

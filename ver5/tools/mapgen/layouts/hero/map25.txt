@@ -1,45 +1,26 @@
-# B25 신야 화공 · 수공으로 끊긴 조인군: baked flood ground 48x44 (tools/mapgen/layouts/hero/map25flood.py)
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- w-- w-- w-- w-- w-- w-- h-- h-- h-- h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- u-- u-- g-- g-- g-- g-- g-- gt- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- u-- u-- g-- g-- g-- gt- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- u-- u-- gt- g-- g-- gt- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- dvF g-- c-- c-- c-- c-- c-- c-- c-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- c-- i-- ivF i-- i-- i-- c-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- c-- i-- i-- ivF i-- io- c-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- u-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- dvF c-- i-e i-- i-- i-- i-- c-F g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- ip- i-- i-- i-- ivF i-- c-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- c-- c-- ip- c-- c-- c-- c-- g--
-gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-e g-- g-- g-- d-e g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- dvF g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+# 신야 화공 · 불타는 성과 범람한 백하
+l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s--
+g-- l-- l-- l-- l-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- s-- s--
+g-- g-- g-- l-- l-- l-- l-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- c-- c-- c-- c-- c-- c-- c-- g-- g-- gt- s--
+g-- gt- g-- g-- g-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- c-- i-- i-- ivF i-- i-- c-- g-- g-- g-- s--
+g-- g-- g-- g-- g-- g-- gt- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- c-- i-- ivF i-- io- i-- c-- g-- g-- g-- s--
+u-- gt- u-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- g-- g-- g-- dvF c-- i-- i-- i-- i-- i-- c-- gt- g-- g-- s--
+gt- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- g-- ip- i-- i-- i-- i-- ivF c-- g-- g-- g-- s--
+u-- u-- gt- g-- gt- g-- g-- gt- g-- g-- d-r g-- g-- g-- g-- l-- l-- l-- c-- i-e i-- i-- i-- i-- c-F g-- g-- g-- s--
+u-- gt- u-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- dvF l-- c-- c-- c-- c-- ip- c-- c-- g-- gt- g-- s--
+gt- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- l-- l-- l-- g-- d-e g-- g-- g-- s-- s-- w--
+u-- u-- gt- g-- g-- gt- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- d-e g-- g-- l-- l-- dvF gt- g-- g-- s-- s-- w-- w--
+u-- gt- u-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-w g-w g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- w-- w-- w--
+gt- u-- u-- g-- g-- g-- g-- g-- g-- l-- l-- g-w s-- g-w d-r gt- g-- g-w g-w g-- g-- g-- g-- s-- s-- w-- w-- w-- s--
+u-- u-- gt- gt- g-- g-- gt- g-- g-- l-- l-- s-- s-- g-w g-w g-w g-- g-w g-w g-w g-w g-- s-- s-- w-- w-- w-- s-- s--
+u-- gt- u-- g-- g-- g-- g-- g-- gt- l-- l-- g-w g-w g-w g-w s-- g-w g-- g-- g-w g-w g-w s-- s-- w-- w-- w-- s-- s--
+gt- u-- u-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-w g-w g-w g-w s-- s-- g-- g-- g-w s-- s-- w-- w-- w-- s-- s-- g--
+u-- u-- gt- g-- gt- g-- g-- g-- l-- l-- g-- g-- g-w s-- g-w g-w g-- g-w g-w g-w s-- s-- w-- w-- w-- s-- s-- g-- g--
+u-- gt- u-- g-- g-- g-- g-- g-- l-- l-- g-- g-w g-w g-w g-w g-- s-- s-- g-w g-w s-- s-- w-- w-- w-- s-- s-- g-- g--
+gt- g-- g-- g-- g-- g-- g-- dv- l-- g-w s-- s-- g-w g-- gt- g-w g-w g-w g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- gt-
+g-- g-- gt- g-- g-- gt- g-- l-- l-- g-- g-w g-w g-- g-- s-- g-w g-w g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- gt- g-- g-- g-- g-- g-w g-w s-- g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g--
+g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g-- g--
+g-- g-- g-- dk- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- s-- s-- w-- w-- w-- s-- s-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- l-- l-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- w-- w-- w-- s-- s-- gt- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g-- g-- gt- g--

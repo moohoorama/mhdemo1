@@ -303,3 +303,26 @@ func TestAFleeingUnitLeavesWhenItStandsOnItsGoal(t *testing.T) {
 	assert.Zero(t, e.unit("troop#2").HP)
 	assert.Positive(t, e.unit("troop#1").HP)
 }
+
+func TestSurgeStepNamesTheUnitThatLeadsTheArmy(t *testing.T) {
+	steps := [][]content.Step{{{Kind: "surge", Text: "flood", Unit: "boss"}, {Kind: "say", Unit: "boss", Text: "건너라!", Seconds: .6}}}
+	e := battleWith(t, withEvents())
+	e.state.Executed = map[string]bool{}
+	e.data.Stages[0].Events = []content.BattleEvent{{ID: "flood", Do: []content.Action{{Kind: "cutscene", Steps: steps}}}}
+	e.events = nil
+	e.settle()
+	var surge []CutStep
+	for _, ev := range e.events {
+		for _, group := range ev.Cutscene {
+			for _, st := range group {
+				if st.Kind == "surge" {
+					surge = append(surge, st)
+				}
+			}
+		}
+	}
+	require.Len(t, surge, 1)
+	assert.Equal(t, "flood", surge[0].Text)
+	assert.Equal(t, e.unit("boss").ID, surge[0].Unit, "the show needs to know who walks at the head of the army")
+}
+

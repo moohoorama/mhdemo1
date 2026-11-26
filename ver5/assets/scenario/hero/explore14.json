@@ -352,6 +352,40 @@
      "Sprite": "commoner_man",
      "Faction": "merchant",
      "Pose": "sitground"
+    },
+    "도구점 점원": {
+     "At": [
+      27,
+      16
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "중급 인수 팝니다!|새로운 상품이오!|어디서도 없던 중급 인수 팝니다!",
+     "Talk": [
+      [
+       "도구점 점원",
+       "중급 인수는 관인과 인끈이오. 받은 장수가 중급 병종으로 승급하지. 갈래가 여럿이면 쓸 때 고르시오."
+      ]
+     ],
+     "Notice": "shop:xuzhou"
+    },
+    "주점 점원": {
+     "At": [
+      33,
+      16
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "빼갈 팝니다!|새로운 상품이오!|어디서도 없던 빼갈 팝니다!",
+     "Talk": [
+      [
+       "주점 점원",
+       "빼갈은 독한 술이오. 병법치를 크게 채우니 큰 책략을 앞둔 장수에게 딱이지."
+      ]
+     ],
+     "Notice": "shop:xuzhou_tavern"
     }
    }
   },
@@ -397,16 +431,6 @@
        "서주는 큰 고을이라 중급 인수도 들여놓았소. 값이 2000이오만, 장수 하나를 한 단계 끌어올리는 값이면 싼 거지."
       ]
      ]
-    },
-    "점원#1": {
-     "At": [
-      9,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Chatter": "중급 인수 팝니다!|다른 곳에 없는 중급 인수가 여기 있습니다!"
     }
    }
   },
@@ -505,16 +529,6 @@
        "서주엔 빼갈이 들어왔소. 병법치를 120이나 채우니, 큰 책략을 쓰기 전에 딱이지."
       ]
      ]
-    },
-    "점원#1": {
-     "At": [
-      11,
-      9
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Chatter": "빼갈 팝니다!|다른 곳에 없는 빼갈이 여기 있습니다!"
     }
    }
   },

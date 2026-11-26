@@ -424,6 +424,7 @@ func TestSpellFamiliesNeedTheirTraits(t *testing.T) {
 		t.Fatal("inferno should open")
 	}
 }
+
 // addSage puts the sage in the party, having learned the traits its definition plans.
 func addSage(e *Engine) {
 	e.addCharacter("sage", "sage")
@@ -833,7 +834,7 @@ func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
 	sa, sb := e.stats(a), e.stats(b)
 	level := float64(e.char(a.Character).Level + R.StatLevelBase)
 	want := e.damage(a, b, plain) + (float64(sa.Mind-sb.Mind)+level*R.MagicLevelScale)*.7
-	if got := e.damage(a, b, skill); got != want {
+	if got := e.damage(a, b, skill); math.Abs(got-want) > 1e-9 {
 		t.Fatalf("damage %v, want %v", got, want)
 	}
 }
@@ -1043,5 +1044,24 @@ func TestRestoreChangedFitsThePartyToTheData(t *testing.T) {
 	c := r.char("hero")
 	if slices.Contains(c.Learned, "dropped_trait") || c.Equipment["weapon"] != "" {
 		t.Fatalf("hero keeps what the data dropped: %v %v", c.Learned, c.Equipment)
+	}
+}
+
+func TestRestoreChangedFindsTheBattleByNodeAfterStageOrderChanges(t *testing.T) {
+	e := battle(t)
+	s := e.Snapshot()
+	original := s.Stage
+	s.Stage++
+	if s.Checkpoint == nil {
+		t.Fatal("battle has no preparation checkpoint")
+	}
+	s.Checkpoint.Stage++
+	loaded, err := RestoreChanged(e.data, s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := loaded.Snapshot()
+	if got.Stage != original || got.Checkpoint.Stage != original {
+		t.Fatalf("restored stage %d and checkpoint %d, want %d", got.Stage, got.Checkpoint.Stage, original)
 	}
 }

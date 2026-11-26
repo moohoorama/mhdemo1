@@ -57,122 +57,152 @@
  "Chapters": [
   {
    "ID": "01",
+   "Act": "1막",
    "File": "story01.json"
   },
   {
    "ID": "02",
+   "Act": "1막",
    "File": "story02.json"
   },
   {
    "ID": "03",
+   "Act": "1막",
    "File": "story03.json"
   },
   {
    "ID": "04",
+   "Act": "1막",
    "File": "story04.json"
   },
   {
    "ID": "05",
+   "Act": "1막",
    "File": "story05.json"
   },
   {
    "ID": "06",
+   "Act": "1막",
    "File": "story06.json"
   },
   {
    "ID": "07",
+   "Act": "1막",
    "File": "story07.json"
   },
   {
    "ID": "08",
+   "Act": "1막",
    "File": "story08.json"
   },
   {
    "ID": "09",
+   "Act": "1막",
    "File": "story09.json"
   },
   {
    "ID": "10",
+   "Act": "1막",
    "File": "story10.json"
   },
   {
    "ID": "11",
+   "Act": "1막",
    "File": "story11.json"
   },
   {
    "ID": "12",
+   "Act": "1막",
    "File": "story12.json"
   },
   {
    "ID": "13",
+   "Act": "1막",
    "File": "story13.json"
   },
   {
    "ID": "14",
+   "Act": "1막",
    "File": "story14.json"
   },
   {
    "ID": "15",
+   "Act": "1막",
    "File": "story15.json"
   },
   {
    "ID": "16",
+   "Act": "1막",
    "File": "story16.json"
   },
   {
    "ID": "17",
+   "Act": "2막",
    "File": "story17.json"
   },
   {
    "ID": "18",
+   "Act": "2막",
    "File": "story18.json"
   },
   {
    "ID": "19",
+   "Act": "2막",
    "File": "story19.json"
   },
   {
    "ID": "20",
+   "Act": "2막",
    "File": "story20.json"
   },
   {
    "ID": "21",
+   "Act": "2막",
    "File": "story21.json"
   },
   {
    "ID": "22",
+   "Act": "2막",
    "File": "story22.json"
   },
   {
    "ID": "23",
+   "Act": "2막",
    "File": "story23.json"
   },
   {
    "ID": "24",
+   "Act": "2막",
    "File": "story24.json"
   },
   {
    "ID": "25",
+   "Act": "2막-연의",
    "File": "story25.json"
   },
   {
    "ID": "26",
+   "Act": "2막-연의",
    "File": "story26.json"
   },
   {
    "ID": "27",
+   "Act": "2막-연의",
    "File": "story27.json"
   },
   {
    "ID": "25v",
+   "Act": "2막-가상",
    "File": "story25v.json"
   },
   {
    "ID": "26v",
+   "Act": "2막-가상",
    "File": "story26v.json"
   },
   {
    "ID": "27v",
+   "Act": "2막-가상",
    "File": "story27v.json"
   }
  ]

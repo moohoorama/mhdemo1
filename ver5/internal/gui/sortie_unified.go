@@ -58,7 +58,7 @@ func (g *Game) sortieGrid(dst *ebiten.Image, o core.Observation, r image.Rectang
 	}, nil)
 }
 
-// sortieColumns is how many cards a row holds in avail px: sortieCols at most (5 on the desktop, 3 on the phone), and
+// sortieColumns is how many cards a row holds in avail px: sortieCols at most (3 on both the desktop and the phone), and
 // fewer where the window is too narrow for that many.
 func sortieColumns(avail int) int { return max(1, min(sortieCols, avail/sortieCellW)) }
 

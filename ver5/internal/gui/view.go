@@ -103,9 +103,6 @@ func (g *Game) advance(dt float64) {
 	if g.show != nil && g.show.Advance(dt) {
 		g.show = nil
 	}
-	if g.prelude != nil && (g.show == nil || g.show.over) {
-		g.endPrelude()
-	}
 }
 
 // ensureField builds the battlefield for the observed stage and centres the camera once.

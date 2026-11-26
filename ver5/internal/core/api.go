@@ -221,7 +221,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	}
 	p := Preview{Cost: e.cost(u, s), Effect: s.Effect}
 	if v.ID != "" {
-		p.Hit = e.hitChance(u, v, s)
+		p.Hit = e.hitChanceFor(u, v, s, true)
 	}
 	phys := s.Kind == content.KindPhysical
 	if v.ID != "" && (phys || s.Kind == content.KindMagic) {
@@ -239,7 +239,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	}
 	for _, q := range hit {
 		if v.ID == "" {
-			p.Hit += e.hitChance(u, q, s) / float64(len(hit))
+			p.Hit += e.hitChanceFor(u, q, s, true) / float64(len(hit))
 		}
 		p.Targets = append(p.Targets, q.ID)
 		heal := 0
@@ -310,6 +310,16 @@ func RestoreChanged(d *content.Data, s State) (*Engine, error) {
 	if s.Checkpoint != nil {
 		s.Checkpoint.ContentHash = d.Hash
 		adaptCharacters(d, s.Checkpoint)
+		if n := d.Node(s.Checkpoint.Node); n.Kind == "battle" {
+			old := s.Checkpoint.Stage
+			s.Checkpoint.Stage = d.StageIndex(n.Stage)
+			if s.Stage == old {
+				s.Stage = s.Checkpoint.Stage
+			}
+		}
+	}
+	if n := d.Node(s.Node); n.Kind == "battle" {
+		s.Stage = d.StageIndex(n.Stage)
 	}
 	return reported(restore(d, s, true))
 }
@@ -528,6 +538,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 		return bad("no one deployed")
 	}
 	reserve := d.Stages[s.Stage].Reserve // they sortie on top of Max and stand on no cell until a join event calls them in
+	excluded := d.Stages[s.Stage].Excluded
 	sortie := len(s.Deployment)
 	for _, id := range s.Deployment {
 		if contains(reserve, id) {
@@ -543,10 +554,13 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 		if !seen[id] || deploy[id] || !d.Characters[id].Playable {
 			return bad("deployed %s unknown, repeated or not playable", id)
 		}
+		if contains(excluded, id) && s.Phase != "scenario" && s.Phase != "complete" {
+			return bad("deployed excluded officer %s", id)
+		}
 		deploy[id] = true
 	}
 	for id, c := range d.Characters {
-		if c.Lord && seen[id] && !deploy[id] && s.Phase != "scenario" {
+		if c.Lord && seen[id] && !deploy[id] && !contains(excluded, id) && s.Phase != "scenario" {
 			if err := soft("CorruptSave", "lord %s not deployed in phase %s", id, s.Phase); err != nil {
 				return nil, nil, err
 			}
@@ -884,11 +898,11 @@ func (e *Engine) strikeEstimate(a, b string, cureConfusion bool) float64 {
 		delete(cured.Status, "confusion")
 		u = &cured
 	}
-	best := e.damage(u, v, e.basic()) * e.hitChance(u, v, e.basic()) / 100
+	best := e.damage(u, v, e.basic()) * e.hitChanceFor(u, v, e.basic(), true) / 100
 	for _, name := range e.skills(e.char(u.Character)) {
 		s := e.data.Skills[name]
 		if (s.Kind == content.KindPhysical || s.Kind == content.KindMagic) && e.cost(u, s) <= u.MP {
-			best = max(best, e.damage(u, v, s)*e.boost(u, v, s, false)*e.hitChance(u, v, s)/100)
+			best = max(best, e.damage(u, v, s)*e.boost(u, v, s, false)*e.hitChanceFor(u, v, s, true)/100)
 		}
 	}
 	return best

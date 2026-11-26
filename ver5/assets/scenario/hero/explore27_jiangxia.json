@@ -1,0 +1,288 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "harbor",
+  "At": [
+   12,
+   17
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "harbor": {
+   "Map": "S_jiangxia_harbor",
+   "Name": "강하 · 나루",
+   "At": [
+    12,
+    17
+   ],
+   "People": {
+    "진도": {
+     "At": [
+      14,
+      16
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "chendao",
+       "주공, 배는 여기 매어 두겠습니다. 관 장군은 관청에 계십니다."
+      ]
+     ]
+    },
+    "뱃사공": {
+     "At": [
+      15,
+      10
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "",
+       "북쪽 물길이 좁아 큰 배는 나란히 못 갑니다. 장윤이 그 길에 배를 모아 놨소."
+      ]
+     ],
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "장비": {
+     "At": [
+      16,
+      13
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 돌아왔슈? 강하는 아무 일 없었슈. 둘째 형이 관청에서 기다려유."
+      ]
+     ]
+    },
+    "간옹": {
+     "At": [
+      20,
+      13
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "jianyong",
+       "강동 술맛은 어떻던가. 얼굴을 보니 술보다 셈이 더 쓴 자리였나 보구먼."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      8,
+      15
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "sunqian",
+       "주공께서 번구에 다녀오신 뒤로, 강동 배들이 서쪽으로 모인다는 소식이 잦습니다."
+      ]
+     ]
+    },
+    "강하 병사": {
+     "At": [
+      30,
+      12
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "jing",
+     "Talk": [
+      [
+       "",
+       "공자께서 날마다 나루에 나와 강을 보십니다. 아버님 원수를 꼭 갚겠다고 하십니다."
+      ]
+     ]
+    },
+    "어부": {
+     "At": [
+      4,
+      12
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "요즘 강바람이 동남쪽으로 돌 때가 있소. 이 철에는 드문 일이오."
+      ]
+     ]
+    },
+    "수군 아낙": {
+     "At": [
+      10,
+      17
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강 건너 조조 진채의 불빛이 밤마다 늘어요. 무서워서 잠이 안 와요."
+      ]
+     ]
+    },
+    "일꾼#1": {
+     "At": [
+      2,
+      16
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "영차!|짐 내려라"
+    },
+    "일꾼#2": {
+     "At": [
+      6,
+      18
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "화살 다발은 저쪽이오"
+    },
+    "군사#1": {
+     "At": [
+      19,
+      22
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Chatter": "배는 언제 뜨나|조조 배가 그리 크대"
+    },
+    "군사#2": {
+     "At": [
+      33,
+      14
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Chatter": "창날 갈아 둬라"
+    },
+    "미축": {
+     "At": [
+      22,
+      12
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "mizhu",
+       "장윤의 배가 강하 앞 물길에 아직 그대로 있습니다. 뱃사람들이 겁을 먹었습니다."
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      27,
+      13
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강하에 이렇게 군사가 많이 모인 건 처음 보오. 큰 싸움이 나려나 보오."
+      ]
+     ]
+    }
+   },
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      12,
+      20
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "보급소",
+     "At": [
+      17,
+      16
+     ],
+     "To": "supply"
+    }
+   ]
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "강하 · 관청",
+   "At": [
+    9,
+    10
+   ],
+   "People": {
+    "관우": {
+     "At": [
+      8,
+      7
+     ],
+     "Face": "SW",
+     "Sortie": {
+      "Ask": "형님, 군을 정비하시겠습니까?"
+     }
+    }
+   },
+   "Exits": [
+    {
+     "Name": "나루",
+     "At": [
+      9,
+      11
+     ],
+     "To": "harbor"
+    }
+   ]
+  },
+  "supply": {
+   "Map": "S_tool_shop",
+   "Name": "강하 · 보급소",
+   "At": [
+    8,
+    8
+   ],
+   "People": {
+    "보급관": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Shop": "camp"
+    }
+   },
+   "Exits": [
+    {
+     "Name": "나루",
+     "At": [
+      8,
+      9
+     ],
+     "To": "harbor"
+    }
+   ]
+  }
+ },
+ "Whereabouts": {
+  "zhaoyun": {
+   "Where": "elsewhere",
+   "Place": "번구 오군 진영 (제갈량 곁)",
+   "Reason": "27장 번구에서 유비가 \"자룡은 군사 곁에 남게\" 하고 남겨 두었다. 강하 관청 장면(c27-return)에서 제갈량과 함께 돌아와 \"자룡도 무사하구나\"를 듣는다"
+  }
+ }
+}

@@ -93,7 +93,57 @@ func (g *Game) layOutExplore(o core.Observation) {
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
-	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: e.AreaTime(), Grass: a.Grass, Snow: a.Snow, Cast: map[string]scenes.Actor{}}
+	def := g.exploreDef(e, o, w)
+	var old map[string]*unitVis // the stage the walk takes over unchanged, when it is the same room as lit
+	camX, camY, zoom := g.camX, g.camY, g.zoom
+	if g.seamless(def, w.hero) {
+		old = g.scene.actors
+	}
+	g.explore = w
+	g.openScene(def)
+	g.scene.fade = fade
+	w.grid = walkGrid{walk: &scenemap.Walk{}}
+	if art := g.mapArt(a.Map); art != nil && art.SceneMap != nil {
+		w.grid.walk = scenemap.Walkable(art.SceneMap, g.assets.SceneRules)
+		w.grid.walk.Within(a.At[0], a.At[1]) // the hero leaves by an exit, not by walking out of the gate
+	} else {
+		g.toast(a.Map+"은 형식 2 장면 맵이 아니라 걸을 수 없습니다", bad)
+	}
+	z := 2.0
+	if a.Zoom >= 1 {
+		z = math.Round(a.Zoom)
+	}
+	g.setZoomImmediate(g.savedZoom(true, z))
+	s := g.scene
+	hero := s.actors[w.hero]
+	if left != nil && !left.gone && (left.u != hero.u || left.v != hero.v || left.dir != hero.dir) { // he stays where, and the way, the event left him
+		hero.u, hero.v, hero.dir = left.u, left.v, left.dir
+		w.walked = true
+	}
+	for key, v := range old { // everybody stays as they stood: the camera and the zoom glide to the walk's own
+		if p := s.actors[key]; p != nil && key != w.hero {
+			p.u, p.v, p.dir, p.lift = v.u, v.v, v.dir, v.lift
+		}
+	}
+	if t := g.actorTile(w.hero); !w.grid.walk.Open(t[0], t[1]) { // an event may have left him where nobody walks
+		hero.u, hero.v = w.grid.nearestOpen(t).cell()
+		w.walked = true
+	}
+	s.camU, s.camV = hero.u, hero.v
+	g.camX, g.camY = g.sceneCam()
+	if old != nil {
+		g.camX, g.camY = camX, camY
+		target := g.zoom
+		g.zoom, g.zoomFrom, g.zoomTo = zoom, zoom, zoom
+		g.setZoom(target)
+	}
+}
+
+// exploreDef is the scene the walk's area is as laid out for observation o: the hero where the story says he
+// stands, the people whom the flags put there, the area's fires and murmurs. w takes the cast keys of the people.
+func (g *Game) exploreDef(e *core.Engine, o core.Observation, w *exploreWalk) *scenes.Scene {
+	a := e.ExploreFile().Areas[o.Spot.Area]
+	def := &scenes.Scene{ID: "explore:" + o.Spot.Area, Map: a.Map, Time: e.AreaTime(), Grass: a.Grass, Snow: a.Snow, Cast: map[string]scenes.Actor{}}
 	at := func(t [2]int) []float64 { u, v := smallTile(t).cell(); return []float64{u, v} }
 	def.Cast[w.hero] = scenes.Actor{At: at(o.Spot.At), Face: o.Spot.Face}
 	for _, v := range e.Visitors() {
@@ -112,38 +162,65 @@ func (g *Game) layOutExplore(o core.Observation) {
 	for _, f := range a.Effects {
 		def.Ambient = append(def.Ambient, scenes.Step{Effect: f.Effect, At: at(f.At)})
 	}
-	g.explore = w
-	g.openScene(def)
-	g.scene.fade = fade
-	w.grid = walkGrid{walk: &scenemap.Walk{}}
-	if art := g.mapArt(a.Map); art != nil && art.SceneMap != nil {
-		w.grid.walk = scenemap.Walkable(art.SceneMap, g.assets.SceneRules)
-		w.grid.walk.Within(a.At[0], a.At[1]) // the hero leaves by an exit, not by walking out of the gate
-	} else {
-		g.toast(a.Map+"은 형식 2 장면 맵이 아니라 걸을 수 없습니다", bad)
-	}
-	zoom := 2.0
-	if a.Zoom >= 1 {
-		zoom = math.Round(a.Zoom)
-	}
-	g.setZoomImmediate(g.savedZoom(true, zoom))
-	s := g.scene
-	hero := s.actors[w.hero]
-	if left != nil && !left.gone && (left.u != hero.u || left.v != hero.v) { // he stays where the event walked him
-		hero.u, hero.v, hero.dir = left.u, left.v, left.dir
-		w.walked = true
-	}
-	if t := g.actorTile(w.hero); !w.grid.walk.Open(t[0], t[1]) { // an event may have left him where nobody walks
-		hero.u, hero.v = w.grid.nearestOpen(t).cell()
-		w.walked = true
-	}
-	s.camU, s.camV = hero.u, hero.v
-	g.camX, g.camY = g.sceneCam()
+	return def
 }
 
-// adoptScene stages an event on the walk's own stage when the event's scene is set on the area's map: whoever the
-// cast marks Stay (or leaves out) stays where the walk left them, the others are put where the cast says.
-func (g *Game) adoptScene(def *scenes.Scene) bool {
+// adoptSame is how far, in cells, a person may stand from the place a scene or the walk puts them at and still be
+// taken for standing there: the walk's small tiles centre a person 0.2 cell off the scene's whole cells.
+const adoptSame = .4
+
+// seamless reports whether laying the walk out as def would change nothing on the stage now on screen: the same
+// map, the same light, lit, and the same people standing where def puts them, the hero apart (he stays where he
+// is). Then neither the screen darkens nor a person moves; anything else is a change of place or arrangement, which
+// goes through black as before.
+func (g *Game) seamless(def *scenes.Scene, hero string) bool {
+	s := g.scene
+	if g.field == nil || s == nil || s.leaving || s.nightfall || s.fade > .05 || g.field.Map.ID != def.Map || s.tod != def.Time {
+		return false
+	}
+	base := s.base
+	if base == nil || base.Snow != def.Snow || (base.Grass == nil) != (def.Grass == nil) || base.Grass != nil && *base.Grass != *def.Grass {
+		return false
+	}
+	if v := s.actors[hero]; v == nil || v.gone {
+		return false
+	}
+	for key, v := range s.actors {
+		if _, in := def.Cast[key]; !in && !v.gone && key != hero {
+			return false
+		}
+	}
+	for key, a := range def.Cast {
+		if key == hero {
+			continue
+		}
+		v := s.actors[key]
+		if v == nil || v.gone || v.leave != nil || len(a.At) != 2 || math.Hypot(a.At[0]-v.u, a.At[1]-v.v) > adoptSame || v.pose != a.Pose {
+			return false
+		}
+	}
+	return true
+}
+
+// walkSeamless reports whether the walk the story is about to go back to (after the nodes that set, join, grant or
+// leave on the way) would be the stage on screen unchanged.
+func (g *Game) walkSeamless() bool {
+	e, err := core.Restore(g.S.Data, g.S.Engine.Snapshot())
+	if err != nil {
+		return false
+	}
+	if _, err := e.Apply(core.Command{Kind: "next"}); err != nil || !e.Walking() {
+		return false
+	}
+	w := &exploreWalk{hero: g.S.Data.Characters[e.ExploreFile().Hero].Name, people: map[string]string{}, rest: map[string]float64{}}
+	return g.seamless(g.exploreDef(e, e.Observe(), w), w.hero)
+}
+
+// adoptScene stages the node at index at of an event's scene on the walk's own stage when the scene is set on the
+// area's map: whoever the cast marks Stay (or leaves out) stays where the walk left them, the others go where the
+// cast puts them as it stands at that node (an earlier node's beats having moved them). Somebody who is far from
+// there walks over rather than jumping; someone already there stays as they stand.
+func (g *Game) adoptScene(def *scenes.Scene, at int) bool {
 	s := g.scene
 	if def.Cut || g.explore == nil || s == nil || !strings.HasPrefix(s.def.ID, "explore:") || g.field.Map.ID != def.Map {
 		return false
@@ -155,21 +232,26 @@ func (g *Game) adoptScene(def *scenes.Scene) bool {
 			s.paths[key] = nil
 		}
 	}
+	placed := settledCast(def, at)
 	for key, a := range def.Cast {
 		v := s.actors[key]
 		if a.Stay {
 			continue
 		}
+		a = placed[key]
+		walking := false
 		if v == nil {
 			if v = g.castActor(key, a); v == nil {
 				continue
 			}
 			s.actors[key] = v
+		} else if len(a.At) == 2 && !v.gone && !a.Off {
+			walking = g.walkToPlace(key, v, a)
 		} else if len(a.At) == 2 {
 			v.u, v.v, v.walk, s.paths[key] = a.At[0], a.At[1], nil, nil
 			v.lift = g.field.Lift(int(v.u), int(v.v))
 		}
-		if a.Face != "" {
+		if a.Face != "" && !walking {
 			v.dir = a.Face
 		}
 		if a.Pose != "" {
@@ -186,6 +268,60 @@ func (g *Game) adoptScene(def *scenes.Scene) bool {
 		g.startStep(st)
 	}
 	return true
+}
+
+// walkToPlace sends somebody standing on the stage to the place a cast puts them at: nowhere when they stand there
+// already, else along a walk that turns them to the cast's facing on arrival. It reports whether they walk.
+func (g *Game) walkToPlace(key string, v *unitVis, a scenes.Actor) bool {
+	s := g.scene
+	v.walk, s.paths[key] = nil, nil
+	if math.Hypot(a.At[0]-v.u, a.At[1]-v.v) <= adoptSame {
+		return false
+	}
+	s.paths[key] = scenePath(v.u, v.v, a.At[0], a.At[1])
+	s.held[key], s.settle = true, true
+	if a.Face != "" {
+		if s.arrive == nil {
+			s.arrive = map[string]string{}
+		}
+		s.arrive[key] = a.Face
+	}
+	return true
+}
+
+// settledCast is the scene's cast as it stands when its node at index at opens: each actor's place and facing from
+// the cast, moved on by the beats of the nodes before it, as a scene entered in the middle settles them.
+func settledCast(def *scenes.Scene, at int) map[string]scenes.Actor {
+	cast := maps.Clone(def.Cast)
+	for _, n := range def.Nodes[:min(at, len(def.Nodes))] {
+		for _, line := range def.Beats[n] {
+			for _, group := range line {
+				for _, st := range group {
+					a, ok := cast[st.Actor]
+					if !ok {
+						continue
+					}
+					if len(st.Enter) == 2 {
+						a.At, a.Off = st.Enter, false
+					}
+					if len(st.Place) == 2 {
+						a.At, a.Off = st.Place, false
+					}
+					if len(st.Move) == 2 {
+						a.At = st.Move
+					}
+					if st.Exit {
+						a.Off = true
+					}
+					if st.Face != "" {
+						a.Face = st.Face
+					}
+					cast[st.Actor] = a
+				}
+			}
+		}
+	}
+	return cast
 }
 
 // layOutWalkFor lays out the walk's area first when an event set on it is entered without it (a loaded game);
@@ -689,7 +825,7 @@ func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
 	x := g.S.Engine.ExploreFile()
 	a := x.Areas[g.explore.area]
 	shopPlate := func(shop string) plate {
-		if g.S.Data.Shops[shop].Mark == "red" {
+		if len(g.S.Data.NewStock(g.S.Engine.ExploreName(), shop)) > 0 {
 			return plateHot
 		}
 		return plateSide

@@ -32,8 +32,10 @@ type Unit struct {
 	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
 	Moved, Acted, Attacked, Done, Spared bool
+	MoveLocked                           bool   `json:",omitempty"`
 	WalkedLastTurn                       bool   `json:",omitempty"`
 	Steps                                int    `json:",omitempty"` // cells walked this turn (돌진, 충격)
+	LastSteps                            int    `json:",omitempty"` // cells walked in its own last turn, kept through the other side's turn until its own begins (돌진, 기동공격, 기동방어)
 	Rank                                 string `json:",omitempty"` // the stage's rank for the spawn: commander and boss lead it (자오곡)
 	Status                               map[string]Status
 	Items                                map[string]int
@@ -81,6 +83,8 @@ type State struct {
 	Merit                             *Merit            `json:",omitempty"` // what the battle fought last has brought, from its start
 	Checkpoint                        *State            `json:",omitempty"`
 	Ending                            string            `json:",omitempty"` // the end node the story stopped at, when it has a Text (the hero fell)
+	Run                               string            `json:",omitempty"` // the chronicle line this game plays ("-" for a debug start that is not chronicled); the session stamps it on what it saves
+	Steps                             int               `json:",omitempty"` // how many chronicle points that line had when this state was made
 }
 
 // Merit is what a battle has brought, for its result window: each officer's experience, the level each started
@@ -95,6 +99,7 @@ type CutStep struct {
 	Kind, Unit, Motion, Facing, Text string
 	Path                             []content.Point `json:",omitempty"`
 	Seconds                          float64         `json:",omitempty"`
+	NoFocus                          bool            `json:",omitempty"`
 }
 
 // TileState is the state an event put on a cell (fire on grass) until it runs out. A cell without one

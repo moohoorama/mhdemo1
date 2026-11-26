@@ -91,9 +91,6 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 	cam := [2]float64{g.camX, g.camY}
 	at := map[string]content.Point{} // where the cutscene has walked its people so far
 	for _, group := range groups {
-		if surgeName(group) != "" {
-			continue // the flood is played before the battle's preparation (startPrelude)
-		}
 		var cells []content.Point
 		for _, st := range group {
 			switch st.Kind {
@@ -196,14 +193,4 @@ func cutPlayTime(st core.CutStep) float64 {
 		return st.Seconds
 	}
 	return .7
-}
-
-// surgeName is the flood a cutscene group plays, if it has the step "surge".
-func surgeName(group []core.CutStep) string {
-	for _, st := range group {
-		if st.Kind == "surge" {
-			return st.Text
-		}
-	}
-	return ""
 }

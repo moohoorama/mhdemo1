@@ -227,7 +227,7 @@ func run() error {
 
 	// the guest is the ordinary demo command, built so that RunGame connects here
 	guestBin := filepath.Join(dir, "guest")
-	build := exec.Command("go", "build", "-tags", "ebitenginevmguest", "-o", guestBin, "./cmd/_uidemo")
+	build := exec.Command("go", "build", "-tags", strings.TrimSpace("ebitenginevmguest "+os.Getenv("UIDEMO_TAGS")), "-o", guestBin, "./cmd/_uidemo")
 	build.Stderr = os.Stderr
 	if err := build.Run(); err != nil {
 		return fmt.Errorf("building the guest: %w", err)

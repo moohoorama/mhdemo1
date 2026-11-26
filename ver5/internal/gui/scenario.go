@@ -166,7 +166,7 @@ func (g *Game) nextNode() {
 			return
 		}
 		next := g.S.Data.After(s.node)
-		if def, _ := g.scenes.For(next); def != nil && def != s.def || g.backToWalk(next) || g.S.Data.Node(next).Kind == "battle" {
+		if def, _ := g.scenes.For(next); def != nil && def != s.def || g.backToWalk(next) && !g.walkSeamless() || g.S.Data.Node(next).Kind == "battle" {
 			s.leaving = true
 			return
 		}

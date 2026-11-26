@@ -545,6 +545,12 @@ func (p *player) events(evs []core.Event) {
 						p.printf("  [컷신] %s %s\n", name(st.Unit), st.Motion)
 					case "leave":
 						p.printf("  [컷신] %s 퇴장\n", name(st.Unit))
+					case "fall":
+						p.printf("  [컷신] %s 퇴각\n", name(st.Unit))
+					case "dust":
+						p.printf("  [컷신] 숲에서 흙먼지가 인다\n")
+					case "surge":
+						p.printf("  [컷신] 수공(%s)\n", st.Text)
 					}
 				}
 			}

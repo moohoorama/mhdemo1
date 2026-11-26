@@ -19,7 +19,10 @@ type Session struct {
 	Settings storage.Settings
 	Dirty    bool
 	Screen   string
+	Clock    func() time.Time // the time a chronicle point is stamped with; none is time.Now
 	view     core.ObservationCache
+	run      string // the chronicle line the game plays ("" before its first point, noChronicle for none)
+	steps    int    // how many points of that line the game has behind it
 }
 type Request struct {
 	ID          any          `json:"id,omitempty"`
@@ -34,7 +37,9 @@ type Request struct {
 	Level       int               `json:"level,omitempty"`      // a jump: the party's level; none is the next battle's
 	Overwrite   bool              `json:"overwrite"`
 	Discard     bool              `json:"discard_current"`
-	Changed     bool              `json:"load_changed"` // load a save made before the data changed
+	Changed     bool              `json:"load_changed"`   // load a save made before the data changed
+	Line        string            `json:"line,omitempty"` // chronicle_load: the chronicle line whose list the point is picked from
+	Seq         int               `json:"seq,omitempty"`  // chronicle_load: the point's place along the line
 	Settings    *storage.Settings `json:"settings,omitempty"`
 }
 type Response struct {
@@ -124,7 +129,10 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		s.Engine = e
 		s.Screen = "playing"
 		s.Dirty = true
-		return nil, nil
+		s.run, s.steps = "", 0
+		var started core.Result
+		s.chronicleReached("", &started)
+		return started.Events, nil
 	case "jump":
 		if err := discard(); err != nil {
 			return nil, err
@@ -136,6 +144,7 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		s.Engine = e
 		s.Screen = "playing"
 		s.Dirty = true
+		s.run, s.steps = noChronicle, 0
 		return nil, nil
 	case "observe":
 		return nil, nil
@@ -176,7 +185,7 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if !storage.IsManualSlot(q.Slot) {
 			return nil, fmt.Errorf("InvalidSlot")
 		}
-		if err := s.Store.Save(q.Slot, s.Engine.Snapshot(), q.Overwrite); err != nil {
+		if err := s.Store.Save(q.Slot, s.stamp(s.Engine.Snapshot()), q.Overwrite); err != nil {
 			return nil, err
 		}
 		s.Dirty = false
@@ -198,6 +207,17 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 			return nil, err
 		}
 		s.Engine = candidate
+		s.adopt(snap)
+		s.Dirty = false
+		s.Screen = "playing"
+		return nil, nil
+	case "chronicle_load":
+		if err := discard(); err != nil {
+			return nil, err
+		}
+		if err := s.loadChronicle(q.Line, q.Seq, q.Changed); err != nil {
+			return nil, err
+		}
 		s.Dirty = false
 		s.Screen = "playing"
 		return nil, nil
@@ -362,6 +382,7 @@ func (s *Session) stepAI() (core.Result, error) {
 // apply runs a command and autosaves: the walk as it stood when the confidant asked, once the party
 // sorties, so loading it walks again before saying yes; and every allied turn start of a battle.
 func (s *Session) apply(c core.Command) (core.Result, error) {
+	beforeExplore, from := s.View().Explore, s.View().Node
 	var walk *core.State
 	if c.Kind == "sortie" {
 		state := s.Engine.Snapshot()
@@ -373,6 +394,13 @@ func (s *Session) apply(c core.Command) (core.Result, error) {
 	}
 	if walk != nil {
 		s.autosave(*walk, &r)
+	}
+	s.chronicleReached(from, &r)
+	if c.Kind == "next" || c.Kind == "choose" || c.Kind == "talk" || c.Kind == "sortie" {
+		state := s.Engine.Snapshot()
+		if state.Phase == "scenario" && state.Explore != "" && state.Node == state.Explore && state.Explore != beforeExplore && s.Data.Node(state.Node).Autosave {
+			s.autosave(state, &r)
+		}
 	}
 	for _, event := range r.Events {
 		if event.Kind == "deployment_finish" || event.Kind == "turn" && event.Target == "ally" {
@@ -387,7 +415,7 @@ func (s *Session) apply(c core.Command) (core.Result, error) {
 
 // autosave writes the state to the next automatic slot; a failure is told as an event, not an error.
 func (s *Session) autosave(state core.State, r *core.Result) {
-	if err := s.Store.Autosave(state); err != nil {
+	if err := s.Store.Autosave(s.stamp(state)); err != nil {
 		r.Events = append(r.Events, core.Event{Kind: "autosave-failed", Text: "자동 저장 실패: " + err.Error()})
 	}
 }

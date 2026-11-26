@@ -16,7 +16,8 @@
   "3": {"lift": 120, "faces": "rwall", "foot": "cfoot", "rim": "rrim", "cut": "rwall_cut"},
   "4": {"lift": 120, "faces": "rdwall", "foot": "cfoot", "rim": "rrim", "cut": "rwall_cut"},
   "5": {"lift": 16, "faces": "pdeck", "foot": "cfoot", "rim": "prail"},
-  "6": {"lift": 8, "faces": "pstep", "foot": "cfoot"}
+  "6": {"lift": 8, "faces": "pstep", "foot": "cfoot"},
+  "7": {"lift": 26, "faces": "ccliff", "foot": "cfoot"}
  },
  "walls": {"swall": {"block": "swall2", "parapet": "sparapet", "shade": "swall2_shade", "cut": "swall2_cut"}, "cwall": {"piece": "cwall", "cut": "cwall_cut"}},
  "board": {"indoor": "TWPCM", "default": "board_grass", "under": "board_under", "end": "board_end", "variants": 4,

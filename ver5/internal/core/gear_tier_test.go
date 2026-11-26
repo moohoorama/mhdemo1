@@ -12,7 +12,7 @@ func TestPlainGearTierFollowsTheChapter(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	t.Run("stages take the tier of their chapter", func(t *testing.T) {
-		want := map[string]int{"B01": 1, "B16": 1, "B17": 2, "B22": 2, "B27": 2, "B27V": 2}
+		want := map[string]int{"B01": 1, "B16": 1, "B17": 2, "B22": 2, "B27R": 2, "B27V": 2}
 		for _, s := range d.Stages {
 			if tier, ok := want[s.ID]; ok {
 				assert.Equal(t, tier, s.GearTier, s.ID)

@@ -34,7 +34,10 @@ func containsPoint(ps []content.Point, p content.Point) bool {
 
 // percent scales n by a signed percentage.
 func percent(n, p int) int { return n * (100 + p) / 100 }
-func (e *Engine) stats(u *Unit) Stats {
+
+// baseStats are the six battle stats (attack, defense, mind, agility, morale, HP) before the attack and defense
+// coefficients and the temporary statuses.
+func (e *Engine) baseStats(u *Unit) [6]int {
 	o := e.char(u.Character)
 	R := e.data.Rules
 	a := e.attributes(o)
@@ -63,22 +66,49 @@ func (e *Engine) stats(u *Unit) Stats {
 		v[1] += max(0, (mind-defense)/2)
 		v[2] = max(v[2], mind+(defense-mind)/2)
 	}
+	if e.has(u, content.FxCastleDefenseMind) && e.CellProps(u.X, u.Y).Castle {
+		v[1] = max(v[1], mind)
+	}
+	for i, stat := range []string{"mind", "agility", "morale"} {
+		v[i+2] = int(float64(v[i+2]) * (1 + e.fx(u, content.FxStatIncrease+stat)))
+	}
+	return v
+}
+
+// coefficients are what attack and defense are multiplied by: 1 plus every raise and fall of that stat, added
+// together (traits, who stands around, the walk, low HP, buffs and 진지고수), so that none multiplies another.
+func (e *Engine) coefficients(u *Unit, maxHP int) (ka, kd float64) {
+	ka, kd = 1+e.fx(u, content.FxStatIncrease+"attack"), 1+e.fx(u, content.FxStatIncrease+"defense")
 	if u.HP > 0 { // standing on the field: who is around, how far it walked
 		foes, allies := e.around(u, false), e.around(u, true)
 		k := e.fx(u, content.FxOutnumbered)*float64(foes) + e.fx(u, content.FxCompanions)*float64(allies)
 		if allies == 0 {
 			k += e.fx(u, content.FxLone)
 		}
-		v[0] = int(float64(v[0]) * (1 + k + e.fx(u, content.FxChargePower)*float64(u.Steps)))
-		v[1] = int(float64(v[1]) * (1 + k))
+		ka += k + e.fx(u, content.FxChargePower)*float64(e.walked(u))
+		kd += k + e.fx(u, content.FxFormationDefense)*float64(allies)
 	}
 	if k := e.fx(u, content.FxLowHPStats); k > 0 && u.HP > 0 {
-		r := float64(u.HP) / float64(max(1, v[5]))
-		bonus := 1 + k*clamp((.5-r)/.49, 0, 1)
-		v[0], v[1] = int(float64(v[0])*bonus), int(float64(v[1])*bonus)
+		r := float64(u.HP) / float64(max(1, maxHP))
+		bonus := k * clamp((.5-r)/.49, 0, 1)
+		ka, kd = ka+bonus, kd+bonus
 	}
-	v[0] = max(1, percent(v[0], u.Status["attack"].Value))
-	v[1] = max(1, percent(v[1], u.Status["defense"].Value))
+	ka += float64(u.Status["attack"].Value) / 100
+	kd += float64(u.Status["defense"].Value) / 100
+	if s := u.Status[holdGround]; s.Turns > 0 {
+		kd += float64(s.Value) / 100
+	}
+	return math.Max(0, ka), math.Max(0, kd)
+}
+
+func (e *Engine) stats(u *Unit) Stats {
+	R := e.data.Rules
+	a := e.attributes(e.char(u.Character))
+	c := e.class(e.char(u.Character))
+	v := e.baseStats(u)
+	ka, kd := e.coefficients(u, v[5])
+	v[0] = max(1, int(float64(v[0])*ka))
+	v[1] = max(1, int(float64(v[1])*kd))
 	v[2] = max(1, percent(v[2], u.Status["mind"].Value))
 	v[3] = max(1, percent(v[3], u.Status["agility"].Value))
 	v[4] = max(1, percent(v[4], u.Status["morale"].Value))
@@ -132,7 +162,13 @@ func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
 	if k := e.fx(u, content.FxWetFactor); k > 0 && e.data.Props(c).Wet {
 		t.Factor += k
 	}
-	if k := e.fx(u, content.FxAmbushFactor); k > 0 && e.data.Props(c).Ambush {
+	if k := e.fx(u, content.FxSwimFactor); k > 0 && e.data.Grounds[string(c.Ground)].Water && c.Structure == content.NoLayer {
+		t.Factor += k
+	}
+	if k := e.fx(u, content.FxCastleFactor); k > 0 && e.data.Props(c).Castle {
+		t.Factor += k
+	}
+	if k, props := e.fx(u, content.FxAmbushFactor), e.data.Props(c); k > 0 && (props.Ambush || props.Highland) {
 		t.Factor += k
 	}
 	t.Factor += e.fx(u, content.FxTerrainFactor)
@@ -179,6 +215,9 @@ func moveDestinations(start content.Point, cost map[content.Point]int) []content
 
 // movement is the unit's movement points this turn.
 func (e *Engine) movement(u *Unit) int {
+	if u.MoveLocked {
+		return 0
+	}
 	cl := e.unitClass(u)
 	return cl.Move + u.Status["speed"].Value + int(e.fx(u, content.FxMove))
 }
@@ -189,7 +228,7 @@ func (e *Engine) reach(u *Unit) (map[content.Point]int, map[content.Point]conten
 	start := content.Point{X: u.X, Y: u.Y}
 	cost := map[content.Point]int{start: 0}
 	prev := map[content.Point]content.Point{}
-	if u.Policy == "hold" || u.Moved || u.Done || confused(u) || u.Status["root"].Turns > 0 {
+	if u.MoveLocked || u.Policy == "hold" || u.Moved || u.Done || confused(u) || u.Status["root"].Turns > 0 {
 		return map[content.Point]int{}, prev
 	}
 	budget := e.movement(u)
@@ -359,7 +398,11 @@ func (e *Engine) rangedBand(u *Unit, s content.Skill) (lo, hi int) {
 	cl := e.unitClass(u)
 	more := u.Status["range"].Value + s.Reach + int(e.fx(u, content.FxRangedReach))
 	if cl.Attack == content.AttackRanged {
-		return max(1, s.Min, cl.MinRange), cl.Range + more
+		lo := max(1, s.Min, cl.MinRange)
+		if e.has(u, content.FxCloseShot) {
+			lo = max(1, s.Min)
+		}
+		return lo, cl.Range + more
 	}
 	if k := int(e.fx(u, content.FxMountedRange)); k > 0 && e.mounted(u) {
 		return 2, k + more

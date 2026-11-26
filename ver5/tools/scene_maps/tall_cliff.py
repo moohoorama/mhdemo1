@@ -5,7 +5,8 @@ A battle cliff block (assets/graphics/map/structures.png, cliff_<mask>_<variant>
 the ground) is cut at its plain face rows (where the silhouette's sides run straight down) and those rows are stacked
 again and again, each tier taken from the same mask's next variant, so the top and the foot stay the original picture
 and only the rock face grows. Writes assets_candidate/tiles/tcliff_<mask>_<variant>.png (scene.json height 2's faces)
-and their tiles.json entries (only these); ver5/tools/build_extra.py packs them.
+and their tiles.json entries (only these); ver5/tools/build_extra.py packs them. The same blocks are also written
+unstacked as ccliff_<mask>_<variant> (scene.json height 7's faces, a hill of the battle map's own 26 px).
 """
 import json
 from pathlib import Path
@@ -55,6 +56,10 @@ def main():
         t.save(CAND / 'tiles' / f'{n}.png')
         made[n] = dict(file=f'tiles/{n}.png', size=list(t.size), pivot=[pivot[0], pivot[1] + (BAND[1] - BAND[0]) * TIERS],
                        layer='object', scale='scene', made='battle cliff block, face rows stacked (tall_cliff.py)', shadow=False)
+        n = f'ccliff_{mask}_{var}'
+        im.save(CAND / 'tiles' / f'{n}.png')
+        made[n] = dict(file=f'tiles/{n}.png', size=list(im.size), pivot=list(pivot), layer='object', scale='scene',
+                       made='battle cliff block as it is (tall_cliff.py)', shadow=False)
     man = json.load(open(path))  # read just before writing: other tools write this file too
     man['sprites'].update(made)
     json.dump(man, open(path, 'w'), ensure_ascii=False, indent=1)

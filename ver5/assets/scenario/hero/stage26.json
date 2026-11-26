@@ -8,12 +8,17 @@
   "zhangfei",
   "zhaoyun"
  ],
+ "Excluded": [
+  "liubei"
+ ],
+ "StrictVictory": true,
  "Victory": [
   {
    "If": [
-    "at:zhaoyun:70"
+    "at:zhaoyun:70",
+    "at:zhangfei:70"
    ],
-   "Text": "조운이 다리 건너 진영에 닿는다"
+   "Text": "조운과 장비가 다리 뒤 진영에 닿는다"
   }
  ],
  "Defeat": [
@@ -33,7 +38,26 @@
    "If": [
     "at:enemy:70"
    ],
-   "Text": "적이 진영에 선다"
+   "Text": "적이 후방 진영에 닿는다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "crossing",
+   "If": [
+    "at:zhaoyun:70"
+   ],
+   "Text": "조운이 다리를 건넌다"
+  },
+  {
+   "ID": "qinggang",
+   "If": [
+    "duel:changban-zhaoyun-xiahouen"
+   ],
+   "Text": "조운이 일기토로 하후은을 벤다",
+   "Reward": {
+    "qinggang_sword": 1
+   }
   }
  ],
  "TurnLimit": 20,
@@ -64,10 +88,6 @@
   "zhangfei": {
    "X": 17,
    "Y": 30
-  },
-  "liubei": {
-   "X": 18,
-   "Y": 30
   }
  },
  "Groups": [
@@ -79,7 +99,7 @@
    ]
   },
   {
-   "Name": "본군",
+   "Name": "장판교",
    "Area": 73,
    "Required": [
     "zhangfei"
@@ -88,176 +108,387 @@
  ],
  "Enemies": [
   {
-   "Character": "wenpin",
    "X": 19,
    "Y": 12,
-   "Group": "field",
-   "Policy": "hold",
+   "Character": "wenpin",
+   "Group": "wenpin-force",
+   "Policy": "assault",
+   "Facing": "SW",
    "Rank": "officer"
   },
   {
-   "Character": "troop_cavalry",
+   "X": 18,
+   "Y": 13,
+   "Character": "troop_footman",
+   "Group": "wenpin-force",
+   "Policy": "assault",
+   "Facing": "SW",
+   "Shift": -0.12
+  },
+  {
    "X": 20,
    "Y": 11,
-   "Group": "scouts",
-   "Policy": "react",
+   "Character": "troop_cavalry",
+   "Group": "wenpin-force",
+   "Policy": "assault",
+   "Facing": "SW",
    "Shift": -0.12
   },
   {
-   "Character": "troop_footman",
-   "X": 18,
-   "Y": 13,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_archer",
-   "X": 21,
-   "Y": 12,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
    "X": 17,
    "Y": 10,
-   "Group": "field",
-   "Policy": "hold",
+   "Character": "troop_footman",
+   "Group": "wenpin-force",
+   "Policy": "assault",
+   "Facing": "SW",
    "Shift": -0.12
   },
   {
-   "Character": "zhanghe",
    "X": 13,
    "Y": 17,
-   "Group": "field",
-   "Policy": "hold",
-   "Rank": "officer"
+   "Character": "zhanghe",
+   "Group": "zhanghe-force",
+   "Policy": "march",
+   "Facing": "SE",
+   "Rank": "officer",
+   "GoalArea": 75
   },
   {
-   "Character": "troop_footman",
    "X": 12,
    "Y": 18,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_archer",
-   "X": 14,
-   "Y": 18,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
    "Character": "troop_footman",
+   "Group": "zhanghe-force",
+   "Policy": "march",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "GoalArea": 75
+  },
+  {
    "X": 11,
    "Y": 15,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "xuchu",
-   "X": 18,
-   "Y": 19,
-   "Group": "field",
-   "Policy": "hold",
-   "Rank": "officer"
-  },
-  {
    "Character": "troop_footman",
-   "X": 16,
-   "Y": 20,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
+   "Group": "zhanghe-force",
+   "Policy": "march",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "GoalArea": 75
   },
   {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 21,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 21,
-   "Y": 16,
-   "Group": "scouts",
-   "Policy": "react",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
    "X": 10,
    "Y": 13,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
    "Character": "troop_footman",
-   "X": 5,
-   "Y": 10,
-   "Group": "south",
-   "Policy": "react",
+   "Group": "zhanghe-force",
+   "Policy": "march",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "GoalArea": 75
+  },
+  {
+   "X": 10,
+   "Y": 19,
+   "Character": "xuchu",
+   "Group": "xuchu-force",
+   "Policy": "march",
+   "Facing": "SW",
+   "Rank": "officer",
+   "GoalArea": 75
+  },
+  {
+   "X": 11,
+   "Y": 20,
+   "Character": "troop_footman",
+   "Group": "xuchu-force",
+   "Policy": "march",
+   "Facing": "SW",
+   "Shift": -0.12,
+   "GoalArea": 75
+  },
+  {
+   "X": 13,
+   "Y": 16,
+   "Character": "troop_footman",
+   "Group": "xuchu-force",
+   "Policy": "march",
+   "Facing": "SW",
+   "Shift": -0.12,
+   "GoalArea": 75
+  },
+  {
+   "X": 16,
+   "Y": 16,
+   "Character": "troop_cavalry",
+   "Group": "xuchu-force",
+   "Policy": "march",
+   "Facing": "SW",
+   "Shift": -0.12,
+   "GoalArea": 75
+  },
+  {
+   "X": 21,
+   "Y": 12,
+   "Character": "troop_archer",
+   "Group": "archers",
+   "Policy": "hold",
+   "Facing": "SW",
    "Shift": -0.12
   },
   {
+   "X": 14,
+   "Y": 18,
    "Character": "troop_archer",
+   "Group": "archers",
+   "Policy": "hold",
+   "Facing": "SW",
+   "Shift": -0.12
+  },
+  {
    "X": 5,
    "Y": 17,
-   "Group": "south",
-   "Policy": "react",
+   "Character": "troop_archer",
+   "Group": "archers",
+   "Policy": "hold",
+   "Facing": "SW",
    "Shift": -0.12
   },
   {
+   "X": 5,
+   "Y": 10,
    "Character": "troop_footman",
+   "Group": "rear",
+   "Policy": "march",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "GoalArea": 75
+  },
+  {
    "X": 5,
    "Y": 23,
-   "Group": "south",
-   "Policy": "react",
-   "Shift": -0.12
+   "Character": "troop_footman",
+   "Group": "rear",
+   "Policy": "march",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "GoalArea": 75
   },
   {
-   "Character": "caochun",
    "X": 11,
-   "Y": 21,
+   "Y": 17,
+   "Character": "caochun",
    "Group": "tiger",
    "Policy": "march",
-   "Rank": "commander",
-   "GoalArea": 74
+   "Facing": "SE",
+   "GoalArea": 74,
+   "Rank": "commander"
   },
   {
-   "Character": "troop_cavalry",
    "X": 12,
-   "Y": 20,
+   "Y": 16,
+   "Character": "troop_cavalry",
    "Group": "tiger",
    "Policy": "march",
-   "Shift": -0.19,
-   "GoalArea": 74
+   "Facing": "SE",
+   "GoalArea": 74,
+   "Shift": -0.19
   },
   {
-   "Character": "troop_cavalry",
    "X": 12,
-   "Y": 22,
+   "Y": 17,
+   "Character": "troop_cavalry",
    "Group": "tiger",
    "Policy": "march",
-   "Shift": -0.19,
-   "GoalArea": 74
+   "Facing": "SE",
+   "GoalArea": 74,
+   "Shift": -0.19
   },
   {
-   "Character": "troop_cavalry",
    "X": 10,
-   "Y": 21,
+   "Y": 17,
+   "Character": "troop_cavalry",
    "Group": "tiger",
    "Policy": "march",
-   "Shift": -0.19,
-   "GoalArea": 74
+   "Facing": "SE",
+   "GoalArea": 74,
+   "Shift": -0.19
+  },
+  {
+   "X": 23,
+   "Y": 17,
+   "Character": "xiahouen",
+   "Group": "xiahouen",
+   "Policy": "react",
+   "Facing": "SE",
+   "Rank": "officer"
+  }
+ ],
+ "Party": [
+  {
+   "X": 16,
+   "Y": 12,
+   "Character": "troop_footman",
+   "Group": "remnants",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Rank": "troop",
+   "AI": true,
+   "HPPct": 66,
+   "Faction": "shu"
+  },
+  {
+   "X": 19,
+   "Y": 15,
+   "Character": "troop_footman",
+   "Group": "remnants",
+   "Policy": "hold",
+   "Facing": "NE",
+   "Rank": "troop",
+   "AI": true,
+   "HPPct": 66,
+   "Faction": "shu"
+  },
+  {
+   "X": 19,
+   "Y": 19,
+   "Character": "troop_footman",
+   "Group": "remnants",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Rank": "troop",
+   "AI": true,
+   "HPPct": 66,
+   "Faction": "shu"
+  },
+  {
+   "X": 12,
+   "Y": 14,
+   "Character": "troop_footman",
+   "Group": "remnants",
+   "Policy": "hold",
+   "Facing": "NE",
+   "Rank": "troop",
+   "AI": true,
+   "HPPct": 66,
+   "Faction": "shu"
+  },
+  {
+   "X": 14,
+   "Y": 16,
+   "Character": "troop_footman",
+   "Group": "remnants",
+   "Policy": "hold",
+   "Facing": "SW",
+   "Rank": "troop",
+   "AI": true,
+   "HPPct": 66,
+   "Faction": "shu"
+  },
+  {
+   "X": 15,
+   "Y": 22,
+   "Character": "troop_footman",
+   "Group": "remnants",
+   "Policy": "hold",
+   "Facing": "NE",
+   "Rank": "troop",
+   "AI": true,
+   "HPPct": 66,
+   "Faction": "shu"
+  }
+ ],
+ "Duels": [
+  {
+   "ID": "changban-zhaoyun-xiahouen",
+   "Ally": "zhaoyun",
+   "Enemy": "xiahouen",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "하후은이 막아서다",
+     "Speech": "하후은이다! 비켜라!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 답하다",
+     "Speech": "그 검, 메기만 했지 뽑아 본 적은 없겠군.",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 말을 몰아 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후은이 칼자루에 손을 대다",
+     "Speech": "승상께서 하사하신 청강검이다! 뽑기 전에 항복해라!",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "block",
+     "Title": "하후은이 칼 끝으로 떠 보자 조운이 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 창을 바로 잡다",
+     "Speech": "메고만 다니는 검이 무슨 소용이오. 길이나 비키시오!",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "조운이 힘으로 누르자 하후은이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후은이 말 위에서 휘청이다",
+     "Speech": "이, 이놈이……! 내 뒤에는 승상의 호위대가 있다!",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "block",
+     "Title": "하후은이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical",
+     "Title": "조운이 결정타를 넣다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "win",
+     "Title": "하후은이 말에서 떨어지다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.6
+    }
+   ]
   }
  ],
  "Reward": {
@@ -273,8 +504,8 @@
     "W": 3,
     "H": 3
    },
-   "Name": "다리 건너 진영",
-   "Description": "조운이 닿으면 승리, 적이 서면 패배"
+   "Name": "다리 뒤 진영",
+   "Description": "조운과 장비가 철수할 곳"
   },
   {
    "ID": 72,
@@ -285,7 +516,7 @@
     "H": 1
    },
    "Name": "무너진 마을",
-   "Description": "조운 혼자"
+   "Description": "아두를 구한 조운의 출발점"
   },
   {
    "ID": 73,
@@ -296,7 +527,7 @@
     "H": 2
    },
    "Name": "다리 어귀",
-   "Description": "장비와 본군 두 명"
+   "Description": "장비와 지원 병력의 출발점"
   },
   {
    "ID": 74,
@@ -307,7 +538,18 @@
     "H": 3
    },
    "Name": "장판교 앞",
-   "Description": "조순의 호표기가 몰려가는 곳"
+   "Description": "추격군이 모이는 곳"
+  },
+  {
+   "ID": 75,
+   "Rect": {
+    "X": 10,
+    "Y": 17,
+    "W": 4,
+    "H": 4
+   },
+   "Name": "들판 서쪽",
+   "Description": "조조군이 흩어진 적을 에워싸는 곳"
   }
  ],
  "Events": [
@@ -315,70 +557,48 @@
    "ID": "opening",
    "Do": [
     {
-     "Kind": "buff",
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "zhangfei",
+        "To": {
+         "X": 17,
+         "Y": 27
+        },
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "zhangfei",
+        "Text": "이 장익덕이 여기 있는 한, 아무도 이 다리를 못 건너유!"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "zhaoyun",
+        "Text": "공자를 모셨다. 곧장 다리로 간다!"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "caochun",
+        "Text": "호표기는 다리로! 유비군이 빠져나가기 전에 막아라!"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "lockmove",
      "Targets": [
-      "zhaoyun"
+      "zhangfei"
      ],
-     "Stat": "attack",
-     "Value": 20
-    },
-    {
-     "Kind": "buff",
-     "Targets": [
-      "zhaoyun"
-     ],
-     "Stat": "defense",
-     "Value": 20
-    }
-   ]
-  },
-  {
-   "ID": "opening-liubei",
-   "If": [
-    "!round>=2",
-    "alive:liubei"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangfei",
-       "Text": "형, 자룡이 안 보여유. 조조한테 붙었다는 놈도 있던디……."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liubei",
-       "Text": "자룡은 나를 버릴 사람이 아니네. 다리를 지키게. 올 걸세."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "opening-pursuit",
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhaoyun",
-       "Text": "다리까지 들판 하나다. 뚫든 돌든, 이 아이는 건넨다."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caochun",
-       "Text": "호표기는 다리로! 유비의 목이 저 너머에 있다!"
-      }
-     ]
+     "Value": 1
     }
    ]
   },
@@ -395,62 +615,85 @@
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "troop_cavalry",
        "X": 13,
        "Y": 0,
+       "Character": "troop_cavalry",
        "Group": "tiger",
        "Policy": "march",
-       "Shift": -0.19,
+       "Facing": "SW",
        "GoalArea": 74,
+       "Shift": -0.19,
        "Side": "enemy"
       },
       {
-       "Character": "troop_cavalry",
        "X": 12,
        "Y": 0,
+       "Character": "troop_cavalry",
        "Group": "tiger",
        "Policy": "march",
-       "Shift": -0.19,
+       "Facing": "SW",
        "GoalArea": 74,
+       "Shift": -0.19,
        "Side": "enemy"
       },
       {
-       "Character": "troop_cavalry",
        "X": 11,
        "Y": 0,
+       "Character": "troop_cavalry",
        "Group": "tiger",
        "Policy": "march",
-       "Shift": -0.19,
+       "Facing": "SW",
        "GoalArea": 74,
+       "Shift": -0.19,
        "Side": "enemy"
       },
       {
-       "Character": "troop_cavalry",
        "X": 10,
        "Y": 0,
+       "Character": "troop_cavalry",
        "Group": "tiger",
        "Policy": "march",
-       "Shift": -0.19,
+       "Facing": "SW",
        "GoalArea": 74,
+       "Shift": -0.19,
        "Side": "enemy"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caochun",
-       "Text": "호표기가 더 왔다! 다리 머리를 메워라!"
       }
      ]
     }
    ]
   },
   {
+   "ID": "tiger-crossing",
+   "If": [
+    "turnstart:enemy",
+    "round>=5"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "tiger"
+     ],
+     "Policy": "march",
+     "GoalArea": 70
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "zhanghe-force",
+      "xuchu-force",
+      "rear"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
    "ID": "bridge-roar",
    "If": [
-    "at:zhaoyun:70"
+    "at:zhaoyun:70",
+    "alive:zhangfei",
+    "!at:enemy:70"
    ],
    "Do": [
     {
@@ -459,19 +702,12 @@
       [
        {
         "Kind": "move",
-        "Unit": "zhangfei",
+        "Unit": "enemy",
         "To": {
-         "X": 17,
-         "Y": 28
+         "X": 13,
+         "Y": 22
         },
-        "Facing": "NE"
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "zhangfei",
-        "Text": "연인 장익덕이 여기 있다! 죽고 싶은 놈은 나와라!"
+        "Facing": "SW"
        }
       ]
      ]
@@ -480,12 +716,43 @@
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "xiahoujie",
        "X": 17,
-       "Y": 24,
-       "Group": "jie",
+       "Y": 23,
+       "Character": "xiahoudun",
+       "Group": "bridge-command",
        "Policy": "hold",
        "Facing": "SW",
+       "Rank": "commander",
+       "Side": "enemy"
+      },
+      {
+       "X": 16,
+       "Y": 24,
+       "Character": "troop_footman",
+       "Group": "bridge-foot",
+       "Policy": "hold",
+       "Facing": "SW",
+       "Rank": "troop",
+       "Side": "enemy"
+      },
+      {
+       "X": 18,
+       "Y": 24,
+       "Character": "troop_cavalry",
+       "Group": "bridge-horse",
+       "Policy": "hold",
+       "Facing": "SW",
+       "Rank": "troop",
+       "Side": "enemy"
+      },
+      {
+       "X": 19,
+       "Y": 23,
+       "Character": "troop_footman",
+       "Group": "bridge-spotter",
+       "Policy": "hold",
+       "Facing": "SW",
+       "Rank": "troop",
        "Side": "enemy"
       }
      ]
@@ -495,16 +762,183 @@
      "Steps": [
       [
        {
-        "Kind": "play",
-        "Unit": "xiahoujie",
-        "Motion": "hit"
+        "Kind": "move",
+        "Unit": "bridge-foot",
+        "To": {
+         "X": 17,
+         "Y": 26
+        },
+        "Facing": "SW"
+       },
+       {
+        "Kind": "move",
+        "Unit": "bridge-horse",
+        "To": {
+         "X": 17,
+         "Y": 25
+        },
+        "Facing": "SW"
        }
       ],
       [
        {
         "Kind": "play",
-        "Unit": "xiahoujie",
-        "Motion": "exhausted"
+        "Unit": "zhangfei",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "bridge-foot",
+        "Motion": "hit"
+       },
+       {
+        "Kind": "play",
+        "Unit": "bridge-horse",
+        "Motion": "hit"
+       }
+      ],
+      [
+       {
+        "Kind": "fall",
+        "Unit": "bridge-foot"
+       },
+       {
+        "Kind": "fall",
+        "Unit": "bridge-horse"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "xiahoudun",
+        "Text": "길을 비켜라! 내가 뚫겠다."
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "xiahoudun",
+        "To": {
+         "X": 17,
+         "Y": 26
+        },
+        "Facing": "SW"
+       }
+      ],
+      [
+       {
+        "Kind": "play",
+        "Unit": "xiahoudun",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "zhangfei",
+        "Motion": "block"
+       }
+      ],
+      [
+       {
+        "Kind": "play",
+        "Unit": "xiahoudun",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "zhangfei",
+        "Motion": "block"
+       }
+      ],
+      [
+       {
+        "Kind": "play",
+        "Unit": "zhangfei",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "xiahoudun",
+        "Motion": "hit"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "xiahoudun",
+        "To": {
+         "X": 17,
+         "Y": 23
+        },
+        "Facing": "SW"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "zhangfei",
+        "Text": "난 다리만 지킬 테니, 내 걱정 말고 천천히들 가슈!"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "xiahoudun",
+        "Text": "제길, 저놈은 지치지도 않는군."
+       }
+      ],
+      [
+       {
+        "Kind": "dust",
+        "To": {
+         "X": 18,
+         "Y": 29
+        },
+        "Seconds": 1.2
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "bridge-spotter",
+        "Text": "장군, 다리 뒤에 먼지가 일어납니다. 복병 아닙니까?"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "xiahoudun",
+        "Text": "여기서 지체할 수 없다. 길을 돌아 강릉으로 간다!"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "xiahoudun",
+        "To": {
+         "X": 13,
+         "Y": 21
+        },
+        "Facing": "NW"
+       },
+       {
+        "Kind": "move",
+        "Unit": "bridge-spotter",
+        "To": {
+         "X": 14,
+         "Y": 21
+        },
+        "Facing": "NW"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "zhangfei",
+        "To": {
+         "X": 17,
+         "Y": 32
+        },
+        "Facing": "SW"
        }
       ]
      ]
@@ -512,16 +946,13 @@
     {
      "Kind": "remove",
      "Targets": [
-      "jie"
+      "enemy"
      ]
     },
     {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caochun",
-       "Text": "……숲에 먼지가 인다. 매복이다. 멈춰라!"
-      }
+     "Kind": "lockmove",
+     "Targets": [
+      "zhangfei"
      ]
     }
    ]

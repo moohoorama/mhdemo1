@@ -66,6 +66,10 @@ type scene struct {
 	dust      []dustPuff             // dust kicked up by targets driven back by a blow
 	arrows    []*sceneArrow          // arrows loosed by Play steps with an Arrow
 	tied      map[string]*sprite.Art // bound prisoners, with the art they stand in once untied
+	arrive    map[string]string      // adopted actors walking to their places, with the facing they take there
+	base      *scenes.Scene          // the scene the stage was built from (an adopted event keeps the walk's)
+	tod       string                 // the time of day the stage was last given
+	settle    bool                   // adopted actors are walking to their places: the node's first line waits for them
 }
 
 type patrol struct {
@@ -142,7 +146,7 @@ func (g *Game) enterScene(o core.Observation) bool {
 	if g.scene != nil && g.scene.node == o.Node {
 		return true
 	}
-	if (g.scene == nil || g.scene.def != def || g.field == nil || g.field.Map.ID != def.Map) && !g.adoptScene(def) && !(g.layOutWalkFor(def) && g.adoptScene(def)) {
+	if (g.scene == nil || g.scene.def != def || g.field == nil || g.field.Map.ID != def.Map) && !g.adoptScene(def, at) && !(g.layOutWalkFor(def) && g.adoptScene(def, at)) {
 		g.openScene(def)
 		for _, n := range def.Nodes[:at] {
 			g.settleNode(n)
@@ -151,6 +155,9 @@ func (g *Game) enterScene(o core.Observation) bool {
 	s := g.scene
 	s.node, s.held, s.focus = o.Node, map[string]bool{}, ""
 	g.startLine(0)
+	if s.settle {
+		s.groups, s.settle = append([][]scenes.Step{{{}}}, s.groups...), false
+	}
 	return true
 }
 
@@ -173,6 +180,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 		paths: map[string][][2]float64{}, speed: map[string]float64{}, exits: map[string]bool{}, plays: map[string]string{},
 		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{},
 		free: map[string]bool{}, stride: map[string]float64{}, back: map[string]string{}, swing: map[string]string{}}
+	s.base = def
 	g.scene = s
 	for key, a := range def.Cast {
 		if v := g.castActor(key, a); v != nil {
@@ -232,6 +240,9 @@ func (g *Game) sceneCam() (float64, float64) {
 // setSceneTime darkens or tints the scene: night is the battle maps' night, dusk and dawn a lighter wash,
 // memory an even faded brown for a scene remembered.
 func (g *Game) setSceneTime(t string) {
+	if g.scene != nil {
+		g.scene.tod = t
+	}
 	f := g.field
 	f.setNight(t != "", nil)
 	f.night.color = map[string]color.NRGBA{"night": nightColor, "dusk": {R: 70, G: 28, B: 12, A: 95}, "dawn": {R: 30, G: 40, B: 80, A: 85},
@@ -303,6 +314,10 @@ func (g *Game) updateScene(dt float64) {
 			}
 			s.paths[key] = p[1:]
 		} else if v.walk == nil && len(p) == 0 {
+			if dir := s.arrive[key]; dir != "" {
+				v.dir = dir
+				delete(s.arrive, key)
+			}
 			if pt := s.patrol[key]; pt != nil {
 				s.paths[key] = scenePath(v.u, v.v, pt.ends[pt.next][0], pt.ends[pt.next][1])
 				pt.next = 1 - pt.next
@@ -372,11 +387,13 @@ func (g *Game) updateScene(dt float64) {
 		s.camU, s.camV = a.u, a.v
 		s.zoneHeld = false
 	}
-	tx, ty := g.sceneCam()
-	if len(s.def.Nodes) > 0 { // a story scene, not a walk the hero leads
-		tx, ty = g.keepInView(tx, ty)
+	if g.show == nil { // the flood frames its own shots
+		tx, ty := g.sceneCam()
+		if len(s.def.Nodes) > 0 { // a story scene, not a walk the hero leads
+			tx, ty = g.keepInView(tx, ty)
+		}
+		g.panCamera(tx, ty, dt, len(s.def.Nodes) > 0)
 	}
-	g.panCamera(tx, ty, dt, len(s.def.Nodes) > 0)
 	g.updateShot(dt)
 	g.updateStrikes(dt)
 	g.updateArrows(dt)
@@ -504,6 +521,9 @@ func (g *Game) startStep(st scenes.Step) {
 	}
 	if st.Wait > 0 {
 		s.wait = math.Max(s.wait, st.Wait)
+	}
+	if st.Surge != "" {
+		g.beginSceneSuigong(st) // sets the wait for the whole show
 	}
 	if st.Intro != "" {
 		g.startIntro(st.Intro)

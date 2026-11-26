@@ -142,14 +142,15 @@
    "Cast": {
     "유비": {"Stay": true},
     "동자": {"Stay": true},
-    "관우": {"At": [5, 1], "Face": "NW", "Off": true},
-    "장비": {"At": [5, 3], "Face": "NW", "Off": true},
+    "관우": {"At": [5, 1], "Face": "NW", "Stay": true},
+    "장비": {"At": [5, 3], "Face": "NW", "Stay": true},
     "제갈량": {"At": [3, 1], "Face": "SE", "Off": true}
    },
    "Beats": {
     "c24-c01": [
      [
-      [{"Actor": "관우", "Enter": [7, 1], "Move": [5, 1]}, {"Actor": "장비", "Enter": [7, 3], "Move": [5, 3], "After": 0.4}]
+      [{"Actor": "관우", "Move": [5, 1]}, {"Actor": "장비", "Move": [5, 3], "After": 0.4}],
+      [{"Actor": "관우", "Face": "NW"}, {"Actor": "장비", "Face": "NW"}]
      ]
     ],
     "c24-c03": [

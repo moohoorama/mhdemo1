@@ -24,6 +24,12 @@ func curve(x float64, pts content.Curve) float64 {
 }
 func chance(c content.Chance, r float64) float64 { return clamp(c.Base+c.Per*(r-1), 0, c.Max) }
 
+// rangePowerCells is how many cells beyond two the distance can add to 원거리 위력.
+const rangePowerCells = 4
+
+// walked is the cells the unit walked in its own last turn, which count until its next turn begins.
+func (e *Engine) walked(u *Unit) int { return u.Steps + u.LastSteps }
+
 // damage is the unrounded damage of one blow before its terrain and critical boost, share and armor-like reductions.
 func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	R := e.data.Rules
@@ -43,52 +49,62 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		if e.has(u, content.FxTerrainCap) {
 			tf = math.Min(tf, 1)
 		}
-		base = math.Max(1, float64(a.Attack)*af-float64(b.Defense)*tf+level*R.PhysicalLevelScale)
+		defense := float64(b.Defense)
+		if k := e.fx(v, content.FxRangedDefense); k > 0 && e.rangedAttack(u, v, s) {
+			_, kd := e.coefficients(v, b.MaxHP)
+			defense = math.Max(1, math.Floor(float64(e.baseStats(v)[1])*(kd+k))) // 방패술 joins the defense coefficient against shots
+		}
+		base = math.Max(1, float64(a.Attack)*af-defense*tf+level*R.PhysicalLevelScale)
 	}
 	out := base * s.Coeff
 	if s.MagicCoeff > 0 {
 		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
 	}
+	// Every share a blow gains or loses is added into one coefficient and applied once.
+	plus, minus := 0.0, 0.0
 	if s.Kind == content.KindMagic {
 		out *= R.MagicPower
 		if R.MagicWardSpan > 0 {
 			out *= 1 - clamp((e.attributes(e.char(v.Character))[2]-R.MagicWardFrom)/R.MagicWardSpan, 0, 1)
 		}
-		out *= 1 + e.fx(u, content.FxPower+s.Element)
+		plus += e.fx(u, content.FxPower+s.Element)
 		if mp := e.castingMP(u); mp > 50 && e.has(u, content.FxPatience) {
-			out *= 1 + float64(mp-50)/100
+			plus += float64(mp-50) / 100
 		}
 		if k := e.fx(u, content.FxFinisher); k > 0 {
-			out *= 1 + k*(1-float64(v.HP)/float64(max(1, b.MaxHP)))
+			plus += k * (1 - float64(v.HP)/float64(max(1, b.MaxHP)))
+		}
+		minus += e.fx(v, content.FxMagicWard) + min(e.fx(v, content.FxWard+s.Element), 1) // 수영: water spells
+	} else if s.Kind == content.KindPhysical {
+		ranged := e.rangedAttack(u, v, s)
+		minus += min(e.fx(v, content.FxPhysicalWard), 1)
+		if ranged {
+			minus += min(e.fx(v, content.FxRangedWard), 1)
+			plus += e.fx(u, content.FxRangePower)*float64(min(rangePowerCells, max(0, dist(u.X, u.Y, v.X, v.Y)-2))) +
+				e.fx(u, content.FxDenseFire)*float64(e.around(u, true))
+		} else {
+			minus += e.fx(v, content.FxMeleeWard)
+		}
+		if e.walked(u) > 0 {
+			plus += e.fx(u, content.FxMobileAttack)
+		}
+		if e.walked(v) > 0 {
+			minus += e.fx(v, content.FxMobileGuard)
+		}
+		if e.def(e.char(u.Character)).Stats[1]+10 <= e.def(e.char(v.Character)).Stats[1] {
+			minus += e.fx(v, content.FxScorn) // 안하무인: a foe ten 무력 below it
 		}
 	}
-	if k := e.fx(v, content.FxRangedWard); k > 0 && s.Kind == content.KindPhysical && e.rangedAttack(u, v, s) {
-		out *= 1 - min(k, 1) // shares from different traits (own 원거리피해감소, 거울) add up
-	}
-	if k := e.fx(v, content.FxPhysicalWard); k > 0 && s.Kind == content.KindPhysical {
-		out *= 1 - min(k, 1)
-	}
-	if k := e.fx(v, content.FxMagicWard); k > 0 && s.Kind == content.KindMagic {
-		out *= 1 - k
-	}
-	if k := e.fx(v, content.FxWard+s.Element); k > 0 && s.Kind == content.KindMagic {
-		out *= 1 - min(k, 1) // 수영: water spells
-	}
 	if k := e.fx(u, content.FxOpening); k > 0 {
-		out *= 1 + k*math.Max(0, float64(v.HP)/float64(max(1, b.MaxHP))-.5)
+		plus += k * math.Max(0, float64(v.HP)/float64(max(1, b.MaxHP))-.5)
 	}
 	if k := e.fx(u, content.FxDesperate); k > 0 && e.wounded(u) {
-		out *= 1 + k
+		plus += k
 	}
 	if k := e.fx(v, content.FxGrit); k > 0 && e.wounded(v) {
-		out *= 1 - k
+		minus += k
 	}
-	if s := v.Status[holdGround]; s.Turns > 0 {
-		out *= 1 - float64(s.Value)/100
-	}
-	if k := e.fx(v, content.FxScorn); k > 0 && s.Kind == content.KindPhysical && e.def(e.char(u.Character)).Stats[1]+10 <= e.def(e.char(v.Character)).Stats[1] {
-		out *= 1 - k // 안하무인: a foe ten 무력 below it
-	}
+	out *= math.Max(0, 1+plus-minus)
 	if d := e.difficulty(); u.Faction != v.Faction { // 쉬움: the player's side hits harder and is hit softer
 		if p := d.DealtPct; p > 0 && u.Faction == "ally" {
 			out *= float64(p) / 100
@@ -143,6 +159,10 @@ func (e *Engine) rangedAttack(u, v *Unit, s content.Skill) bool {
 	return ranged
 }
 func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
+	return e.hitChanceFor(u, v, s, false)
+}
+
+func (e *Engine) hitChanceFor(u, v *Unit, s content.Skill, direct bool) float64 {
 	R := e.data.Rules
 	h := float64(s.Hit)
 	if confused(u) && (s.Kind == content.KindPhysical || s.Kind == content.KindMagic || s.Kind == content.KindStatus) {
@@ -162,6 +182,9 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		}
 		h += curve(e.ratio(e.stats(u).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade) + e.fx(u, content.FxAccuracy) +
 			e.fx(u, content.FxChargeAccuracy)*float64(u.Steps)
+		if direct && ranged && u.Steps >= 3 && u.ActsIn(e.state.Turn, e.state.Army) {
+			h += e.fx(u, content.FxMountedShot)
+		}
 		return clamp(h, R.HitFloor, R.HitCeil)
 	case content.KindMagic, content.KindStatus:
 		if e.has(v, content.FxDispel) && v.Faction != u.Faction {
@@ -301,11 +324,14 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	R := e.data.Rules
 	phys := s.Kind == content.KindPhysical
 	d := e.damage(u, v, s) * b.share
+	if !b.derived && u.ID == e.reprisalActor {
+		d *= 1 + e.reprisalBonus
+	}
 	if s.Kind == content.KindMagic && e.has(v, content.FxImmune+s.Element) {
 		e.hurt(v, 0, u) // 화덕성군: the fire does not touch it
 		return 0, true, false
 	}
-	hit := float64(e.rand(100)) < e.hitChance(u, v, s)
+	hit := float64(e.rand(100)) < e.hitChanceFor(u, v, s, !b.derived)
 	crit := false
 	if hit {
 		crit = e.critForced(u, v, s)
@@ -331,16 +357,20 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		}
 	}
 	n := e.hurt(v, int(math.Floor(e.bulwark(v, d))), u)
+	if hit && n > 0 && v.HP > 0 && e.has(v, content.FxReprisal) {
+		if v.Status == nil {
+			v.Status = map[string]Status{}
+		}
+		st := v.Status["reprisal"]
+		st.Turns = min(st.Turns+1, 99)
+		v.Status["reprisal"] = st
+	}
+	if hit && n > 0 && (phys || s.Kind == content.KindMagic) && u.Faction != v.Faction {
+		e.poisonOnHit(u, v)
+	}
 	if hit && n > 0 && phys {
 		if k := e.fx(u, content.FxPlunder); k > 0 && !u.NPC() {
 			e.state.Money += int(k)
-		}
-		if e.has(u, content.FxPoison) {
-			e.applyStatus(v, "poison", 3, 0)
-			if status, ok := v.Status["poison"]; ok {
-				status.Source = u.ID
-				v.Status["poison"] = status
-			}
 		}
 		for id := range content.StatStatuses {
 			if e.has(u, content.FxHitDebuff+id) {
@@ -359,8 +389,16 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	return n, hit, crit
 }
 
-// holdGround is the status 진지고수 leaves on a unit that ended its own turn without walking: blows on it deal
-// Value percent less until its next turn starts.
+func (e *Engine) poisonOnHit(u, v *Unit) {
+	if e.has(u, content.FxPoison) && e.applyStatus(v, "poison", 3, 0) {
+		status := v.Status["poison"]
+		status.Source = u.ID
+		v.Status["poison"] = status
+	}
+}
+
+// holdGround is the status 진지고수 leaves on a unit that ended its own turn without walking: its defense counts
+// Value percent higher until its next turn starts.
 const holdGround = "hold_ground"
 
 // standFast gives u 진지고수's guard when it ends its turn where the turn began.
@@ -438,14 +476,14 @@ func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[s
 					v.MP -= lost
 					u.MP += min(max(0, e.stats(u).MaxMP-u.MP), lost/2)
 				}
-				if k := int(e.fx(u, content.FxRangedSlow)); k > 0 && v.HP > 0 && e.rangedAttack(u, v, s) {
+				if k := int(e.fx(u, content.FxRangedSlow)); k > 0 && v.HP > 0 {
 					e.applyStatus(v, "speed", 1, -k)
 				}
 			}
 			if hit && s.Mark && !slices.Contains(marked, v) {
 				marked = append(marked, v)
 			}
-			if knock && canPush && hit && v.HP > 0 {
+			if knock && canPush && hit && v.HP > 0 && !v.MoveLocked {
 				from := content.Point{X: v.X, Y: v.Y}
 				v.X, v.Y = push.X, push.Y
 				e.events = append(e.events, Event{Kind: "knockback", Actor: u.ID, Target: v.ID, Path: []content.Point{from, push}})
@@ -715,6 +753,11 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		u.Attacked = true
 	}
 	start := len(e.events)
+	if s.Kind == content.KindPhysical || s.Kind == content.KindMagic {
+		e.reprisalActor = u.ID
+		e.reprisalBonus = float64(u.Status["reprisal"].Turns) * e.fx(u, content.FxReprisal)
+		defer func() { e.reprisalActor, e.reprisalBonus = "", 0 }()
+	}
 	if s.Kind == content.KindPhysical {
 		e.physical(u, v, s, c)
 	} else {
@@ -943,6 +986,10 @@ func (e *Engine) pouchHeal(v *Unit) {
 
 // spell resolves a magic, status, buff, heal or mixed skill on every unit it reaches.
 func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
+	e.castSpell(u, v, s, c, false)
+}
+
+func (e *Engine) castSpell(u, v *Unit, s content.Skill, c Command, reflected bool) {
 	R := e.data.Rules
 	hp := u.HP
 	dealt := map[string]int{}
@@ -950,7 +997,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	apply := func(q *Unit, derived bool) {
 		if s.Kind == content.KindMagic {
 			struck = append(struck, q)
-			n, hit, crit := e.strike(u, q, s, blow{share: 1})
+			n, hit, crit := e.strike(u, q, s, blow{share: 1, derived: reflected})
 			dealt[q.ID] += n
 			if crit && s.TerrainTurns == 0 {
 				e.markCell(q.X, q.Y, s.Element)
@@ -972,7 +1019,8 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 				}
 			}
 			if !derived && e.has(q, content.FxReflect) && q.HP > 0 && u.HP > 0 && !confused(q) {
-				e.strike(q, u, s, blow{share: 1, derived: true})
+				e.events = append(e.events, Event{Kind: "counter-spell", Actor: q.ID, Target: u.ID, Text: c.Skill})
+				e.castSpell(q, u, s, c, true)
 			}
 			return
 		}
@@ -1041,6 +1089,9 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 				useful = e.applyStatus(q, s.Effect, turns, 0)
 			}
 		}
+		if (s.Kind == content.KindStatus || s.Kind == content.KindMixed) && q.Faction != u.Faction {
+			e.poisonOnHit(u, q)
+		}
 		if s.Kind == content.KindStatus && q.Faction != u.Faction && e.has(u, content.FxDispelBuffs) {
 			useful = stripBuffs(q) || useful
 		}
@@ -1065,7 +1116,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	}
 	reached := e.targets(u, v, s)
 	for _, q := range reached {
-		apply(q, false)
+		apply(q, reflected)
 	}
 	if s.TerrainTurns > 0 {
 		st := e.data.Stages[e.state.Stage]
@@ -1077,7 +1128,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	}
 	if s.Shape == content.ShapeSingle && s.Mode != content.ModeSelf && e.has(u, content.FxChain) {
 		if q := e.weakestAround(v, v.Faction); q != nil {
-			apply(q, false)
+			apply(q, reflected)
 		}
 	}
 	for _, q := range struck {
@@ -1249,8 +1300,12 @@ func (e *Engine) endFaction() {
 			e.standFast(u) // a unit left standing when its side ends the turn holds its ground too
 		}
 		u.WalkedLastTurn = u.Steps > 0
-		u.Steps = 0 // 돌진 and 기습 count the walk of the unit's own turn: no charged counters on the other side's
+		u.LastSteps, u.Steps = u.Steps, 0 // 돌진 and 기동 keep the walk through the other side's turn; 기습 counts only the unit's own
 		for _, k := range keys(u.Status) {
+			if k == "reprisal" {
+				delete(u.Status, k)
+				continue
+			}
 			s := u.Status[k]
 			if k == "counter" || k == holdGround {
 				continue // counter and 진지고수 end on their own, at the unit's next turn
@@ -1306,7 +1361,7 @@ func (e *Engine) endFaction() {
 		}
 		delete(u.Status, "counter")
 		delete(u.Status, holdGround)
-		u.Steps = 0
+		u.Steps, u.LastSteps = 0, 0
 		st := e.stats(u)
 		if u.Status["poison"].Turns > 0 {
 			e.dot(u, "poison", st.MaxHP*R.PoisonPercent/100)
@@ -1413,25 +1468,30 @@ func (e *Engine) endFaction() {
 	e.events[len(e.events)-1].Text = e.state.Army
 }
 
-// passAilments is 전가: the unit's harmful statuses and stat debuffs pass to one adjacent ally.
+// passAilments transfers harmful statuses and stat debuffs to one adjacent enemy.
 func (e *Engine) passAilments(u *Unit) {
 	for _, p := range ring {
 		w := e.occupied(u.X+p.X, u.Y+p.Y)
-		if w == nil || w.Faction != u.Faction {
+		if w == nil || w.Faction == u.Faction || w.HP <= 0 {
 			continue
 		}
 		moved := false
 		for _, k := range keys(u.Status) {
-			if st := u.Status[k]; content.Harmful[k] || content.StatStatuses[k] && st.Value < 0 {
-				w.Status[k] = st
+			st := u.Status[k]
+			if (content.Harmful[k] || content.StatStatuses[k] && st.Value < 0) && e.applyStatus(w, k, st.Turns, st.Value) {
+				if content.Harmful[k] {
+					transferred := w.Status[k]
+					transferred.Source = st.Source
+					w.Status[k] = transferred
+				}
 				delete(u.Status, k)
 				moved = true
 			}
 		}
 		if moved {
 			e.emit("effect", u.ID, w.ID, 0)
+			return
 		}
-		return
 	}
 }
 func (e *Engine) dot(v *Unit, id string, n int) {

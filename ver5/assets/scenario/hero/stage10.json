@@ -26,39 +26,7 @@
      "Lines": [
       {
        "Actor": "yuanshao",
-       "Text": "공손찬의 백마도 오늘로 끝이다. 국의, 노병을 이끌고 다리 머리를 맡아라."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "tianfeng",
-       "Text": "주공, 노병만 앞에 내놓으시면 위험합니다. 본진을 강가로 붙여 한 놈도 건너오지 못하게 막으셔야 합니다."
-      }
-     ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "face",
-        "Unit": "yuanshao",
-        "Motion": "",
-        "Facing": "NE",
-        "Text": ""
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuanshao",
-       "Text": "막으면 공손찬은 또 달아나오. 얇은 앞줄을 보면 백마를 몽땅 몰고 건너올 게요. 노병으로 꺾어 놓은 뒤, 본진이 단번에 쓸어버린다. 문추는 그때까지 내 곁에 있어라."
+       "Text": "국의, 다리를 지켜라."
       }
      ]
     },
@@ -82,6 +50,38 @@
       {
        "Actor": "quyi",
        "Text": "맡겨 두십시오. 내 눈부신 승리 기록이 하나 또 추가되겠군요."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "tianfeng",
+       "Text": "주공, 공손찬이 물러났다가 다시 온 데는 까닭이 있을 것입니다."
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "yuanshao",
+        "Motion": "",
+        "Facing": "NE",
+        "Text": ""
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "까닭이야 무엇이든, 건너오면 쳐부수면 그만이오."
       }
      ]
     },
@@ -147,57 +147,208 @@
    ]
   },
   {
-   "ID": "pincer",
+   "ID": "hint-wait",
    "If": [
-    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round\u003e=4]"
+    "round\u003e=3",
+    "!flag:flag-jiejiao-ambush",
+    "!any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1]"
    ],
    "Do": [
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "yuanshao",
-       "Text": "여울로 돌아 들어왔다고……? 문추, 나가서 저 깃발을 꺾어라!"
+       "Actor": "tianfeng",
+       "Text": "공손찬이 아직 다리에 오르지 않습니다."
       }
      ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "조급해할 것 없소. 오면 맞아 주면 되지."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ambush",
+   "If": [
+    "turnstart:enemy",
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round\u003e=4]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "wen",
+       "Side": "enemy",
+       "Character": "wenchou",
+       "X": 8,
+       "Y": 15,
+       "Rank": "commander"
+      },
+      {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "wen",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 8,
+       "Y": 14,
+       "Rank": "recruit"
+      },
+      {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "wen",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 8,
+       "Y": 16,
+       "Rank": "recruit"
+      },
+      {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "wen",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 9,
+       "Y": 15,
+       "Rank": "recruit"
+      }
+     ]
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-jiejiao-ambush": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "ambush-crossed",
+   "If": [
+    "flag:flag-jiejiao-ambush",
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1]",
+    "!flag:flag-jiejiao-late"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-jiejiao-crossed": 1
+     }
     },
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "wenchou",
-       "Text": "하북의 문추가 간다! 저놈들을 계수에 처넣어라!"
+       "Text": "걸렸다! 유비군을 쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gongsunzan",
+       "Text": "현덕! 뒤를 조심하게!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "지금이다! 전군, 공격하라!"
       }
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
-      "wen"
+      "hq",
+      "hq-guard",
+      "crossbows",
+      "xbows",
+      "line",
+      "wen",
+      "white"
      ],
      "Policy": "assault"
     }
    ]
   },
   {
-   "ID": "white-charge",
+   "ID": "ambush-late",
    "If": [
-    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round\u003e=5]",
-    "round\u003e=4"
+    "flag:flag-jiejiao-ambush",
+    "!any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1]",
+    "!flag:flag-jiejiao-crossed"
    ],
    "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-jiejiao-late": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "wenchou",
+       "Text": "더는 못 기다리겠다! 공격!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "tianfeng",
+       "Text": "주공, 문추 장군이 먼저 나섰습니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "할 수 없군. 전군, 공격하라!"
+      }
+     ]
+    },
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "gongsunzan",
-       "Text": "현덕이 등을 쳤다! 백마의종, 다리를 건너라!"
+       "Text": "적이 움직였다! 전군, 공격하라!"
       }
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
+      "hq",
+      "hq-guard",
+      "crossbows",
+      "xbows",
+      "line",
+      "wen",
       "white"
      ],
      "Policy": "assault"
@@ -240,7 +391,7 @@
      "Lines": [
       {
        "Actor": "yanliang",
-       "Text": "거록의 빚을 갚으러 왔다! 장익덕은 어디 있느냐!"
+       "Text": "하북의 안량이 왔다! 장익덕은 어디 있느냐!"
       }
      ]
     },
@@ -276,7 +427,7 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "안 장군은 오지 못합니다. 돌격할 병력이 모자라니 이제라도 강가를 굳게 지키십시오."
+       "Text": "안 장군은 오지 못합니다. 병력이 모자라니 강가를 굳게 지키십시오."
       }
      ]
     },
@@ -303,7 +454,7 @@
      "Lines": [
       {
        "Actor": "yuanshao",
-       "Text": "문추가 물러났다고……? 전군, 총공격이다! 다리를 건너 공손찬을 쳐라!"
+       "Text": "문추가 물러났다고……? 내가 직접 나서겠다!"
       }
      ]
     },
@@ -365,7 +516,7 @@
      "Lines": [
       {
        "Actor": "yuanshao",
-       "Text": "문추가 물러났다고……? 전군, 총공격이다! 다리를 건너 공손찬을 쳐라!"
+       "Text": "문추까지 물러났다고……? 내가 직접 나서겠다!"
       }
      ]
     },
@@ -374,7 +525,7 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "노병이 무너졌습니다. 본진을 물려 다리를 끊고 다음을 기약하십시오."
+       "Text": "노병이 무너졌습니다. 본진을 물려 다음을 기약하십시오."
       }
      ]
     },
@@ -420,7 +571,7 @@
      "Lines": [
       {
        "Actor": "yuanshao",
-       "Text": "국의의 노병까지……! 물러서지 마라, 나는 사세삼공의 원본초다!"
+       "Text": "국의의 노병까지……! 물러서지 마라! 나는 사세삼공의 원본초다!"
       }
      ]
     },
@@ -438,13 +589,13 @@
   {
    "ID": 1,
    "Rect": {
-    "X": 13,
-    "Y": 6,
-    "W": 3,
-    "H": 5
+    "X": 14,
+    "Y": 12,
+    "W": 6,
+    "H": 6
    },
-   "Name": "다리 동쪽 머리",
-   "Description": "유비군이 여울로 돌아 닿으면 문추가 나온다"
+   "Name": "여울 건너편",
+   "Description": "유비군이 여울로 돌아 닿으면 원소군이 총공격에 나선다"
   }
  ],
  "ID": "B10",
@@ -560,42 +711,6 @@
    "Character": "troop_archer",
    "X": 14,
    "Y": 9
-  },
-  {
-   "Policy": "hold",
-   "Facing": "NW",
-   "Group": "wen",
-   "Character": "wenchou",
-   "X": 21,
-   "Y": 11,
-   "Rank": "commander"
-  },
-  {
-   "Policy": "hold",
-   "Facing": "NW",
-   "Group": "wen",
-   "Character": "troop_cavalry",
-   "X": 20,
-   "Y": 11,
-   "Rank": "recruit"
-  },
-  {
-   "Policy": "hold",
-   "Facing": "NW",
-   "Group": "wen",
-   "Character": "troop_cavalry",
-   "X": 21,
-   "Y": 12,
-   "Rank": "recruit"
-  },
-  {
-   "Policy": "hold",
-   "Facing": "NW",
-   "Group": "wen",
-   "Character": "troop_cavalry",
-   "X": 20,
-   "Y": 12,
-   "Rank": "recruit"
   },
   {
    "Policy": "hold",

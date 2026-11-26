@@ -39,7 +39,7 @@
 
 `Rules.GearTiers`(`game.json`)는 `{Chapter, Tier}`의 오름차순 표로, 장 번호가 `Chapter` 이상이면 그 `Tier`다. 로드할 때 전투 노드가 든 장 번호로 `Stage.GearTier`를 정한다. 전투에서 적·AI 병력(`Temp`)은 `Equipment`를 덮어쓰지 않은 스폰이라면 일반 장비를 그 스테이지의 단계로 바꿔 입는다(`Data.GearAt`, 같은 `Line`의 그 단계 장비). 스폰이 `Equipment`를 적으면 그대로 입는다. 단계가 없는 고유 장비는 그대로다. 새로 합류하는 장수도 합류하는 전투의 단계로 바꿔 입는다. 시작 장비는 모두 1단계로 적고, 병종이 못 드는 장비는 `refitGear`가 값이 가까운 같은 칸의 상점 장비로 바꾼다(단계마다 값이 같아 같은 단계끼리 맞는다).
 
-상점 `weapons`는 1단계, `weapons_iron`은 2단계 장비를 판다. 19장 업의 대장간만 `weapons_iron`이라, 철 계열은 업부터 살 수 있다. 상점의 `Mark`가 `"red"`이면 탐험 안내 판(대장장이와 그 가게로 드는 문)이 빨강이고(`plateHot`), 없으면 노랑이다. 업만 빨강이라 다음 스테이지에서는 다시 노랑이다.
+상점 `weapons`는 1단계, `weapons_iron`은 2단계 장비를 판다. 19장 업의 대장간만 `weapons_iron`이라, 철 계열은 업부터 살 수 있다. 그 탐험에서 처음 팔리는 물건이 있는 상점(`Data.NewStock`, [presentation-explore.md](presentation-explore.md) "새 상품 안내")은 탐험 안내 판(대장장이와 그 가게로 드는 문)이 빨강이고(`plateHot`), 아니면 노랑이다. 업은 처음이라 빨강이고, 다음 탐험에서는 다시 노랑이다.
 
 ### 장착 규칙
 
