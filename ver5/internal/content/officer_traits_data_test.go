@@ -22,9 +22,9 @@ func TestOfficerTraitDecisions(t *testing.T) {
 			"mizhu":    {"fire_star"},
 			"jianyong": {"cheer"},
 			"sunqian":  {"swiftness", "even_hand", "lecture"},
-			"mifang":   {"hold_ground", "first_aid"},
+			"mifang":   {"physical_ward", "first_aid"},
 			"zhoucang": {"swim", "swiftness"},
-			"liupi":    {"mountain_footing", "earth_boost"},
+			"liupi":    {"earth_boost"},
 		} {
 			for _, tr := range traits {
 				assert.Contains(t, d.Characters[id].Learn, tr, "%s learns %s", id, tr)
@@ -49,10 +49,16 @@ func TestOfficerTraitDecisions(t *testing.T) {
 			{"benevolence", "용인술", 700, []string{"deputy_appoint"}, map[string]float64{"deputy_plus": 10}},
 			{"even_hand", "지균", 1500, nil, map[string]float64{"aura_buff:agility": 20}},
 			{"lecture", "강론", 1000, nil, map[string]float64{"aura_mana": .1}},
-			{"hold_ground", "진지고수", 1200, nil, map[string]float64{"hold_ground": .3}},
+			{"physical_ward", "물리피해감소", 1500, nil, map[string]float64{"physical_ward": .2}},
+			{"hold_ground", "진지고수", 1000, nil, map[string]float64{"hold_ground": .3}},
+			{"shield_art", "방패술", 1000, nil, map[string]float64{"ranged_defense": .3}},
+			{"ranged_ward", "원거리피해감소", 1500, nil, map[string]float64{"ranged_ward": .5}},
+			{"formation_guard", "밀집대형", 800, nil, map[string]float64{"formation_defense": .04}},
+			{"castle_footing", "성내지형보조", 500, nil, map[string]float64{"castle_factor": .05}},
+			{"water_footing", "물지형보조", 500, nil, map[string]float64{"wet_factor": .05}},
 			{"swiftness", "신속", 1000, nil, map[string]float64{"haste": 2}},
-			{"swim", "수영", 1000, nil, map[string]float64{"wet_factor": .2, "ward:water": .5}},
-			{"mountain_footing", "산악지형보조", 1000, nil, map[string]float64{"ambush_factor": .05}},
+			{"swim", "수영", 1500, nil, map[string]float64{"swim_factor": .1, "ward:water": .5}},
+			{"mountain_footing", "산악지형보조", 500, nil, map[string]float64{"ambush_factor": .05}},
 			{"terrain_mend", "지형정비", 1000, nil, nil},
 		} {
 			tr, ok := d.Traits[c.id]
@@ -120,4 +126,26 @@ func TestOfficerTraitDecisions(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestRuffianLineTeachesMountainFooting(t *testing.T) {
+	d, err := Load("../../assets/data")
+	require.NoError(t, err)
+	assert.Contains(t, d.Classes["ruffian"].Pool, "mountain_footing")
+	assert.Contains(t, d.Classes["outlaw"].AllPool(), "mountain_footing", "유벽 learns it through his class")
+}
+
+func TestFazhengLearnsMountainFooting(t *testing.T) {
+	d, err := Load("../../assets/data")
+	require.NoError(t, err)
+	assert.Contains(t, d.Characters["fazheng"].Traits, "mountain_footing")
+	assert.Contains(t, d.Characters["fazheng"].Learn, "mountain_footing")
+}
+
+func TestLifeStealIsAvailableToPugilistAndOutlaw(t *testing.T) {
+	d, err := Load("../../assets/data")
+	require.NoError(t, err)
+	assert.InDelta(t, .1, d.Traits["drain"].Effects[FxLifeSteal], 1e-9)
+	assert.Contains(t, d.Classes["pugilist"].Pool, "drain")
+	assert.Contains(t, d.Classes["outlaw"].Pool, "drain")
 }

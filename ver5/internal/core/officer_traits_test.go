@@ -80,7 +80,7 @@ func TestOfficerTraits(t *testing.T) {
 		assert.Equal(t, dry, e.terrain(boss, boss.X, boss.Y).Factor, "dry ground: as before")
 	})
 
-	t.Run("산악지형보조 adds only on woods and mountains", func(t *testing.T) {
+	t.Run("산악지형보조 adds on woods and hills", func(t *testing.T) {
 		e, hero, _ := arena(t)
 		stage := &e.data.Stages[e.state.Stage]
 		woods := content.Point{X: hero.X, Y: hero.Y + 1}
@@ -93,6 +93,27 @@ func TestOfficerTraits(t *testing.T) {
 		give(e, "hero", "mountain_footing", map[string]float64{content.FxAmbushFactor: .05})
 		assert.Equal(t, plain, e.terrain(hero, hero.X, hero.Y).Factor, "open ground: as before")
 		assert.InDelta(t, forest+.05, e.terrain(hero, woods.X, woods.Y).Factor, 1e-9)
+	})
+
+	t.Run("산악지형보조 works on both hills without changing ambush", func(t *testing.T) {
+		d, err := content.Load("../../assets/data")
+		require.NoError(t, err)
+		for _, ground := range []byte{'u', 'U'} {
+			t.Run(string(ground), func(t *testing.T) {
+				e, hero, _ := arena(t)
+				e.data.Grounds[string(ground)] = d.Grounds[string(ground)]
+				stage := &e.data.Stages[e.state.Stage]
+				row := []byte(stage.Tiles[hero.Y])
+				i := hero.X * content.CellWidth
+				row[i], row[i+1], row[i+2] = ground, '-', '-'
+				stage.Tiles[hero.Y] = string(row)
+				require.True(t, e.CellProps(hero.X, hero.Y).Highland)
+				require.False(t, e.CellProps(hero.X, hero.Y).Ambush)
+				before := e.terrain(hero, hero.X, hero.Y).Factor
+				give(e, "hero", "mountain_footing", map[string]float64{content.FxAmbushFactor: .05})
+				assert.InDelta(t, before+.05, e.terrain(hero, hero.X, hero.Y).Factor, 1e-9)
+			})
+		}
 	})
 
 	t.Run("위진화하 drops every stat round a felled foe", func(t *testing.T) {

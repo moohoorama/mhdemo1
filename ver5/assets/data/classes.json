@@ -91,7 +91,9 @@
    "Pool": [
     "deputy_appoint",
     "iron_armor",
-    "ranged_ward"
+    "shield_art",
+    "formation_guard",
+    "castle_footing"
    ],
    "Plan": [
     {
@@ -101,6 +103,10 @@
     {
      "Level": 20,
      "Trait": "brace_prep"
+    },
+    {
+     "Level": 20,
+     "Trait": "deputy_appoint"
     }
    ],
    "Promotes": [
@@ -134,7 +140,8 @@
     "deputy_appoint",
     "long_spear",
     "siegecraft",
-    "assist"
+    "assist",
+    "suppressing_shot"
    ],
    "Plan": [
     {
@@ -176,8 +183,9 @@
    "Portrait": "chariot",
    "Pool": [
     "vital_strike",
-    "charge_strike",
-    "impact"
+    "impact",
+    "mobile_attack",
+    "mobile_guard"
    ],
    "Plan": [
     {
@@ -194,7 +202,11 @@
     },
     {
      "Level": 40,
-     "Trait": "charge_strike"
+     "Trait": "mobile_attack"
+    },
+    {
+     "Level": 45,
+     "Trait": "mobile_guard"
     },
     {
      "Level": 50,
@@ -235,7 +247,10 @@
    "Pool": [
     "castle_defense",
     "siegecraft",
-    "composure"
+    "composure",
+    "castle_mind",
+    "defense_increase",
+    "hold_ground"
    ],
    "Plan": [
     {
@@ -247,8 +262,12 @@
      "Trait": "brace_prep"
     },
     {
+     "Level": 20,
+     "Trait": "deputy_appoint"
+    },
+    {
      "Level": 30,
-     "Trait": "ranged_ward"
+     "Trait": "shield_art"
     },
     {
      "Level": 40,
@@ -336,7 +355,9 @@
    "Pool": [
     "deputy_appoint",
     "counter_ward",
-    "magic_ward"
+    "magic_ward",
+    "melee_ward",
+    "charge_strike"
    ],
    "Plan": [
     {
@@ -366,11 +387,11 @@
    "Move": 5,
    "Range": 3,
    "Bonus": [
-    13,
-    7,
+    15,
+    10,
     5,
-    11,
     9,
+    8,
     15
    ],
    "HPFactor": 3,
@@ -379,11 +400,13 @@
    "Tier": 1,
    "Sprite": "horse_archer",
    "Portrait": "horse_archer",
-   "MinRange": 1,
+   "MinRange": 2,
    "Pool": [
     "deputy_appoint",
     "aim_prep",
-    "suppressing_shot"
+    "suppressing_shot",
+    "mounted_shot",
+    "close_shot"
    ],
    "Plan": [
     {
@@ -393,6 +416,14 @@
     {
      "Level": 20,
      "Trait": "dash"
+    },
+    {
+     "Level": 20,
+     "Trait": "suppressing_shot"
+    },
+    {
+     "Level": 30,
+     "Trait": "mounted_shot"
     }
    ],
    "Tags": [
@@ -413,10 +444,10 @@
    "Move": 6,
    "Range": 3,
    "Bonus": [
-    15,
-    7,
+    17,
+    10,
     5,
-    13,
+    10,
     9,
     16
    ],
@@ -430,7 +461,9 @@
    "Pool": [
     "reload_prep",
     "fire_arrow_art",
-    "rapid_art"
+    "rapid_art",
+    "agility_increase",
+    "close_shot"
    ],
    "Plan": [
     {
@@ -446,12 +479,16 @@
      "Trait": "fire_arrow_art"
     },
     {
+     "Level": 30,
+     "Trait": "mounted_shot"
+    },
+    {
      "Level": 40,
      "Trait": "aim_prep"
     },
     {
-     "Level": 50,
-     "Trait": "snipe_prep"
+     "Level": 40,
+     "Trait": "suppressing_shot"
     },
     {
      "Level": 60,
@@ -491,7 +528,8 @@
     "diagonal",
     "charge_strike",
     "impact",
-    "vital_strike"
+    "vital_strike",
+    "attack_increase"
    ],
    "Plan": [
     {
@@ -633,10 +671,11 @@
    "Portrait": "repeating_crossbow",
    "MinRange": 2,
    "Pool": [
-    "exhort",
     "penetrate_art",
     "rapid_art",
-    "far_sight"
+    "far_sight",
+    "range_power",
+    "dense_fire"
    ],
    "Plan": [
     {
@@ -657,10 +696,14 @@
     },
     {
      "Level": 50,
-     "Trait": "penetrate_art"
+     "Trait": "snipe_prep"
     },
     {
      "Level": 60,
+     "Trait": "penetrate_art"
+    },
+    {
+     "Level": 70,
      "Trait": "far_sight"
     }
    ]
@@ -692,7 +735,8 @@
    "Pool": [
     "siegecraft",
     "cross_strike",
-    "far_sight"
+    "far_sight",
+    "attack_increase"
    ],
    "Plan": [
     {
@@ -870,7 +914,8 @@
     "terrain_craft",
     "fire_boost",
     "water_boost",
-    "earth_boost"
+    "earth_boost",
+    "mind_increase"
    ],
    "Plan": [
     {
@@ -902,20 +947,20 @@
      "Trait": "spread"
     },
     {
-     "Level": 33,
-     "Trait": "fire_boost"
-    },
-    {
-     "Level": 36,
-     "Trait": "water_boost"
-    },
-    {
-     "Level": 39,
-     "Trait": "earth_boost"
+     "Level": 40,
+     "Trait": "terrain_craft"
     },
     {
      "Level": 40,
-     "Trait": "terrain_craft"
+     "Trait": "fire_boost"
+    },
+    {
+     "Level": 45,
+     "Trait": "water_boost"
+    },
+    {
+     "Level": 50,
+     "Trait": "earth_boost"
     }
    ]
   },
@@ -952,9 +997,7 @@
     "spell_lower_morale",
     "spell_lower_attack",
     "spell_lower_defense",
-    "spell_lower_mind",
-    "lasting",
-    "weak_point"
+    "spell_lower_mind"
    ],
    "Plan": [
     {
@@ -972,14 +1015,6 @@
     {
      "Level": 20,
      "Trait": "spell_lower_morale"
-    },
-    {
-     "Level": 24,
-     "Trait": "lasting"
-    },
-    {
-     "Level": 30,
-     "Trait": "weak_point"
     },
     {
      "Level": 32,
@@ -1026,8 +1061,11 @@
    ],
    "Prefer": "status",
    "Pool": [
+    "stratagem",
     "stratagem_spread",
-    "stratagem"
+    "lasting",
+    "weak_point",
+    "mind_increase"
    ],
    "Plan": [
     {
@@ -1039,24 +1077,12 @@
      "Trait": "relief"
     },
     {
-     "Level": 15,
-     "Trait": "stratagem"
-    },
-    {
      "Level": 18,
      "Trait": "spell_lower_agility"
     },
     {
      "Level": 20,
      "Trait": "spell_lower_morale"
-    },
-    {
-     "Level": 24,
-     "Trait": "lasting"
-    },
-    {
-     "Level": 30,
-     "Trait": "weak_point"
     },
     {
      "Level": 32,
@@ -1072,7 +1098,19 @@
     },
     {
      "Level": 40,
+     "Trait": "stratagem"
+    },
+    {
+     "Level": 45,
      "Trait": "stratagem_spread"
+    },
+    {
+     "Level": 50,
+     "Trait": "lasting"
+    },
+    {
+     "Level": 55,
+     "Trait": "weak_point"
     }
    ]
   },
@@ -1170,7 +1208,8 @@
    "Pool": [
     "exhort_boost",
     "lasting_buffs",
-    "terrain_mend"
+    "terrain_mend",
+    "mind_increase"
    ],
    "Plan": [
     {
@@ -1239,7 +1278,11 @@
     "water",
     "water_boost",
     "relief",
-    "exhort"
+    "exhort",
+    "brace_prep",
+    "defense_increase",
+    "mind_increase",
+    "swim"
    ],
    "Plan": [
     {
@@ -1259,6 +1302,22 @@
      "Trait": "exhort"
     },
     {
+     "Level": 10,
+     "Trait": "swim"
+    },
+    {
+     "Level": 15,
+     "Trait": "deputy_appoint"
+    },
+    {
+     "Level": 20,
+     "Trait": "brace_prep"
+    },
+    {
+     "Level": 25,
+     "Trait": "defense_increase"
+    },
+    {
      "Level": 30,
      "Trait": "fire_boost"
     },
@@ -1269,6 +1328,10 @@
     {
      "Level": 35,
      "Trait": "spread"
+    },
+    {
+     "Level": 35,
+     "Trait": "mind_increase"
     }
    ]
   },
@@ -1371,7 +1434,9 @@
     "deputy_appoint",
     "venom",
     "ambush_crit",
-    "diagonal"
+    "diagonal",
+    "first_aid",
+    "mountain_footing"
    ],
    "Plan": [
     {
@@ -1413,7 +1478,9 @@
    "Pool": [
     "vital_strike",
     "crit_boost",
-    "relief"
+    "relief",
+    "attack_increase",
+    "drain"
    ],
    "Plan": [
     {
@@ -1431,6 +1498,10 @@
     {
      "Level": 40,
      "Trait": "venom"
+    },
+    {
+     "Level": 40,
+     "Trait": "drain"
     },
     {
      "Level": 50,
@@ -1505,7 +1576,10 @@
    "Portrait": "pugilist",
    "Pool": [
     "deputy_appoint",
-    "diagonal"
+    "diagonal",
+    "first_aid",
+    "drain",
+    "water_footing"
    ],
    "Plan": [
     {
@@ -1515,6 +1589,10 @@
     {
      "Level": 20,
      "Trait": "diagonal"
+    },
+    {
+     "Level": 20,
+     "Trait": "drain"
     }
    ],
    "Promotes": [
@@ -1547,7 +1625,9 @@
    "Pool": [
     "spirit_spread",
     "palm_wind",
-    "fire_boost"
+    "fire_boost",
+    "counter_boost",
+    "agility_increase"
    ],
    "Plan": [
     {
@@ -1557,6 +1637,10 @@
     {
      "Level": 20,
      "Trait": "diagonal"
+    },
+    {
+     "Level": 20,
+     "Trait": "drain"
     },
     {
      "Level": 30,

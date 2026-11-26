@@ -14,7 +14,6 @@
   },
   "weapons_iron": {
    "Name": "대장간",
-   "Mark": "red",
    "Items": [
     "iron_sword",
     "iron_spear",

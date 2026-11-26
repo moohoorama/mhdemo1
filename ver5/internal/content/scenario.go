@@ -349,6 +349,7 @@ func (d *MapDocument) EncodeFiles() (stage, mapDoc []byte, err error) {
 type Waypoint struct {
 	Node    string
 	Chapter int    // from 1
+	Act     string // the act of its chapter (Chapter.Act), for grouping the list
 	Stage   string // the battle's stage id; empty at a chapter's start
 	Place   string // where the chapter opens: its first scene's place or the area its first explore starts in
 }
@@ -357,7 +358,7 @@ type Waypoint struct {
 func (d *Data) Waypoints() []Waypoint {
 	out := []Waypoint{}
 	for _, c := range d.Chapters {
-		w := Waypoint{Node: c.Nodes[0], Chapter: d.ChapterNumber(c.Nodes[0])}
+		w := Waypoint{Node: c.Nodes[0], Chapter: d.ChapterNumber(c.Nodes[0]), Act: c.Act}
 		for _, id := range c.Nodes {
 			if n := d.Node(id); n.Kind == "scene" && n.Place != "" {
 				w.Place = n.Place
@@ -371,8 +372,19 @@ func (d *Data) Waypoints() []Waypoint {
 		out = append(out, w)
 		for _, id := range c.Nodes {
 			if n := d.Node(id); n.Kind == "battle" {
-				out = append(out, Waypoint{Node: id, Chapter: w.Chapter, Stage: n.Stage})
+				out = append(out, Waypoint{Node: id, Chapter: w.Chapter, Act: c.Act, Stage: n.Stage})
 			}
+		}
+	}
+	return out
+}
+
+// WaypointActs lists the acts the waypoints fall in, in story order.
+func (d *Data) WaypointActs() []string {
+	out := []string{}
+	for _, w := range d.Waypoints() {
+		if !slices.Contains(out, w.Act) {
+			out = append(out, w.Act)
 		}
 	}
 	return out

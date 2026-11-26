@@ -475,6 +475,7 @@
    "Traits": [
     "insight",
     "stratagem",
+    "venom",
     "deadly_poison"
    ],
    "Learn": [],
@@ -833,7 +834,7 @@
    ],
    "Level": 11,
    "Traits": [
-    "hold_ground",
+    "physical_ward",
     "supply"
    ],
    "Learn": [],
@@ -928,6 +929,7 @@
    ],
    "Level": 9,
    "Traits": [
+    "brace_prep",
     "castle_defense",
     "discipline",
     "spell_reflect"

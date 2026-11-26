@@ -35,25 +35,38 @@ const (
 	FxTerrainFloor       = "terrain_floor"        // its own terrain factor counts at least 1
 	FxGrassFactor        = "grass_factor"         // its own terrain factor grows by this much on bare grassland
 	FxTerrainFactor      = "terrain_factor"       // its own terrain factor grows by this much on any ground
-	FxWetFactor          = "wet_factor"           // its own terrain factor grows by this much in water, a ford or a wet patch
-	FxAmbushFactor       = "ambush_factor"        // its own terrain factor grows by this much on an ambush cell (woods, mountains)
+	FxWetFactor          = "wet_factor"           // its own terrain factor grows by this much in water, a ford, under a bridge or on a wet patch
+	FxSwimFactor         = "swim_factor"          // its own terrain factor grows by this much in open water (no bridge, no ford)
+	FxCastleFactor       = "castle_factor"        // its own terrain factor grows by this much on castle cells (castle, inside, pass, open gate)
+	FxAmbushFactor       = "ambush_factor"        // terrain factor grows on ambush cells or highlands
 	FxWard               = "ward:"                // + element: spells of the element on it deal this share less
 	FxDeputyPlus         = "deputy_plus"          // its deputy's attributes count this much higher when they are blended in
-	FxPoison             = "poison_on_hit"        // landed physical hits poison
+	FxPoison             = "poison_on_hit"        // landed attacks and hostile spells poison
 	FxPoisonBoost        = "poison_boost"         // the poison it puts on deals this many times more
 	FxLifeSteal          = "life_steal"           // heals this share of damage dealt
 	FxPlunder            = "plunder"              // each landed physical blow of a player's unit brings the party this much money
 	FxMissHalf           = "miss_half"            // a missed physical blow still deals this share
 	FxOutnumbered        = "outnumbered"          // attack and defense grow by this share for each foe in the eight cells around
 	FxCompanions         = "companions"           // attack and defense grow by this share for each ally in the eight cells around
+	FxFormationDefense   = "formation_defense"    // defense grows by this share per adjacent ally
+	FxRangedDefense      = "ranged_defense"       // defense counts this share higher against ranged physical blows
+	FxMeleeWard          = "melee_ward"           // melee physical blows on it deal this share less
+	FxMobileAttack       = "mobile_attack"        // after walking, its physical blows deal this share more until its next turn
+	FxMobileGuard        = "mobile_guard"         // after walking, physical blows on it deal this share less until its next turn
+	FxRangePower         = "range_power"          // its ranged physical blows deal this share more for each cell of distance beyond two, up to four cells
+	FxDenseFire          = "dense_fire"           // its ranged physical blows deal this share more for each adjacent ally
+	FxCastleDefenseMind  = "castle_defense_mind"  // defense is at least mind on castle terrain
+	FxReprisal           = "reprisal"             // positive damage accumulates a damage bonus
+	FxStatIncrease       = "stat_increase:"       // stackable officer and deputy battle-stat increase
 	FxLone               = "lone"                 // attack and defense grow by this share with no ally in the eight cells around
-	FxChargePower        = "charge_power"         // attack grows by this share for each cell walked this turn
+	FxChargePower        = "charge_power"         // attack grows by this share for each cell walked, until its next turn
 	FxChargeShock        = "charge_shock"         // a melee attack after walking this many cells lowers the target's defense
 	FxChargeAccuracy     = "charge_accuracy"      // physical hit chance grows by this many percentage points for each cell walked this turn
+	FxMountedShot        = "mounted_shot"         // direct ranged accuracy after moving at least three cells
 	FxOpening            = "opening"              // its blows deal this share more of the target's HP share above half
 	FxDesperate          = "desperate"            // at half HP or less its blows deal this share more
 	FxGrit               = "grit"                 // at half HP or less blows on it deal this share less
-	FxHoldGround         = "hold_ground"          // ending its own turn without walking, blows on it deal this share less until its next turn
+	FxHoldGround         = "hold_ground"          // ending its own turn without walking, defense grows by this share until its next turn
 	FxRangedSure         = "ranged_sure"          // its ranged attacks always hit
 	FxRout               = "rout:"                // + status: defeating a foe lowers that stat of the foes around it
 	FxHitDebuff          = "hit_debuff:"          // + status: a landed physical hit lowers that stat of the target
@@ -78,13 +91,14 @@ const (
 	FxAuraHaste          = "aura_haste"           // each turn, a movement buff of this many points on the allies around it
 	FxRangedReach        = "ranged_reach"         // ranged attacks reach this many cells farther
 	FxMountedRange       = "mounted_range"        // mounted classes may shoot at this distance
+	FxCloseShot          = "close_shot"           // ranged basic attacks may also shoot at distance 1
 	FxSpellRange         = "spell_range"          // spell reach
 	FxSpellSure          = "spell_sure"           // its damaging spells always hit
 	FxConfusionSure      = "confusion_sure"       // its single-target confusion spell always hits
 	FxSpellStat          = "spell_stat:"          // + stat: decreases that stat after damaging spells
 	FxDebuffTurns        = "debuff_turns"         // extra turns on this unit's debuffs and confusion
 	FxCritConfusion      = "crit_confusion"       // a physical critical applies confusion
-	FxRangedSlow         = "ranged_slow"          // move reduction from its first direct ranged hit
+	FxRangedSlow         = "ranged_slow"          // move reduction from its first direct hit, melee or ranged
 	FxManaDrain          = "mana_drain"           // share of target's max MP drained by its first direct hit
 	FxStillRecovery      = "still_recovery"       // extra natural recovery as a share after a turn without movement
 	FxAuraCleanStats     = "aura_clean_stats"     // clears negative stats on self and nearby allies
@@ -123,7 +137,7 @@ const (
 	FxAbsorbMana         = "absorb_mana"          // defeating a foe takes the spell points the foe had left
 	FxStatusDouble       = "status_double"        // the debuffs and ailments it casts last twice as long
 	FxCritAiling         = "crit_vs_ailing"       // attacks and spells on a foe with an ailment always crit
-	FxPassAilments       = "pass_ailments"        // at turn start its harmful statuses pass to an adjacent ally
+	FxPassAilments       = "pass_ailments"        // at turn start its harmful statuses pass to an adjacent enemy
 	FxBlendBonus         = "blend_bonus"          // the lower of equipped attack and mind rises to their average
 	FxDeputyAppoint      = "deputy_appoint"       // may name a deputy
 	FxWield              = "wield:"               // + weapon type: may also equip weapons of that type
@@ -143,11 +157,11 @@ var TraitEffects = map[string]bool{}
 func init() {
 	for _, k := range []string{FxDiagonal, FxLongReach, FxRetreatSweep, FxCritAlways, FxCritBoost, FxSpellCrit, FxCritAmbush, FxCritScholar,
 		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashCrossRanged, FxSplashSquare, FxSplashSquareRanged,
-		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxWetFactor, FxAmbushFactor, FxWard, FxDeputyPlus, FxPoison, FxPoisonBoost, FxLifeSteal, FxPlunder,
-		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
+		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxWetFactor, FxSwimFactor, FxCastleFactor, FxAmbushFactor, FxWard, FxDeputyPlus, FxPoison, FxPoisonBoost, FxLifeSteal, FxPlunder,
+		FxMissHalf, FxOutnumbered, FxCompanions, FxFormationDefense, FxRangedDefense, FxMeleeWard, FxMobileAttack, FxMobileGuard, FxRangePower, FxDenseFire, FxCastleDefenseMind, FxReprisal, FxStatIncrease, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxMountedShot, FxOpening,
 		FxDesperate, FxGrit, FxHoldGround, FxRangedSure, FxRout,
 		FxHitDebuff, FxTurnBuff, FxCrush, FxScorn, FxImmune, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
-		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
+		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxCloseShot, FxSpellRange,
 		FxSpellSure, FxConfusionSure, FxSpellSlow, FxSpellStat, FxDebuffTurns, FxCritConfusion, FxRangedSlow, FxManaDrain, FxStillRecovery, FxAuraCleanStats, FxHPScale, FxMPScale, FxPhysicalWard, FxLowHPStats, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxItemShare, FxItemPower, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxDefenseMindBalance, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
@@ -219,7 +233,7 @@ var Statuses = map[string]bool{
 	"speed": true, "range": true, "counter": true, "sure_crit": true,
 	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true,
-	"guard": true, "disrupt": true, "hold_ground": true, "physical_guard": true, "magic_guard": true,
+	"guard": true, "disrupt": true, "hold_ground": true, "physical_guard": true, "magic_guard": true, "reprisal": true,
 }
 
 // Class tags the engine reads.

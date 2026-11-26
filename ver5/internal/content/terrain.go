@@ -10,13 +10,14 @@ const GroundGrass = 'g'
 
 // Ground is what a cell stands on. Glyph is the character the map art knows it by.
 type Ground struct {
-	Name    string
-	Glyph   string
-	Surface int  `json:",omitempty"` // how the ground is drawn: its level from 0 water, 1 ford, 2 grass, 3 plain to 4 soil
-	Water   bool `json:",omitempty"` // spells that need water look for it beside the caster or target
-	Wet     bool `json:",omitempty"` // one stands in water on it (water, a ford): 수영
-	Ambush  bool `json:",omitempty"` // 기습 crits from it (mountains)
-	Castle  bool `json:",omitempty"` // 수성 holds on it (the town inside the walls)
+	Name     string
+	Glyph    string
+	Surface  int  `json:",omitempty"` // how the ground is drawn: its level from 0 water, 1 ford, 2 grass, 3 plain to 4 soil
+	Water    bool `json:",omitempty"` // spells that need water look for it beside the caster or target
+	Wet      bool `json:",omitempty"` // one stands in water on it (water, a ford): 수영
+	Ambush   bool `json:",omitempty"` // 기습 crits from it (mountains)
+	Highland bool `json:",omitempty"` // high ground for terrain-support traits, independent of ambush
+	Castle   bool `json:",omitempty"` // 수성 holds on it (the town inside the walls)
 }
 
 // Structure stands on a ground. Grounds lists the ground glyphs it may stand on. RestHP and RestMP,
@@ -86,6 +87,7 @@ func (s Stage) Cell(x, y int) Cell {
 type CellProps struct {
 	RestHP, RestMP        int
 	Water, Ambush, Castle bool
+	Highland              bool
 	Wet                   bool // the ground or the state on it is water one stands in
 }
 
@@ -124,6 +126,7 @@ func (d *Data) Props(c Cell) CellProps {
 	var p CellProps
 	g := d.Grounds[string(c.Ground)]
 	p.Water, p.Ambush, p.Castle = g.Water, g.Ambush, g.Castle
+	p.Highland = g.Highland
 	p.Wet = g.Wet || d.States[string(c.State)].Wet
 	if st, ok := d.Structures[string(c.Structure)]; ok {
 		p.Ambush, p.Castle = p.Ambush || st.Ambush, p.Castle || st.Castle

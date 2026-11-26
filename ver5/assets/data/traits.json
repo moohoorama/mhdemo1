@@ -155,7 +155,7 @@
   },
   "venom": {
    "Name": "독공",
-   "Desc": "물리 공격이 명중하면 독을 건다.",
+   "Desc": "물리 공격이나 적에게 쓰는 책략이 명중하면 독을 건다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 700,
@@ -165,12 +165,12 @@
   },
   "drain": {
    "Name": "심공",
-   "Desc": "실제로 준 물리 피해의 50%만큼 병력을 회복한다.",
+   "Desc": "실제로 준 물리 피해의 10%만큼 병력을 회복한다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 500,
    "Effects": {
-    "life_steal": 0.5
+    "life_steal": 0.1
    }
   },
   "vital_strike": {
@@ -238,7 +238,7 @@
   },
   "charge_strike": {
    "Name": "돌진",
-   "Desc": "이번 차례에 이동한 칸 수 × 공격력 +5%.",
+   "Desc": "자기 차례에 이동한 칸 수 × 공격력 +5%. 다음 자기 차례가 오기 전까지 유지되어 적 차례의 반격에도 적용된다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 1000,
@@ -526,10 +526,10 @@
   },
   "hold_ground": {
    "Name": "진지고수",
-   "Desc": "자기 차례에 이동하지 않고 끝내면, 다음 자기 차례까지 받는 피해 30% 감소.",
+   "Desc": "자기 차례에 이동하지 않고 끝내면, 다음 자기 차례까지 방어력 +30%.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 1200,
+   "Cost": 1000,
    "Effects": {
     "hold_ground": 0.3
    }
@@ -705,6 +705,7 @@
    }
   },
   "confusion_debate": {
+   "Requires": ["stratagem"],
    "Owner": "guojia",
    "Name": "논변",
    "Desc": "단일 혼란 책략이 반드시 명중한다.",
@@ -863,6 +864,9 @@
    "Kind": "talent",
    "Tone": "craft",
    "Cost": 500,
+   "Requires": [
+    "venom"
+   ],
    "Effects": {
     "poison_boost": 1
    }
@@ -1007,7 +1011,7 @@
   },
   "shift_blame": {
    "Name": "전가",
-   "Desc": "자기 차례 시작에 자신에게 걸린 해로운 상태이상·디버프를 인접 아군 1기에게 넘긴다.",
+   "Desc": "자기 차례 시작에 자신에게 걸린 해로운 상태이상·디버프를 인접 적 1기에게 넘긴다.",
    "Kind": "talent",
    "Tone": "guard",
    "Cost": 500,
@@ -1480,22 +1484,102 @@
   },
   "ranged_ward": {
    "Name": "원거리피해감소",
-   "Desc": "원거리 물리 공격으로 받는 피해 −30%.",
+   "Desc": "원거리 물리 공격으로 받는 피해 −50%.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1500,
+   "Effects": {
+    "ranged_ward": 0.5
+   }
+  },
+  "shield_art": {
+   "Name": "방패술",
+   "Desc": "원거리 물리 공격을 받을 때 방어력 +30%. 다른 방어력 보정과 합산된다.",
    "Kind": "talent",
    "Tone": "guard",
    "Cost": 1000,
    "Effects": {
-    "ranged_ward": 0.3
+    "ranged_defense": 0.3
    }
   },
-  "mirror_plate": {
-   "Name": "거울",
-   "Desc": "원거리 물리 공격으로 받는 피해 −50%. 원거리피해감소와 합산된다.",
+  "physical_ward": {
+   "Name": "물리피해감소",
+   "Desc": "물리 공격(근접·원거리)으로 받는 피해 −20%.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 0,
+   "Cost": 1500,
    "Effects": {
-    "ranged_ward": 0.5
+    "physical_ward": 0.2
+   }
+  },
+  "melee_ward": {
+   "Name": "근접피해감소",
+   "Desc": "근접 물리 공격으로 받는 피해 −15%.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "melee_ward": 0.15
+   }
+  },
+  "mobile_attack": {
+   "Name": "기동공격",
+   "Desc": "자기 차례에 이동하면 다음 자기 차례까지 주는 물리 피해 +10%.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1000,
+   "Effects": {
+    "mobile_attack": 0.1
+   }
+  },
+  "mobile_guard": {
+   "Name": "기동방어",
+   "Desc": "자기 차례에 이동하면 다음 자기 차례까지 받는 물리 피해 −10%.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "mobile_guard": 0.1
+   }
+  },
+  "range_power": {
+   "Name": "원거리 위력",
+   "Desc": "원거리 물리 공격의 거리가 2칸을 넘는 1칸마다 피해 +5%(최대 +20%).",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1000,
+   "Effects": {
+    "range_power": 0.05
+   }
+  },
+  "dense_fire": {
+   "Name": "밀집사격",
+   "Desc": "주변 8칸의 아군 1기당 원거리 물리 피해 +4%(최대 +32%).",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1000,
+   "Effects": {
+    "dense_fire": 0.04
+   }
+  },
+  "castle_footing": {
+   "Name": "성내지형보조",
+   "Desc": "성·성내·관문·열린 성문에 서면 지형 보정 +5%(공격·방어 모두).",
+   "Kind": "talent",
+   "Tone": "move",
+   "Cost": 500,
+   "Effects": {
+    "castle_factor": 0.05
+   }
+  },
+  "water_footing": {
+   "Name": "물지형보조",
+   "Desc": "물·여울·다리·물웅덩이에 서면 지형 보정 +5%(공격·방어 모두).",
+   "Kind": "talent",
+   "Tone": "move",
+   "Cost": 500,
+   "Effects": {
+    "wet_factor": 0.05
    }
   },
   "magic_ward": {
@@ -1618,21 +1702,21 @@
   },
   "swim": {
    "Name": "수영",
-   "Desc": "물·여울·물웅덩이에서 지형 보정 +20%, 수계 책략 피해 절반.",
+   "Desc": "물(여울·다리 제외)에서 지형 보정 +10%, 수계 책략 피해 절반.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 1000,
+   "Cost": 1500,
    "Effects": {
-    "wet_factor": 0.2,
+    "swim_factor": 0.1,
     "ward:water": 0.5
    }
   },
   "mountain_footing": {
    "Name": "산악지형보조",
-   "Desc": "산·숲에 서면 지형 보정 +5%(공격·방어 모두).",
+   "Desc": "구릉·숲에 서면 지형 보정 +5%(공격·방어 모두).",
    "Kind": "talent",
    "Tone": "move",
-   "Cost": 1000,
+   "Cost": 500,
    "Effects": {
     "ambush_factor": 0.05
    }
@@ -1781,8 +1865,8 @@
    }
   },
   "suppressing_shot": {
-   "Name": "저지 사격",
-   "Desc": "직접 원거리 물리 첫 타격이 명중하면 대상의 다음 차례 이동력 −2.",
+   "Name": "저지",
+   "Desc": "자기 차례 직접 물리 공격의 첫 타격이 명중하면 대상의 다음 차례 이동력 −2(근접·원거리).",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 1000,
@@ -1865,6 +1949,132 @@
    "Cost": 1200,
    "Effects": {
     "spell_stat:mind": 20
+   }
+  },
+  "suppression_mastery": {
+   "Name": "저지 강화",
+   "Desc": "저지의 이동력 감소가 2만큼 늘어난다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1000,
+   "Requires": [
+    "suppressing_shot"
+   ],
+   "Effects": {
+    "ranged_slow": 2
+   }
+  },
+  "formation_guard": {
+   "Name": "밀집대형",
+   "Desc": "주변 8칸의 아군 1기당 방어력 +4%(최대 +32%).",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 800,
+   "Effects": {
+    "formation_defense": 0.04
+   }
+  },
+  "castle_mind": {
+   "Name": "수성",
+   "Desc": "성·성내·관문·열린 성문에서 정신력이 더 높으면 방어력을 정신력까지 올린다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "castle_defense_mind": 1
+   }
+  },
+  "reprisal": {
+   "Name": "보복",
+   "Desc": "피해를 받을 때마다 중첩. 다음 직접 공격의 피해가 중첩당 5% 늘고 사라진다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "reprisal": 0.05
+   }
+  },
+  "earthcraft": {
+   "Name": "지공",
+   "Desc": "지계 공격 책략이 명중하면 반드시 치명타.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 700,
+   "Requires": [
+    "earth"
+   ],
+   "Effects": {
+    "crit:earth": 1
+   }
+  },
+  "attack_increase": {
+   "Name": "공격력 증가",
+   "Desc": "공격력 +10%. 주장과 부관이 모두 배우면 합산된다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "stat_increase:attack": 0.1
+   }
+  },
+  "defense_increase": {
+   "Name": "방어력 증가",
+   "Desc": "방어력 +10%. 주장과 부관이 모두 배우면 합산된다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "stat_increase:defense": 0.1
+   }
+  },
+  "mind_increase": {
+   "Name": "정신력 증가",
+   "Desc": "정신력 +10%. 주장과 부관이 모두 배우면 합산된다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "stat_increase:mind": 0.1
+   }
+  },
+  "agility_increase": {
+   "Name": "순발력 증가",
+   "Desc": "순발력 +10%. 주장과 부관이 모두 배우면 합산된다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "stat_increase:agility": 0.1
+   }
+  },
+  "morale_increase": {
+   "Name": "사기 증가",
+   "Desc": "사기 +10%. 주장과 부관이 모두 배우면 합산된다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "stat_increase:morale": 0.1
+   }
+  },
+  "mounted_shot": {
+   "Name": "기마사격",
+   "Desc": "자기 차례에 3칸 이상 이동한 뒤 직접 원거리 물리 공격을 하면 명중률 +15%p.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 700,
+   "Effects": {
+    "mounted_shot": 15
+   }
+  },
+  "close_shot": {
+   "Name": "근접사격",
+   "Desc": "원거리 기본 공격이 거리 1의 적에게도 닿는다. 거리 1에서도 활·노로 쏘며 근접 공격으로 바뀌지 않는다. 부관이 배우면 주장도 쓴다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 800,
+   "Effects": {
+    "close_shot": 1
    }
   }
  }

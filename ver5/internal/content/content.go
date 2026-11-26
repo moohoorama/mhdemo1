@@ -107,6 +107,7 @@ type NewsItem struct {
 // those of the explore events, which the story reaches only by talking to someone (each ends with a back node).
 type Chapter struct {
 	ID, File string
+	Act      string   // the act it belongs to: "1막", "2막", or one of the two tellings that close the 2막 ("2막-연의", "2막-가상")
 	Nodes    []string `json:",omitempty"`
 	Events   []string `json:",omitempty"`
 }
@@ -379,6 +380,7 @@ type Step struct {
 	By                               string  `json:",omitempty"`
 	To                               *Point  `json:",omitempty"`
 	Seconds                          float64 `json:",omitempty"`
+	NoFocus                          bool    `json:",omitempty"` // the camera does not go to this step's unit
 }
 
 // BuffStats are the stats a buff can change; speed and range count cells, the rest percent.
@@ -533,8 +535,10 @@ type Stage struct {
 	GearTier           int         `json:"-"` // the tier of plain gear the stage's soldiers wear (Rules.GearTiers by chapter); 0 when no battle node leads here
 	Width, Height, Max int         // Max is how many officers may sortie
 	Required           []string    `json:",omitempty"` // officers who must sortie, if the player has them
+	Excluded           []string    `json:",omitempty"` // officers absent from this battle, including as deputies
 	Reserve            []string    `json:",omitempty"` // officers who sortie without a starting cell and come in by a join event; they do not count against Max
 	Victory            []Goal      // the battle is won when any goal holds
+	StrictVictory      bool        `json:",omitempty"` // enemy elimination alone does not win
 	Defeat             []Goal      `json:",omitempty"` // extra ways to lose; the fall of the lord or of every ally always loses
 	Sub                []Objective `json:",omitempty"` // bonus objectives judged at the victory
 	Tiles              []string
@@ -617,10 +621,10 @@ type Node struct {
 	Choices                                             map[string]string
 	Explore                                             string  `json:",omitempty"` // explore: the explore file the hero walks
 	Opening                                             string  `json:",omitempty"` // explore: the event that plays as the walk first opens
+	Autosave                                            bool    `json:",omitempty"` // explore: save on entry
 	Area                                                string  `json:",omitempty"` // back: the area the hero stands in afterwards; where he talked when empty
 	At                                                  *[2]int `json:",omitempty"` // back: his small tile there
 	Face                                                string  `json:",omitempty"` // back: the way he faces there
-	Autosave                                            bool    `json:",omitempty"` // explore: save on entry
 	Leave                                               bool    `json:",omitempty"` // back: the walk is over; the story goes on after the explore node
 	Card                                                bool    `json:",omitempty"` // narrate: alone in the middle of a black screen, a part's closing card ("1장 난세도래 / 끝")
 }

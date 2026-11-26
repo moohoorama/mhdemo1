@@ -126,6 +126,10 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				if a.Value < 1 || a.Value > 99 || len(a.Targets) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: damage action", event.ID)
 				}
+			case "lockmove":
+				if a.Value != 0 && a.Value != 1 || len(a.Targets) == 0 {
+					return nil, nil, fmt.Errorf("battle event %s: lockmove action", event.ID)
+				}
 			case "move":
 				if len(a.Moves) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: move without units", event.ID)
@@ -195,7 +199,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				if err := validateCutscene(s, event.ID, a.Steps, refs); err != nil {
 					return nil, nil, err
 				}
-			case "remove", "ai", "buff", "damage":
+			case "remove", "ai", "buff", "damage", "lockmove":
 				if len(a.Targets) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
 				}
@@ -273,6 +277,13 @@ func (d *Data) validateObjectives(s Stage, refs *battleRefs) error {
 		}
 		seen[id] = true
 	}
+	for _, id := range s.Excluded {
+		_, recommended := s.Recommend[id]
+		if !d.Characters[id].Playable || seen[id] || contains(s.Reserve, id) || recommended {
+			return fmt.Errorf("stage %s: excluded officer %s", s.ID, id)
+		}
+		seen[id] = true
+	}
 	if len(s.Required) > s.Max {
 		return fmt.Errorf("stage %s: %d required officers for %d places", s.ID, len(s.Required), s.Max)
 	}
@@ -328,13 +339,15 @@ func validateCutscene(s Stage, event string, groups [][]Step, refs *battleRefs) 
 			case "face":
 				ok = refs.targets[st.Unit] && (st.By == "") == in(st.Facing, "NE", "SE", "SW", "NW") && (st.By == "" || refs.targets[st.By])
 			case "say":
-				ok = refs.targets[st.Unit] && st.Text != ""
-			case "leave":
+				ok = refs.targets[st.Unit] && st.Text != "" && st.Seconds >= 0 && st.Seconds <= 30
+			case "leave", "fall":
 				ok = refs.targets[st.Unit]
-			case "look":
+			case "look", "dust":
 				ok = st.To != nil && st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height && st.Seconds >= 0 && st.Seconds <= 30
 			case "wait":
 				ok = st.Seconds > 0 && st.Seconds <= 30
+			case "surge":
+				ok = st.Text != ""
 			default:
 				ok = false
 			}

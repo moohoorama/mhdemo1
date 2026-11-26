@@ -98,7 +98,7 @@ type ExplorePerson struct {
 	Sortie           *ExploreSortie `json:",omitempty"` // the confidant
 	Shop             string         `json:",omitempty"` // a shop id of Data.Shops
 	// Notice says what the person tells passers-by in their bubbles (Chatter): "shop:<shop id>" that the shop has new
-	// stock, "news:<id>" a piece of the scenario's News.
+	// stock (Data.NewStock: goods no walk before this one sold), "news:<id>" a piece of the scenario's News.
 	Notice string `json:",omitempty"`
 }
 
@@ -144,8 +144,7 @@ type ExploreSign struct {
 type Shop struct {
 	Name  string
 	Items []string
-	Rate  int    `json:",omitempty"`
-	Mark  string `json:",omitempty"` // the guide plate's hue: "" the usual shop yellow, "red" a shop with new stock
+	Rate  int `json:",omitempty"`
 }
 
 // PersonName is the shown name of a person key: the part before @ and #.
@@ -201,9 +200,6 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 	for id, s := range d.Shops {
 		if s.Name == "" {
 			return fmt.Errorf("shop %s: no name", id)
-		}
-		if !in(s.Mark, "", "red") {
-			return fmt.Errorf("shop %s: mark %q", id, s.Mark)
 		}
 		for _, item := range s.Items {
 			if d.Price(item) <= 0 {

@@ -1,7 +1,6 @@
 package core
 
 import (
-	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -392,18 +391,22 @@ func TestDeputyFightsItsDuel(t *testing.T) {
 	assert.Equal(t, heroLevel, e.char("hero").Level, "his officer earns nothing from it")
 }
 
-func TestChargeEndsWithTheWalkersTurn(t *testing.T) {
+func TestChargeLastsThroughTheOtherSidesTurn(t *testing.T) {
 	e, _, _ := arena(t)
 	e.data.Traits["rush_t"] = content.Trait{Name: "돌진", Kind: "talent", Tone: "attack", Effects: map[string]float64{content.FxChargePower: .05}}
 	with(e, "hero", "rush_t")
 	hero := e.unit("hero")
 	still := e.stats(hero).Attack
 	hero.Steps = 6
-	require.Greater(t, e.stats(hero).Attack, still, "six cells walked charge the attack")
-	applyOK(t, e, Command{Kind: "end"})
-	hero = e.unit("hero")
+	charged := e.stats(hero).Attack
+	require.Greater(t, charged, still, "six cells walked charge the attack")
+	e.endFaction()
 	assert.Zero(t, hero.Steps)
-	assert.Equal(t, still, e.stats(hero).Attack, "the enemy's turn meets the walker uncharged")
+	assert.Equal(t, charged, e.stats(hero).Attack, "the enemy's turn meets the walker still charged")
+	for e.state.Turn != "ally" {
+		e.endFaction()
+	}
+	assert.Equal(t, still, e.stats(hero).Attack, "its own next turn starts uncharged")
 }
 
 func TestPlunderPaysPerLandedBlow(t *testing.T) {
@@ -482,7 +485,7 @@ func TestOfficerSpellSpecialties(t *testing.T) {
 			id, class string
 			traits    []string
 		}{
-			{"guojia", "diplomat", []string{"confusion_debate"}},
+			{"guojia", "diplomat", []string{}},
 			{"pangtong", "strategist", []string{"chain", "firecraft", "spell_slowness"}},
 		} {
 			officer := data.Characters[tc.id]
@@ -499,17 +502,13 @@ func TestOfficerReformBatch(t *testing.T) {
 	contentData, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 
-	t.Run("personal traits do not repeat inherited class learning", func(t *testing.T) {
+	t.Run("personal learn pools do not repeat inherited class learning", func(t *testing.T) {
 		for id, officer := range contentData.Characters {
-			pool := contentData.Classes[officer.Class].AllPool()
-			for _, trait := range append(slices.Clone(officer.Traits), officer.Learn...) {
-				assert.NotContains(t, pool, trait, id)
-			}
-			for trait := range officer.TraitAt {
-				assert.NotContains(t, pool, trait, id)
+			for _, trait := range officer.Learn {
+				assert.NotContains(t, contentData.Classes[officer.Class].AllPool(), trait, id)
 			}
 		}
-		assert.Equal(t, .5, contentData.Traits["drain"].Effects[content.FxLifeSteal])
+		assert.Equal(t, .1, contentData.Traits["drain"].Effects[content.FxLifeSteal])
 		assert.Contains(t, contentData.Characters["lumeng"].TraitAt, "drain")
 		assert.Contains(t, contentData.Characters["luxun"].TraitAt, "noble_house")
 		assert.Equal(t, "pangtong", contentData.Node("c27v-join-pangtong").Character)

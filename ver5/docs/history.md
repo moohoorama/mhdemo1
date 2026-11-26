@@ -1,3 +1,162 @@
+## 2026-11-26 논변 시점과 장수 병종 중복 수정
+
+- `assets/data/traits.json`, `assets/data/characters_story.json`: 논변 선행을 혼란으로 정하고 곽가의 논변을 40레벨로 이동 — 병종 계획에서 혼란을 얻은 시점에 논변이 등장.
+- `assets/data/characters.json`, `assets/data/characters_story.json`: 유비 등 8명의 개인 계획에서 병종 학습 특성 중복 제거, 허사·순유·하후연의 고유 특성 구성 조정 — 사용자가 지정한 고유 특성과 병종 중복 금지 반영.
+- `internal/content/spawn.go`, `internal/core/engine.go`: NPC 선행 자동 보완 철회 — 계획에 명시된 특성만 지급.
+- `internal/content/trait_prerequisite_audit_test.go`, `internal/content/guojia_plan_test.go`, `internal/core/traits_test.go`: 자동 보완 없는 계획 선행 검증과 곽가의 변경된 계획 반영 — 실제 선행 누락을 검출.
+
+## 2026-11-25 밀집사격 병종별 피해 비교
+
+- `request/20261125-dense-volley-class-comparison.md`·`result/20261125/dense-volley-class-comparison/`: 실제 병종 보너스·지형과 피해식으로 공격력·피해 보정 비교 — 방어력에 따른 효과 파악.
+
+## 2026-11-25 밀집사격 보정 방식 검토
+
+- `request/20261125-dense-volley-damage-review.md`·`result/20261125/dense-volley-damage-review/summary.md`: 공격력과 피해 보정 차이 확인 — 밀집사격 수치 비교 근거 마련.
+
+## 2026-11-25 전차대 직선 돌격 스타일 검토
+
+- `request/20261125-chariot-straight-charge-design.md`·`result/20261125/chariot-straight-charge-design/summary.md`: 전차의 평지 직선 돌격과 게임 규칙 검토 — 병종 역할 설계.
+
+## 2026-11-25 병종 계열·등급별 스타일 논의
+
+- `request/20261125-class-style-discussion.md`·`result/20261125/class-style-discussion/summary.md`: 병종 역할 우선 설계와 사용자 제약 기록 — 특성 후보 선정의 기준 마련.
+
+## 2026-11-25 병종 특성 현황과 후보 검토
+
+- `request/20261125-class-trait-candidates.md`·`result/20261125/class-trait-candidates/summary.md`: 부족한 병종의 현재 특성과 기존 특성 후보 검토 — 병종별 추가 선택 지원.
+
+## 2026-11-25 병종 등급별 학습 풀 개수 확인
+
+- `request/20261125-class-trait-counts.md`·`result/20261125/class-trait-counts/summary.md`: 병종별 학습 풀 개수 집계 — 등급별 특성 현황 파악.
+
+## 2026-11-25 새 상품 안내 숫자 제거 요청
+
+- `request/20261125-shop-advert-no-numbers.md`·`result/20261125/shop-advert-no-numbers-request/summary.md`: 새 상품 안내의 가격·효과 숫자 제거와 검증 수정 요청 — 밸런스 변경 시 대사 불일치 방지.
+
+## 2026-11-25 최근 요청 결과 확인
+
+- `request/20261125-recent-work-results.md`·`result/20261125/recent-work-results/summary.md`: 최근 요청 결과와 남은 검증 확인 — 구현 상태 전달.
+
+## 2026-11-25 궁기병 최소 사거리와 근접사격 특성
+
+- assets/data/classes.json: 궁기병·노기병 `MinRange` 1 → 2(최대 3 유지), 두 병종 풀에 근접사격 추가 — 궁병 계열과 같은 기본 최소 사거리
+- assets/data/traits.json·internal/content/vocab.go·internal/core/rules.go: 근접사격(`close_shot`, 특성치 800) 추가, `rangedBand`가 원거리 병종의 최소 거리를 1로 낮춤 — 주장·부관 어느 쪽이든 한 번만 적용, 근접 병종엔 효과 없음, 책략 사거리 불변
+- internal/core/close_shot_test.go·internal/content/class_pools_test.go·docs/logic-traits.md·docs/logic-combat.md: 회귀 테스트와 문서 갱신 — 설계 `result/20261125/20261125-close-range-archery/design.md`
+
+## 2026-11-25 궁기병 사거리·근접사격 특성 요청
+
+- `request/20261125-close-range-archery.md`·`result/20261125/close-range-archery-request/summary.md`: 궁기병 기본 사거리 조정과 부관 공유가 가능한 근접사격 특성 요청 — 원거리 병종의 인접 공격을 학습으로 제공.
+
+## 2026-11-25 지난 이야기 이름 반영
+
+- internal/gui/(game,windows,chronicle,uidemo_chronicle).go·docs: 사용자에게 보이는 `역사서`를 `지난 이야기`로 바꾸고 창 안내에 "지나온 시점부터 다시 시작"을 넣음 — 저장 디렉터리 `chronicle/`·데이터 형식·코드 식별자는 그대로라 기존 기록 호환.
+
+## 2026-11-25 지난 이야기 이름 확정 요청
+
+- `request/20261125-chronicle-name.md`·`result/20261125/chronicle-name-request/summary.md`: 사용자용 저장 기록의 이름을 지난 이야기로 확정하고 UI 반영 요청 — 기능을 알기 쉽게 표시.
+
+## 2026-11-25 탐험↔장면 전환 연속성 수정
+
+- `result/20261125/20261125-explore-scene-continuity-fix/result.md`: 탐험→장면은 걸어서 자리 잡기, 같은 방 복귀는 암전 생략(seamless), 13·14·23~25장 데이터 수정, 회귀 시험 추가 — 순간이동·불필요한 페이드 제거.
+
+## 2026-11-25 사용자용 역사서: 도달 지점의 실제 저장
+
+- internal/core/engine.go, waypoint.go, types.go: `Engine.Entered`(들어간 노드)·`Engine.Reached(from)`(이번 명령이 닿은 웨이포인트)·`State.Run/Steps`·`ClearLine` 추가 — 장이 가운데로 들어가는 25v장까지 도달을 한 곳에서 판정하려고, 줄 번호는 엔진 상태가 아니라 저장 때만 적는다.
+- internal/storage/chronicle.go(새): 줄·지점 파일(체크섬, 쓰기 전용, 부모 줄 공유) — 기존 수동·10칸 순환 저장을 건드리지 않고 지점별 스냅샷을 영구 보존하려고.
+- internal/session/chronicle.go(새), session.go: 지점 기록, 되돌아가 새 지점에 닿을 때 새 줄로 갈라짐, `chronicle_load` 요청, 저장에 줄 표시 — 같은 지점을 다른 결과로 다시 지나도 처음 기록이 덮이지 않게. 디버그 `jump`는 기록하지 않는다.
+- internal/gui/chronicle.go(새), windows.go, game.go, events.go, uidemo_chronicle.go(새): 역사서 창(진행 탭, 행마다 유비 Lv·저장 날짜, 확인 뒤 불러오기), 시작 화면과 게임 메뉴 진입 — 장면 이동과 어울리되 임의 레벨·플래그 조작 없이 닿은 곳만.
+- internal/core/chronicle_test.go, internal/session/chronicle_test.go(새): 모든 웨이포인트 도달 검사, B12 전→제갈현·고순 생존/전사→24장 가상/연의 분기, 줄 갈라짐·보존·재시작·손상·쓰기 실패·일반 저장 격리.
+- docs/system-chronicle.md(새), docs/README.md, docs/system-save.md: 지점 시점·줄·UI·B12 분기 답을 문서로 고정. 기능 이전 진행은 소급 복원하지 않는다(지점별 저장이 남아 있지 않음).
+
+## 2026-11-25 사용자용 역사서와 분기 검토 요청
+
+- `request/20261125-campaign-chronicle.md`·`result/20261125/campaign-chronicle-request/summary.md`: 도달 지점별 숨은 저장과 역사서 UI, 서주 구원전 분기 검토 요청 — 플레이 경험을 보존한 재시작 기능 설계.
+
+## 2026-11-25 탐험·시나리오 전환 문제 수정 요청
+
+- `request/20261125-explore-scene-continuity-fix.md`·`result/20261125/explore-scene-continuity-fix-request/summary.md`: 전수 조사에서 확인한 순간이동·불필요한 페이드 수정과 회귀 검증 요청 — 장면 전환의 연속성 보장.
+
+## 2026-11-25 최근 요청·결과 및 테스트 시각 확인
+
+- `request/20261125-recent-requests-summary.md`·`result/20261125/recent-requests-summary/summary.md`: 오늘 대화 요청과 수행 결과·테스트 시각 정리 — 완료 상태와 검증 범위 구분.
+
+## 2026-11-25 2장 노식 진영 전후 콩 판매 확인
+
+- `request/20261125-ch02-bean-shop-check.md`·`result/20261125/ch02-bean-shop-check/summary.md`: 2장 탐험의 주점·상점 재고 확인 — 영천 전 콩 판매 여부 파악.
+
+## 2026-11-25 실내 점원과 탁현 주점 판매 확인
+
+- `request/20261125-shop-indoor-zhuo-check.md`·`result/20261125/shop-indoor-zhuo-check/summary.md`: 실내 거래 직원 유지 여부와 탁현 주점 판매 이력 확인 — 광고 점원 변경과 재고 해석 구분.
+
+## 2026-11-25 현재 요청 진행 상황 확인
+
+- `request/20261125-request-progress-now.md`·`result/20261125/request-progress-now/summary.md`: 대기열과 완료된 새 상품 안내 작업 상태 확인 — 진행 상황 전달.
+
+## 2026-11-25 요청 작업 5분 진행 확인
+
+- `request/20261125-request-progress-every-five-minutes.md`·`result/20261125/request-progress-every-five-minutes/summary.md`: 요청 진행 상황 5분 확인 설정 기록 — 작업 상태 정기 전달.
+
+## 2026-11-25 새 상품 점원을 야외 입구로, 요청 처리에 test 단계와 1분 기록
+
+- internal/content/stock.go, stock_test.go(새): `Data.NewStock(탐험, 상점)` — 앞선 탐험의 어느 상점도 팔지 않은 물건을 이야기 순서(장·노드 순서, 연의/가상 갈래 분리, 1장은 시작 재고)로 계산 — 사람이 손으로 표시하던 `Mark`는 재방문 상점(서주성 14·18장)을 가를 수 없어서.
+- internal/content/explore.go, assets/data/shops.json: 상점 `Mark` 삭제, `Notice` 주석에 NewStock 연결 — 손 표시를 계산으로 대체.
+- internal/core/explore.go, internal/gui/explore.go: `Engine.ExploreName()` 추가, 안내 판 빨강을 `NewStock`으로 — 새 상품이 처음 나오는 탐험에서만 빨강.
+- internal/scenegraph/rules.go, graph_test.go: `shop-notice`를 새 상품 계산 기반으로 다시 씀 — 문 앞(6칸·건물 앞·문이나 길 쪽을 봄) 점원이 새 물건을 말풍선과 말 걸기에서 이름·값·회복량으로 맞게 알리는지, 가게 안이나 이미 판 물건 점원은 없는지 검사.
+- internal/core/shop_advert_test.go(새): 실제 이야기를 걸어 야외 점원 찾기 → 말 걸기 → 가게에서 새 물건 구매까지, 서주성 재방문 미안내 — 안내와 판매 일치 회귀 방지.
+- assets/scenario/hero/explore03·08·14·19_ye.json: 가게 안쪽 `점원#1`(말 걸어도 말 없음) 삭제, 주점·도구점·대장간 입구 바깥에 점원 추가(Notice·말풍선·물건별 설명), 03 주점 특급주 누락 보완, 19 견습공 설명 보강 — 새 상품 야외 안내(대사 문구는 판본 선택 전 임시 A판).
+- tools/request_mcp/requestflow.py, server.py, test_requestflow.py(새): request→process→test→result 이동을 원자적·무덮어쓰기로, process/<name>/progress.md에 1분마다 실제 시각 기록, test/<name>/test-log.md 시험 기록, 필수 시험 전부 통과해야 result로 이동 — 요청 처리 절차 변경.
+- ~/.claude/skills/request-watcher/SKILL.md, AGENTS.md: 새 절차 반영(요청 기록 위치 확인) — 스킬·지침과 실제 동작 일치.
+- docs/presentation-explore.md, docs/data-item.md: 새 상품 안내 절 추가, Mark 서술 교체 — 문서와 동작 일치.
+
+## 2026-11-25 새 상품 안내와 요청 처리 절차 변경 요청
+
+- `request/20261125-shop-advert-workflow.md`·`result/20261125/shop-advert-workflow-request/summary.md`: 신규 상품 안내 전수 조사·테스트·수정과 요청 처리 진행·테스트 단계 변경 요청 — 상점 안내와 작업 검증 추적.
+
+## 2026-11-25 탐험·시나리오 연속성 조사 결과 확인
+
+- `request/20261125-explore-scene-audit-result-check.md`·`result/20261125/explore-scene-audit-result-check/summary.md`: 조사 보고와 재현·검증 범위 확인 — 결과 전달.
+
+## 2026-11-25 탐험↔시나리오 전환 연속성 전수 조사
+
+- `cmd/_contaudit/main.go`(새, 읽기 전용 임시 도구): 44개 탐험 노드의 장면→탐험·탐험→이벤트·이벤트→탐험 전환 154건을 맵·인물 좌표·방향과 함께 표로 뽑는다 — 순간이동·불필요한 페이드 후보를 데이터에서 찾으려고.
+- `internal/gui/explore_continuity_trace_test.go`(새): `SRPG_TRACE_STAGE`를 줄 때만 도는 프레임별 추적(화면 키·장면·페이드·한 프레임에 0.25칸 넘게 움직인 인물) — 실제 게임 흐름에서 자리가 튀는 프레임을 재현하려고. 게임 코드·데이터는 바꾸지 않았다.
+- `result/20261125/20261125-explore-scene-continuity-audit/`: 조사 결과·분류표·13장 등 캡처·추적 기록 — 후속 결정 자료.
+
+## 2026-11-25 탐험·시나리오 연속성 조사 상태 확인
+
+- `request/20261125-explore-scene-audit-status.md`·`result/20261125/explore-scene-audit-status/summary.md`: 조사 산출물과 최종 보고서 상태 확인 — 진행 범위 전달.
+
+## 2026-11-25 장면 이동 막별 분류와 앞선 전투 결과 스크롤
+
+- `assets/scenario/hero/scenario.json`: 각 장에 `Act`(1막·2막·2막-연의·2막-가상) 추가 — 장면 이동 목록을 이야기 구조대로 나누려고.
+- `internal/content/content.go`·`scenario.go`: `Chapter.Act`, `Waypoint.Act`, `Data.WaypointActs()` — 지점의 막을 데이터에서 읽게.
+- `internal/gui/waypoints.go`: 막 탭, 공통 `scroller`(목록·앞선 전투 결과 둘 다 스크롤), 결과 문구 줄바꿈과 `n/22` 표시, 결과 행은 놓을 때 토글 — 결과가 창 밖으로 잘리고 닫기 위로 겹치던 문제.
+- `internal/gui/game.go`: 메뉴에서 열 때 `waypointList` 초기화 — 필드 구조 변경에 맞춤.
+- `internal/gui/uidemo_waypoints.go`: 두 목록 스크롤과 2막-가상 탭 전환을 데모에 추가 — 캡처 확인용.
+- `internal/content/waypoint_acts_test.go`, `internal/gui/waypoints_test.go`: 분류 누락·경계, 막 탭, 결과 마지막까지 스크롤·토글·모두/없음·드래그·썸, 실제 점프 플래그 테스트.
+- `docs/waypoint-groups.md`: 설계 기록.
+- 결과: `result/20261125/20261125-waypoint-groups/result.md`.
+
+## 2026-11-25 탐험·시나리오 전환 연속성 조사 요청
+
+- `request/20261125-explore-scene-continuity-audit.md`·`result/20261125/explore-scene-continuity-audit-request/summary.md`: 인물 배치 순간이동과 불필요한 페이드 전수 조사·테스트 기준 요청 기록 — 장소 연속성 검증 준비.
+
+## 2026-11-25 장면 이동 분류와 전투 결과 표시 요청
+
+- `request/20261125-waypoint-groups.md`·`result/20261125/waypoint-groups-request/summary.md`: 막별 장면 이동 분류와 잘린 앞선 전투 결과 개선 요청 기록 — 선택 대상 탐색과 결과 표시 개선.
+
+## 2026-11-24 시나리오 규칙 부족분 보강 (양양·유표 병상·제갈량 인사·22~27장 인물)
+
+- `assets/graphics/maps/S_xiangyang.json`: 채씨·괴씨 저택(담장 두 채, 관청·정자·태호석·깃발) 삭제, 그 자리에 민가 8채·우물·매화로 동네를 만듦 — 사용자: 너무 크고 스토리에 필요 없음.
+- `explore22_xiangyang`·`explore23_xiangyang`·`explore24`·`explore25_back`·`explore25_visit`·`explore27v_town`: 채씨·괴씨 저택 출구·구역·하인 삭제 — 같은 이유.
+- `tools/unit3d/scene_people.py`·`tools/doteditor/tools/civ3d.py`·`units/liuyan_noncombat.yaml`·`sprites/liuyan_noncombat.spr`: 유표(유언 모습)에 도겸과 같은 방식의 `bed` 자세(3D 누운 머리 + 도겸 RETOUCH 재사용) — 위독한 유표가 앉아 있었음.
+- `scenes/ch25.json` `c25-start`: 유표 `Pose bed`, 의원·시녀를 곁에, 유비가 걸어 들어옴. `explore25_back` 유표의 저택 안에 누운 유표·시녀·의원 — 같은 이유.
+- `story25.json`·`scenes/ch25.json` `c25-road`: 제갈량이 돌아온 유비를 맞는 인사 세 줄(c25-yr-00~00c)과 유비 입장 비트, c25-yr-01의 "군사," 뺌 — 사용자: 인사 없이 들어가는 장면이 어색함. `docs/fullstory.md` 25장 반영.
+- `explore22*`~`explore27*`, 앞 장 `explore11·12·13·14·18·19·19_ye·20·20_depart·01·08·09`: 부대원(관우·장비·조운·간옹·미축·손건·제갈량)과 성·마을 사람 배치, 소식 알리는 사람(Notice news:*), 업 대장간 새 쇠 알림, 신야 유비의 거처(S_liu_house) — 시나리오 규칙(whereabouts·population·talk-ratio·news·shop-notice·residence) 부족분 보강. 이야기 근거가 있는 부재만 `Whereabouts`로 기록.
+- `scenario.json`: 소식 dongzhuo-dead 11장만, guandu-standoff 18~20장(17장은 아직 역경, 21장은 관도 패전 소식), `SwornBrothers` 추가.
+- `internal/scenegraph`: 규칙 hanja·hyung·talk-line·portrait 추가(기준선 testdata), `Env.Portrait`, 같은 이슈 중복 제거. `internal/content` `Campaign.SwornBrothers`.
+- 기록: `result/20261124/map-admin/fix-log.md`.
+
 ## 2026-11-24 요청 대기열 확인
 
 - `request/20261124-request-queue-check.md`·`result/20261124/request-queue-check/summary.md`: 요청 대기열과 최근 결과 상태 확인 — 파일 이동과 작업 완료 구분.
@@ -4359,9 +4518,23 @@
 - assets/graphics/portraits/yuanshao.png, yuanshu.png: 새 초상(원소=잘생긴 귀공자, 원술=가늘고 약간 원숭이 느낌) — 사용자 요청 10번. 전신 원본은 tools/illustrations/portraits/fullbody/, 이전 초상은 portraits/prev/에 백업.
 - yuanshu.png: 너무 마른 느낌이라 살을 조금 붙여 다시 생성(전신 v1은 portraits/prev/yuanshu-v1-gaunt-2026-11-23.png) — 사용자 피드백
 
-## 2026-11-24 수공을 출전 준비 앞으로, 배속과 무관하게
-- internal/gui/field_surge_prelude.go(신규), game.go, view.go, cutscene.go, deployment.go: 수공 연출을 전투 첫 정리(출진·배치 뒤)가 아니라 전투 노드에 닿았을 때, 출전 준비 화면이 열리기 전에 재생(`startPrelude`). 전투 필드는 배치 단계부터 있으므로 노드에서 딴 엔진 사본(`core.Restore`)을 시작·배치까지 진행해 거기서 재생하고, 화면이 하얘지는 순간 진짜 엔진으로 되돌려 하얀색이 걷히며 출전 준비가 열림. 전투 컷신은 `surge` 묶음을 건너뜀(`suigongTimeline` 삭제). 사용자 지적: "출진 하고 나서 나온다고? 출진하기 전에 나와야지."
-- internal/gui/view.go: 수공이 도는 동안 `speedRate`는 1 — 시나리오 1.5배속·전투 배속이 구워 둔 속도에 곱해지지 않음.
+## 2026-11-24 수공을 시나리오 소속으로, 배속과 무관하게
+- 수공은 전투 이벤트가 아니라 25장 이야기 장면의 연출: `assets/scenes/ch25.json`의 새 장면 `c25-flood`(노드 `c25-flood`·`c25-e05`, 조홍 "물이 얕다! 건너라, 건너!")가 `c25-e05`의 줄 뒤 비트(`Surge` 단계)로 재생하고, 끝나면 출전 준비로 넘어감. 사용자 지적: "출진 하고 나서 나온다고? 출진하기 전에 나와야지.", "수공이 시나리오에 소속될 수 없는 거야?"
+- `internal/scenes` `Step.Surge`(구운 수공 이름)·`Step.Army`(병사 배역 둘: 보병·기병); `internal/gui/field_surge_scene.go`(신규): 이야기 장면의 필드·배역 위에서 재생, 단계의 배우가 병사를 이끌고 나머지 배역은 둑 위 언덕에 선다. 병사는 `Army` 배역의 모습으로 장면이 만들고 끝나면 지움. 장면 지도 `S_baihe_dike`를 48×44로 늘려 여울(v 30 이하)을 포함(`tools/scene_maps/baihe_dike.py`). 물은 다시 굽지 않음.
+- `internal/gui/field_surge_show.go`: 쇼가 전투 필드 대신 장면 배역(`units()`)을 움직일 수 있게 함; 장면 쇼는 흰 화면을 이야기가 다음 노드(출전 준비)로 넘어갈 때까지 붙들었다가 걷음. `scene.go`: `Surge` 단계 시작, 쇼 동안 장면 카메라 중단.
+- `internal/gui/view.go`: 수공이 도는 동안 `speedRate`는 1 — 시나리오 1.5배속·전투 배속이 구워 둔 속도에 곱해지지 않음.
+- B25 전투 이벤트 `suigong` 삭제, 직전 임시 방식(엔진 사본으로 출전 준비 앞에서 재생, `field_surge_prelude.go`)과 전투 컷신의 `surge` 건너뜀 삭제. 전투 지도용 개발 데모 `suigong`(`-stage B25`)은 이야기 장면의 `Surge` 단계에서 배역을 읽어 그대로 둠.
+
+## 2026-11-24 수공 앞 도강을 일반 시나리오 연출로
+- `assets/scenes/ch25.json` `c25-flood`: 병사가 강을 건너는 데까지는 보통 장면 연출 — 동쪽 기슭의 조홍과 병사 열(보병 8·기병 2)이 `Move`(`Free`)로 모래톱을 건너 서쪽으로 걷고, 그 사이 조홍의 줄이 뜸. 줄을 넘기면 `Surge`가 이어받고, 장면의 병사는 어둠 속에서 수공의 대군에게 자리를 내줌(`Army`는 장면 병사 하나씩). 사용자 지적: 대사와 병사가 건너는 지점이 안 맞음, 건너는 데까지는 일반 시나리오로.
+- `assets/scenario/hero/story25.json` `c25-e05`: "물이 얕다! 건너라, 건너!" → "강바닥이 드러났다! 유비가 달아난 길이다, 놓치지 말고 건너라!" (사용자 의견: 대사 자체가 별로).
+- `internal/gui/field_surge_scene.go`: 수공이 이어받을 때 걷던 배우의 길을 끊음.
+
+## 2026-11-24 수공 장면 손질, B25 옛 지도 복원
+- `assets/scenes/ch25.json` `c25-flood`: 관우를 전투 조형(`guanyu_heavy_cavalry`, 적토마)으로 두고 칼을 휘두르며(`Play attack`) "지금이다!"(옛 "……터라." 대신). 사용자 의견.
+- `internal/gui/field_surge_show.go`·`field_surge_scene.go`: 장면에서 수공으로 넘어갈 때 장면이 먼저 어두워지고(`sceneDarken`), 어둠 속에서 병사들이 나타나고 조홍이 행군 자리로 가며, 밝아지면서 첫 샷이 열림 — 깜빡이는 컷 제거. 사용자 지적: 조홍이 잠깐 나오고 깜빡이더니 강 맵이 보임.
+- `tools/scene_maps/baihe_dike.py`: 여울(v 30 이하)을 모래(`d`)로, 병사가 깊은 강이 아니라 모래톱을 건넘(전투 지도의 여울처럼).
+- B25 전투 지도·배치를 수공 땅으로 바꾼 것(`maps/map25.json`, `map25.txt`, `stage25.json`의 아군·적군 위치·구역)을 되돌려 `702d2c5`의 신야 26×24(북동 불타는 신야성, 남동 범람한 백하)로 복원. 사용자 지적: "후속으로 나오는 신야 전투 맵이 너무 별로, 그전이 훨씬 좋아. 신야의 화공 자체가 나오지도 않아." 전투 지도용 개발 데모 `suigong`은 수공 땅을 코드로 칠함(`d.battleWith`).
 
 ## 2026-11-23 수공 본편 적용 (25장)
 - 전투 컷신 단계 `surge`(`internal/content/battle_events.go`, `internal/core/battle_events.go`, `internal/gui/field_surge_show.go`, `cutscene.go`): 승인된 수공 장면(`uidemo_suigong.go`의 시간표·물 소리)을 전투 화면 위에서 재생한다. 데모와 전투가 같은 `suigongShow`를 쓰고, 데모(`-ui suigong`)는 스테이지의 `suigong` 이벤트 묶음을 그대로 읽는다.
@@ -4441,3 +4614,216 @@
 - 출전 창 폭 확장을 되돌리고, 카드를 PC 44×52(5열)·모바일 70×84(3열)로 줄여 원래 왼쪽 칸에 맞춤. 설계는 `docs/plan-sortie-card-scrollbar.md`.
 - 스크롤바 A~E(죽간 등) 거부분을 빼고, UI 시트의 도트 조각 5종(금테 쪽매·구슬 줄·두루마리 축·옥 장식·점무늬)으로 교체. `tools/spritetool/assets/ver5-ui/seed.py`.
 - 결과와 캡처: `result/20261124/20261124-scroll-sortie-pixel/`. 최종 시안 선택 전.
+
+- result/20261124/unified-model-30min-comparison/request-draft.md: 숫자형 단일 모델과 Laya의 매우 어려움 30분 비교 요청 작성 — 실험 조건과 자원·성장 평가 기준 보존.
+- request/unified-model-30min-comparison.md: 두 단일 모델의 30분 학습 및 공정 평가 요청 등록 — 요청 처리기에 실험 전달.
+
+- process/unified-model-progress-check/unified-model-progress-check.md: 단일 모델 비교 진행 상태 확인 요청 기록 — 조사 범위 보존.
+- result/20261124/unified-model-progress-check/result.md: 프로세스와 결과 폴더 확인 결과 기록 — 실제 실행 여부 판단 근거 보존.
+
+- process/model-30min-status/model-30min-status.md: 30분 실험 경과 확인 요청 기록 — 조사 요청 보존.
+- result/20261124/model-30min-status/result.md: 경과 시간과 실험 완료·미완료 현황 기록 — 상태 확인.
+
+- result/20261124/disk-space-review/result.md: 디스크 잔여 용량과 정리 후보 기록 — 저장 공간 점검 결과 보존
+- request/disk-space-review-20261124.md: 디스크 공간 점검 요청 기록 — 요청과 결과 연결
+- ver5/docs/history.md: 디스크 공간 점검 기록 추가 — 작업 이력 유지
+
+- result/20261124/disk-cache-cleanup/result.md: 캐시 및 다운로드 정리 결과 기록 — 확보 공간과 uv 캐시 보류 사유 보존
+- request/disk-cache-cleanup-20261124.md: 디스크 정리 요청 기록 — 요청과 결과 연결
+- ver5/docs/history.md: 디스크 정리 이력 추가 — 작업 이력 유지
+
+- result/20261124/class-trait-count/summary.md: 병종별 신규·누적 학습 특성 개수 조사 기록 — 등급별 특성 수 확인
+- request/class-trait-count-20261124.md: 병종 등급별 특성 개수 조회 요청 기록 — 요청과 결과 연결
+- result/20261124/strategist-envoy-traits/summary.md: 책사·세객 및 권사 병종 특성 조사 기록 — 특성 구성 비교
+- request/strategist-envoy-traits-20261124.md: 책사·세객 특성 목록 조회 요청 기록 — 요청과 결과 연결
+- result/20261124/class-trait-revision-notes/notes.md: 책사·세객 특성 조정안과 군사·종횡가 현황 기록 — 게임 변경 전 논의 보존
+- request/class-trait-discussion-20261124.md: 병종 특성 조정안 기록 요청 정리 — 요청과 결과 연결
+- result/20261124/scholar-class-trait-projection/summary.md: 문관 계열 조정 후 예상 특성과 현행 방술사 계열 정리 — 변경안 비교
+- request/scholar-class-trait-projection-20261124.md: 문관 계열 특성 구성 조회 요청 기록 — 요청과 결과 연결
+- result/20261124/strategist-orator-officers/summary.md: 장구·약점공략 이동 결정과 문관 장수 목록 기록 — 파진·격파 배정 검토
+- request/strategist-orator-officers-20261124.md: 문관 장수 조회 및 특성 조정 논의 요청 기록 — 요청과 결과 연결
+- result/20261124/future-counsellors/summary.md: 이후 문관 후보의 스토리·인물 데이터 확인 기록 — 특성 배정 검토 참고
+- request/future-counsellors-20261124.md: 이후 문관 추가 후보 확인 요청 기록 — 요청과 결과 연결
+- result/20261124/civilian-class-names/notes.md: 법정·장완·비위의 병종과 병종명 후보 기록 — 후속 논의 보존
+- request/civilian-class-names-20261124.md: 문관 병종 및 명칭 논의 요청 기록 — 요청과 결과 연결
+- result/20261124/fazheng-jiangwan-feiyi-design/design.md: 법정·장완·비위 능력치와 병종·특성 설계 초안 및 격파 배정 기록 — 장수 설계 논의
+- request/fazheng-jiangwan-feiyi-design-20261124.md: 세 문관 설계와 격파 배정 요청 기록 — 요청과 결과 연결
+- result/20261124/fazheng-jiangwan-feiyi-traits/design.md: 법정 4개·장완과 비위 각 3개 개인 특성 보완안 기록 — 기존 설계 유지와 특성 수 조정
+- request/fazheng-jiangwan-feiyi-traits-20261124.md: 문관 개인 특성 수 보완 요청 기록 — 요청과 결과 연결
+- result/20261124/spell-critical-traits/summary.md: 제갈량 및 책략 치명타 특성·보유자 조사 기록 — 장수 특성 설계 참고
+- request/spell-critical-traits-20261124.md: 제갈량과 책략 치명타 특성 조회 요청 기록 — 요청과 결과 연결
+- result/20261124/firecraft-officer-decisions/notes.md: 허사·황보숭의 화공 교체 결정 기록 — 책략 치명타 특성 배정 정리
+- request/firecraft-officer-decisions-20261124.md: 허사·황보숭 특성 교체 요청 기록 — 요청과 결과 연결
+- result/20261124/fazheng-earth-reprisal/design.md: 법정의 지계 치명타와 보복 특성 구상 기록 — 공격형 책사 설계 논의
+- request/fazheng-earth-reprisal-20261124.md: 법정 지계·보복 특성 구상 요청 기록 — 요청과 결과 연결
+- result/20261124/fazheng-reprisal-counterspell/notes.md: 법정 응징 구상과 반계 현행 동작 조사 기록 — 부관 활용 및 책략 반격 설계
+- request/fazheng-reprisal-counterspell-20261124.md: 응징·반계 논의 요청 기록 — 요청과 결과 연결
+- result/20261124/retaliation-stack-duration/notes.md: 보복 중첩과 버프 지속 턴 재사용 가능성 기록 — 특성 설계 구체화
+- request/retaliation-stack-duration-20261124.md: 보복 중첩 구현 방식 검토 요청 기록 — 요청과 결과 연결
+- ver5/internal/gui/uidemo_counterspell.go: 화계 공격에 대한 반계 UI 재생 데모 추가 — 반계 연출 직접 캡처 및 확인
+- result/20261124/counterspell-capture/result.md: 반계 코드 확인과 캡처 실패 원인 기록 — Mac 잠금 해제 후 재실행 준비
+- request/counterspell-capture-20261124.md: 반계 화면 재현·캡처 요청 기록 — 요청과 결과 연결
+- result/20261124/counterspell-real-casting/notes.md: 반계의 치명타·지형·부가효과 처리 조사 및 보복 차례 종료 소멸 규칙 기록 — 실제 책략 시전 방향 확인
+- request/counterspell-real-casting-20261124.md: 반계 책략 처리와 보복 소멸 규칙 요청 기록 — 요청과 결과 연결
+- result/20261124/class-traits-proposed-count/summary.md: 병종 조정안 반영 등급별 신규 특성 수 기록 — 누적 제외 비교
+- request/class-traits-proposed-count-20261124.md: 등급별 병종 특성 수 조회 요청 기록 — 요청과 결과 연결
+- result/20261124/class-trait-system-design/design.md: 등급별 병종 특성·상급 단련 중첩·궁기병 차별화 설계안 작성 — 육성 선택지와 병종 개성 검토
+- request/class-trait-system-design-20261124.md: 병종 특성 수·상급 중첩·궁기병 차별화 설계 요청 기록 — 요청과 결과 연결
+- result/20261124/class-trait-additions-audit/audit.md: 파진 고유화 결정과 병종 추가 특성별 효과·보유자 조사 — 기존 장수 특성과의 중복 검토
+- request/class-trait-additions-audit-20261124.md: 병종 추가 특성 및 보유자 비교 요청 기록 — 요청과 결과 연결
+- result/20261124/class-trait-system-design/design.md: 승급 레벨과 특성치 기준을 20·40 및 1,900·3,900으로 정정 — 현행 데이터와 일치
+- result/20261124/promotion-level-verification/summary.md: 실제 승급 레벨과 판정 코드 확인 — 이전 안내 오류 정정
+- request/promotion-level-verification-20261124.md: 승급 레벨 확인 요청 기록 — 요청과 결과 연결
+- result/20261124/infantry-martial-traits-redesign/design.md: 고유 특성 제외와 보병·무도가 차별화 및 번궁 특성 교체안 작성 — 병종 개성 재설계
+- request/infantry-martial-traits-redesign-20261124.md: 고유 특성 보호와 병종 특성 재설계 요청 기록 — 요청과 결과 연결
+- result/20261124/castle-defense-trait-design/notes.md: 수성의 현행·과거 기록 확인과 새 수성 및 방진 중첩 우려 기록 — 병종 방어 특성 재검토
+- request/castle-defense-trait-design-20261124.md: 수성·방진 중첩 검토 요청 기록 — 요청과 결과 연결
+- result/20261124/castle-defense-formation-decisions/notes.md: 번궁 화공·수성 지형 결정과 방진 4% 구상 기록 — 병종 및 부관 조합 검토
+- request/castle-defense-formation-decisions-20261124.md: 수성·방진 및 번궁 특성 논의 요청 기록 — 요청과 결과 연결
+- result/20261124/horse-archer-close-range/design.md: 방진·철갑 계산과 근접 궁기병·저지 사격 설계 방향 기록 — 병종 차별화
+- request/horse-archer-close-range-20261124.md: 방진 합산과 궁기병 인파이터 방향 요청 기록 — 요청과 결과 연결
+- result/20261124/horse-archer-range-houyuan/notes.md: 궁기병 1~3칸 및 하후연 저지 특성 선행·합산 결정 기록 — 궁기병 사각 제거 설계
+- request/horse-archer-range-houyuan-20261124.md: 궁기병 사거리와 하후연 저지 특성 요청 기록 — 요청과 결과 연결
+- result/20261124/implementation-decisions-summary/summary.md: 병종·장수·전투 특성 결정 및 미정 사항 통합 — 적용 범위 검토
+- request/implementation-decisions-summary-20261124.md: 병종 특성 개편 적용 사항 정리 요청 기록 — 요청과 결과 연결
+- result/20261124/stat-increase-trait-names/notes.md: 상급 병종 능력치 특성의 직관적인 증가 명칭 기록 — 효과 가독성 개선
+- request/stat-increase-trait-names-20261124.md: 상급 단련 특성 명칭 변경 요청 기록 — 요청과 결과 연결
+- result/20261124/retaliation-damage-condition/notes.md: 보복이 실제 피해를 받은 피격에서만 중첩된다는 결정 기록 — 발동 조건 확정
+- result/20261124/implementation-decisions-summary/summary.md: 보복의 빗나감·0피해 중첩 여부 정정 — 최신 결정 반영
+- request/retaliation-damage-condition-20261124.md: 보복의 피해 조건 요청 기록 — 요청과 결과 연결
+- result/20261124/story-act-naming/notes.md: 본편 대단락의 장→막 명칭 결정과 종료 카드 위치 기록 — 개별 장 번호와 구분
+- request/story-act-naming-20261124.md: 이야기 대단락 명칭 변경 요청 기록 — 요청과 결과 연결
+- assets/data/classes.json: 문관 풀·NPC 계획, 궁기병 사거리·능력치·저지 사격과 상급 능력치 증가 및 일부 병종 특성 반영 — 승급별 육성과 병종 차별화
+- assets/data/traits.json·internal/content/vocab.go: 지공·보복·방진·수성·능력치 증가·저지 강화 정의 — 논의된 특성 구현
+- assets/data/characters_story.json: 허사·황보숭·번궁·정욱·하후연 특성과 법정·장완·비위 데이터 반영 — 장수 특성 정리
+- internal/core/engine.go·internal/core/rules.go·internal/core/combat.go: 부관 능력치 증가 합산, 방진·수성·보복·반계 책략 처리 — 전투 효과 적용
+- internal/gui/player.go·internal/gui/events.go·internal/gui/uidemo_counterspell.go: 반계 책략 연출, 보복 중첩 표시, 검증 데모 — 전투 표현
+- internal/core/class_reform_test.go·internal/content/class_pools_test.go: 보복·반계·부관 합산과 변경된 병종 풀 시험 — 규칙 회귀 방지
+- assets/scenario/hero/story16.json·story27.json·story27v.json·docs/fullstory.md: 큰 이야기 종료 카드의 장을 막으로 표기 — 이야기 단위 명칭 통일
+- docs/logic-traits.md: 능력치 증가 중복 예외와 방진·수성·보복 규칙 기록 — 전투 규칙 설명
+- result/20261124/class-trait-implementation/design.md·result.md: 개편 설계와 적용·검증·미완료 사항 기록 — 변경 범위 추적
+- request/class-trait-implementation-20261124.md: 논의된 변경 적용 요청 기록 — 요청과 결과 연결
+- assets/data/traits.json·assets/data/classes.json: 궁기병 기마사격 학습 특성과 NPC 계획 추가 — 이동 후 사격의 병종 개성 반영
+- internal/content/vocab.go·internal/core/combat.go·internal/core/api.go: 이동 후 직접 원거리 사격 명중률과 예측·AI 평가 연결 — 반격과 협동은 제외
+- internal/core/mounted_shot_test.go·internal/content/class_pools_test.go: 이동 조건, 직접·자동 공격, 면역, 예측과 병종 풀 확인 — 기마사격 회귀 방지
+- docs/logic-traits.md: 기마사격 조건과 효과 설명 — 전투 규칙 기록
+- result/20261125/mounted-archery/design.md·result.md: 기마사격 설계·적용과 검증 결과 기록 — 요청 이력 보존
+- request/mounted-archery-20261125.md: 기마사격 누락 확인 및 적용 요청 기록 — 요청과 결과 연결
+- result/20261125/remaining-implementation-audit/summary.md: 기존 병종·장수 개편의 미구현 및 미검증 사항 조사 — 남은 작업 구분
+- request/remaining-implementation-audit-20261125.md: 미구현 사항 확인 요청 기록 — 요청과 결과 연결
+- assets/data/characters_story.json: 법정 고유 특성·학습 풀에 산악지형보조 추가 — 산림 지형에 강한 군사 표현
+- internal/content/officer_traits_data_test.go: 법정 산악지형보조 보유·학습 검증 — 고유 특성 배정 유지
+- result/20261125/fazheng-terrain-traits/summary.md: 지형 보조와 관련 특성·실제 발동 지형 조사 기록 — 효과 비교
+- request/fazheng-terrain-traits-20261125.md: 법정 특성 추가 및 지형 특성 조회 요청 기록 — 요청과 결과 연결
+- assets/data/game.json·internal/content/terrain.go·internal/core/rules.go·internal/content/vocab.go: 두 구릉을 산악지형보조 대상에 추가하고 기존 매복 조건은 유지 — 구릉 의도 반영
+- assets/data/traits.json·assets/data/classes.json: 심공 물리 피해 회복을 10%로 낮추고 권사·의적 학습 및 NPC 계획에 추가 — 무도가·적병 계열 회복 선택지
+- internal/core/officer_traits_test.go·internal/core/traits_test.go·internal/core/class_reform_test.go·internal/content/officer_traits_data_test.go: 구릉·매복 판정 및 심공 비율과 병종 배정 검증 — 규칙 회귀 방지
+- docs/logic-traits.md·docs/officer-trait-reform-final.md·docs/balance-battle.md: 산악지형보조와 심공 설명·수치 갱신 — 현재 데이터와 일치
+- result/20261125/hills-and-life-drain/design.md·result.md: 산악지형보조·심공 변경 설계 및 시험 결과 기록 — 변경 이력 추적
+- request/hills-and-life-drain-20261125.md: 구릉 보정·심공 적용 요청 기록 — 요청과 결과 연결
+- result/20261125/turn-bonus-economy/idea.md: 빠른 승리 금전 보상과 기존 가격·소비처 후보 조사 및 설계 기록 — 턴 제한과 추가 보상 분리 검토
+- request/turn-bonus-economy-20261125.md: 턴 단축 보상과 골드 소비처 구상 요청 기록 — 요청과 결과 연결
+- result/20261125/turn-bonus-existing-equipment/summary.md: 기준 턴 보상 상향 의견과 업 대장간 장비 매매·가공안 중복 확인 기록 — 경제 구상 정정
+- request/turn-bonus-existing-equipment-20261125.md: 기준 턴 보상액 및 기존 장비 개선 확인 요청 기록 — 요청과 결과 연결
+- result/20261125/consumable-item-ideas/ideas.md: 소모 아이템 10종의 역할·효과·게임 규칙 영향 및 관련 사례 조사 — 금전 소비처 아이디어 비교
+- request/consumable-item-ideas-20261125.md: 서로 다른 소모 아이템과 사례·어휘 조사 요청 기록 — 요청과 결과 연결
+- assets/scenario/hero/explore03·08·14·19_ye.json: 새 상품 야외 점원의 대화에서 값·회복량·능력치 숫자 제거(이름·용도·"한 급 위" 비교만 유지) — 수치 변경 시 대사가 어긋나지 않게
+- internal/scenegraph/rules.go·graph_test.go: `shop-notice`가 가격·회복량 일치 대신 안내 문구의 상품 수치(숫자·"이천 냥" 등) 금지를 검사, 가격 변경에도 통과하는 시험 추가 — 이름 정합은 계속 검증
+- internal/core/shop_advert_test.go: 안내 문구에 숫자 없음 확인으로 변경 — 시험 정합
+- docs/presentation-explore.md: 새 상품 안내에 수치 숫자 금지 규칙 — 지침 반영
+- result/20261125/20261125-shop-advert-no-numbers/: 숫자 없는 A·B·C 문구 판본과 결과 기록 — 사용자 선택 대기
+
+- `result/20261125/class-combat-identity-discussion/summary.md`: 병종별 공격·방어 정체성 제안과 현재 피해식의 관계 기록 — 병종 상성 논의 근거 보존.
+
+- `result/20261125/class-trait-overhaul-proposal/proposal.md`: 병종 승급 단계별 특성 후보와 신규 효과 초안 기록 — 병종 정체성과 상성 논의에 활용.
+
+- `result/20261125/class-trait-overhaul-html/index.html`: 병종 특성 개편안을 반응형 HTML로 정리 — 병종별 후보와 신규 효과를 쉽게 비교.
+- result/20261125/temporary-gear-trait-items/ideas.md: 한 전투용 장비와 특성 부여 소모품 구상 및 기존 규칙 비교 — 새로운 금전 소비처 논의
+- request/temporary-gear-trait-items-20261125.md: 일회용 장비·전투 한정 특성 소모품 구상 요청 기록 — 요청과 결과 연결
+
+- `result/20261125/class-trait-faction-revision/index.html`: 병종 특성 수정 의견과 진영별 구성안을 기존 여부와 함께 정리 — 후속 밸런스 설계에 활용.
+- result/20261126/temporary-equipment-consumption/notes.md: 일회용 장비의 실제 출진·승리 소모 조건과 명칭 후보 기록 — 소비 규칙 명확화
+- request/temporary-equipment-consumption-20261126.md: 일회용 장비 소모 조건과 접두사 논의 요청 기록 — 요청과 결과 연결
+
+- ver5/internal/core/combat.go: 전가 대상을 인접 적으로 바꾸고 독공을 적 대상 책략에 적용 — 특성이 의도한 효과를 내도록 함.
+- ver5/assets/data/traits.json: 전가·독공 설명과 짐독의 독공 선행 추가 — 특성 설명과 의존 관계 일치.
+- ver5/assets/data/characters_story.json: 정욱·이유 등 장수의 선행 특성 누락과 순서 수정 — 계획 특성이 선행을 갖춘 뒤 나타나도록 함.
+- ver5/assets/data/classes.json: 연노병 계획에 저격을 관통보다 먼저 추가 — 병종 계획 선행 충족.
+- ver5/assets/scenario/hero/stage15.json: 조조 본군을 4턴 이후 북쪽으로 늦춰 옮기고 궁병 제외 — 여포군과 붙어 등장하는 문제 완화.
+- ver5/internal/content/trait_prerequisite_audit_test.go: 장수 보유·계획 및 병종 계획 선행, 소패 증원 검증 — 누락 재발 방지.
+- ver5/internal/core/poison_transfer_test.go: 전가·책략 독공과 면역 검사 — 효과 회귀 방지.
+- ver5/internal/core/traits_test.go: 개인 계획의 선행으로 필요한 병종 중복만 허용 — 기존 중복 검사와 선행 조건 양립.
+- ver5/internal/content/vocab.go: 독공·전가 효과 주석 수정 — 실제 효과 반영.
+- ver5/docs/data-character.md, ver5/docs/logic-traits.md, ver5/docs/fullstory.md: 특성과 소패 증원 설명 갱신 — 현재 데이터와 문서 일치.
+- process/traits-xiaopei-fixes-2/traits-xiaopei-fixes-2.md: 수정 요청 기록 — 요구사항 보존.
+- result/20261126/traits-xiaopei-fixes-2/: 설계·수정 목록·검증 결과 기록 — 사용자가 변경과 미검증 항목 확인.
+- ver5/tools/storydb 색인: 소패 전투 문서 변경분 반영 — 현재 줄거리 검색 유지.
+- test/traits-xiaopei-fixes-2/test-log.md: 특성 검사 통과와 소패 화면 캡처 실패 기록 — 미검증 항목 추적.
+
+- `result/20261126/class-trait-movement-revision/index.html`: 병종 특성 수정과 이동 보너스 지속 시점 및 현재 동작을 기록 — 후속 설계 논의에 활용.
+
+- process/trait-pool-vs-plan-20261126/trait-pool-vs-plan-20261126.md: 유벽·유비 선행 특성 질문 기록 — 확인 요청 보존.
+- result/20261126/trait-pool-vs-plan-20261126/result.md: 병종 학습 목록과 NPC 자동 계획의 차이 확인 — 선행 특성 중복 추가의 영향 명시.
+
+- process/trait-prereq-count-review/trait-prereq-count-review.md: 선행 특성 추가의 수량·배치 영향 검토 요청 기록 — 사용자 우려 보존.
+- result/20261126/trait-prereq-count-review/result.md: 개인·병종 계획에 선행을 추가한 영향과 검토 방향 기록 — 특성 수 증가와 습득 시점 변화 확인.
+
+- `result/20261126/repeating-crossbow-traits/summary.md`: 연노병 특성 풀과 NPC 특성 계획 조회 결과 기록 — 기존 특성과 개편안을 구별.
+
+- process/trait-pool-test-check/trait-pool-test-check.md: 병종과 고유 특성 중복 검사 확인 요청 기록 — 사용자 질문 보존.
+- result/20261126/trait-pool-test-check/result.md: 기존 중복 검사 및 직전 선행 예외 추가 사실 기록 — 잘못 완화된 검사의 원인 명시.
+- tools/scenario_doc/progression.py: 장별 합류·보물·상점·전투 부목표 및 동맹을 데이터에서 정적 추출 — 스테이지별 새 요소 점검
+- tools/scenario_doc/README.md: 신규 요소 추출기 사용법과 분기·시간 순서의 한계 기록 — 결과 오해 방지
+- result/20261126/progression-inventory/design.md·chapters-01-11.md·result.md: 1~11장 추출 결과와 조건 조사 기록 — 보물·장수 도입 시점 검토
+- request/progression-inventory-20261126.md: 신규 요소 스크립트 추출 요청 기록 — 요청과 결과 연결
+
+- process/officer-prerequisite-review-request/officer-prerequisite-review-request.md: 장수별 병종 중복과 선행 특성 변경 조사 요청 기록 — 조사 대상 보존.
+- result/20261126/officer-prerequisite-review-request/: 실제 NPC 계획 출력과 대상별 중복·습득 시점·특성 수 조사 기록 — 재배치 판단 근거 제공.
+- result/20261126/progression-inventory-all/all-chapters.md·summary.md: 현재 01~27장과 연의·가상 분기의 신규 요소 전체 추출·정리 — 1~11장에 한정된 조사 보완
+- request/progression-inventory-all-20261126.md: 시나리오 전체 신규 요소 조사 요청 기록 — 요청과 결과 연결
+
+- process/officer-trait-plans-detail/officer-trait-plans-detail.md: 장수별 고유 특성과 계획 특성 상세 요청 기록 — 사용자 확인 범위 보존.
+- result/20261126/officer-trait-plans-detail/result.md: 변경 전후 고유 목록과 NPC·최종 병종 계획의 특성 및 레벨 정리 — 특성 수와 배치 검토 지원.
+
+- ver5/internal/core/traits_test.go: 선행 특성의 병종·개인 중복 허용 예외 제거 — 기존 중복 금지 테스트 복구.
+- process/trait-prerequisite-correction-proposal/trait-prerequisite-correction-proposal.md: 중복 검사 복구 및 특성 재배치 수정안 요청 기록 — 사용자 요구 보존.
+- result/20261126/trait-prerequisite-correction-proposal/: 복구 테스트 실패 내역과 장수·병종별 수정안 기록 — 개인 특성 수와 선행 순서 검토.
+
+- `result/20261126/repeating-crossbow-long-range/summary.md`: 연노병 독려를 장거리 물리 피해 특성으로 교체하는 설계 결정 기록 — 병종 특성 개편에 반영.
+
+- `result/20261126/class-trait-final-proposal/index.html`: 병종별 특성 명칭·공식·비용과 미확정 수치를 최종 제안으로 정리 — 구현 전 밸런스 논의에 활용.
+
+- process/huangfusong-fire-manual-review/huangfusong-fire-manual-review.md: 황보숭의 화계서 선행 지적 기록 — 사용자 정정 보존.
+- result/20261126/huangfusong-fire-manual-review/result.md: B02 스폰·화계서·장비 선행 검증 조사 — 실제 전투와 가상 NPC 계획 구분.
+- result/20261126/trait-prerequisite-correction-proposal/result.md: 황보숭 수정안을 화계서 착용과 실제 스폰에 맞춰 정정 — 불필요한 보병 병종 변경 제안 제거.
+
+- `result/20261126/trait-name-defense-revision/summary.md`: 정지 방어 20% 변경과 특성 이름 후보 및 기존 중갑과의 중복 기록 — 특성 개편 설계에 반영.
+
+- process/trait-correction-user-decisions/trait-correction-user-decisions.md: 장수별 특성과 도독·연노병 사용자 지시 기록 — 후속 재배치 기준 보존.
+- result/20261126/trait-correction-user-decisions/result.md: 사용자 지정 구성과 병종 학습·NPC 계획의 차이를 수정안에 반영 — 특성 수와 선행의 남은 쟁점 명시.
+- result/20261126/trait-prerequisite-correction-proposal/result.md: 장수별 확정 지시와 저격 학습 계열 정정 연결 — 이전 잘못된 예시와 구분.
+
+- ver5/assets/data/classes.json: 연노병 NPC 계획을 저격 50·관통 60·원시 70으로 조정 — 선행을 먼저 갖고 이후 순서를 뒤로 미룸.
+- ver5/internal/content/trait_prerequisite_audit_test.go: 궁병 계열 저격 학습 상속과 연노병 계획의 레벨 경계 검사 — 플레이어 학습과 NPC 계획의 혼동 방지.
+- ver5/docs/logic-traits.md: 연노병 NPC 계획과 궁병부터 저격 학습 가능함을 기록 — 두 경로 구분.
+- process/repeating-crossbow-trait-order/repeating-crossbow-trait-order.md: 연노병 계획 순서 수정 요청 기록 — 사용자 지시 보존.
+- result/20261126/repeating-crossbow-trait-order/design.md: 계획 순서 변경 범위와 검증 설계 기록 — 기존 데이터 보존.
+
+- `result/20261126/ironwall-name-correction/summary.md`: 기존 철벽 특성 확인 및 중복 명칭 후보 정정 — 특성 개편 시 이름 충돌 방지.
+
+- process/npc-class-prerequisite-design/npc-class-prerequisite-design.md: NPC 고유 특성의 병종 선행 동반 보유 설계 요청 기록 — 곽가 예시와 사용자 의도 보존.
+- result/20261126/npc-class-prerequisite-design/result.md: 실제 스폰·장비·병종 학습 목록을 고려한 선행 보충 설계 기록 — 고유 특성 중복 없이 적용할 방안 검토.
+- result/20261126/repeating-crossbow-trait-order/result.md: 연노병 계획 변경과 레벨 경계 테스트 결과 기록 — 요청 처리 결과 보존.
+- result/20261126/trait-correction-user-decisions/result.md, result/20261126/trait-prerequisite-correction-proposal/result.md: 연노병 후속 결정을 반영하고 이전 교체 예시 정정 — 수정안 혼동 방지.
+
+- `result/20261126/level50-formation-simulation/summary.md`: 방비·원사강화 명칭과 레벨 50 방어 중첩별 기병·책략 예상 피해 기록 — 방진 공략 가능성 검토.
+
+- `result/20261126/guard-offense-level50/summary.md`: 50레벨 근위병의 친위대·연노병 공격 피해 계산 기록 — 병종 상성 검토.
+
+- `result/20261126/combat-coefficient-audit/summary.md`: 현행 능력치·피해·반격 보정의 합산과 곱셈 순서 조사 — 전투 계수 설계 검토.
+
+- `result/20261126/proposed-damage-formula-crossbow/summary.md`: 제안 피해식과 연노병 대 친위대 계산 및 레벨 항 위치의 영향 기록 — 전투식 설계 검토.
+
+- `result/20261126/combat-class-overhaul-consolidated/plan.md`, `index.html`: 전투 계수·병종 특성·진영 구성 대화와 미확정 항목을 통합 — 후속 설계와 구현의 기준으로 활용.
+
+- `docs/logic-traits.md` 4.1절 표 삭제 후 계획 특성 개념·배치 규칙(선행·길이·학습 풀과의 관계)으로 재작성, `tools/scenario_doc/trait_plans.py` 추가, 도독 계획 11개·중보병/근위병 Lv20 부관임명·화계/수계/지계 선행 고유 계획 추가, 중복 검사를 `Learn` 기준으로 정정 — 문서가 데이터와 어긋나지 않게 하고 계획 선행 검사를 통과시키기 위해.

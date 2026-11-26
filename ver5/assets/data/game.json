@@ -334,12 +334,14 @@
   "u": {
    "Name": "구릉",
    "Glyph": "u",
-   "Surface": 2
+   "Surface": 2,
+   "Highland": true
   },
   "U": {
    "Name": "황무지 구릉",
    "Glyph": "U",
-   "Surface": 4
+   "Surface": 4,
+   "Highland": true
   },
   "n": {
    "Name": "산",
