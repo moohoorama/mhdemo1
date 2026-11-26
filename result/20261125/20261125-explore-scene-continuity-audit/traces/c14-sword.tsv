@@ -1,0 +1,16 @@
+f0000	walk	node=c14-walk	def=explore:town	screen=map:S_xuzhou_town	fade=0.95	leaving=false
+f0000	fade	0.95	leaving=false	darkness=0.00
+f0010	fade	0.45	leaving=false	darkness=0.00
+f0109	story	node=c14-sw01	def=c14-e-sword	screen=map:S_xuzhou_town	fade=0.00	leaving=false
+f0109	JUMP	미방	(9.8,5.8)->(10.0,6.0)	node=c14-sw01	fade=0.00	dir=SW
+f0109	JUMP	미축	(8.8,5.2)->(8.0,6.0)	node=c14-sw01	fade=0.00	dir=SE
+f0109	JUMP	유비	(9.8,5.2)->(8.0,7.0)	node=c14-sw01	fade=0.00	dir=NW
+f0110	story	node=c14-sw02	def=c14-e-sword	screen=map:S_xuzhou_town	fade=0.00	leaving=false
+f0161	story	node=c14-sw03	def=c14-e-sword	screen=map:S_xuzhou_town	fade=0.00	leaving=false
+f0212	story	node=c14-sw05	def=c14-e-sword	screen=map:S_xuzhou_town	fade=0.00	leaving=false
+f0354	story	node=c14-sw06	def=c14-e-sword	screen=map:S_xuzhou_town	fade=0.00	leaving=false
+f0410	fade	0.20	leaving=true	darkness=0.00
+f0420	fade	0.70	leaving=true	darkness=0.00
+f0426	story	node=c14-walk	def=c14-e-sword	screen=map:S_xuzhou_town	fade=1.00	leaving=false
+f0430	fade	0.80	leaving=false	darkness=0.00
+f0440	fade	0.30	leaving=false	darkness=0.00

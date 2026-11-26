@@ -1,0 +1,198 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수정 방안 16건</title>
+<style>
+:root{--bg:#faf8f4;--fg:#222;--mut:#666;--card:#fff;--bd:#ddd5c8;--ac:#8a2b1d;--ok:#2d6a3e;--q:#b06a00}
+@media(prefers-color-scheme:dark){:root{--bg:#1d1b19;--fg:#e8e2d8;--mut:#a39b8d;--card:#27241f;--bd:#3d382f;--ac:#e08a78;--ok:#7cc592;--q:#e5b45a}}
+body{background:var(--bg);color:var(--fg);font:15px/1.65 -apple-system,"Apple SD Gothic Neo",sans-serif;margin:0;padding:24px 16px 80px}
+main{max-width:920px;margin:auto}
+h1{font-size:24px}h2{font-size:18px;margin:0 0 6px}
+nav{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px 16px;columns:2;font-size:14px}
+nav a{color:var(--fg);text-decoration:none;display:block}
+section{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:16px 18px;margin:16px 0}
+.tag{font-size:12px;border:1px solid var(--bd);border-radius:10px;padding:1px 8px;color:var(--mut);margin-left:6px}
+.q{border-left:4px solid var(--q);background:rgba(176,106,0,.08);padding:8px 12px;margin:10px 0;border-radius:4px}
+.q b{color:var(--q)}
+.ok{color:var(--ok)}
+code{font:13px ui-monospace,Menlo,monospace;background:rgba(128,128,128,.15);padding:1px 4px;border-radius:3px}
+pre{font:12.5px/1.45 ui-monospace,Menlo,monospace;background:rgba(128,128,128,.12);padding:10px;border-radius:6px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}td,th{border:1px solid var(--bd);padding:5px 8px;text-align:left;vertical-align:top}
+ul{margin:4px 0;padding-left:20px}
+.mut{color:var(--mut)}
+</style></head><body><main>
+<h1>수정 방안 16건</h1>
+<p class="mut">2026-11-26 · 조사만 했고 코드·데이터는 바꾸지 않았습니다. 승낙(ok)하시면 항목별로 적용합니다. <span style="color:var(--q)">주황 박스</span>는 판단이 필요한 곳입니다.</p>
+
+<section><h2>한눈에 보기</h2>
+<table><tr><th>#</th><th>항목</th><th>규모</th><th>결정 필요</th></tr>
+<tr><td>1</td><td>하비 성문·조조군 돌입·여포 보병 방향</td><td>stage16 데이터</td><td>조조군 진입 시점</td></tr>
+<tr><td>2</td><td>아군 클릭 시 공격 범위</td><td>GUI 소</td><td>—</td></tr>
+<tr><td>3</td><td>17장 관우·장비 y+1</td><td>데이터 2값</td><td>—</td></tr>
+<tr><td>4</td><td>부유 글자 붓글씨 이미지화</td><td>에셋+GUI 대</td><td>적용 범위</td></tr>
+<tr><td>5</td><td>방천화극 연쇄 50%</td><td>소</td><td>—</td></tr>
+<tr><td>6</td><td>병법 종류 탭 범위</td><td>GUI 중</td><td>해석 확인</td></tr>
+<tr><td>7</td><td>심공 회복 표시</td><td>소</td><td>—</td></tr>
+<tr><td>8</td><td>돌파-반격 순서</td><td>GUI 소</td><td>—</td></tr>
+<tr><td>9</td><td>퇴장 규칙 + 테스트</td><td>중~대</td><td>군중 면제 여부</td></tr>
+<tr><td>10</td><td>19장 업 말풍선 겹침 + 테스트</td><td>소</td><td>—</td></tr>
+<tr><td>11</td><td>도구점 구매 시 이득 아군 테두리</td><td>core+GUI 중</td><td>테두리 색</td></tr>
+<tr><td>12</td><td>여남전투 일기토·인물 조정</td><td>데이터 다수</td><td>관평 특성 안, 장합</td></tr>
+<tr><td>13</td><td>양양 의자 전수 조사 + 테스트</td><td>맵 2줄+테스트</td><td>단 옮기기 vs 자리 옮기기</td></tr>
+<tr><td>14</td><td>유표 후사 대화</td><td>대사</td><td>3안 중 선택</td></tr>
+<tr><td>15</td><td>양양성 맵·NPC 재배치</td><td>맵+NPC 대</td><td>제갈량</td></tr>
+<tr><td>16</td><td>강하 진지 신규 맵</td><td>맵 대</td><td>관우·고순 연출 (a)/(b)</td></tr></table></section>
+
+<section id="s1"><h2>1. 하비 전투: 남서문만 열고, 조조군은 전투 중에 돌입 <span class="tag">stage16.json</span></h2>
+<p><b>원인</b> <code>opening</code> 이벤트가 북서문(<code>Area 2</code>, L268)·남동문(<code>Area 3</code>, L284)도 연다. 조조군 컷신(L617~652)이 두 문 안쪽으로 <code>move</code>시킨다. 여포 보병 <code>lu-nw</code>·<code>lu-se</code> 8기가 Facing NW/SE다.</p>
+<ul>
+<li>북서·남동 문 개방 단계와 앞뒤 wait 삭제. 남서문(<code>Area 1</code>)만 연다.</li>
+<li>컷신 대사를 조인 "유비군을 구해라!", 하후연 "우리도 들어가자!"로 줄이고 <code>move</code> 블록 삭제.</li>
+<li><code>lu-nw</code>·<code>lu-se</code> 8기 Facing을 <code>SW</code>로.</li>
+<li>조조군 <code>cao-nw</code>·<code>cao-se</code> 8기 Policy를 <code>assault</code>→<code>hold</code>로 두고, 새 이벤트 <code>cao-enter</code>(<code>round&gt;=3</code>)에서 <code>assault</code>로 전환. 남서문 바로 곁(8~18, 24~25)에서 출발하므로 남서문으로 들어온다.</li>
+<li>문서 <code>fullstory.md</code> L1736~1750, <code>history.md</code>도 함께 수정. 적용 후 <code>_balance -stage B16</code>로 난이도 재확인.</li></ul>
+<div class="q"><b>결정</b> 조조군 진입 시점: 3라운드(유비가 2라운드 버팀, 추천) / 2라운드 / "유비군 HP 일정 이하" 같은 조건형.</div></section>
+
+<section id="s2"><h2>2. 아군 클릭 시 자기 공격 범위 표시 <span class="tag">internal/gui/command.go</span></h2>
+<p><b>원인</b> 행동 중인 아군은 <code>orderMarks</code>가 파랑 이동칸만 칠하고, <code>rangeBorder</code>는 <code>ord.actor != ""</code>면 nil을 돌려 붉은 외곽선(현재 자리에서 닿는 칸)이 안 나온다. 적·턴 끝난 아군은 이 외곽선이 나온다.</p>
+<ul><li>이동 단계/메뉴 단계에서 <code>Ranges(actor).Strike</code>를 붉은 외곽선으로 표시(이동 후엔 sandbox 엔진 기준 새 자리). 이동칸은 파랑 채움, 공격 범위는 붉은 외곽선으로 구분.</li>
+<li>선택: 이동 후 닿는 칸을 옅은 적색, 책략은 옅은 보라.</li>
+<li>테스트 <code>-run RangeBorder</code> + <code>_uidemo</code> 캡처.</li></ul></section>
+
+<section id="s3"><h2>3. 17장 조조의 후원: 관우·장비 한 칸 남서(y+1) <span class="tag">ch17.json c17-h24</span></h2>
+<p>정자(갑판)는 u2..6 × v1..3, 돌계단 (3,4). 관우 (3,4)는 계단 위, 장비 (2,4)는 갑판 모서리라 반투명 처리된다.</p>
+<pre>관우 Move [3,4] → [3,5]   (흙길)
+장비 Move [2,4] → [2,5]   (빈 땅)</pre>
+<p>다른 소품·인물과 충돌 없음. 캡처로 반투명 해소를 확인하고, 남으면 [3,6]/[2,6]. 주의: <code>ascii/c17-garden.txt</code>는 옛 지도라 쓰지 않고 JSON을 직접 고친다.</p></section>
+
+<section id="s4"><h2>4. 전투 글자를 붓글씨 이미지로 <span class="tag">damage_popup.go · turn_banner.go</span></h2>
+<p><b>필요 글리프 15자</b>: <code>0~9 + 제 턴 치 명</code>. (치명타는 쓰이지 않고 실제론 "치명".) 현재 색은 런타임 색칠이라 흰색 글리프를 <code>ColorScale</code>로 칠하면 그대로 유지된다.</p>
+<ul>
+<li>codex-image로 흰 붓글씨를 마젠타 배경에 생성 → 알파 변환·크롭 → <code>assets/graphics/ui/glyphs.png + glyphs.json</code> 아틀라스. 첫 결과를 참조로 넣어 획 굵기 일관성 유지. 생성 결과는 사용자가 보고 승낙한 뒤 반영.</li>
+<li>helper <code>g.glyphText(s,h)</code>가 <code>numberImageFace</code>/<code>textImage</code>를 대체(림 12방향은 그대로).</li>
+<li>배너 "제N턴"은 큰 해상도라 배너용 숫자를 따로 둘 수 있음(두 벌).</li>
+<li>테스트: 아틀라스 15자 존재, 모든 숫자·'+' 해석. 전후 렌더는 <code>measure_render_test</code> 방식 + 캡처.</li></ul>
+<div class="q"><b>결정</b> ① "OO군의 차례" 명조 글씨는 그대로 둘까요(추천: 유지)? ② "막음!", "EXP +N", "HP +N", 상태 글자(작은 serif)도 포함할까요(글리프 수가 크게 늘어남, 추천: 이번엔 제외)?</div></section>
+
+<section id="s5"><h2>5. 방천화극: 두 번째 공격부터 기본 배율 50% <span class="tag">traits.json · battle_events.go</span></h2>
+<p>방천화극의 <code>halberd_sweep</code>(<code>retreat_sweep: 1</code>)이 퇴각 연쇄 추가 공격을 기본 공격 100%로 때린다. "퇴각 연쇄로 이어지는 추가 공격 전부 50%, 첫 일반 공격은 100%"로 해석.</p>
+<ul><li><code>retreat_sweep</code> 값을 계수로 사용: traits.json의 값 <code>0.5</code>, <code>retreatSweep</code>에서 <code>s.Coeff *= fx</code>.</li>
+<li>설명 문구(equipment/traits)와 vocab 주석 "피해 50%"로 갱신. 테스트 <code>-run RetreatSweep</code>에 계수 1/0.5 두 케이스.</li></ul></section>
+
+<section id="s6"><h2>6. 병법 종류 탭 범위 <span class="tag">command.go · menu_panel.go</span></h2>
+<p>현재: 종류 탭은 전부 같은 아이콘(<code>skill</code>)이고, 병법 목록(sub 단계)에서는 범위가 아무 칸도 안 칠해진다(대상 단계에서만 보임).</p>
+<div class="q"><b>해석 확인</b> ① 병법 행에 마우스를 올리면(선택하면) 그 병법의 <b>선택 범위</b>가 맵에 칠해지게(추천 해석) ② 탭 아이콘이 종류별로 달라지게(6종 도트 신규). 어느 쪽, 또는 둘 다인가요?</div>
+<p>①: <code>hoverOut</code>로 호버 행을 받아 <code>ActionCells</code>를 옅은 적색(대상 단계와 같은 색)으로 칠함. 자기 대상(self)은 자기 칸만.</p></section>
+
+<section id="s7"><h2>7. 심공 회복이 화면에 안 뜸 <span class="tag">combat.go:431 leech</span></h2>
+<p><b>원인</b> <code>leech</code>가 <code>u.HP</code>만 올리고 이벤트를 안 낸다. GUI는 이벤트로만 +N을 띄운다(<code>spell_leech</code>는 <code>heal</code>을 냄).</p>
+<ul><li>실제 회복량 계산 후 <code>e.emit("heal", u.ID, u.ID, actual)</code> (0이면 생략).</li>
+<li><code>splitCounters</code>에서 반격자의 heal을 해당 반격 이벤트에 붙임.</li>
+<li>테스트: core <code>LifeSteal</code> 확장(이벤트·Amount), gui <code>SplitCounters</code>.</li></ul></section>
+
+<section id="s8"><h2>8. 돌파-반격 순서 <span class="tag">player.go:720 splitCounters</span></h2>
+<p><b>원인</b> 엔진은 이미 타격→반격→밀침 순서다. GUI 연출 분리에서 반격자가 낸 <code>knockback</code>이 원 공격 연출(<code>blow</code>)로 빠져 공격 스윙 때 밀려나 보인다.</p>
+<p><b>수정</b> <code>back</code> 조건에 <code>e.Kind=="knockback" &amp;&amp; e.Actor != actor</code> 추가. 테스트 core 순서 + gui 분리, 캡처로 확인.</p></section>
+
+<section id="s9"><h2>9. 퇴장 규칙: 맵 끝까지 걸어가 정면으로 퇴장 <span class="tag">scenes.go · scene_walk_test.go</span></h2>
+<p>사라지는 수단은 <code>Exit:true</code>(Move 뒤 1.5칸 더 걸으며 흐려짐) 하나. 정면=SE·SW, 등=NW·NE. <b>현황: 304건 중 143건만 규칙 충족.</b></p>
+<table><tr><th>구분</th><th>건수</th><th>내용</th></tr>
+<tr><td>A. 맵 한가운데서 소멸</td><td>50</td><td>번아(ch19 c19-k03f), 조조·원소 등 ch01·05·06·07, ch16 손건·간옹·고순, ch17 유비, ch19 장료·조조군 19명 등</td></tr>
+<tr><td>B. 가장자리까지 가나 등을 보임</td><td>107</td><td>군중 퇴장 위주(ch15 병사 44, ch16 16, ch19 19 등)</td></tr>
+<tr><td>C. 충족</td><td>143</td><td>—</td></tr></table>
+<ul>
+<li><b>엔진 수정(추천)</b>: <code>Exit</code>를 "가장 가까운 SE/SW 가장자리로 정면 걸음 후 퇴장"으로 바꿔 데이터 수정 없이 규칙을 보장(전투 컷신 <code>leave</code>와 동일 방식). A·B 모두 자동 해결.</li>
+<li><b>테스트</b> <code>TestSceneExitsWalkToFrontEdge</code>: 모든 장면의 <code>Exit</code>가 ① Move가 있고 ② 마지막 걸음이 SE/SW ③ 1.5칸 더 간 점이 맵 밖. 엔진 보장이어도 데이터 계약으로 남김.</li>
+<li>번아: (8,4)→<code>Via [8,11]</code>→<code>Move [8,12]</code>.</li></ul>
+<div class="q"><b>확인</b> 여남군청 전령(c21-r09 병사)은 데이터상 방 밖으로 나가 위반이 아니고, "백스텝"은 재현되지 않았습니다. 말하는 자리(6,4)에서 방 가장자리 바로 옆(7,4)이라 짧게 걷고 사라지는 것으로 보입니다. 엔진 수정이면 함께 해결됩니다.<br><b>결정</b> ① 엔진 수정(추천) vs 데이터 개별 수정 ② B(군중·등 보임)도 규칙에 포함(엔진 수정이면 자동 해결).</div></section>
+
+<section id="s10"><h2>10. 19장 업 말풍선 겹침 <span class="tag">scene_arrow.go:83 · scene.go:383</span></h2>
+<p><b>원인</b> 아낙#1(44,39)·상인#1(47,36)은 화면 Y가 같고, 말풍선 시작 지연·간격이 이름의 <b>바이트 길이</b>(<code>len(id)</code>)로 정해져 둘이 영원히 같은 박자로 동시에 말한다. 같은 구조가 explore14(2곳), 27_jiangxia, 27_redcliff, explore07에도 있다.</p>
+<ul><li>시작·간격을 id의 FNV32 해시로 계산(시작 0~chatEvery, 지터 0~1초). 계산을 순수 함수로 뽑음.</li>
+<li>테스트 <code>TestExploreChatterBubblesDoNotOverlap</code>: 120초 시뮬레이션으로 같은 시간대 말풍선 사각형이 겹치면 실패.</li></ul></section>
+
+<section id="s11"><h2>11. 도구점: 구매 시 능력치가 오르는 아군에 테두리 <span class="tag">shop.go · equipment_advice.go</span></h2>
+<p>현재 상점 UI에는 아군 목록이 없고, 기존 테두리는 장착 추천 <b>연녹</b>(<code>recommendationRim</code>), 상급 인수 <b>주황</b>(<code>promoteRim</code>)이다. 추천 계산은 창고 물건만 시험한다.</p>
+<ul><li>core <code>EquipmentUpgradesFor(item)</code>: 시험 상태에서 해당 물건을 창고에 넣고 기존 루프 실행(상태 변하지 않음).</li>
+<li>상점 구매 탭에서 장비를 고르면 상세 상자 곁에 아군 초상 줄을 그리고, 오르는 아군 초상에 테두리 + 이유("공격 +4") 표시. 결과는 물건·Revision으로 캐시, NoGuide면 숨김.</li></ul>
+<div class="q"><b>결정</b> 테두리 색: 기존 추천 연녹 재사용(추천, 장착 가이드와 일관) / 말씀하신 대로 새 <b>붉은</b> 테두리.</div></section>
+
+<section id="s12"><h2>12. 여남전투(B21) 조정 <span class="tag">stage21.json 외</span></h2>
+<ul>
+<li><b>배치</b>: 현재 장비(18,20)·공도(17,20)·하후연(19,19)·기병이 한 덩어리. 맵 남쪽은 산이라 여유 1~2줄. 장비 (18,21), 공도 (16,21)로 내리고, 하후연 (19,12)·기병 (19,11)/(18,12)는 북쪽 통로에서 등장해 <code>cutscene move By:gongdu</code>로 공도에게 달려온 뒤 <code>duel</code>. 일기토(<code>runan-gongdu-xiahouyuan</code>)는 이미 있어 이동 연출만 추가.</li>
+<li><b>하후연 궁기병</b>: Lv34라 이미 궁기병으로 나옴. 스폰에 <code>"Class":"horse_archer"</code>를 못박음.</li>
+<li><b>장합 일기토</b>: B21엔 없고 stage19 <code>yanzhou-zhaoyun-zhanghe</code>에 있음. <code>Melee:{"zhanghe":"light_cavalry"}</code> 추가. (B21이 아니라 이 일기토를 말씀하신 것으로 해석, 아니면 알려 주세요.)</li>
+<li><b>진도 삭제</b>: characters_story 항목, story19(<code>k03c</code> 수정, <code>k03d</code>·<code>join-chendao</code> 삭제), story20 <code>c20-a06</code>, explore20·27(3개) NPC, story27 문구, 장면 ch19·20·27 Cast·비트, 테스트 <code>campaign_content_test.go:211</code>, fullstory·문서 다수.</li>
+<li><b>관평</b>: <code>royal_guard</code> Lv20 → <code>horse_archer</code>, 무기 <code>copper_spear</code>→<code>short_bow</code>, 특성 교체.</li>
+<li><b>진진 지력</b> 48→75. <b>허저</b> Stats <code>[72,96,36,70,60,52]</code> → <code>[72,96,36,95,95,52]</code> (민첩·운). 허저가 강해져 B21 난이도 재확인(<code>_balance -stage B21</code>).</li></ul>
+<div class="q"><b>결정</b> 관평 특성: <b>A</b> <code>charge_aim, pursuit, far_sight</code>(원거리 기동형) / <b>B</b> <code>cross_shot_art, charge_aim, do_or_die</code>(방덕형, 맥성 최후와 어울림).</div></section>
+
+<section id="s13"><h2>13. 양양 잔칫상 의자 전수 조사 <span class="tag">S_council.json · scene_seats_test.go</span></h2>
+<p><b>원인</b> 잔칫상은 <code>S_council</code> 맵. 단(<code>dais</code>)이 (0.56,3.5)인데 유표는 (1,3)에 앉아 단 의자가 0.67칸 등 뒤에 있다. 같은 어긋남이 12개 장면(하진·원소·공손찬·조조·유표 등)에 있다.</p>
+<table><tr><th>구분</th><th>내용</th></tr>
+<tr><td>A 단에서 어긋남</td><td><code>S_council</code> 장면 12곳(0.67칸), <code>S_mansion</code> c17-ask·c24-banquet(0.62칸)</td></tr>
+<tr><td>B 단 위에 서 있음</td><td><code>S_xuzhou_hall</code> c13·c14 도겸·유비(Pose 없음)</td></tr>
+<tr><td>C 단 옆에 서 있음</td><td>c27v-start 유기</td></tr>
+<tr><td>D 빈 단(위반 아님)</td><td>ch02·03·08·11·21·23·26v·27v 등, 탐험 17개 구역</td></tr></table>
+<ul>
+<li><b>맵 한 줄 수정(추천)</b>: <code>S_council</code> dais <code>['dais',2,8,2,-7]</code>→<code>['dais',3,7,0,-8]</code>, <code>S_mansion</code> <code>['dais',8,2,-3,-6]</code>→<code>['dais',9,3,0,-8]</code>. 12개 장면이 한꺼번에 고쳐짐. 책상(1.6,3.5)과 겹치면 <code>scenemap.Check</code>로 확인해 책상을 한 칸 이동.</li>
+<li><code>S_xuzhou_hall</code> c13·c14: 도겸·유비 <code>Pose: sit</code>. c27v 유기 <code>sit</code>(도겸 sit 시트 있는지 확인).</li>
+<li><b>테스트</b> <code>scene_seats_test.go</code>: ① 서 있는 사람은 좌석(dais·throne_u) 중심 0.6칸 안 금지 ② 앉은 사람은 1칸 안 좌석이 있으면 0.3칸 이내 ③ 서 있는 사람이 걸상(bench)에 겹치면 실패 ④ 빈 좌석은 로그만(규칙화하면 D 허용 목록 필요).</li></ul>
+<div class="q"><b>결정</b> 맵의 단을 옮김(추천, 12곳 일괄) vs 장면마다 앉는 칸을 옮김.</div></section>
+
+<section id="s14"><h2>14. 유표의 유기·유종 이야기 <span class="tag">story22.json s205~s213</span></h2>
+<p><b>맥락이 끊긴 이유</b> 신야 제안에서 "내 고민이 그뿐이 아닐세"로 곧장 넘어가 왜 손님에게 꺼내는지 없음 / 앞 장면(관청 논쟁)과 이어지지 않음 / 유비 "법도에 따르시면"이 장자 편으로 읽혀 채모가 속내를 그대로 말해 어색 / 두 아들이 이름뿐. 세 안 모두 "법도" 발언을 뺐다(유비는 편들지 않음, 형님 호칭 유지). 대본 규칙대로 S#3 하나만 먼저 보여 드립니다.</p>
+<p><b>안 A 「푸념」</b> (연의에 가장 가까움)</p>
+<pre>유표: (잔을 내려놓고) ……신야 일 말고도, 자네에게 털어놓을 것이 하나 있네. 집안일일세.
+유비: 형님 댁 안의 일을 제가 들어도 되겠습니까.
+유표: 아우가 남이 아니니 하는 말일세. 아들이 둘인데, 큰아이 기는 어질지만 몸이 약하고, 작은아이 종은 영리하나 아직 어리네.
+유표: 몸이 예전 같지 않으니 형주를 누구에게 물려야 할지, 밤마다 ……갈피를 못 잡겠네.
+유비: 그 일은 형님이 정하실 일이고, 제가 낄 자리가 못 됩니다. 다만 집안이 갈리면 밖의 적이 먼저 안다는 것은 저도 겪어 압니다.
+채모: 주공, 잔이 식겠습니다. 오늘은 손님을 대접하는 자리 아닙니까.
+유표: ……그렇군. 들게들.
+장비: (관우에게) 둘째 형, 저 양반 방금 우리 형한테 곁눈질한 것 같은데…….
+관우: 조용히 하게. 남의 잔칫상일세.</pre>
+<p><b>안 B 「아까 관청에서」</b> (앞 장면 논쟁과 이어짐)</p>
+<pre>유표: 아까 관청이 소란스러웠지. 들었는가, 현덕 아우.
+유비: 문밖에서 목소리는 들었습니다. 자세한 사정은 모릅니다.
+유표: 강릉 사람들은 큰아이 기를, 양양 사람들은 작은아이 종을 찾네. 기는 어질지만 몸이 약하고, 종은 영리하나 아직 어리네. 둘 다 내 아들인데…….
+유비: 형님, 저는 손님으로 와 있는 몸입니다. 남의 집안 대사에 말을 얹을 자격이 없습니다.
+유표: 그래, 자네는 그리 말할 줄 알았네. 그래도 한 번쯤 입에 올리고 싶었네.
+괴월: (낮게) 주공, 후사는 서두르실 일이 아닙니다.
+유표: ……알았네.
+(장비·관우 반응 두 줄은 그대로)</pre>
+<p><b>안 C 「강하 이야기로 돌리기」</b> (유비의 사양이 가장 분명)</p>
+<pre>유표: 강하를 맡기겠다는 건 일을 맡기는 것이기도 하지만, 기를 그리 보낼 수는 없어 자네에게 묻는 것이기도 하네.
+유비: 공자를 말씀하십니까.
+유표: 큰아이 기는 어질지만 몸이 약하고, 작은아이 종은 영리하나 어리네. 둘 중 누가 이 땅을 지켜 낼지…….
+유비: 형님, 그 물음은 제가 답할 수 없습니다. 답하는 순간 저는 손님이 아니라 한쪽 사람이 되니까요. 대신 강하는 제가 잘 맡겠습니다.
+유표: ……허허, 부끄러운 소리를 했네. 자, 한 잔 받게.
+채모: (괴월에게, 낮게) 방금 말의 끝이 장자 쪽을 보고 있었소.
+괴월: …
+(장비·관우 반응 두 줄은 그대로)</pre>
+<div class="q"><b>선택</b> A / B / C (고르시면 <code>story22.json</code>·<code>fullstory.md</code>·<code>ch22.json</code> 비트(s209~s213)를 함께 맞춥니다). 섞기도 가능.</div></section>
+
+<section id="s15"><h2>15. 양양성 맵·NPC 재배치 <span class="tag">S_xiangyang.json (48×40 작은 칸)</span></h2>
+<p><b>문제</b> 남쪽 성벽 (v=40)에 닿은 <code>house_tile_x (44,39)</code>가 시장 바로 아래에서 성벽을 뚫고 보임(같은 줄 (36,38), (5,37), (23,37)도 근접). 관청 (4,27)·저택 (12,30)·주점·시장이 전부 v≥24에 몰림. 길만 있고 건물 없는 북쪽 줄기 (9~14 / 22~26 / 33~37, 15~19).</p>
+<ul>
+<li><b>관청</b> <code>hall_u (24,13)</code> — 정면이 석판 (22~26,15~19)에 이어짐. 출구 <code>[24,17]</code>.</li>
+<li><b>저택</b> <code>hall_u (35,13)</code> — 석판 (33~37,15~19), 한수 가까움. 출구 <code>[35,17]</code>.</li>
+<li><b>민가 신규</b> (15,16),(18,12),(29,16),(29,10),(16,26),(10,27),(10,33),(18,31),(28,31).</li>
+<li>남쪽 성벽에서 2칸 이상 띄움: (44,39)·(36,38)·(5,37)·(23,37) 삭제 또는 v≤35로. v≥36은 나무·덤불·우물만.</li>
+<li>기존 관청·저택 쪽 NPC 좌표도 새 건물 앞으로 이동(건물 뒤 NPC 금지 규칙).</li>
+<li>방지: <code>scenemap.Check</code>에 "큰 물체 발자국과 성벽 2칸 이내 금지" 규칙 + 테스트.</li>
+<li>주의: 생성기(<code>jingzhou_towns.py</code>)가 현재 맵을 못 만들므로 JSON 직접 수정.</li></ul>
+<p><b>NPC</b> 아군은 관우·장비·조운·간옹·손건만. 삭제: 미축(explore22·23·25 visit/back·27v). 신규 시민(장마다 대사 다르게): 짐꾼, 소금 장수, 빨래하는 아낙, 아이 둘, 대장장이, 선비(강릉파·양양파), 주점 심부름꾼, 의원(25장). 기존 양양 백성·늙은 선비·우물가 아낙은 유지.</p>
+<div class="q"><b>결정</b> 27v 장의 제갈량은 남길까요(추천: 줄거리상 필요하면 유지)? 신규 시민 구성은 위 안대로 괜찮은가요?</div></section>
+
+<section id="s16"><h2>16. 강하 진지: 강을 사이에 두고 남쪽 관우·고순, 북쪽 본대 <span class="tag">explore22 / 22b</span></h2>
+<p><b>불일치</b> 현재 맵 <code>S_luzhi_camp</code>(노식의 마른 진영)에는 진영 안에 강이 없고(물은 성벽 밖 2줄), 관우·고순이 본진 막사 구역 (26,18)·(26,20)에 있다. 대사엔 "강 건너 진손의 진채", "진 앞 강 폭"이 나온다. 전투 맵 <code>map22</code>는 4칸 폭 강이 가로지르고 남쪽 진손 진채·별동대 (2~5,15)다. 이 맵은 explore02·15_camp도 써서 <b>새 맵 <code>S_jiangxia_camp</code></b>를 만든다.</p>
+<pre>북쪽 기슭(v3~31): 본진 — 대막사·지도 탁자·군량·병영(기존 배치 복사), 가짜 강은 풀로
+강(v32~39, 8칸 폭): 북쪽 나루 sbridge_v(u12~15,v30~34), boat_l_v·boat_v
+남쪽 기슭(v40~52): 남쪽 나루 + 관우·고순 별동대 진지(tent×3, command_flag, watchtower)
+동쪽 갈대밭: 진손 진채 쪽, 출입 불가</pre>
+<ul><li>북쪽: 간옹(36,14)·조운(38,20)·장비(24,16)·미방·미축·손건 그대로 새 맵에 이식. 관우(13,45)·고순(16,45)은 남쪽.</li>
+<li><code>explore22</code>·<code>22b</code> 맵 교체, <code>ch22.json</code> 회의 장면 맵·좌표 갱신.</li></ul>
+<div class="q"><b>결정</b> 관우·고순 연출: <b>(a)</b> 남쪽 별동대 진지에 서 있다가 회의(S#4) 때 나루로 건너와 지도 탁자 앞에 서고 끝나면 배로 떠남(이야기와 맞음) / <b>(b)</b> 탐험 구역을 하나 더 둬서 나룻배 출구로 유비가 직접 남쪽을 찾아감(기존 Talk 대사와 맞음). 별동대 장면이 한 번 더 생김.</div></section>
+
+<section><h2>적용 순서 제안</h2>
+<p>① 소규모 확실한 건 먼저 묶어서: 3·5·7·8·2 ② 데이터: 1·12·13(맵)·10 ③ 테스트 가드: 9·10·13 ④ 대작업: 4(에셋 검수)·11·15·16·14(대본 승낙). 항목마다 테스트·캡처를 하나씩(8GiB 맥) 돌립니다. 결정이 필요한 항목은 위 주황 박스에 답을 주시면 됩니다.</p></section>
+</main></body></html>

@@ -1,0 +1,1 @@
+{"state": "blocked", "doing": "", "next": "", "blocker": "일회용 장비 메커니즘이 코드에 전혀 없음(Equipment에 필드 없음, 승리 시 제거 훅 없음). 새 필드·정산 훅 설계 결정 필요. result.md 참조", "updated": "2026-11-26T05:52:39+09:00"}

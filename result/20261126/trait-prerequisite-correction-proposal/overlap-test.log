@@ -1,0 +1,45 @@
+--- FAIL: TestOfficerReformBatch (0.55s)
+    --- FAIL: TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning (0.00s)
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"deputy_appoint", "aim_prep", "suppressing_shot", "mounted_shot", "close_shot", "dash", "accuracy_up", "grass_footing", "reload_prep", "fire_arrow_art", "rapid_art", "agility_increase"} should not contain "suppressing_shot"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	xiahouyuan
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"spirit_prep", "counter_art", "fire", "deputy_appoint", "diagonal", "first_aid", "drain", "spirit_spread", "palm_wind", "fire_boost", "counter_boost", "agility_increase"} should not contain "fire"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	xusi
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"deputy_appoint", "iron_armor", "ranged_ward", "formation_guard", "diagonal", "fire", "brace_prep", "castle_defense", "siegecraft", "composure", "castle_mind", "defense_increase"} should not contain "deputy_appoint"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	liubei
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"deputy_appoint", "iron_armor", "ranged_ward", "formation_guard", "diagonal", "fire", "brace_prep", "castle_defense", "siegecraft", "composure", "castle_mind", "defense_increase"} should not contain "fire"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	huangfusong
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"fire", "relief", "foresight", "deputy_appoint", "spread", "water", "earth", "focus", "terrain_craft", "fire_boost", "water_boost", "earth_boost", "mind_increase"} should not contain "earth"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	fazheng
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"counter_art", "earth", "plunder", "deputy_appoint", "venom", "ambush_crit", "diagonal", "first_aid", "vital_strike", "crit_boost", "relief", "attack_increase", "drain"} should not contain "earth"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	liupi
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"spirit_prep", "counter_art", "fire", "deputy_appoint", "diagonal", "first_aid", "drain", "spirit_spread", "palm_wind", "fire_boost", "counter_boost", "agility_increase"} should not contain "fire"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	fangong
+        traits_test.go:506: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/core/traits_test.go:506
+            	Error:      	[]string{"fire", "relief", "foresight", "deputy_appoint", "spread", "water", "earth", "focus", "terrain_craft", "fire_boost", "water_boost", "earth_boost", "mind_increase"} should not contain "water"
+            	Test:       	TestOfficerReformBatch/personal_traits_do_not_repeat_inherited_class_learning
+            	Messages:   	xunyou
+FAIL
+FAIL	srpg/internal/core	1.035s
+FAIL

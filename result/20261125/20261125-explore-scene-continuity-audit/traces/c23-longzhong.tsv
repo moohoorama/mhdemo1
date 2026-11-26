@@ -1,0 +1,23 @@
+f0000	walk	node=c23-walk	def=explore:town	screen=map:S_xinye	fade=0.95	leaving=false
+f0000	fade	0.95	leaving=false	darkness=0.00
+f0010	fade	0.45	leaving=false	darkness=0.00
+f0130	walk	node=c23-walk	def=explore:town	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0131	walk	node=c23-walk	def=explore:longzhong	screen=map:S_vil_peace	fade=0.95	leaving=false
+f0131	JUMP	유비	(9.2,-0.8)->(11.8,3.8)	node=c23-walk	fade=0.95	dir=NW
+f0140	fade	0.50	leaving=false	darkness=0.00
+f0267	story	node=c23-a01	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0268	JUMP	서서	(6.0,2.0)->(10.0,2.0)	node=c23-a01	fade=0.00	dir=NW
+f0284	JUMP	장비	(5.0,3.0)->(10.0,3.0)	node=c23-a01	fade=0.00	dir=NW
+f0393	story	node=c23-a02	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0444	story	node=c23-a03	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0528	story	node=c23-a04	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0579	story	node=c23-a05	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0630	story	node=c23-a06	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0683	story	node=c23-a07	def=c23-visit1	screen=map:S_vil_peace	fade=0.00	leaving=false
+f0740	fade	0.25	leaving=true	darkness=0.00
+f0750	fade	0.75	leaving=true	darkness=0.00
+f0755	walk	node=c23-walk	def=c23-visit1	screen=map:S_vil_peace	fade=1.00	leaving=false
+f0756	walk	node=c23-walk	def=explore:longzhong	screen=map:S_vil_peace	fade=0.95	leaving=false
+f0756	JUMP	장비	(5.0,3.0)->(10.2,4.2)	node=c23-walk	fade=0.95	dir=NW
+f0760	fade	0.75	leaving=false	darkness=0.00
+f0770	fade	0.25	leaving=false	darkness=0.00

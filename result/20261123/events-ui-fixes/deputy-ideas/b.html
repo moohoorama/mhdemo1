@@ -1,0 +1,97 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>부관 칸: 1안 + B 규칙</title>
+<style>
+:root{--bg:#1a1515;--panel:#291c16;--card:#1f1814;--rim:#3a2b21;--gold:#e2b65d;--gold2:#9a7a45;--sel:#3a3a29;--text:#bab5a0;--bright:#e8dcc0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans KR","Apple SD Gothic Neo",sans-serif;line-height:1.55}
+.wrap{max-width:1100px;margin:auto;padding:20px 16px 60px}h1{color:var(--gold);margin:6px 0}h2{color:var(--gold);font-size:19px;margin:30px 0 6px}
+.rule{background:#211812;border:1px solid var(--rim);padding:10px 14px;max-width:820px}.rule b{color:var(--gold)}
+.demo{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.win{position:relative;width:780px;max-width:100%;height:400px;border:2px solid var(--gold2);background:var(--panel);outline:1px solid #5b4527;outline-offset:-5px}
+.lp{position:absolute;left:12px;top:30px;width:354px;height:350px;overflow:hidden}
+.lab{color:var(--bright);font-size:12px;margin:0 0 6px 2px}
+.grid{display:grid;grid-template-columns:168px 168px;gap:18px 14px;padding:2px 6px}
+.u{position:relative;height:150px}
+.c{--b:.55;position:absolute;inset:0;background:var(--card);border:1px solid var(--rim);cursor:pointer;overflow:hidden}
+.c img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:brightness(var(--b)) saturate(.85);transition:filter .2s}
+.c:hover{--b:.88;transition:none;border-color:#7d6440}.c.sel,.c.pair{--b:1;border:2px solid var(--gold);box-shadow:0 0 12px #e2b65d55}.c.pair:not(.sel){box-shadow:none;--b:.9}
+.nm{position:absolute;left:0;right:0;top:0;text-align:center;font-size:13px;padding-top:4px;color:#a39d86;background:linear-gradient(#000a,#0000)}
+.c:hover .nm,.c.sel .nm{color:#fff3d2}
+.mt{position:absolute;left:0;right:0;bottom:0;padding:10px 6px 3px;font-size:10px;color:#a39d86;background:linear-gradient(#0000,#000b)}
+.req{position:absolute;left:5px;top:3px;font-size:10px;color:var(--gold);font-weight:700;z-index:3}
+.med{position:absolute;right:-5px;bottom:-9px;width:56px;height:56px;border-radius:50%;z-index:5;border:2px solid var(--gold2);background:var(--card);cursor:pointer}
+.med img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 20%;filter:brightness(.55);transition:filter .2s}
+.med:hover img,.med.sel img,.med.pair img{filter:none;transition:none}.med:hover,.med.sel,.med.pair{border-color:var(--gold)}
+.med .mn{position:absolute;left:0;right:0;bottom:2px;text-align:center;font-size:11px;color:#fff;text-shadow:0 1px 2px #000,0 0 4px #000}
+.med.empty{border:1px dashed #6a5535;color:#8f8670;display:flex;align-items:center;justify-content:center;font-size:24px;background:transparent}
+.med.empty:hover{border-color:var(--gold);color:var(--gold);background:#e2b65d18}
+.swap{position:absolute;left:-7px;top:-7px;width:20px;height:20px;border-radius:50%;background:#3a281d;border:1px solid var(--gold2);color:var(--gold);font-size:12px;line-height:18px;text-align:center;opacity:0;transition:opacity .2s}
+.med:hover .swap{opacity:1;transition:none}.swap:hover{background:var(--gold);color:#291c16}
+.rp{position:absolute;left:384px;top:26px;right:10px;bottom:10px}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--rim)}.tab{padding:5px 11px;font-size:12px;cursor:pointer}.tab.on{color:var(--gold);border-bottom:2px solid var(--gold)}
+.rb{padding:10px 4px;font-size:12px}.who{display:flex;gap:10px;align-items:center;background:var(--sel);border:1px solid var(--gold2);padding:6px}.who img{width:56px;height:56px;object-fit:cover;border:1px solid var(--gold2)}.who b{color:var(--bright);font-size:15px}
+.cand{display:flex;gap:8px;align-items:center;padding:4px 6px;border:1px solid var(--rim);background:#211812;margin-top:5px;cursor:pointer}.cand:hover{border-color:var(--gold2)}.cand.cur{border-color:var(--gold);background:var(--sel)}.cand img{width:34px;height:34px;object-fit:cover}.cand .r{margin-left:auto;font-size:11px;color:var(--gold)}
+.tag{display:inline-block;font-size:10px;color:var(--gold);border:1px solid var(--gold2);padding:0 5px;margin-left:6px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:8px;max-width:900px}.flow div{background:#211812;border:1px solid var(--rim);padding:8px 12px;font-size:13px}.flow b{color:var(--gold)}
+.states{display:flex;gap:28px;flex-wrap:wrap;margin-top:12px;align-items:flex-end}.states .u{width:168px}.cap{font-size:12px;color:#9d8d73;text-align:center;margin-top:16px}
+.hint{font-size:12px;color:#9d8d73;margin-top:6px}
+</style>
+<div class="wrap">
+<h1>부관 칸: 1안(메달) + B 규칙</h1>
+<div class="rule"><b>규칙 하나:</b> 사람 그림을 누르면 <b>그 사람을 본다</b>, 모서리의 <b>⇄ / ＋</b>를 누르면 <b>부관을 임명(부관 탭)</b>한다. 비어 있을 때의 <b>＋</b>도 같은 "임명 버튼" 자리이므로 찼을 때와 어긋나지 않습니다.</div>
+
+<h2>직접 눌러 보기</h2>
+<p class="hint">카드/메달에 마우스를 올려 보세요 (밝아짐 즉시, 어두워짐 0.2초). 부관 메달에 올리면 왼쪽 위에 ⇄ 버튼이 나타납니다. 부관 탭에서는 후보를 눌러 임명할 수 있습니다.</p>
+<div class="demo"><div class="win" id="win"></div></div>
+
+<h2>칸 하나의 상태</h2>
+<div class="states" id="states"></div>
+
+<h2>누르면 일어나는 일</h2>
+<div class="flow">
+<div><b>부관이 있는 메달의 그림</b><br>→ 그 부관이 선택되어 오른쪽에 부관의 상세가 나옴 (메달 금테)</div>
+<div><b>메달의 ⇄ (올렸을 때)</b><br>→ 주장이 선택되고 오른쪽 <b>부관 탭</b>이 열림 (주장+메달이 함께 켜짐)</div>
+<div><b>빈 칸의 ＋</b><br>→ 같은 동작: 주장 선택 + 부관 탭. 임명하면 그 자리에 부관 초상이 들어옴</div>
+<div><b>부관 칸이 없는 주장(미축)</b><br>→ 메달 자체가 없음. 부관 탭에는 "부관을 둘 수 없음" 안내</div>
+</div>
+</div>
+<script>
+const D={liubei:{n:'유비',c:'중보병',m:1,d:'jianyong',slot:1,img:'liubei'},guanyu:{n:'관우',c:'중기병',d:'zhangfei',slot:1,img:'guanyu'},
+sunqian:{n:'손건',c:'세객',d:null,slot:1,img:'sunqian'},mizhu:{n:'미축',c:'방술사',d:null,slot:0,img:'mizhu'}};
+const N={jianyong:'간옹',zhangfei:'장비',mifang:'미방',zhaoyun:'조운',liubei:'유비',guanyu:'관우',sunqian:'손건',mizhu:'미축'};
+let sel='liubei',tab='기본';
+const isDep=id=>Object.values(D).some(l=>l.d===id);
+const leadOf=id=>Object.keys(D).find(k=>D[k].d===id);
+function who(){return isDep(sel)?leadOf(sel):sel}
+function card(k){const l=D[k];const onTab=tab==='부관'&&who()===k;
+ const leadSel=sel===k;const pair=onTab||(isDep(sel)&&leadOf(sel)===k);
+ let h=`<div class="u"><div class="c ${leadSel&&!onTab?'sel':''} ${onTab?'sel':''} ${pair&&!leadSel?'pair':''}" onclick="pick('${k}')"><img src="img/${l.img}.png"><div class="nm">${l.n}</div>${l.m?'<div class="req">필수</div>':''}<div class="mt">${l.c}</div></div>`;
+ if(l.slot){ if(l.d){h+=`<div class="med ${sel===l.d?'sel':''} ${onTab?'pair':''}" onclick="pickDep('${l.d}')"><img src="img/${l.d}.png"><div class="mn">${N[l.d]}</div><div class="swap" onclick="event.stopPropagation();openTab('${k}')" title="부관 바꾸기">⇄</div></div>`}
+  else h+=`<div class="med empty ${onTab?'pair':''}" onclick="openTab('${k}')" title="부관 임명">＋</div>`}
+ return h+'</div>'}
+function pick(k){sel=k;tab='기본';draw()}function pickDep(d){sel=d;tab='기본';draw()}function openTab(k){sel=k;tab='부관';draw()}
+function setTab(t){tab=t;draw()}
+function assign(c){const k=who();D[k].d=c;draw()}
+function draw(){
+ const k=who(),l=D[k],cur=sel;
+ const tabs=['기본','전투력','열전','장비','특성','부관'].map(t=>`<div class="tab ${t===tab?'on':''}" onclick="setTab('${t}')">${t}</div>`).join('');
+ let body;
+ if(tab==='부관'){
+  if(!l.slot)body=`<div class="rb">${l.n}은(는) 부관을 둘 수 없습니다.</div>`;
+  else{const cands=['jianyong','zhangfei','mifang','zhaoyun'].filter(c=>!Object.values(D).some(x=>x.d===c&&x!==l));
+   body=`<div class="rb"><div class="who"><img src="img/${l.img}.png"><div><b>${l.n}</b> <span class="tag">주장</span><br>부관: ${l.d?N[l.d]:'없음'}</div></div>`+
+   cands.map(c=>`<div class="cand ${l.d===c?'cur':''}" onclick="assign('${c}')"><img src="img/${c}.png"><b>${N[c]}</b><span class="r">${l.d===c?'현재 부관':'임명'}</span></div>`).join('')+'</div>'}
+ }else{const id=cur;const info=D[id]||{n:N[id],c:'중기병'};
+  body=`<div class="rb"><div class="who"><img src="img/${D[id]?D[id].img:id}.png"><div><b>${N[id]}</b>${isDep(id)?'<span class="tag">부관</span>':''}<br>${D[id]?D[id].c:'중기병'} · Lv 21</div></div><div style="margin-top:8px;color:#8f8670">${tab} 탭 내용 (예시)</div></div>`}
+ document.getElementById('win').innerHTML=`<div style="position:absolute;left:14px;top:8px;color:var(--bright);font-size:15px">출전 준비 <small style="font-size:11px;margin-left:10px">출전 4 / 7</small></div>
+ <div class="lp"><div class="lab">출전 부대</div><div class="grid">${Object.keys(D).map(card).join('')}</div></div>
+ <div class="rp"><div class="tabs">${tabs}</div>${body}</div>`}
+draw();
+// 상태 비교
+document.getElementById('states').innerHTML=`
+<div><div class="u" style="height:150px"><div class="c" style="--b:.55"><img src="img/guanyu.png"><div class="nm">관우</div></div><div class="med"><img src="img/zhangfei.png"><div class="mn">장비</div></div></div><div class="cap">평소(어둡게)</div></div>
+<div><div class="u" style="height:150px"><div class="c" style="--b:.55"><img src="img/guanyu.png"><div class="nm">관우</div></div><div class="med" style="border-color:var(--gold)"><img src="img/zhangfei.png" style="filter:none"><div class="mn">장비</div><div class="swap" style="opacity:1">⇄</div></div></div><div class="cap">부관에 마우스 (⇄ 나타남)</div></div>
+<div><div class="u" style="height:150px"><div class="c sel"><img src="img/guanyu.png"><div class="nm" style="color:#fff3d2">관우</div></div><div class="med"><img src="img/zhangfei.png"><div class="mn">장비</div></div></div><div class="cap">주장 선택</div></div>
+<div><div class="u" style="height:150px"><div class="c pair" style="--b:.9"><img src="img/guanyu.png"><div class="nm">관우</div></div><div class="med sel"><img src="img/zhangfei.png" style="filter:none"><div class="mn">장비</div></div></div><div class="cap">부관 선택</div></div>
+<div><div class="u" style="height:150px"><div class="c sel"><img src="img/guanyu.png"><div class="nm" style="color:#fff3d2">관우</div></div><div class="med pair"><img src="img/zhangfei.png" style="filter:none"><div class="mn">장비</div></div></div><div class="cap">부관 탭(짝이 함께 켜짐)</div></div>
+<div><div class="u" style="height:150px"><div class="c" style="--b:.55"><img src="img/sunqian.png"><div class="nm">손건</div></div><div class="med empty">＋</div></div><div class="cap">부관 없음 (＋)</div></div>
+<div><div class="u" style="height:150px"><div class="c" style="--b:.55"><img src="img/sunqian.png"><div class="nm">손건</div></div><div class="med empty" style="border-color:var(--gold);color:var(--gold);background:#e2b65d18">＋</div></div><div class="cap">＋에 마우스</div></div>`;
+</script></html>

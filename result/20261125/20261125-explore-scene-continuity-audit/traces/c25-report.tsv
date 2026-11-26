@@ -1,0 +1,61 @@
+f0000	walk	node=c25-report-walk	def=explore:road	screen=map:S_xinye	fade=0.95	leaving=false
+f0000	fade	0.95	leaving=false	darkness=0.00
+f0010	fade	0.45	leaving=false	darkness=0.00
+f0180	walk	node=c25-report-walk	def=explore:road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0181	walk	node=c25-report-walk	def=explore:office	screen=map:S_xiaopei_office	fade=0.95	leaving=false
+f0190	fade	0.50	leaving=false	darkness=0.00
+f0233	story	node=c25-yr-00	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0233	JUMP	간옹	(0.8,1.8)->(1.0,3.0)	node=c25-yr-00	fade=0.00	dir=SE
+f0233	JUMP	제갈량	(1.8,2.8)->(2.0,3.0)	node=c25-yr-00	fade=0.00	dir=SW
+f0234	JUMP	유비	(2.0,4.0)->(2.0,6.0)	node=c25-yr-00	fade=0.00	dir=NE
+f0333	story	node=c25-yr-00b	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0384	story	node=c25-yr-00c	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0435	story	node=c25-yr-01	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0486	story	node=c25-yr-02	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0537	story	node=c25-b01	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0633	story	node=c25-b02	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0717	story	node=c25-b03	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0768	story	node=c25-b04	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0819	story	node=c25-b05	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0870	story	node=c25-b06	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0921	story	node=c25-b07	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0974	story	node=c25-b08	def=c25-road	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1091	story	node=c25-c01	def=c25-office	screen=map:S_xiaopei_office	fade=1.00	leaving=false
+f1091	JUMP	간옹	(1.0,3.0)->(4.0,2.0)	node=c25-c01	fade=1.00	dir=NW
+f1091	JUMP	관우	(10.2,1.2)->(1.0,3.0)	node=c25-c01	fade=1.00	dir=NE
+f1091	JUMP	유비	(2.0,4.0)->(2.0,1.0)	node=c25-c01	fade=1.00	dir=SW
+f1091	JUMP	장비	(3.0,4.0)->(3.0,3.0)	node=c25-c01	fade=1.00	dir=NW
+f1100	fade	0.55	leaving=false	darkness=0.00
+f1110	fade	0.05	leaving=false	darkness=0.00
+f1142	story	node=c25-c02	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1193	story	node=c25-c03	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1244	story	node=c25-c04n	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1295	story	node=c25-c05n	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1346	story	node=c25-c06	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1397	story	node=c25-c07	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1448	story	node=c25-c08	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1499	story	node=c25-c09	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1550	story	node=c25-c10	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1601	story	node=c25-c11	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1654	story	node=c25-c12	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1705	story	node=c25-c13	def=c25-office	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f1790	fade	0.10	leaving=true	darkness=0.00
+f1800	fade	0.60	leaving=true	darkness=0.00
+f1808	story	node=c25-d01	def=c25-dike	screen=map:S_baihe_dike	fade=1.00	leaving=false
+f1808	JUMP	관우	(1.0,3.0)->(19.0,7.0)	node=c25-d01	fade=1.00	dir=SE
+f1808	JUMP	미축	(9.2,4.2)->(20.0,7.0)	node=c25-d01	fade=1.00	dir=NW
+f1810	fade	0.90	leaving=false	darkness=0.00
+f1820	fade	0.40	leaving=false	darkness=0.00
+f1861	story	node=c25-d02	def=c25-dike	screen=map:S_baihe_dike	fade=0.00	leaving=false
+f1920	fade	0.35	leaving=true	darkness=0.00
+f1930	fade	0.85	leaving=true	darkness=0.00
+f1933	story	node=c25-d03	def=c25-flash1	screen=map:S_xiapi	fade=1.00	leaving=false
+f1933	JUMP	관우	(19.0,7.0)->(5.0,5.0)	node=c25-d03	fade=1.00	dir=SE
+f1933	JUMP	병사#1	(13.0,8.0)->(4.0,6.0)	node=c25-d03	fade=1.00	dir=SE
+f1940	fade	0.65	leaving=false	darkness=0.00
+f1950	fade	0.15	leaving=false	darkness=0.00
+f1965	story	node=c25-d04	def=c25-flash1	screen=map:S_xiapi	fade=0.00	leaving=false
+f2016	story	node=c25-d05	def=c25-flash1	screen=map:S_xiapi	fade=0.00	leaving=false
+f2067	story	node=c25-d06	def=c25-flash1	screen=map:S_xiapi	fade=0.00	leaving=false
+f2118	story	node=c25-d07	def=c25-flash1	screen=map:S_xiapi	fade=0.00	leaving=false
+f2169	story	node=c25-d08	def=c25-flash1	screen=map:S_xiapi	fade=0.00	leaving=false

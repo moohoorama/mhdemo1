@@ -1,0 +1,10 @@
+f0000	walk	node=c13-walk	def=explore:town	screen=map:S_xiaopei	fade=0.95	leaving=false
+f0000	fade	0.95	leaving=false	darkness=0.00
+f0010	fade	0.45	leaving=false	darkness=0.00
+f0109	story	node=c13-m1	def=c13-e-merchant	screen=map:S_xiaopei	fade=0.00	leaving=false
+f0110	fade	0.05	leaving=true	darkness=0.00
+f0120	fade	0.55	leaving=true	darkness=0.00
+f0129	walk	node=c13-walk	def=c13-e-merchant	screen=map:S_xiaopei	fade=1.00	leaving=false
+f0130	walk	node=c13-walk	def=explore:town	screen=map:S_xiaopei	fade=0.95	leaving=false
+f0130	fade	0.95	leaving=false	darkness=0.00
+f0140	fade	0.45	leaving=false	darkness=0.00

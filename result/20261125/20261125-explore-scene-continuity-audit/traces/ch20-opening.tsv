@@ -1,0 +1,6 @@
+f0000	story	node=c19-k01	def=c19-mangdang	screen=map:S_mangdang	fade=1.00	leaving=false
+f0010	fade	0.50	leaving=false	darkness=0.00
+f0157	JUMP	장비	(7.0,4.0)->(7.3,4.0)	node=c19-k01	fade=0.00	dir=SE
+f0168	JUMP	장비	(9.0,4.0)->(9.3,4.0)	node=c19-k01	fade=0.00	dir=SE
+f0224	story	node=c19-k02	def=c19-mangdang	screen=map:S_mangdang	fade=0.00	leaving=false
+f0358	story	node=c19-k03	def=c19-mangdang	screen=map:S_mangdang	fade=0.00	leaving=false

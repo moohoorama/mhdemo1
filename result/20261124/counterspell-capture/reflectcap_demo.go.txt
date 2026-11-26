@@ -1,0 +1,87 @@
+package gui
+
+import (
+	"fmt"
+	"maps"
+	"os"
+	"srpg/internal/core"
+	"srpg/internal/session"
+)
+
+var reflectCapNoTrait bool
+
+func init() {
+	demos["reflectcap_hit"] = func(d *Demo) error { return demoReflectCap(d, 100) }
+	demos["reflectcap_miss"] = func(d *Demo) error { return demoReflectCap(d, 0) }
+	demos["reflectcap_control"] = func(d *Demo) error { reflectCapNoTrait = true; return demoReflectCap(d, 100) }
+}
+
+func demoReflectCap(d *Demo, hit float64) error {
+	if err := d.battle(d.stage); err != nil {
+		return err
+	}
+	g := d.g
+	snap := g.S.Engine.Snapshot()
+	var ally, allyChar, enemy, enemyChar string
+	var ax, ay, ex, ey int
+	for _, u := range snap.Units {
+		if u.Faction == "ally" && ally == "" {
+			ally, allyChar, ax, ay = u.ID, u.Character, u.X, u.Y
+		}
+		if u.Faction == "enemy" && u.HP > 0 && enemy == "" {
+			enemy, enemyChar = u.ID, u.Character
+		}
+	}
+	if ally == "" || enemy == "" {
+		return fmt.Errorf("missing demo units")
+	}
+	found := false
+	for _, p := range [][2]int{{1, 0}, {0, 1}, {-1, 0}, {0, -1}} {
+		x, y := ax+p[0], ay+p[1]
+		free := g.S.Engine.StepCost(enemy, x, y) > 0
+		for _, u := range snap.Units {
+			if u.HP > 0 && u.ID != enemy && u.X == x && u.Y == y {
+				free = false
+			}
+		}
+		if free {
+			ex, ey, found = x, y, true
+			break
+		}
+	}
+	if !found {
+		return fmt.Errorf("no adjacent demo cell")
+	}
+	g.S.Data.Skills = maps.Clone(g.S.Data.Skills)
+	sk := g.S.Data.Skills["scorch"]
+	sk.Cost = 0
+	g.S.Data.Skills["scorch"] = sk
+	g.S.Data.Rules.SpellFloor, g.S.Data.Rules.SpellCeil = hit, hit
+	d.edit(func(s *core.State) {
+		for i := range s.Characters {
+			c := &s.Characters[i]
+			if c.ID == allyChar {
+				c.Learned = append(c.Learned, "fire")
+			}
+			if c.ID == enemyChar {
+				if !reflectCapNoTrait {
+					c.Learned = append(c.Learned, "spell_reflect")
+				}
+			}
+		}
+		for i := range s.Units {
+			if s.Units[i].ID == enemy {
+				s.Units[i].X, s.Units[i].Y = ex, ey
+			}
+		}
+	})
+	g.zoom, g.zoomFrom, g.zoomTo = 2, 2, 2
+	g.camX, g.camY = g.field.Center(float64(ax)+.5, float64(ay)+.5)
+	d.step = func(f int) {
+		if f == 20 {
+			r := g.request(session.Request{Op: "command", Command: core.Command{Kind: "skill", Actor: ally, Target: enemy, Skill: "scorch"}})
+			fmt.Fprintf(os.Stderr, "reflectcap hit=%v actor=%s target=%s ok=%v error=%v events=%+v\n", hit, ally, enemy, r.OK, r.Error, r.Events)
+		}
+	}
+	return nil
+}

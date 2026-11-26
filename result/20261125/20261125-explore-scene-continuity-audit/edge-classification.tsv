@@ -1,0 +1,155 @@
+category	chapter	kind	explore/area	trigger	from	to	scene	max_dist_cells	people_compared
+정상: Stay 이어받기(자리 안 바뀜)	01	event	explore01/grove	person:장비@grove	c01-walk	story01.json:323(c01-o1)	c01-e-oath@ch01.json:126	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	01	event	explore01/tavern	person:관우	c01-walk	story01.json:124(c01-t1)	c01-e-tavern@ch01.json:33	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	02	event	explore02/luzhi	person:노식	c02-walk	story02.json:416(c02-l1)	c02-e-luzhi@ch02.json:277	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	02	event	explore02/mansion	person:소쌍	c02-walk	story02.json:526(c02-m1)	c02-e-mansion@ch02.json:327	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	02	event	explore02/office	person:추정	c02-walk	story02.json:346(c02-z1)	c02-e-zoujing@ch02.json:240	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	02	event	explore02/weapons	person:대장장이	c02-walk	story02.json:584(c02-k1)	c02-e-smith@ch02.json:360	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	03	event	explore03/mansion	person:조조@night	c03-walk	story03.json:302(c03-n1)	c03-e-night@ch03.json:154	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	03	event	explore03/tavern	person:술손님	c03-walk	story03.json:233(c03-r1)	c03-e-rumor@ch03.json:117	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	03	event	explore03/tavern	person:관우@tavern	c03-walk	story03.json:233(c03-r1)	c03-e-rumor@ch03.json:117	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	03	event	explore03/tavern	person:옆자리 손님	c03-walk	story03.json:233(c03-r1)	c03-e-rumor@ch03.json:117	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	05	event	explore05_town/town	person:노인	c05-walk-town	story05.json:531(c05-h1)	c05-e-elder@ch05.json:84	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	13	event	explore13/town	person:피난 상인	c13-walk	story13.json:608(c13-m1)	c13-e-merchant@ch13.json:270	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	13	event	explore13/town	person:약방 아낙	c13-walk	story13.json:630(c13-w1)	c13-e-woman@ch13.json:279	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	22	event	explore22/camp	person:간옹	c22-walk	story22.json:342(c22-t01)	c22-meet@ch22.json:92	0.00	0
+정상: Stay 이어받기(자리 안 바뀜)	22	event	explore22/camp	person:미방@after	c22-walk	story22.json:426(c22-q01)	c22-rice@ch22.json:141	0.00	0
+정상: 새 인물만 입장(Off+Enter) 또는 자리 일치	01	event	explore01/camp	sortie:관우@camp	c01-walk	story01.json:15(c01-s1)	c01-sortie@ch01.json:199	0.00	1
+정상: 새 인물만 입장(Off+Enter) 또는 자리 일치	11	event	explore11_camp/office	person:조운	c11-camp	story11.json:239(c11-p1)	c11-envoy-pingyuan@ch11.json:82	0.00	1
+정상: 장소/맵 전환(전환 페이드)	01	back-to-walk	explore01/zhuo	person:장비@grove	story01.json:428(c01-o22)	story01.json:452(c01-o24)	c01-e-oath@ch01.json:126	0.00	0
+정상: 장소/맵 전환(전환 페이드)	02	enter-walk	explore02/office	(story reaches explore node)	story01.json:38(c01-battle)	story02.json:4(c02-walk)	(no scene)	0.00	0
+정상: 장소/맵 전환(전환 페이드)	02	event	explore02/luzhi	sortie:관우@luzhi	c02-walk	story02.json:14(c02-c0)	c02-castle@ch02.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	03	enter-walk	explore03/mansion	(story reaches explore node)	story03.json:166(c03-b16)	story03.json:172(c03-walk)	c03-road@ch03.json:49	0.00	0
+정상: 장소/맵 전환(전환 페이드)	03	event	explore03/mansion	sortie:관우@mansion	c03-walk	story03.json:183(c03-c1)	c03-depart@ch03.json:76	0.00	0
+정상: 장소/맵 전환(전환 페이드)	05	enter-walk	explore05_town/town	(story reaches explore node)	story05.json:44(c05-a7)	story05.json:75(c05-walk-town)	c05-reunion@ch05.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	05	enter-walk	explore05_town/town	(story reaches explore node)	story05.json:62(c05-carts-s)	story05.json:75(c05-walk-town)	c05-reunion@ch05.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	05	enter-walk	explore05/camp	(story reaches explore node)	story05.json:416(c05-f30)	story05.json:422(c05-walk)	c05-council2@ch05.json:330	0.00	0
+정상: 장소/맵 전환(전환 페이드)	07	event	explore07/camp	sortie:관우	c07-walk	story07.json:232(c07-e1)	c07-march@ch07.json:147	0.00	0
+정상: 장소/맵 전환(전환 페이드)	11	enter-walk	explore11_camp/camp	(story reaches explore node)	story11.json:123(c11-e11)	story11.json:128(c11-camp)	c11-envoy@ch11.json:43	0.00	0
+정상: 장소/맵 전환(전환 페이드)	11	leave-at-once	explore11_camp/pingyuan	exit:북평으로	c11-camp	story11.json:138(c11-b1)	c11-beiping@ch11.json:101	0.00	0
+정상: 장소/맵 전환(전환 페이드)	11	enter-walk	explore11/town	(story reaches explore node)	story11.json:162(c11-b5)	story11.json:174(c11-walk)	c11-beiping@ch11.json:101	0.00	0
+정상: 장소/맵 전환(전환 페이드)	11	event	explore11/town	sortie:관우@town	c11-walk	story11.json:184(c11-r1)	c11-road@ch11.json:121	0.00	0
+정상: 장소/맵 전환(전환 페이드)	12	enter-walk	explore12/city	(story reaches explore node)	story12.json:28(c12-g5)	story12.json:34(c12-walk)	c12-start@ch12.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	12	event	explore12/city	sortie:관우@city	c12-walk	story12.json:44(c12-v1)	c12-village@ch12.json:23	0.00	0
+정상: 장소/맵 전환(전환 페이드)	13	event	explore13/town	person:관우@town	c13-walk	story13.json:658(c13-c01)	c13-council@ch13.json:219	0.00	0
+정상: 장소/맵 전환(전환 페이드)	14	enter-walk	explore14/town	(story reaches explore node)	story14.json:115(c14-d18)	story14.json:120(c14-walk)	c14-death@ch14.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	14	event	explore14/town	sortie:관우@town	c14-walk	story14.json:130(c14-lg01)	c14-gate@ch14.json:60	0.00	0
+정상: 장소/맵 전환(전환 페이드)	14	event	explore14/town	sortie:관우@sword	c14-walk	story14.json:130(c14-lg01)	c14-gate@ch14.json:60	0.00	0
+정상: 장소/맵 전환(전환 페이드)	15	enter-walk	explore15/town	(story reaches explore node)	story15.json:407(c15-p21)	story15.json:413(c15-walk)	c15-clash@ch15.json:98	0.00	0
+정상: 장소/맵 전환(전환 페이드)	15	event	explore15/town	exit:관아	c15-walk	story15.json:549(c15-a01)	c15-alarm@ch15.json:287	0.00	0
+정상: 장소/맵 전환(전환 페이드)	15	enter-walk	explore15_camp/camp	(story reaches explore node)	story15.json:531(c15-k18)	story15.json:537(c15-camp)	c15-cao@ch15.json:347	0.00	0
+정상: 장소/맵 전환(전환 페이드)	15	event	explore15_camp/camp	exit:아군 막사	c15-camp	story15.json:620(c15-t01)	c15-tent@ch15.json:446	0.00	0
+정상: 장소/맵 전환(전환 페이드)	15	event	explore15_camp/our_tent	sortie:관우@tent	c15-camp	story16.json:9(c16-f01)	c16-flood@ch16.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	enter-walk	explore17/street	(story reaches explore node)	story16.json:445(c16-m01)	story17.json:4(c17-walk)	c16-march@ch16.json:263	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	opening	explore17/street	(walk opens)	c17-walk	story17.json:107(c17-c01)	c17-court@ch17.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	event	explore17/street	exit:궁궐	c17-walk	story17.json:301(c17-b01)	c17-belt@ch17.json:126	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	back-to-walk	explore17/street	exit:궁궐	story17.json:337(c17-b07)	story17.json:350(c17-belt-back)	c17-belt@ch17.json:126	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	event	explore17/street	exit:유비의 저택	c17-walk	story17.json:231(c17-d01)	c17-dong1@ch17.json:84	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	back-to-walk	explore17/street	exit:유비의 저택	story17.json:273(c17-d08)	story17.json:286(c17-dong1-back)	c17-dong1@ch17.json:84	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	event	explore17/street	exit:유비의 저택	c17-walk	story17.json:365(c17-x01)	c17-xuchu@ch17.json:168	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	back-to-walk	explore17/street	exit:유비의 저택	story17.json:395(c17-x06)	story17.json:408(c17-xuchu-back)	c17-xuchu@ch17.json:168	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	event	explore17/street	exit:유비의 저택	c17-walk	story17.json:825(c17-e01)	c17-dong2@ch17.json:380	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	back-to-walk	explore17/street	exit:유비의 저택	story17.json:887(c17-e30)	story17.json:900(c17-dong2-back)	c17-dong2@ch17.json:380	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	event	explore17/street	exit:조조의 저택	c17-walk	story17.json:423(c17-a01)	c17-ask@ch17.json:206	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	back-to-walk	explore17/street	exit:조조의 저택	story17.json:724(c17-h30)	story17.json:737(c17-garden-back)	c17-garden@ch17.json:261	0.00	0
+정상: 장소/맵 전환(전환 페이드)	17	event	explore17/street	exit:관청	c17-walk	story17.json:752(c17-o01)	c17-office@ch17.json:338	0.00	0
+정상: 장소/맵 전환(전환 페이드)	18	enter-walk	explore18/town	(story reaches explore node)	story17.json:87(c17-q11)	story18.json:4(c18-walk)	c17-hoard@ch17.json:537	0.00	0
+정상: 장소/맵 전환(전환 페이드)	18	event	explore18/town	exit:관청	c18-walk	story18.json:112(c18-n01)	c18-news@ch18.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	enter-walk	explore19_ye/street	(story reaches explore node)	story18.json:99(c18-f05)	story19.json:4(c19-ye)	c18-flight@ch18.json:51	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	opening	explore19_ye/street	(walk opens)	c19-ye	story19.json:162(c19-y01)	c19-yuan@ch19.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	event	explore19_ye/street	exit:관청	c19-ye	story19.json:290(c19-y04)	c19-yan@ch19.json:37	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	back-to-walk	explore19_ye/street	exit:관청	story19.json:341(c19-y12)	story19.json:354(c19-yan-back)	c19-yan@ch19.json:37	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	event	explore19_ye/street	exit:유비의 거처	c19-ye	story19.json:214(c19-h01)	c19-home1@ch19.json:357	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	back-to-walk	explore19_ye/street	exit:유비의 거처	story19.json:262(c19-h09)	story19.json:275(c19-home1-back)	c19-home1@ch19.json:357	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	event	explore19_ye/street	exit:유비의 거처	c19-ye	story19.json:386(c19-m01)	c19-mizhu@ch19.json:388	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	back-to-walk	explore19_ye/street	exit:유비의 거처	story19.json:610(c19-y25)	story19.json:623(c19-wen-back)	c19-wen@ch19.json:291	0.00	0
+정상: 장소/맵 전환(전환 페이드)	19	event	explore19_ye/street	exit:유비의 거처	c19-ye	story19.json:655(c19-n00)	c19-night@ch19.json:431	0.00	0
+정상: 장소/맵 전환(전환 페이드)	20	leave-at-once	explore20_depart/foot	exit:여남성	c20-depart-walk	story21.json:9(c21-pass-01)	c21-arrival@ch21.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	21	event	explore21/town	sortie:관우@town	c21-walk	story21.json:50(c21-a01)	c21-alarm@ch21.json:107	0.00	0
+정상: 장소/맵 전환(전환 페이드)	21	event	explore21/town	exit:관청	c21-walk	story21.json:323(c21-r01)	c21-runan@ch21.json:27	0.00	0
+정상: 장소/맵 전환(전환 페이드)	22	event	explore22_xiangyang/town	exit:관청	c22-xiangyang-walk	story22.json:543(c22-s111)	c22-debate@ch22.json:292	0.00	0
+정상: 장소/맵 전환(전환 페이드)	22	enter-walk	explore22/camp	(story reaches explore node)	story22.json:91(c22-s213)	story22.json:97(c22-walk)	c22-banquet@ch22.json:47	0.00	0
+정상: 장소/맵 전환(전환 페이드)	22	enter-walk	explore22b/camp	(story reaches explore node)	story22.json:303(c22-d02)	story22.json:322(c22-walk2)	c22-after@ch22.json:161	0.00	0
+정상: 장소/맵 전환(전환 페이드)	22	opening	explore22b/camp	(walk opens)	c22-walk2	story22.json:479(c22-m01)	c22-mifang@ch22.json:254	0.00	0
+정상: 장소/맵 전환(전환 페이드)	22	opening	explore22b/camp	(walk opens)	c22-walk2	story22.json:511(c22-m11)	c22-mifang@ch22.json:254	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	event	explore23_xiangyang/town	exit:관청	c23-xiangyang-walk	story23.json:382(c23-h01)	c23-start@ch23.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	back-to-walk	explore23_xiangyang/town	exit:관청	story23.json:419(c23-shinya-grant)	story23.json:432(c23-xiangyang-back)	c23-start@ch23.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	event	explore23_xiangyang/town	exit:신야	c23-xiangyang-walk	story23.json:447(c23-g01)	c23-gate@ch23.json:39	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	enter-walk	explore23/town	(story reaches explore node)	story23.json:139(c23-m21)	story23.json:145(c23-walk)	c23-market@ch23.json:101	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	event	explore23/town	exit:관청	c23-walk	story23.json:291(c23-o01)	c23-alarm@ch23.json:285	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	enter-walk	explore23b/town	(story reaches explore node)	story23.json:209(c23-t09)	story23.json:221(c23-walk2)	c23-tower@ch23.json:177	0.00	0
+정상: 장소/맵 전환(전환 페이드)	23	leave-at-once	explore23b/town	exit:관청	c23-walk2	story24.json:9(c24-s01)	c24-start@ch24.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	event	explore24/xiangyang	exit:관청	c24-walk	story24.json:574(c24-q01)	c24-banquet@ch24.json:50	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	back-to-walk	explore24/xiangyang	exit:관청	story24.json:658(c24-q15)	story24.json:671(c24-banquet-back)	c24-banquet@ch24.json:50	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	event	explore24/xiangyang	exit:신야 가는 길	c24-walk	story24.json:686(c24-r01)	c24-street@ch24.json:107	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	back-to-walk	explore24/town	exit:신야 가는 길	story24.json:704(c24-r04)	story24.json:717(c24-street-back)	c24-street@ch24.json:107	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	enter-walk	explore24_return/longzhong	(story reaches explore node)	story24.json:208(c24-n09)	story24.json:306(c24-return-walk)	c24-longzhong@ch24.json:180	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	enter-walk	explore24_return/longzhong	(story reaches explore node)	story24.json:273(c24-fast)	story24.json:306(c24-return-walk)	c24-longzhong@ch24.json:180	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	enter-walk	explore24_return/longzhong	(story reaches explore node)	story24.json:287(c24-slow)	story24.json:306(c24-return-walk)	c24-longzhong@ch24.json:180	0.00	0
+정상: 장소/맵 전환(전환 페이드)	24	leave-at-once	explore24_return/town	exit:관청	c24-return-walk	story24.json:316(c24-e01)	c24-office2@ch24.json:210	0.00	0
+정상: 장소/맵 전환(전환 페이드)	25	enter-walk	explore25_visit/town	(story reaches explore node)	story25.json:4(c25-sick-news)	story25.json:9(c25-visiting-walk)	c25-start@ch25.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	25	leave-at-once	explore25_visit/xiangyang	exit:유표의 저택	c25-visiting-walk	story25.json:19(c25-a01)	c25-start@ch25.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	25	enter-walk	explore25_back/town	(story reaches explore node)	story25.json:37(c25-a04)	story25.json:43(c25-back-walk)	c25-start@ch25.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27	leave-at-once	explore27_ferry/ferry	exit:강하행 배	c27-ferry-walk	story27.json:26(c27-a01)	c27-arrive@ch27.json:36	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27	leave-at-once	explore27_redcliff/camp	exit:번구행 배	c27-bengkou-walk	story27.json:90(c27-b01)	c27-bengkou@ch27.json:197	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27	enter-walk	explore27_jiangxia/harbor	(story reaches explore node)	story27.json:162(c27-bengkou-depart)	story27.json:167(c27-home-walk)	c27-bengkou@ch27.json:197	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27v	enter-walk	explore27v_travel/town	(story reaches explore node)	story26v.json:175(c26v-c06)	story27v.json:4(c27v-travel-walk)	c26v-gate@ch26v.json:226	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27v	leave-at-once	explore27v_travel/town	exit:양양 연합 진영	c27v-travel-walk	story27v.json:20(c27v-a01)	c27v-start@ch27v.json:3	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27v	enter-walk	explore27v_town/town	(story reaches explore node)	story27v.json:74(c27v-battle)	story27v.json:80(c27v-town-walk)	(no scene)	0.00	0
+정상: 장소/맵 전환(전환 페이드)	27v	leave-at-once	explore27v_town/town	exit:관청	c27v-town-walk	story27v.json:90(c27v-b01)	c27v-hall@ch27v.json:41	0.00	0
+정상·의도: Cut(새 장면으로 페이드)	27	event	explore27_jiangxia/office	sortie:관우	c27-home-walk	story27.json:177(c27-r01)	c27-return@ch27.json:360	0.00	0
+정상·의도: Opening은 어두운 화면에서 자리 잡음(페이드 뒤)	01	opening	explore01/zhuo	(walk opens)	c01-walk	story01.json:50(c01-n1)	c01-e-notice@ch01.json:3	0.00	1
+정상·의도: Opening은 어두운 화면에서 자리 잡음(페이드 뒤)	03	opening	explore03/mansion	(walk opens)	c03-walk	story03.json:206(c03-i1)	c03-e-in@ch03.json:101	0.00	0
+정상·의도: Opening은 어두운 화면에서 자리 잡음(페이드 뒤)	05	opening	explore05_town/town	(walk opens)	c05-walk-town	story05.json:510(c05-o1)	c05-e-town@ch05.json:60	3.54	3
+정상·의도: Opening은 어두운 화면에서 자리 잡음(페이드 뒤)	19	opening	explore19/road	(walk opens)	c19-walk	story19.json:737(c19-r01)	c19-road@ch19.json:484	8.75	5
+정상·의도: Opening은 어두운 화면에서 자리 잡음(페이드 뒤)	20	opening	explore20/village	(walk opens)	c20-walk	story20.json:176(c20-a01)	c20-alarm@ch20.json:3	3.95	11
+정상·의도: Opening은 어두운 화면에서 자리 잡음(페이드 뒤)	27	opening	explore27_changban/camp	(walk opens)	c27-start	story27.json:601(c27-detour-line)	c27-detour@ch27.json:3	1.27	2
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	01	back-to-walk	explore01/tavern	person:관우	story01.json:302(c01-t32)	story01.json:314(c01-t34)	c01-e-tavern@ch01.json:33	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	02	back-to-walk	explore02/luzhi	person:노식	story02.json:504(c02-l16)	story02.json:517(c02-l18)	c02-e-luzhi@ch02.json:277	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	02	back-to-walk	explore02/mansion	person:소쌍	story02.json:562(c02-m7)	story02.json:575(c02-m9)	c02-e-mansion@ch02.json:327	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	02	back-to-walk	explore02/office	person:추정	story02.json:394(c02-z9)	story02.json:407(c02-z11)	c02-e-zoujing@ch02.json:240	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	02	back-to-walk	explore02/weapons	person:대장장이	story02.json:628(c02-k8)	story02.json:641(c02-k10)	c02-e-smith@ch02.json:360	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	03	back-to-walk	explore03/tavern	person:술손님	story03.json:281(c03-r9)	story03.json:293(c03-r-back)	c03-e-rumor@ch03.json:117	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	03	back-to-walk	explore03/tavern	person:관우@tavern	story03.json:281(c03-r9)	story03.json:293(c03-r-back)	c03-e-rumor@ch03.json:117	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	03	back-to-walk	explore03/tavern	person:옆자리 손님	story03.json:281(c03-r9)	story03.json:293(c03-r-back)	c03-e-rumor@ch03.json:117	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	05	back-to-walk	explore05_town/town	person:노인	story05.json:531(c05-h1)	story05.json:544(c05-h-back)	c05-e-elder@ch05.json:84	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	06	enter-walk	explore06/camp	(story reaches explore node)	story06.json:90(c06-b7)	story06.json:95(c06-walk)	c06-start@ch06.json:3	0.00	33
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	08	enter-walk	explore08/office	(story reaches explore node)	story08.json:273(c08-p12)	story08.json:279(c08-walk)	c08-p5@ch08.json:187	0.35	4
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	11	back-to-walk	explore11_camp/office	person:조운	story11.json:245(c11-p2)	story11.json:258(c11-p-back)	c11-envoy-pingyuan@ch11.json:82	0.00	1
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	13	enter-walk	explore13_farewell/office	(story reaches explore node)	story13.json:412(c13-x12)	story13.json:418(c13-wait-zhaoyun)	c13-xiaopei@ch13.json:178	0.35	6
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	13	back-to-walk	explore13/town	person:피난 상인	story13.json:608(c13-m1)	story13.json:621(c13-m-back)	c13-e-merchant@ch13.json:270	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	13	back-to-walk	explore13/town	person:약방 아낙	story13.json:636(c13-w2)	story13.json:649(c13-w-back)	c13-e-woman@ch13.json:279	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	15	back-to-walk	explore15_camp/our_tent	exit:아군 막사	story15.json:656(c15-t07)	story15.json:669(c15-t-back)	c15-tent@ch15.json:446	0.35	7
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	21	back-to-walk	explore21/office	exit:관청	story21.json:455(c21-r23)	story21.json:474(c21-received-back)	c21-runan@ch21.json:27	0.00	4
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	22	back-to-walk	explore22/camp	person:간옹	story22.json:404(c22-t08)	story22.json:417(c22-meet-back)	c22-meet@ch22.json:92	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	22	back-to-walk	explore22/camp	person:미방@after	story22.json:444(c22-q04)	story22.json:457(c22-rice-back)	c22-rice@ch22.json:141	0.00	0
+추가 확인 필요(같은 맵·자리 같은데 0.5+0.5초 페이드)	24	enter-walk	explore24/office	(story reaches explore node)	story24.json:51(c24-s08)	story24.json:57(c24-walk)	c24-start@ch24.json:3	0.00	9
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	03	back-to-walk	explore03/mansion	person:조조@night	story03.json:437(c03-m6)	story03.json:450(c03-m-back)	c03-e-night2@ch03.json:222	2.85	3
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	07	enter-walk	explore07/camp	(story reaches explore node)	story07.json:216(c07-d5)	story07.json:222(c07-walk)	c07-out2@ch07.json:114	5.76	22
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	09	enter-walk	explore09/town	(story reaches explore node)	story09.json:86(c09-19)	story09.json:92(c09-walk)	c09-12@ch09.json:40	4.26	14
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	10	enter-walk	explore10/camp	(story reaches explore node)	story10.json:117(c10-19)	story10.json:148(c10-walk)	c10-start@ch10.json:3	8.75	22
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	10	enter-walk	explore10/camp	(story reaches explore node)	story10.json:142(c10-17)	story10.json:148(c10-walk)	c10-start@ch10.json:3	8.75	22
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	13	enter-walk	explore13/town	(story reaches explore node)	story13.json:513(c13-f01b)	story13.json:525(c13-walk)	c13-farewell@ch13.json:195	7.15	15
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	13	back-to-walk	explore13/office	person:관우@town	story13.json:713(c13-c09)	story13.json:726(c13-c-back)	c13-council@ch13.json:219	1.27	6
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	14	back-to-walk	explore14/town	person:미축	story14.json:511(c14-sw06)	story14.json:524(c14-sw-back)	c14-e-sword@ch14.json:39	1.06	2
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	15	back-to-walk	explore15/office	exit:관아	story15.json:597(c15-a09)	story15.json:610(c15-a-back)	c15-alarm@ch15.json:287	2.85	7
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	17	back-to-walk	explore17/home	exit:관청	story17.json:1098(c17-u09)	story17.json:1111(c17-council-back)	c17-council@ch17.json:510	2.76	8
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	18	back-to-walk	explore18/office	exit:관청	story18.json:220(c18-n19)	story18.json:239(c18-news-back)	c18-news@ch18.json:3	3.95	8
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	20	enter-walk	explore20/village	(story reaches explore node)	story19.json:105(c19-k09)	story20.json:4(c20-walk)	c19-mangdang@ch19.json:513	10.40	13
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	20	enter-walk	explore20_depart/foot	(story reaches explore node)	story20.json:151(c20-envoy-03)	story20.json:157(c20-depart-walk)	c20-reunion@ch20.json:44	2.37	16
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	21	enter-walk	explore21/town	(story reaches explore node)	story21.json:27(c21-pass-04)	story21.json:40(c21-walk)	c21-arrival@ch21.json:3	16.08	12
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	22	enter-walk	explore22_travel/road	(story reaches explore node)	story21.json:303(c21-e02)	story22.json:4(c22-travel-walk)	c21-south@ch21.json:232	3.26	7
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	23	back-to-walk	explore23/longzhong	person:동자@before	story23.json:269(c23-a07)	story23.json:282(c23-visit1-back)	c23-visit1@ch23.json:217	5.40	2
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	23	back-to-walk	explore23/office	exit:관청	story23.json:303(c23-o03)	story23.json:316(c23-alarm-back)	c23-alarm@ch23.json:285	3.95	8
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	23	back-to-walk	explore23b/longzhong	person:제갈균@before	story23.json:355(c23-b05)	story23.json:368(c23-visit2-back)	c23-visit2@ch23.json:250	5.53	2
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	24	enter-walk	explore24b/office	(story reaches explore node)	story24.json:484(c24-e29)	story24.json:490(c24-walk2)	c24-office2@ch24.json:210	5.71	9
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	27	enter-walk	explore27_changban/camp	(story reaches explore node)	story26.json:152(c26-c07)	story27.json:4(c27-start)	c26-camp@ch26.json:210	5.76	14
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	27	enter-walk	explore27_changban/camp	(story reaches explore node)	story26.json:159(c26-c07n)	story27.json:4(c27-start)	c26-camp@ch26.json:210	5.76	14
+추가 확인 필요(같은 맵·페이드 뒤 자리 변화)	27	enter-walk	explore27_redcliff/camp	(story reaches explore node)	story27.json:68(c27-a08)	story27.json:80(c27-bengkou-walk)	c27-arrive@ch27.json:36	5.06	17
+정상·의도: 같은 자리에서 정체 공개(삿갓 쓴 사내→조조, 같은 스프라이트)	05	event	explore05_town/inn	person:삿갓 쓴 사내	c05-walk-town	story05.json:553(c05-c2)	c05-inn@ch05.json:94	0.00	4
+확정 문제 (A1)	13	leave-at-once	explore13_farewell/office	person:조운	c13-wait-zhaoyun	story13.json:424(c13-x13)	c13-xiaopei@ch13.json:178	1.77	6
+확정 문제 (A2)	14	event	explore14/town	person:미축	c14-walk	story14.json:480(c14-sw01)	c14-e-sword@ch14.json:39	1.90	3
+확정 문제 (A3)	25	leave-at-once	explore25_report/office	person:제갈량	c25-report-walk	story25.json:58(c25-yr-00)	c25-road@ch25.json:27	1.27	5
+확정 문제 (A4)	23	event	explore23/longzhong	person:동자@before	c23-walk	story23.json:233(c23-a01)	c23-visit1@ch23.json:217	5.40	2
+확정 문제 (A4)	23	event	explore23b/longzhong	person:제갈균@before	c23-walk2	story23.json:331(c23-b01)	c23-visit2@ch23.json:250	5.53	2
+확정 문제 (A4)	24	event	explore24/longzhong	person:동자	c24-walk	story24.json:732(c24-c01)	c24-cottage3@ch24.json:137	6.17	3

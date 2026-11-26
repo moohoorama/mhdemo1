@@ -1,0 +1,102 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>스마트폰 작은 화면 기준</title>
+<style>
+:root{--bg:#1a1515;--panel:#291c16;--card:#1f1814;--rim:#3a2b21;--gold:#e2b65d;--gold2:#9a7a45;--sel:#3a3a29;--text:#bab5a0;--bright:#e8dcc0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans KR","Apple SD Gothic Neo",sans-serif;line-height:1.5}
+.wrap{max-width:1500px;margin:auto;padding:20px 16px 60px}h1{color:var(--gold);margin:6px 0}h2{color:var(--gold);font-size:19px;margin:34px 0 4px}
+p.d{max-width:860px;margin:4px 0 10px}.box{background:#211812;border:1px solid var(--rim);padding:10px 14px;max-width:860px}.box b{color:var(--gold)}
+.z{zoom:1.5}  /* 화면에서 읽기 쉽게 1.5배로 보임. 안의 숫자는 모두 dp(실제 폰 크기) */
+.phone{position:relative;width:914px;height:411px;border:2px solid var(--gold2);background:var(--panel);outline:1px solid #5b4527;outline-offset:-5px;overflow:hidden}
+.ttl{position:absolute;left:12px;top:6px;color:var(--bright);font-size:14px}
+.rp{position:absolute;top:30px;right:10px;bottom:10px;}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--rim)}.tab{padding:6px 12px;font-size:14px}.tab.on{color:var(--gold);border-bottom:2px solid var(--gold)}
+.rb{padding:8px 4px;font-size:14px;color:#8f8670}
+.lp{position:absolute;left:10px;top:30px;bottom:10px;overflow:hidden}
+.lab{font-size:12px;color:var(--bright);margin-bottom:4px}
+img{display:block;object-fit:cover;object-position:50% 20%}
+/* 공통 카드 */
+.c{position:relative;background:var(--card);border:1px solid var(--rim);overflow:hidden}.c.sel{border:2px solid var(--gold);box-shadow:0 0 8px #e2b65d55}
+.dim img{filter:brightness(.55)}.c.sel img{filter:none}
+.med{position:absolute;border-radius:50%;border:2px solid var(--gold2);background:var(--card);overflow:visible}
+.med img{width:100%;height:100%;border-radius:50%}.med.sel{border-color:var(--gold)}
+.med.empty{border:1px dashed #6a5535;color:#8f8670;display:flex;align-items:center;justify-content:center}
+.hit{outline:1px dashed #6ec1ff}
+.sz{position:absolute;font-size:10px;color:#6ec1ff;white-space:nowrap}
+/* P1: 현재 설계를 폰에 그대로 */
+.p1 .grid{display:grid;grid-template-columns:76px 76px;gap:14px 8px}
+.p1 .u{position:relative;height:90px}.p1 .c{position:absolute;inset:0}
+.p1 .nm{position:absolute;top:1px;left:0;right:0;text-align:center;font-size:9px;color:#e8dcc0;text-shadow:0 0 3px #000}
+.p1 .med{width:33px;height:33px;right:-4px;bottom:-6px}
+/* P2: 한 줄 목록 */
+.p2 .list{display:flex;flex-direction:column;gap:6px;width:218px}
+.p2 .row{position:relative;height:60px;display:flex;align-items:center;gap:8px;padding:4px;background:var(--card);border:1px solid var(--rim)}
+.p2 .row.sel{border:2px solid var(--gold);background:#2a2216;box-shadow:0 0 8px #e2b65d44}
+.p2 .row .pt{width:52px;height:52px;flex:none;border:1px solid var(--gold2)}.p2 .row .pt img{width:100%;height:100%}
+.p2 .row .tx{flex:1;min-width:0}.p2 .nm{font-size:14px;color:#e8dcc0;font-weight:700}.p2 .mt{font-size:12px;color:#a39d86}
+.p2 .req{font-size:11px;color:var(--gold);border:1px solid var(--gold2);padding:0 4px;margin-left:4px}
+.p2 .dm{position:relative;width:48px;height:48px;flex:none;border-radius:50%;border:2px solid var(--gold2);margin-right:2px}
+.p2 .dm img{width:100%;height:100%;border-radius:50%}.p2 .dm.sel{border-color:var(--gold)}.p2 .dm.empty{border:1px dashed #6a5535;color:#8f8670;display:flex;align-items:center;justify-content:center;font-size:22px}
+.p2 .dm .dn{position:absolute;left:-6px;right:-6px;bottom:-2px;text-align:center;font-size:11px;color:#fff;text-shadow:0 1px 2px #000,0 0 4px #000}
+.p2 .row::before{content:"";position:absolute;right:62px;top:12px;bottom:12px;width:1px;background:var(--rim)}
+.p2 .row.dimr img{filter:brightness(.6)}.p2 .row.sel img{filter:none}
+/* P3: 왼쪽 창을 넓힌 2열 카드 */
+.p3 .grid{display:grid;grid-template-columns:136px 136px;gap:18px 12px}
+.p3 .u{position:relative;height:128px}.p3 .c{position:absolute;inset:0}
+.p3 .nm{position:absolute;top:1px;left:0;right:0;text-align:center;font-size:14px;padding-top:2px;color:#e8dcc0;text-shadow:0 0 3px #000,0 0 3px #000;background:linear-gradient(#000a,#0000)}
+.p3 .mt{position:absolute;left:0;right:0;bottom:0;padding:8px 6px 2px;font-size:12px;color:#c9c0a5;background:linear-gradient(#0000,#000b)}
+.p3 .med{width:48px;height:48px;right:-6px;bottom:-10px}.p3 .mn{position:absolute;left:-4px;right:-4px;bottom:1px;text-align:center;font-size:11px;color:#fff;text-shadow:0 1px 2px #000,0 0 4px #000}
+.p3 .req{position:absolute;left:4px;top:3px;font-size:11px;color:var(--gold);z-index:3}
+.p3 .swap{position:absolute;left:-10px;top:-10px;width:22px;height:22px;border-radius:50%;background:#3a281d;border:1px solid var(--gold2);color:var(--gold);font-size:13px;line-height:20px;text-align:center}
+.cmp{width:100%;border-collapse:collapse;font-size:14px;max-width:1000px}.cmp td,.cmp th{border:1px solid var(--rim);padding:6px 10px;text-align:left}.cmp th{color:var(--gold);background:#211812}
+</style>
+<div class="wrap">
+<h1>스마트폰 작은 화면에서는</h1>
+<div class="box"><b>우려가 맞습니다.</b> 폰 기준(914×411dp)에서 왼쪽 창은 약 175dp 폭밖에 안 되고, 지금 카드는 폭 약 65dp·이름 글씨 약 9dp·메달 약 33dp입니다. 본문 14sp·터치 48dp 기준에 크게 못 미칩니다. 아래 화면은 <b>모두 실제 폰 dp 크기 그대로</b> 그렸고(화면에서 읽기 쉽게 1.5배 확대해 보여 줍니다), 파란 점선은 터치 영역(48dp)입니다.</div>
+
+<h2>P1. 지금 설계를 폰에 그대로 (문제 확인)</h2>
+<p class="d">카드 2열이 들어가긴 하지만 이름 9dp, 메달 33dp로 읽기도 누르기도 어렵습니다.</p>
+<div class="z"><div class="phone p1">
+<div class="ttl">출전 준비</div>
+<div class="lp" style="width:175px"><div class="lab">출전 부대</div><div class="grid">
+ <div class="u"><div class="c sel"><img src="img/liubei.png" style="width:100%;height:100%"><div class="nm">유비</div></div><div class="med"><img src="img/jianyong.png"></div><div class="hit" style="position:absolute;right:-12px;bottom:-14px;width:48px;height:48px;border-radius:50%"></div></div>
+ <div class="u dim"><div class="c"><img src="img/guanyu.png" style="width:100%;height:100%"><div class="nm">관우</div></div><div class="med"><img src="img/zhangfei.png"></div></div>
+ <div class="u dim"><div class="c"><img src="img/sunqian.png" style="width:100%;height:100%"><div class="nm">손건</div></div><div class="med empty">+</div></div>
+</div></div>
+<div class="rp" style="left:200px"><div class="tabs"><div class="tab on">기본</div><div class="tab">전투력</div><div class="tab">열전</div><div class="tab">장비</div><div class="tab">특성</div><div class="tab">부관</div></div><div class="rb">우측 상세(표)</div></div>
+</div></div>
+
+<h2>P2. 한 줄 목록 (폰 추천)</h2>
+<p class="d">한 줄에 [주장 초상+이름·병종] [구분선] [부관 원형 초상]. 주장은 큰 네모 초상, 부관은 오른쪽 원형 메달이라 <b>모양 차이로 읽힙니다</b>. 글씨 14sp·12sp, 줄 높이 60dp, 부관 메달 48dp(터치 규격). 한 번에 4줄 보임. 부관을 누르면 부관 선택, 빈 ＋는 부관 탭. ⇄는 선택된 부관에서만.</p>
+<div class="z"><div class="phone p2">
+<div class="ttl">출전 준비</div>
+<div class="lp" style="width:224px"><div class="lab">출전 부대</div><div class="list">
+ <div class="row sel"><div class="pt"><img src="img/liubei.png"></div><div class="tx"><div class="nm">유비<span class="req">필수</span></div><div class="mt">중보병</div></div><div class="dm"><img src="img/jianyong.png"><div class="dn">간옹</div></div></div>
+ <div class="row dimr"><div class="pt"><img src="img/guanyu.png"></div><div class="tx"><div class="nm">관우</div><div class="mt">중기병</div></div><div class="dm sel"><img src="img/zhangfei.png"><div class="dn">장비</div></div></div>
+ <div class="row dimr"><div class="pt"><img src="img/sunqian.png"></div><div class="tx"><div class="nm">손건</div><div class="mt">세객</div></div><div class="dm empty hit">+</div></div>
+ <div class="row dimr"><div class="pt"><img src="img/mizhu.png"></div><div class="tx"><div class="nm">미축</div><div class="mt">방술사</div></div></div>
+</div></div>
+<div class="rp" style="left:250px"><div class="tabs"><div class="tab on">기본</div><div class="tab">전투력</div><div class="tab">열전</div><div class="tab">장비</div><div class="tab">특성</div><div class="tab">부관</div></div><div class="rb">우측 상세(표) — 선택된 유비</div></div>
+</div></div>
+
+<h2>P3. 왼쪽 창을 넓힌 2열 카드</h2>
+<p class="d">왼쪽 창을 약 300dp로 넓혀 카드 폭 136dp·글씨 14sp·메달 48dp. 데스크톱 1안과 같은 모양을 유지하지만, 오른쪽 상세가 좁아지고(약 590dp) 한 번에 보이는 카드가 4장입니다.</p>
+<div class="z"><div class="phone p3">
+<div class="ttl">출전 준비</div>
+<div class="lp" style="width:300px"><div class="lab">출전 부대</div><div class="grid">
+ <div class="u"><div class="c sel"><img src="img/liubei.png" style="width:100%;height:100%"><div class="nm">유비</div><div class="req">필수</div><div class="mt">중보병</div></div><div class="med"><img src="img/jianyong.png"><div class="mn">간옹</div></div></div>
+ <div class="u dim"><div class="c"><img src="img/guanyu.png" style="width:100%;height:100%"><div class="nm">관우</div><div class="mt">중기병</div></div><div class="med sel"><img src="img/zhangfei.png" style="filter:none"><div class="mn">장비</div><div class="swap">⇄</div></div></div>
+ <div class="u dim"><div class="c"><img src="img/sunqian.png" style="width:100%;height:100%"><div class="nm">손건</div><div class="mt">세객</div></div><div class="med empty hit">+</div></div>
+ <div class="u dim"><div class="c"><img src="img/mizhu.png" style="width:100%;height:100%"><div class="nm">미축</div><div class="mt">방술사</div></div></div>
+</div></div>
+<div class="rp" style="left:328px"><div class="tabs"><div class="tab on">기본</div><div class="tab">전투</div><div class="tab">열전</div><div class="tab">장비</div><div class="tab">특성</div><div class="tab">부관</div></div><div class="rb">우측 상세(표)</div></div>
+</div></div>
+
+<h2>비교</h2>
+<table class="cmp"><tr><th></th><th>P1 지금 그대로</th><th>P2 한 줄 목록</th><th>P3 넓힌 2열 카드</th></tr>
+<tr><td>글씨</td><td>9dp ✗</td><td>14sp·12sp ✓</td><td>14sp·12sp ✓</td></tr>
+<tr><td>부관 터치</td><td>33dp ✗</td><td>48dp ✓</td><td>48dp ✓</td></tr>
+<tr><td>한 번에 보이는 장수</td><td>6</td><td>4(줄이 길어 스크롤 쉬움)</td><td>4</td></tr>
+<tr><td>오른쪽 상세 폭</td><td>넓음</td><td>약 640dp</td><td>약 590dp(좁음)</td></tr>
+<tr><td>주장/부관 인식</td><td>크기·모양</td><td>네모 vs 원 + 줄 구분</td><td>카드 vs 원형 메달</td></tr>
+<tr><td>데스크톱과 같은 모양</td><td>같음</td><td>다름(폰 전용)</td><td>같음</td></tr></table>
+<div class="box" style="margin-top:14px"><b>제 의견:</b> 폰은 <b>P2(한 줄 목록)</b>, 데스크톱은 1안 카드를 쓰는 걸 추천합니다. 화면 폭에 따라 자동으로 바뀌고, 클릭 규칙(그림은 보기, ⇄·＋는 임명)과 주장 네모/부관 원이라는 시각 규칙은 두 모양에서 같습니다. P3는 한 가지 모양을 유지하는 장점이 있지만 오른쪽 상세 창이 좁아집니다.</div>
+</div></html>

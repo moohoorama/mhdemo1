@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수공 3초 데모</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap">
+<style>
+/* layout: one column, the video first, then the timeline against the idea, then what to decide */
+:root{--bg:#f3f6f6;--panel:#ffffff;--fg:#17272b;--muted:#587076;--line:#cfdcde;--accent:#1f6f80;--warn:#9a5a12;
+--body:"Noto Sans KR",system-ui,sans-serif;--display:"Noto Serif KR","Noto Sans KR",serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a1d;--panel:#16262a;--fg:#e3eef0;--muted:#8fa9ae;--line:#2a4046;--accent:#6fc3d3;--warn:#e0a95c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1a1d;--panel:#16262a;--fg:#e3eef0;--muted:#8fa9ae;--line:#2a4046;--accent:#6fc3d3;--warn:#e0a95c;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.7}
+main{max-width:900px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+h1{font-family:var(--display);font-size:28px;margin:0;text-wrap:balance}
+h2{font-size:17px;margin:0 0 10px}
+p{margin:0;max-width:65ch}
+.lead{color:var(--muted)}
+video,img{display:block;width:100%;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:13px}
+td:first-child{white-space:nowrap;color:var(--accent);font-weight:700}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+li{max-width:68ch}
+.ask{color:var(--warn);font-weight:700}
+code{font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+figcaption{color:var(--muted);font-size:13px;margin-top:6px}
+figure{margin:0}
+</style>
+</head><body style="margin:0">
+<main>
+<header>
+<h1>수공 3초 데모</h1>
+<p class="lead">백하 둑 붕괴를 전투맵에서 3초로 재생한 게임 캡처입니다. 둑 장면과 여울 장면 둘로 나눴고, 두 곳은 한 화면에 잡히지 않습니다. 영상 앞 1초는 연출 전에 서 있는 장면입니다.</p>
+</header>
+<figure>
+<video src="suigong.mp4" controls loop muted playsinline></video>
+<figcaption><code>go run ./cmd/_uidemo-vm -ui suigong -stage B25 -frames 250 -mp4 reports/uidemo/suigong.mp4</code></figcaption>
+</figure>
+<section>
+<h2>시간 순서</h2>
+<div class="wrap"><table>
+<tr><th>시각</th><th>장면</th><th>화면</th></tr>
+<tr><td>0.0~0.5초</td><td>여울 (2배율)</td><td>여울을 건너는 조조군 위로 화면이 검게 가라앉습니다.</td></tr>
+<tr><td>0.5~1.0초</td><td>둑 (4배율)</td><td>밝아지면 바위 협곡과 둑, 언덕 위의 관우·미축이 보입니다. 관우가 "무너뜨려라!"를 외칩니다.</td></tr>
+<tr><td>1.0~1.6초</td><td>둑 (4배율)</td><td>바위 둑이 가운데부터 터지고, 바위가 물에 실려 구르다 잠깁니다.</td></tr>
+<tr><td>1.6~2.5초</td><td>여울 (4배율)</td><td>컷으로 넘어갑니다. 병사 둘이 상류로 돌아서 "물이다!", "피해라!"를 외치고, 물머리가 우상단에서 들어옵니다.</td></tr>
+<tr><td>2.5~3.0초</td><td>여울 (4배율)</td><td>물이 병사들을 덮고 물보라가 튀며 화면이 하얘집니다.</td></tr>
+</table></div>
+</section>
+<figure>
+<img src="sheet.png" alt="데모 아홉 장면: 여울, 둑과 관우, 붕괴, 여울의 외침, 충돌">
+<figcaption>연출 전 장면, 이어서 0.75초부터 2.5초까지 여덟 장면</figcaption>
+</figure>
+<figure>
+<img src="close.png" alt="언덕 위 관우와 미축, 물이 닿기 직전의 여울">
+<figcaption>4배율 원본 크기. 왼쪽은 1.5초(둑), 오른쪽은 2.3초(여울).</figcaption>
+</figure>
+<section>
+<h2>이번에 바꾼 것</h2>
+<ul>
+<li><b>맵 분리.</b> 여울을 강 하류로 14칸 더 내렸습니다. 둑 장면에서 여울 장면으로는 카메라 이동 없이 컷으로 넘어갑니다.</li>
+<li><b>바위.</b> 협곡 언덕과 둑을 물과 같은 방식(높이장을 도트로 찍기)으로 그렸습니다. 절벽 타일과 자루 그림은 뺐습니다.</li>
+<li><b>관우·미축.</b> 둑 위쪽 언덕 꼭대기에 서서 좌하단을 봅니다.</li>
+<li><b>4배율.</b> 둑 장면과 여울 장면 모두 4배율입니다. 말풍선은 그 배율에서 읽히도록 두 배로 키웠습니다.</li>
+<li><b>병사의 외침.</b> 둘이 상류(우상단)로 돌아서 "물이다!", "피해라!"를 외칩니다.</li>
+</ul>
+</section>
+<section>
+<h2>남은 점</h2>
+<ul>
+<li>언덕 위 관우·미축에게 그림자가 없습니다. 그림자가 땅 높이에 깔려 바위에 가려집니다.</li>
+<li>외치는 병사는 우상단(상류)을 봅니다. 정확히 오른쪽은 아닙니다.</li>
+<li>대본(25장 c25-e06)의 관우 대사는 "……터라."인데 데모는 "무너뜨려라!"입니다. <span class="ask">어느 쪽으로 갈지 정해 주세요.</span></li>
+<li>대본의 이 장면은 밤인데 데모는 낮입니다. 25장 이야기 장면에는 아직 연결하지 않았습니다.</li>
+<li>구운 시트는 2048×1661로, 재생할 때 VRAM 약 14MB입니다(이전 19MB).</li>
+</ul>
+</section>
+</main>
+</body></html>

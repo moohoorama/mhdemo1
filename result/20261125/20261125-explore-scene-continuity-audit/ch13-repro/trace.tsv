@@ -1,0 +1,26 @@
+f0000	story	node=c13-x01	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=1.00	leaving=false
+f0010	fade	0.50	leaving=false	darkness=0.00
+f0050	story	node=c13-x02	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0101	story	node=c13-x03	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0152	story	node=c13-x04	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0203	story	node=c13-x12	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0270	fade	0.15	leaving=true	darkness=0.00
+f0280	fade	0.65	leaving=true	darkness=0.00
+f0287	walk	node=c13-wait-zhaoyun	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=1.00	leaving=false
+f0288	walk	node=c13-wait-zhaoyun	def=explore:office	screen=map:S_xiaopei_office	fade=0.95	leaving=false
+f0288	JUMP	간옹	(4.0,2.0)->(4.2,2.2)	node=c13-wait-zhaoyun	fade=0.95	dir=SW
+f0288	JUMP	관우	(1.0,3.0)->(1.2,3.2)	node=c13-wait-zhaoyun	fade=0.95	dir=NE
+f0288	JUMP	손건	(2.0,3.0)->(2.2,3.2)	node=c13-wait-zhaoyun	fade=0.95	dir=NE
+f0288	JUMP	장비	(2.0,4.0)->(2.2,4.2)	node=c13-wait-zhaoyun	fade=0.95	dir=NE
+f0288	JUMP	조운	(3.0,2.0)->(3.2,2.2)	node=c13-wait-zhaoyun	fade=0.95	dir=NW
+f0290	fade	0.85	leaving=false	darkness=0.00
+f0300	fade	0.35	leaving=false	darkness=0.00
+f0330	story	node=c13-x13	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0330	JUMP	간옹	(4.2,2.2)->(4.0,2.0)	node=c13-x13	fade=0.00	dir=SW
+f0330	JUMP	관우	(1.2,3.2)->(1.0,3.0)	node=c13-x13	fade=0.00	dir=NE
+f0330	JUMP	손건	(2.2,3.2)->(2.0,3.0)	node=c13-x13	fade=0.00	dir=NE
+f0330	JUMP	유비	(3.2,1.2)->(2.0,1.0)	node=c13-x13	fade=0.00	dir=SW
+f0330	JUMP	장비	(2.2,4.2)->(2.0,4.0)	node=c13-x13	fade=0.00	dir=NE
+f0330	JUMP	조운	(3.2,2.2)->(3.0,3.0)	node=c13-x13	fade=0.00	dir=NW
+f0368	story	node=c13-x15	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false
+f0419	story	node=c13-x16	def=c13-xiaopei	screen=map:S_xiaopei_office	fade=0.00	leaving=false

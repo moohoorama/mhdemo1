@@ -1,0 +1,85 @@
+--- FAIL: TestOfficerOwnedTraitPrerequisites (0.57s)
+    --- FAIL: TestOfficerOwnedTraitPrerequisites/shenpei (0.00s)
+        trait_prerequisite_audit_test.go:22: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/content/trait_prerequisite_audit_test.go:22
+            	Error:      	Should be true
+            	Test:       	TestOfficerOwnedTraitPrerequisites/shenpei
+            	Messages:   	castle_defense requires brace_prep
+    --- FAIL: TestOfficerOwnedTraitPrerequisites/liru (0.00s)
+        trait_prerequisite_audit_test.go:22: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/content/trait_prerequisite_audit_test.go:22
+            	Error:      	Should be true
+            	Test:       	TestOfficerOwnedTraitPrerequisites/liru
+            	Messages:   	deadly_poison requires venom
+    --- FAIL: TestOfficerOwnedTraitPrerequisites/chengyu (0.00s)
+        trait_prerequisite_audit_test.go:22: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/content/trait_prerequisite_audit_test.go:22
+            	Error:      	Should be true
+            	Test:       	TestOfficerOwnedTraitPrerequisites/chengyu
+            	Messages:   	deadly_poison requires venom
+    --- FAIL: TestOfficerOwnedTraitPrerequisites/huangfusong (0.00s)
+        trait_prerequisite_audit_test.go:22: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/content/trait_prerequisite_audit_test.go:22
+            	Error:      	Should be true
+            	Test:       	TestOfficerOwnedTraitPrerequisites/huangfusong
+            	Messages:   	firecraft requires fire
+    --- FAIL: TestOfficerOwnedTraitPrerequisites/liubei (0.00s)
+        trait_prerequisite_audit_test.go:22: 
+            	Error Trace:	/Users/younwookim/orca/mhdemo1/ver5/internal/content/trait_prerequisite_audit_test.go:22
+            	Error:      	Should be true
+            	Test:       	TestOfficerOwnedTraitPrerequisites/liubei
+            	Messages:   	benevolence requires deputy_appoint
+--- FAIL: TestOfficerPlannedTraitPrerequisites (0.61s)
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/jianyong (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/xunyou (0.00s)
+        trait_prerequisite_audit_test.go:43: level 1 class scholar trait flood requires water
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/chenzhen (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/machong_wu (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/fazheng (0.00s)
+        trait_prerequisite_audit_test.go:43: level 16 class scholar trait earthcraft requires earth
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/luxun (0.00s)
+        trait_prerequisite_audit_test.go:43: level 25 class dudu trait castle_defense requires brace_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/yujin (0.00s)
+        trait_prerequisite_audit_test.go:43: level 1 class light_infantry trait strict_order requires discipline
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/shenpei (0.00s)
+        trait_prerequisite_audit_test.go:43: level 1 class scholar trait castle_defense requires brace_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/troop_archer (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/chensun (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/liru (0.00s)
+        trait_prerequisite_audit_test.go:43: level 31 class staff_officer trait deadly_poison requires venom
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/liupi (0.00s)
+        trait_prerequisite_audit_test.go:43: level 16 class bandit trait earth_boost requires earth
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/quyi (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/caizhong (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/huangzhong (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/xusi (0.00s)
+        trait_prerequisite_audit_test.go:43: level 16 class brawler trait firecraft requires fire
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/lidian (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/liubei (0.00s)
+        trait_prerequisite_audit_test.go:43: level 31 class heavy_infantry trait benevolence requires deputy_appoint
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/gaolan (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/chengyu (0.00s)
+        trait_prerequisite_audit_test.go:43: level 16 class scholar trait deadly_poison requires venom
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/huangfusong (0.00s)
+        trait_prerequisite_audit_test.go:43: level 16 class light_infantry trait firecraft requires fire
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/fangong (0.00s)
+        trait_prerequisite_audit_test.go:43: level 16 class brawler trait firecraft requires fire
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/xiahoushang (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/handang (0.00s)
+        trait_prerequisite_audit_test.go:43: level 50 class repeating_crossbow trait penetrate_art requires snipe_prep
+    --- FAIL: TestOfficerPlannedTraitPrerequisites/xiahouyuan (0.00s)
+        trait_prerequisite_audit_test.go:43: level 1 class light_cavalry trait suppression_mastery requires suppressing_shot
+FAIL
+FAIL	srpg/internal/content	1.563s
+FAIL

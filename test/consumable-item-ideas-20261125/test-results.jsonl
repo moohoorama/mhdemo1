@@ -1,0 +1,1 @@
+{"label": "docs-exist", "command": ["test", "-s", "result/20261125/consumable-item-ideas-20261125/ideas.md"], "cwd": null, "required": true, "start": "2026-11-25T09:13:00+09:00", "end": "2026-11-25T09:13:02+09:00", "exit": 0, "verdict": "PASS"}

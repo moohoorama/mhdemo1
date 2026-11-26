@@ -1,0 +1,60 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>부관 칸 4안</title>
+<style>
+:root{--rim:#6b5a3e;--gold:#e8c36a;--card:#1f1814}
+body{margin:0;padding:20px;background:#17110d;color:#f1e8d6;font-family:sans-serif;line-height:1.5}
+h2{margin:34px 0 4px;color:var(--gold)}p.d{margin:0 0 12px;color:#bfae92;max-width:780px}
+.row{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-end}.col{text-align:center;font-size:13px;color:#9d8d73}
+img{image-rendering:pixelated}
+.card{position:relative;width:208px;height:248px;background:var(--card);border:2px solid var(--rim);box-sizing:border-box}
+.card.sel{border-color:var(--gold)}
+.sp{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);height:150px}
+.top{position:absolute;left:0;right:0;top:4px;text-align:center;font-size:26px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}
+.dim{filter:brightness(.7)}
+/* 부관 칸: 카드 (60%,60%)~(110%,110%) = 폭 104, 높이 104 */
+.dep{position:absolute;left:125px;top:148px;width:104px;height:104px;box-sizing:border-box;overflow:hidden}
+.dep .nm{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-size:22px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}
+.dep img.p{width:100%;height:100%;display:block}
+.plus{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;color:#8a7a60}
+/* 1: 도트 스프라이트 */
+.o1 .dep{background:#2a211b;border:2px solid var(--rim)}
+.o1 .dep .ds{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);height:68px}
+/* 2: 도트풍으로 낮춘 초상 */
+.o2 .dep{background:#2a211b;border:2px solid var(--rim);border-radius:10px}
+/* 3: 도트 계단 테두리 */
+.o3 .frame{position:absolute;left:125px;top:148px;width:104px;height:104px;
+ background:var(--rim);
+ clip-path:polygon(0 12px,4px 12px,4px 8px,8px 8px,8px 4px,12px 4px,12px 0,92px 0,92px 4px,96px 4px,96px 8px,100px 8px,100px 12px,104px 12px,104px 92px,100px 92px,100px 96px,96px 96px,96px 100px,92px 100px,92px 104px,12px 104px,12px 100px,8px 100px,8px 96px,4px 96px,4px 92px,0 92px)}
+.o3 .frame.on{background:var(--gold)}
+.o3 .dep{left:129px;top:152px;width:96px;height:96px;background:#2a211b;
+ clip-path:polygon(0 10px,4px 10px,4px 6px,6px 6px,6px 4px,10px 4px,10px 0,86px 0,86px 4px,90px 4px,90px 6px,92px 6px,92px 10px,96px 10px,96px 86px,92px 86px,92px 90px,90px 90px,90px 92px,86px 92px,86px 96px,10px 96px,10px 92px,6px 92px,6px 90px,4px 90px,4px 86px,0 86px)}
+.note{background:#241b15;border:1px solid #4a3c2a;padding:10px 14px;margin-top:22px;max-width:780px}
+.col .card{margin-right:30px;margin-bottom:34px}
+
+.o4 .cls{position:absolute;left:0;right:0;top:4px;text-align:center;font-size:24px;color:#e8d9b8;text-shadow:0 0 3px #000,0 0 3px #000;letter-spacing:2px}
+.o4 .sp{bottom:60px;height:140px}
+.o4 .frame{position:absolute;width:104px;height:104px;background:var(--rim);clip-path:polygon(0 12px,4px 12px,4px 8px,8px 8px,8px 4px,12px 4px,12px 0,92px 0,92px 4px,96px 4px,96px 8px,100px 8px,100px 12px,104px 12px,104px 92px,100px 92px,100px 96px,96px 96px,96px 100px,92px 100px,92px 104px,12px 104px,12px 100px,8px 100px,8px 96px,4px 96px,4px 92px,0 92px)}
+.o4 .frame.on{background:var(--gold)}
+.o4 .pl{position:absolute;width:96px;height:96px;background:#2a211b;overflow:hidden;clip-path:polygon(0 10px,4px 10px,4px 6px,6px 6px,6px 4px,10px 4px,10px 0,86px 0,86px 4px,90px 4px,90px 6px,92px 6px,92px 10px,96px 10px,96px 86px,92px 86px,92px 90px,90px 90px,90px 92px,86px 92px,86px 96px,10px 96px,10px 92px,6px 92px,6px 90px,4px 90px,4px 86px,0 86px)}
+.o4 .pl img{width:100%;height:100%;display:block;image-rendering:auto}
+.o4 .pl .nm{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-size:21px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}
+.o4 .L{left:-6px;top:154px}.o4 .R{left:112px;top:154px}
+.o4 .L2{left:-2px;top:158px}.o4 .R2{left:116px;top:158px}
+.o4 .card{width:224px;height:268px}
+.o4 .sp{left:50%}
+.o4 .dimimg{filter:brightness(.7)}
+.o4 .pl .plus{font-size:40px}
+.o4 .lock{position:absolute;left:6px;top:4px;font-size:15px;color:#e8c36a}
+</style>
+<h1>부관 칸 4안: 3번 틀 + 주장 일러스트 좌하단 + 상단 병종</h1>
+<p class="d">제안대로: 카드 맨 위는 <b>병종</b>(중기병), 도트(주장)는 가운데, <b>좌하단은 주장 일러스트</b>, <b>우하단은 부관 일러스트</b>를 같은 도트 계단 틀로. 이름은 각 일러스트 안 아래에. 일러스트와 도트가 같은 카드에 모이므로 "누구인지"는 일러스트가 맡고 도트는 병종·무기를 보여 줍니다. 평소(어둡게)·선택·마우스(밝게)·부관 없음(＋)입니다.</p>
+<div class="row o4">
+<div class="col"><div class="card"><div class="cls">중기병</div><img class="sp dim" src="guan.png">
+<div class="frame L"></div><div class="pl L2"><img class=" dimimg" src="guanyu.png"><div class="nm">관우</div></div><div class="frame R"></div><div class="pl R2"><img class=" dimimg" src="zhangfei.png"><div class="nm">장비</div></div></div>평소</div>
+<div class="col"><div class="card sel"><div class="cls">중기병</div><img class="sp" src="guan.png">
+<div class="frame L on"></div><div class="pl L2"><img class="" src="guanyu.png"><div class="nm">관우</div></div><div class="frame R"></div><div class="pl R2"><img class=" dimimg" src="zhangfei.png"><div class="nm">장비</div></div></div>주장 선택(주장 밝음)</div>
+<div class="col"><div class="card"><div class="cls">중기병</div><img class="sp dim" src="guan.png">
+<div class="frame L"></div><div class="pl L2"><img class=" dimimg" src="guanyu.png"><div class="nm">관우</div></div><div class="frame R on"></div><div class="pl R2"><img class="" src="zhangfei.png"><div class="nm">장비</div></div></div>부관 선택·마우스(부관 밝음)</div>
+<div class="col"><div class="card"><div class="cls">중기병</div><img class="sp dim" src="guan.png">
+<div class="frame L"></div><div class="pl L2"><img class=" dimimg" src="guanyu.png"><div class="nm">관우</div></div><div class="frame R"></div><div class="pl R2"><div class="plus">+</div></div></div>부관 없음</div></div>
+<div class="note"><b>좋은 점:</b> 장수 식별은 항상 일러스트로 되고, 도트는 병종 그림 그대로 써서 고유 도트가 없는 장수도 문제없음. 좌우 대칭이라 "주장 / 부관"이 한눈에 읽힘. <b>고려할 점:</b> 카드 하단 약 96px을 일러스트 두 칸이 쓰므로 도트가 쓸 높이가 줄어, 카드 높이를 약 20px 키워야 하고(124→약 144) 한 화면에 보이는 줄 수가 약간 줄어듭니다. 또 일러스트 두 칸이 카드 안에 들어가 겹침이 없습니다.</div>
+</html>

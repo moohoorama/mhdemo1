@@ -1,0 +1,58 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>부관 칸: 도트 3안</title>
+<style>
+:root{--rim:#6b5a3e;--gold:#e8c36a;--card:#1f1814}
+body{margin:0;padding:20px;background:#17110d;color:#f1e8d6;font-family:sans-serif;line-height:1.5}
+h2{margin:34px 0 4px;color:var(--gold)}p.d{margin:0 0 12px;color:#bfae92;max-width:780px}
+.row{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-end}.col{text-align:center;font-size:13px;color:#9d8d73}
+img{image-rendering:pixelated}
+.card{position:relative;width:208px;height:248px;background:var(--card);border:2px solid var(--rim);box-sizing:border-box}
+.card.sel{border-color:var(--gold)}
+.sp{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);height:150px}
+.top{position:absolute;left:0;right:0;top:4px;text-align:center;font-size:26px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}
+.dim{filter:brightness(.7)}
+/* 부관 칸: 카드 (60%,60%)~(110%,110%) = 폭 104, 높이 104 */
+.dep{position:absolute;left:125px;top:148px;width:104px;height:104px;box-sizing:border-box;overflow:hidden}
+.dep .nm{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-size:22px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}
+.dep img.p{width:100%;height:100%;display:block}
+.plus{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;color:#8a7a60}
+/* 1: 도트 스프라이트 */
+.o1 .dep{background:#2a211b;border:2px solid var(--rim)}
+.o1 .dep .ds{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);height:68px}
+/* 2: 도트풍으로 낮춘 초상 */
+.o2 .dep{background:#2a211b;border:2px solid var(--rim);border-radius:10px}
+/* 3: 도트 계단 테두리 */
+.o3 .frame{position:absolute;left:125px;top:148px;width:104px;height:104px;
+ background:var(--rim);
+ clip-path:polygon(0 12px,4px 12px,4px 8px,8px 8px,8px 4px,12px 4px,12px 0,92px 0,92px 4px,96px 4px,96px 8px,100px 8px,100px 12px,104px 12px,104px 92px,100px 92px,100px 96px,96px 96px,96px 100px,92px 100px,92px 104px,12px 104px,12px 100px,8px 100px,8px 96px,4px 96px,4px 92px,0 92px)}
+.o3 .frame.on{background:var(--gold)}
+.o3 .dep{left:129px;top:152px;width:96px;height:96px;background:#2a211b;
+ clip-path:polygon(0 10px,4px 10px,4px 6px,6px 6px,6px 4px,10px 4px,10px 0,86px 0,86px 4px,90px 4px,90px 6px,92px 6px,92px 10px,96px 10px,96px 86px,92px 86px,92px 90px,90px 90px,90px 92px,86px 92px,86px 96px,10px 96px,10px 92px,6px 92px,6px 90px,4px 90px,4px 86px,0 86px)}
+.note{background:#241b15;border:1px solid #4a3c2a;padding:10px 14px;margin-top:22px;max-width:780px}
+.col .card{margin-right:30px;margin-bottom:34px}
+</style>
+<h1>부관 칸: 도트 3안</h1>
+<p class="d">같은 장면(관우 + 부관 간옹)을 세 가지 방식으로. 각 안: 평소(어둡게) · 선택/마우스(밝게) · 부관 없음(＋). 카드 104×124(2배 표시). 목업이라 일부 도트가 약간 흐립니다.</p>
+
+<h2>1. 부관을 도트 스프라이트로</h2>
+<p class="d">카드와 같은 질감·같은 2배 정수 배율. 병종 도트를 쓰는 장수가 많아 <b>얼굴로는 구별되지 않으니</b> 이름 글씨(칸 아래)가 식별을 맡습니다. 유관장 같은 고유 도트 장수는 바로 알아보고, 일반 장수는 "같은 병종이면 같은 모습"이 됩니다.</p>
+<div class="row o1">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="top">관우</div><div class="dep"><img class="ds dim" src="jian_dot_raw.png"><div class="nm">간옹</div></div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="top">관우</div><div class="dep"><img class="ds" src="jian_dot_raw.png"><div class="nm">간옹</div></div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="top">관우</div><div class="dep"><div class="plus">+</div></div></div>없음</div></div>
+
+<h2>2. 일러스트를 도트풍으로 낮추기</h2>
+<p class="d">초상을 26×26으로 줄여 14색으로 줄인 뒤 2배 최근접 확대(도트 격자와 같은 질감). 얼굴 식별은 남지만 작은 칸이라 눈코는 뭉개집니다. 둥근 모서리는 그대로.</p>
+<div class="row o2">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="top">관우</div><div class="dep"><img class="p dim" src="jian_pix.png"><div class="nm">간옹</div></div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="top">관우</div><div class="dep"><img class="p" src="jian_pix.png"><div class="nm">간옹</div></div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="top">관우</div><div class="dep"><div class="plus">+</div></div></div>없음</div></div>
+
+<h2>3. 일러스트 그대로 + 도트 계단 테두리</h2>
+<p class="d">초상은 그대로 두고 틀만 모서리가 계단 모양(1칸=4px)인 도트 테두리로. 얼굴은 가장 또렷하고, 변경도 가장 작습니다. 질감 차이는 테두리가 완충.</p>
+<div class="row o3">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="top">관우</div><div class="frame"></div><div class="dep"><img class="p dim" src="zhangfei.png"><div class="nm">장비</div></div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="top">관우</div><div class="frame on"></div><div class="dep"><img class="p" src="zhangfei.png" style="image-rendering:auto"><div class="nm">장비</div></div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="top">관우</div><div class="frame"></div><div class="dep"><div class="plus">+</div></div></div>없음</div></div>
+
+<div class="note"><b>비교:</b> 얼굴 식별 3 &gt; 2 &gt; 1, 질감 통일 1 &gt; 2 &gt; 3, 변경량 3 &lt; 2 &lt; 1. 고유 도트가 없는 장수가 많으니 저는 <b>3(또는 2)</b>을 추천합니다. 1은 유관장 등 일부에만 어울립니다.</div>
+</html>

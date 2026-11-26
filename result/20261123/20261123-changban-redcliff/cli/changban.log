@@ -1,0 +1,567 @@
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+1 zhaoyun move  20 15
+1 zhaoyun wait  0 0
+1 zhangfei wait  0 0
+1 jianyong wait  0 0
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#5    
+2 turn  ally   
+2 zhaoyun attack troop_cavalry#2 0 0
+2 zhangfei wait  0 0
+2 jianyong wait  0 0
+2 mizhu wait  0 0
+2 turn  support shu  
+2 retreat troop_footman#3    
+2 turn  enemy wei  
+2 retreat troop_footman#6    
+2 retreat troop_footman#10    
+2 retreat troop_footman#2    
+2 retreat troop_footman#4    
+2 retreat troop_footman#1    
+2 retreat zhaoyun    
+B26 result defeat 2 [('jianyong', 3688, (18, 30)), ('mizhu', 3394, (16, 30)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 0, (21, 18)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (17, 22)), ('zhangfei', 1986, (17, 27)), ('zhaoyun', 0, (20, 15))]
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+1 zhaoyun move  23 16
+1 zhaoyun attack xiahouen 0 0
+1 duel zhaoyun xiahouen 조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다. [victory] changban-zhaoyun-xiahouen 
+1 zhangfei wait  0 0
+1 jianyong wait  0 0
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#1    
+2 retreat troop_footman#5    
+2 turn  ally   
+2 zhaoyun move  23 19
+2 zhaoyun wait  0 0
+2 zhangfei wait  0 0
+2 jianyong wait  0 0
+2 mizhu wait  0 0
+2 turn  support shu  
+2 turn  enemy wei  
+3 retreat troop_footman#4    
+3 retreat troop_footman#2    
+3 turn  ally   
+3 zhaoyun move  21 23
+3 zhaoyun wait  0 0
+3 zhangfei attack caochun 0 0
+3 jianyong wait  0 0
+3 mizhu wait  0 0
+3 turn  support shu  
+3 retreat troop_footman#3    
+3 turn  enemy wei  
+3 unit-arrival troop_cavalry#6    
+3 unit-arrival troop_cavalry#7    
+3 unit-arrival troop_cavalry#8    
+3 unit-arrival troop_cavalry#9    
+4 retreat troop_footman#6    
+4 turn  ally   
+4 jianyong wait  0 0
+4 mizhu wait  0 0
+4 turn  enemy wei  
+4 retreat zhangfei    
+B26 result defeat 4 [('jianyong', 3688, (18, 30)), ('mizhu', 3394, (16, 30)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 0, (19, 19)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (15, 22)), ('zhangfei', 0, (17, 27)), ('zhaoyun', 1609, (21, 23))]
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (24, 15), False)]
+1 zhaoyun move  23 16
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (23, 16), False)]
+1 zhaoyun attack xiahouen 0 0
+1 duel zhaoyun xiahouen 조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다. [victory] changban-zhaoyun-xiahouen 
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 zhangfei wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong move  17 28
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu move  17 29
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#1    
+2 retreat troop_footman#5    
+2 turn  ally   
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), False)]
+2 zhaoyun move  23 19
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+2 zhaoyun wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 zhangfei wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong move  17 26
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu move  17 28
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 20), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu wait  0 0
+2 turn  support shu  
+2 turn  enemy wei  
+3 retreat troop_footman#4    
+3 retreat troop_footman#2    
+3 turn  ally   
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 2152, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+3 zhaoyun move  21 23
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 2152, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+3 zhaoyun wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 2152, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 zhangfei wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 2152, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong attack troop_cavalry#4 0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 2152, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu move  17 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 2152, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu wait  0 0
+3 turn  support shu  
+3 turn  enemy wei  
+3 unit-arrival troop_cavalry#6    
+3 unit-arrival troop_cavalry#7    
+3 unit-arrival troop_cavalry#8    
+3 unit-arrival troop_cavalry#9    
+4 retreat troop_footman#12    
+4 retreat troop_footman#6    
+4 retreat troop_footman#3    
+4 turn  ally   
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 616, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1473, {}, (21, 23), False)]
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 616, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2173, {}, (21, 23), True)]
+4 zhangfei wait  0 0
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 616, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2173, {}, (21, 23), True)]
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 1316, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2173, {}, (21, 23), True)]
+4 mizhu move  16 29
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (17, 25), True), ('jianyong', 1316, {}, (17, 26), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2173, {}, (21, 23), True)]
+4 mizhu wait  0 0
+4 turn  enemy wei  
+4 retreat jianyong    
+4 retreat troop_cavalry#1    
+4 retreat zhaoyun    
+B26 result defeat 4 [('jianyong', 0, (17, 26)), ('mizhu', 3394, (16, 29)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 0, (19, 19)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (15, 22)), ('zhangfei', 3242, (17, 27)), ('zhaoyun', 0, (21, 23))]
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (24, 15), False)]
+1 zhaoyun move  23 16
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (23, 16), False)]
+1 zhaoyun attack xiahouen 0 0
+1 duel zhaoyun xiahouen 조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다. [victory] changban-zhaoyun-xiahouen 
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 zhangfei wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong move  17 28
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu move  17 29
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#1    
+2 retreat troop_footman#5    
+2 turn  ally   
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), False)]
+2 zhaoyun move  23 19
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+2 zhaoyun wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 zhangfei wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong move  17 26
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu move  17 28
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu wait  0 0
+2 turn  support shu  
+2 turn  enemy wei  
+3 retreat troop_footman#4    
+3 turn  ally   
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+3 zhaoyun move  21 23
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+3 zhaoyun wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 zhangfei wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong move  17 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu move  16 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu wait  0 0
+3 turn  support shu  
+3 retreat troop_footman#2    
+3 turn  enemy wei  
+3 unit-arrival troop_cavalry#6    
+3 unit-arrival troop_cavalry#7    
+3 unit-arrival troop_cavalry#8    
+3 unit-arrival troop_cavalry#9    
+4 retreat troop_footman#6    
+4 retreat troop_footman#3    
+4 turn  ally   
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 2164, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+4 zhaoyun move  17 23
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 2164, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 23), False)]
+4 zhaoyun attack zhanghe 0 0
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 2164, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 23), True)]
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 2864, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 23), True)]
+4 jianyong move  17 28
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 2864, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 23), True)]
+4 jianyong wait  0 0
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 2864, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 23), True)]
+4 mizhu move  17 29
+units 4 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 2864, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 23), True)]
+4 mizhu wait  0 0
+4 turn  enemy wei  
+5 turn  ally   
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 1786, {}, (17, 27), False), ('zhaoyun', 1342, {}, (17, 23), False)]
+5 zhaoyun move  16 23
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 1786, {}, (17, 27), False), ('zhaoyun', 1342, {}, (16, 23), False)]
+5 zhaoyun attack troop_footman#15 0 0
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 1786, {}, (17, 27), False), ('zhaoyun', 1072, {}, (16, 23), True)]
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 2486, {}, (17, 27), True), ('zhaoyun', 1072, {}, (16, 23), True)]
+5 jianyong move  15 28
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (15, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 2486, {}, (17, 27), True), ('zhaoyun', 1072, {}, (16, 23), True)]
+5 jianyong wait  0 0
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (15, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 2486, {}, (17, 27), True), ('zhaoyun', 1072, {}, (16, 23), True)]
+5 mizhu move  18 29
+units 5 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (15, 23), True), ('jianyong', 3009, {}, (15, 28), True), ('mizhu', 3394, {}, (18, 29), False), ('zhangfei', 2486, {}, (17, 27), True), ('zhaoyun', 1072, {}, (16, 23), True)]
+5 mizhu wait  0 0
+5 turn  enemy wei  
+5 retreat zhaoyun    
+B26 result defeat 5 [('jianyong', 3009, (15, 28)), ('mizhu', 3394, (18, 29)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 0, (19, 19)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (15, 22)), ('zhangfei', 2486, (17, 27)), ('zhaoyun', 0, (16, 23))]
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (24, 15), False)]
+1 zhaoyun move  23 16
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (23, 16), False)]
+1 zhaoyun attack xiahouen 0 0
+1 duel zhaoyun xiahouen 조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다. [victory] changban-zhaoyun-xiahouen 
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 zhangfei wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong move  17 28
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu move  17 29
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#5    
+2 turn  ally   
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), False)]
+2 zhaoyun move  23 19
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+2 zhaoyun wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 zhangfei wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong move  17 26
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu move  17 28
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu wait  0 0
+2 turn  support shu  
+2 turn  enemy wei  
+3 retreat troop_footman#2    
+3 retreat troop_footman#1    
+3 retreat troop_footman#4    
+3 turn  ally   
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+3 zhaoyun move  21 23
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+3 zhaoyun wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 zhangfei wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong move  17 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu move  16 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu wait  0 0
+3 turn  support shu  
+3 turn  enemy wei  
+3 unit-arrival troop_cavalry#6    
+3 unit-arrival troop_cavalry#7    
+3 unit-arrival troop_cavalry#8    
+3 unit-arrival troop_cavalry#9    
+4 retreat troop_cavalry#1    
+4 turn  ally   
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+4 zhaoyun move  17 25
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 25), False)]
+4 zhaoyun wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 zhangfei wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 jianyong move  17 28
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 jianyong wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 mizhu move  17 29
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 mizhu wait  0 0
+4 turn  support shu  
+4 retreat troop_cavalry#5    
+4 turn  enemy wei  
+5 retreat troop_footman#6    
+5 turn  ally   
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1837, {}, (17, 25), False)]
+5 zhaoyun move  17 24
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1837, {}, (17, 24), False)]
+5 zhaoyun attack wenpin 0 0
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 zhangfei wait  0 0
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 jianyong move  15 28
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (15, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 jianyong wait  0 0
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (15, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 mizhu move  18 29
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (15, 28), True), ('mizhu', 3394, {}, (18, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 mizhu wait  0 0
+5 turn  support shu  
+5 turn  enemy wei  
+5 retreat zhaoyun    
+B26 result defeat 5 [('jianyong', 3688, (15, 28)), ('mizhu', 3394, (18, 29)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 1534, (19, 19)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (15, 22)), ('zhangfei', 3242, (17, 27)), ('zhaoyun', 0, (17, 24))]
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (24, 15), False)]
+1 zhaoyun move  23 16
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (23, 16), False)]
+1 zhaoyun attack xiahouen 0 0
+1 duel zhaoyun xiahouen 조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다. [victory] changban-zhaoyun-xiahouen 
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 zhangfei wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong move  17 28
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu move  17 29
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#5    
+2 turn  ally   
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), False)]
+2 zhaoyun move  23 19
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+2 zhaoyun wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 zhangfei wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong move  17 26
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu move  17 28
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu wait  0 0
+2 turn  support shu  
+2 turn  enemy wei  
+3 retreat troop_footman#2    
+3 retreat troop_footman#1    
+3 retreat troop_footman#4    
+3 turn  ally   
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+3 zhaoyun move  21 23
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+3 zhaoyun wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 zhangfei wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong move  17 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu move  16 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu wait  0 0
+3 turn  support shu  
+3 turn  enemy wei  
+3 unit-arrival troop_cavalry#6    
+3 unit-arrival troop_cavalry#7    
+3 unit-arrival troop_cavalry#8    
+3 unit-arrival troop_cavalry#9    
+4 retreat troop_cavalry#1    
+4 turn  ally   
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+bridge [('jianyong', (17, 29)), ('mizhu', (16, 29)), ('zhangfei', (17, 27))] moves [(20, 17), (21, 17), (19, 18), (20, 18), (21, 18), (22, 18), (18, 19), (20, 19), (21, 19), (22, 19), (17, 20), (18, 20), (19, 20), (20, 20), (21, 20), (22, 20), (23, 20), (16, 21), (17, 21), (18, 21), (19, 21), (20, 21), (21, 21), (22, 21), (23, 21), (24, 21), (16, 22), (17, 22), (18, 22), (19, 22), (20, 22), (21, 22), (22, 22), (23, 22), (24, 22), (15, 23), (16, 23), (17, 23), (18, 23), (19, 23), (20, 23), (22, 23), (23, 23), (24, 23), (25, 23), (16, 24), (17, 24), (18, 24), (19, 24), (20, 24), (21, 24), (22, 24), (23, 24), (24, 24), (17, 25), (19, 25), (20, 25), (21, 25), (22, 25), (23, 25), (24, 25), (25, 25), (17, 26), (22, 26), (23, 26), (24, 26)]
+4 zhaoyun move  17 25
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 25), False)]
+bridge [('jianyong', (17, 29)), ('mizhu', (16, 29)), ('zhangfei', (17, 27)), ('zhaoyun', (17, 25))] moves []
+4 zhaoyun wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 zhangfei wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 jianyong move  17 28
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 jianyong wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 mizhu move  17 29
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 mizhu wait  0 0
+4 turn  support shu  
+4 retreat troop_cavalry#5    
+4 turn  enemy wei  
+5 retreat troop_footman#6    
+5 turn  ally   
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1837, {}, (17, 25), False)]
+bridge [('jianyong', (17, 28)), ('mizhu', (17, 29)), ('wenpin', (16, 24)), ('zhangfei', (17, 27)), ('zhaoyun', (17, 25))] moves [(17, 24), (17, 26), (15, 28), (14, 29), (15, 29), (16, 29), (18, 29), (15, 30), (16, 30), (17, 30), (18, 30), (19, 30), (16, 31), (17, 31), (18, 31), (17, 32)]
+5 zhaoyun move  17 24
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1837, {}, (17, 24), False)]
+bridge [('jianyong', (17, 28)), ('mizhu', (17, 29)), ('wenpin', (16, 24)), ('zhangfei', (17, 27)), ('zhaoyun', (17, 24))] moves []
+5 zhaoyun attack wenpin 0 0
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 zhangfei wait  0 0
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 jianyong move  15 28
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (15, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 jianyong wait  0 0
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (15, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 mizhu move  18 29
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (15, 28), True), ('mizhu', 3394, {}, (18, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 1292, {}, (17, 24), True)]
+5 mizhu wait  0 0
+5 turn  support shu  
+5 turn  enemy wei  
+5 retreat zhaoyun    
+B26 result defeat 5 [('jianyong', 3688, (15, 28)), ('mizhu', 3394, (18, 29)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 1534, (19, 19)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (15, 22)), ('zhangfei', 3242, (17, 27)), ('zhaoyun', 0, (17, 24))]
+1 cutscene     
+START B26 c26-battle ['zhaoyun', 'zhangfei', 'jianyong', 'mizhu']
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (24, 15), False)]
+1 zhaoyun move  23 16
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 3528, {}, (23, 16), False)]
+1 zhaoyun attack xiahouen 0 0
+1 duel zhaoyun xiahouen 조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다. [victory] changban-zhaoyun-xiahouen 
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 zhangfei wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (18, 30), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong move  17 28
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 jianyong wait  0 0
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 30), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu move  17 29
+units 1 [('caochun', 3984, {}, (11, 17), False), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 16), True)]
+1 mizhu wait  0 0
+1 turn  support shu  
+1 turn  enemy wei  
+2 retreat troop_footman#5    
+2 turn  ally   
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 16), False)]
+2 zhaoyun move  23 19
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+2 zhaoyun wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 zhangfei wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong move  17 26
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 jianyong wait  0 0
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu move  17 28
+units 2 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 22), True), ('jianyong', 3688, {}, (17, 26), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (23, 19), True)]
+2 mizhu wait  0 0
+2 turn  support shu  
+2 turn  enemy wei  
+3 retreat troop_footman#2    
+3 retreat troop_footman#1    
+3 retreat troop_footman#4    
+3 turn  ally   
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (23, 19), False)]
+3 zhaoyun move  21 23
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+3 zhaoyun wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 zhangfei wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 26), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong move  17 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 jianyong wait  0 0
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (17, 28), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu move  16 29
+units 3 [('caochun', 3984, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (13, 23), True), ('jianyong', 3688, {}, (17, 29), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (21, 23), True)]
+3 mizhu wait  0 0
+3 turn  support shu  
+3 turn  enemy wei  
+3 unit-arrival troop_cavalry#6    
+3 unit-arrival troop_cavalry#7    
+3 unit-arrival troop_cavalry#8    
+3 unit-arrival troop_cavalry#9    
+4 retreat troop_cavalry#1    
+4 turn  ally   
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (21, 23), False)]
+bridge [('jianyong', (17, 29)), ('mizhu', (16, 29)), ('zhangfei', (17, 27))] moves [(20, 17), (21, 17), (19, 18), (20, 18), (21, 18), (22, 18), (18, 19), (20, 19), (21, 19), (22, 19), (17, 20), (18, 20), (19, 20), (20, 20), (21, 20), (22, 20), (23, 20), (16, 21), (17, 21), (18, 21), (19, 21), (20, 21), (21, 21), (22, 21), (23, 21), (24, 21), (16, 22), (17, 22), (18, 22), (19, 22), (20, 22), (21, 22), (22, 22), (23, 22), (24, 22), (15, 23), (16, 23), (17, 23), (18, 23), (19, 23), (20, 23), (22, 23), (23, 23), (24, 23), (25, 23), (16, 24), (17, 24), (18, 24), (19, 24), (20, 24), (21, 24), (22, 24), (23, 24), (24, 24), (17, 25), (19, 25), (20, 25), (21, 25), (22, 25), (23, 25), (24, 25), (25, 25), (17, 26), (22, 26), (23, 26), (24, 26)]
+4 zhaoyun move  17 25
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 25), False)]
+bridge [('jianyong', (17, 29)), ('mizhu', (16, 29)), ('zhangfei', (17, 27)), ('zhaoyun', (17, 25))] moves []
+4 zhaoyun wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 zhangfei wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 29), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 jianyong move  17 28
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 jianyong wait  0 0
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (16, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 mizhu move  17 29
+units 4 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), True), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), True), ('zhaoyun', 2927, {}, (17, 25), True)]
+4 mizhu wait  0 0
+4 turn  support shu  
+4 retreat troop_cavalry#5    
+4 turn  enemy wei  
+5 retreat troop_footman#6    
+5 turn  ally   
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1837, {}, (17, 25), False)]
+bridge [('jianyong', (17, 28)), ('mizhu', (17, 29)), ('wenpin', (16, 24)), ('zhangfei', (17, 27)), ('zhaoyun', (17, 25))] moves [(17, 24), (17, 26), (15, 28), (14, 29), (15, 29), (16, 29), (18, 29), (15, 30), (16, 30), (17, 30), (18, 30), (19, 30), (16, 31), (17, 31), (18, 31), (17, 32)]
+5 zhaoyun move  17 31
+units 5 [('caochun', 3681, {'speed': {'Turns': 2, 'Value': 2, 'Source': ''}}, (14, 23), True), ('jianyong', 3688, {}, (17, 28), False), ('mizhu', 3394, {}, (17, 29), False), ('zhangfei', 3242, {}, (17, 27), False), ('zhaoyun', 1837, {}, (17, 31), False)]
+bridge [('jianyong', (17, 28)), ('mizhu', (17, 29)), ('wenpin', (16, 24)), ('zhangfei', (17, 27)), ('zhaoyun', (17, 31))] moves []
+5 zhaoyun wait  0 0
+5 cutscene     
+5 unit-arrival xiahoudun    
+5 unit-arrival troop_footman#16    
+5 unit-arrival troop_cavalry#10    
+5 unit-arrival troop_footman#17    
+5 cutscene     
+5 retreat caochun    
+5 retreat troop_archer#1    
+5 retreat troop_archer#2    
+5 retreat troop_archer#3    
+5 retreat troop_cavalry#2    
+5 retreat troop_cavalry#3    
+5 retreat troop_cavalry#4    
+5 retreat troop_cavalry#6    
+5 retreat troop_cavalry#7    
+5 retreat troop_cavalry#8    
+5 retreat troop_cavalry#9    
+5 retreat troop_footman#10    
+5 retreat troop_footman#11    
+5 retreat troop_footman#12    
+5 retreat troop_footman#13    
+5 retreat troop_footman#14    
+5 retreat troop_footman#15    
+5 retreat troop_footman#17    
+5 retreat troop_footman#7    
+5 retreat troop_footman#8    
+5 retreat troop_footman#9    
+5 retreat wenpin    
+5 retreat xiahoudun    
+5 retreat xuchu    
+5 retreat zhanghe    
+5 objective  crossing 조운이 다리를 건넌다  
+5 objective  qinggang 조운이 일기토로 하후은을 벤다  
+5 victory  B26   
+B26 result victory 5 [('jianyong', 3688, (17, 28)), ('mizhu', 3394, (17, 29)), ('troop_footman#1', 0, (16, 12)), ('troop_footman#2', 0, (19, 15)), ('troop_footman#3', 1849, (19, 19)), ('troop_footman#4', 0, (12, 14)), ('troop_footman#5', 0, (14, 16)), ('troop_footman#6', 0, (15, 22)), ('zhangfei', 3242, (17, 32)), ('zhaoyun', 1837, (17, 31))]

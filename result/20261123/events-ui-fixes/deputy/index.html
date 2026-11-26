@@ -1,0 +1,84 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>부관 칸 디자인 제안</title>
+<style>
+:root{--bg:#2a1f18;--card:#1f1814;--rim:#6b5a3e;--gold:#e8c36a;--txt:#f1e8d6}
+body{margin:0;padding:20px;background:#17110d;color:var(--txt);font-family:sans-serif;line-height:1.5}
+h1{margin:0 0 4px}h2{margin:36px 0 4px;color:var(--gold)}p.d{margin:0 0 12px;color:#bfae92;max-width:760px}
+.row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-end}
+.col{text-align:center;font-size:13px;color:#9d8d73}
+img{image-rendering:pixelated}
+/* 카드: 설계 크기 104x124를 2배로 보여 줌 */
+.card{position:relative;width:208px;height:248px;background:var(--card);border:2px solid var(--rim);box-sizing:border-box}
+.card.sel{border-color:var(--gold)}
+.sp{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);height:150px}
+.nm{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:24px;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}
+.dim{filter:brightness(.7)}.hov .dim,.dim.on{filter:none}
+.portrait{background-size:cover;background-position:center top}
+.z{background-image:url(zhangfei.png)}.l{background-image:url(liubei.png)}.j{background-image:url(jianyong.png)}
+.empty{display:flex;align-items:center;justify-content:center;color:#8a7a60;border:2px dashed #6b5a3e;font-size:15px}
+/* A 현재 */
+.A .dep{position:absolute;right:-26px;bottom:-26px;width:104px;height:104px;border:2px solid var(--rim);box-sizing:border-box}
+.A .dep .nm{font-size:22px}
+/* B 메달 */
+.B .dep{position:absolute;right:-18px;bottom:-18px;width:84px;height:84px;border-radius:50%;border:3px solid var(--gold);box-sizing:border-box;overflow:hidden;box-shadow:0 2px 8px #000}
+.B .dep.empty{border-radius:50%}
+.B .dep .dim{width:100%;height:100%}
+.B .tag{position:absolute;right:-18px;bottom:-34px;width:84px;text-align:center;font-size:17px;color:#fff;text-shadow:0 0 3px #000}
+/* C 하단 띠 */
+.C{height:292px}.C .strip{position:absolute;left:-2px;right:-2px;bottom:-2px;height:44px;border:2px solid var(--rim);background:#241b15;display:flex;align-items:center;gap:8px;padding:0 6px;box-sizing:border-box;border-top-color:#4a3c2a}
+.C .strip .pt{width:34px;height:34px;border:1px solid var(--gold)}
+.C .strip span{font-size:17px;color:#d9c9a8}.C .strip em{font-style:normal;font-size:12px;color:#8a7a60;margin-left:auto}
+.C .sp{bottom:60px;height:140px}.C .nm{bottom:50px}
+/* D 우상단 인장 */
+.D .dep{position:absolute;right:6px;top:6px;width:56px;height:68px;border:2px solid var(--gold);box-sizing:border-box;box-shadow:0 2px 6px #000}
+.D .dep.empty{border-color:#6b5a3e}
+.D .dn{position:absolute;right:6px;top:76px;width:56px;text-align:center;font-size:15px;color:#fff;text-shadow:0 0 3px #000}
+/* E 좌우 분할 */
+.E{width:260px}.E .sp{left:38%;height:140px}
+.E .side{position:absolute;right:0;top:0;bottom:0;width:78px;border-left:2px solid var(--rim);background:#241b15}
+.E .side .pt{position:absolute;left:6px;right:6px;top:8px;height:92px;border:1px solid var(--gold)}
+.E .side b{position:absolute;left:0;right:0;top:106px;text-align:center;font-size:18px;color:#fff;font-weight:400}
+.E .side i{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-size:12px;color:#8a7a60;font-style:normal}
+.E .sp{left:calc(50% - 39px)}.E .nm{right:78px}
+.note{background:#241b15;border:1px solid #4a3c2a;padding:10px 14px;margin-top:20px;max-width:760px}
+</style>
+<h1>부관 칸 디자인 제안</h1>
+<p class="d">설계 크기 카드 104×124(화면에선 2배로 그림). 각 안마다 왼쪽부터 <b>평소(어둡게)</b> · <b>마우스를 올림/선택(밝게)</b> · <b>부관 없음</b>. 도트는 정수 2배 그대로, 카드 크기는 고정입니다.</p>
+
+<h2>A. 지금 (모서리에 걸친 네모)</h2>
+<p class="d">문제: 카드와 부관이 겹쳐 카드 이름이 가려지고, 칸이 어디까지가 카드인지 모호함.</p>
+<div class="row A">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="dep portrait z dim"><div class="nm">장비</div></div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="nm">관우</div><div class="dep portrait z"><div class="nm">장비</div></div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="dep empty">부관</div></div>없음</div></div>
+
+<h2>B. 메달 — 둥근 초상을 모서리에</h2>
+<p class="d">초상을 금테 원형 메달로 만들어 카드 모서리에 얹고, 이름은 메달 아래에 따로. 카드 이름과 안 겹치고 "카드에 달린 장식"으로 읽힘. 부관 없음은 점선 원.</p>
+<div class="row B">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm" style="right:60px">관우</div><div class="dep portrait z dim"></div><div class="tag">장비</div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="nm" style="right:60px">관우</div><div class="dep portrait z"></div><div class="tag">장비</div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm" style="right:60px">관우</div><div class="dep empty">+ 부관</div></div>없음</div></div>
+
+<h2>C. 하단 띠 — 카드 아래에 붙은 부관 줄</h2>
+<p class="d">카드 아래에 "부관 ▸ 초상 + 이름" 한 줄을 붙임. 가장 읽기 쉽고 겹침이 없음. 대신 카드가 44px(설계 크기) 길어져 한 화면에 보이는 장수 수가 줄어듦.</p>
+<div class="row C">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="strip"><div class="pt portrait z dim"></div><span>장비</span><em>부관</em></div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="nm">관우</div><div class="strip"><div class="pt portrait z"></div><span>장비</span><em>부관</em></div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="strip"><div class="pt empty" style="font-size:12px">＋</div><span style="color:#8a7a60">부관 없음</span></div></div>없음</div></div>
+
+<h2>D. 우상단 인장 — 카드 안쪽 모서리에 작은 초상</h2>
+<p class="d">카드 밖으로 안 나가고, 오른쪽 위에 세로 초상 + 이름. 도트(아래쪽)와도 이름(맨 아래)과도 안 겹쳐 카드 크기가 그대로.</p>
+<div class="row D">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="dep portrait z dim"></div><div class="dn">장비</div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="nm">관우</div><div class="dep portrait z"></div><div class="dn">장비</div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="dep empty" style="font-size:13px;text-align:center">부관</div></div>없음</div></div>
+
+<h2>E. 좌우 분할 — 카드를 가로로 넓혀 오른쪽 띠에 부관</h2>
+<p class="d">카드 오른쪽 78px를 부관 칸으로 구분(세로 초상 + 이름). 가로는 넓어지고 2열은 좁은 화면에서 1열이 될 수 있음. 도트와 부관이 한 장수 단위임이 가장 분명함.</p>
+<div class="row E">
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="side"><div class="pt portrait z dim"></div><b>장비</b><i>부관</i></div></div>평소</div>
+<div class="col"><div class="card sel"><img class="sp" src="guan.png"><div class="nm">관우</div><div class="side"><div class="pt portrait z"></div><b>장비</b><i>부관</i></div></div>선택</div>
+<div class="col"><div class="card"><img class="sp dim" src="guan.png"><div class="nm">관우</div><div class="side"><div class="pt empty" style="font-size:13px">＋</div><b style="color:#8a7a60">없음</b><i>부관</i></div></div>없음</div></div>
+
+<div class="note"><b>제 추천: B 또는 D.</b> 카드 크기가 변하지 않아 2열·스크롤 구성을 유지하고, 이름 겹침이 없습니다. 깔끔함은 D, 부관이 "달려 있다"는 느낌은 B가 낫습니다. 읽기 쉬움이 최우선이면 C.</div>
+<p class="d">※ 도트는 게임 캡처를 잘라 쓴 목업이라 약간 흐립니다. 실제 게임에서는 선명한 정수 2배입니다.</p>
+</html>

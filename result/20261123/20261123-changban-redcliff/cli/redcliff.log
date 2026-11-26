@@ -1,0 +1,110 @@
+1 cutscene     
+1 speech     [{'Actor': 'caimao', 'Text': '황개의 배다. 항복하러 오는군. 길을 열어라.'}]
+1 cutscene     
+1 speech     [{'Actor': 'caimao', 'Text': '불이다! 물을 퍼라! 옆 배에 옮겨붙기 전에 꺼라!'}]
+1 unit-arrival ganning    
+1 unit-arrival handang    
+1 speech     [{'Actor': 'ganning', 'Text': '불 붙은 적선부터 쳐라!'}, {'Actor': 'handang', 'Text': '강가 진채에도 불을 놓으시오!'}]
+1 cutscene     
+1 speech     [{'Actor': 'caimao', 'Text': '바람이다! 동남풍이 불길을 밀고 온다!'}, {'Actor': 'caoren', 'Text': '강변의 불이 위쪽 진채까지 옮았습니다!'}, {'Actor': 'caocao', 'Text': '모두 당장 물러나라! 북쪽으로 가라. 목숨부터 보존해라!'}]
+1 speech     [{'Actor': 'zhouyu', 'Text': '조조의 배가 흐트러졌소. 수군은 전진하시오!'}]
+1 cutscene     
+1 speech     [{'Actor': 'zhangyun', 'Text': '우리 배에는 불이 닿지 않았다! 유비가 건너지 못하게 막아라!'}, {'Actor': 'zhugeliang', 'Text': '장윤의 배만 건너면 적의 북쪽 길에 닿습니다. 서두르십시오.'}]
+START B27R c27-redcliff-battle ['liubei', 'jianyong', 'mizhu', 'huojun', 'zhugeliang']
+1 liubei move  31 11
+1 liubei wait  0 0
+1 huojun move  32 11
+1 huojun wait  0 0
+1 jianyong move  30 11
+1 jianyong attack troop_archer#19 0 0
+1 mizhu move  33 11
+1 mizhu wait  0 0
+1 zhugeliang move  31 10
+1 zhugeliang attack zhangyun 0 0
+1 turn  support wu  
+1 retreat troop_footman#16    
+1 retreat troop_archer#12    
+1 retreat troop_footman#17    
+1 retreat troop_footman#14    
+1 turn  support liuqi  
+1 turn  enemy wei  
+2 turn  enemy jing  
+2 retreat jianyong    
+2 turn  ally   
+2 liubei move  30 11
+2 liubei attack troop_footman#22 0 0
+2 huojun move  31 11
+2 huojun wait  0 0
+2 mizhu move  32 11
+2 mizhu wait  0 0
+2 zhugeliang attack zhangyun 0 0
+2 turn  support wu  
+2 retreat troop_footman#15    
+2 retreat troop_footman#9    
+2 turn  support liuqi  
+2 retreat troop_footman#22    
+2 turn  enemy wei  
+3 turn  enemy jing  
+3 turn  ally   
+3 liubei attack troop_footman#23 0 0
+3 huojun move  29 12
+3 huojun attack troop_footman#23 0 0
+3 mizhu move  31 11
+3 mizhu wait  0 0
+3 turn  support wu  
+3 retreat troop_footman#19    
+3 retreat troop_archer#13    
+3 retreat troop_footman#18    
+3 retreat troop_archer#14    
+3 retreat troop_footman#8    
+3 turn  support liuqi  
+3 turn  enemy wei  
+4 turn  enemy jing  
+4 retreat troop_footman#23    
+4 turn  ally   
+4 liubei attack zhangyun 0 0
+4 huojun attack troop_footman#24 0 0
+4 turn  support wu  
+4 retreat troop_archer#17    
+4 retreat troop_footman#10    
+4 turn  support liuqi  
+4 retreat troop_footman#24    
+4 turn  enemy wei  
+5 turn  enemy jing  
+5 retreat mizhu    
+5 turn  ally   
+5 huojun attack troop_archer#20 0 0
+5 turn  support wu  
+5 retreat troop_archer#15    
+5 retreat troop_footman#20    
+5 retreat xuchu    
+5 retreat troop_archer#16    
+5 turn  support liuqi  
+5 turn  enemy wei  
+5 retreat troop_cavalry#1  flight  
+5 retreat troop_cavalry#2  flight  
+5 retreat troop_cavalry#3  flight  
+5 turn  enemy jing  
+6 turn  ally   
+6 huojun attack troop_archer#20 0 0
+6 retreat troop_archer#20    
+6 turn  support wu  
+6 retreat troop_footman#7    
+6 retreat caimao    
+6 turn  support liuqi  
+6 turn  enemy wei  
+7 retreat troop_cavalry#4  flight  
+7 turn  enemy jing  
+7 retreat zhugeliang    
+7 turn  ally   
+7 liubei attack zhangyun 0 0
+7 huojun move  29 11
+7 huojun attack troop_archer#19 0 0
+7 turn  support wu  
+7 retreat troop_footman#11    
+7 retreat caoren    
+7 turn  support liuqi  
+7 turn  enemy wei  
+7 retreat caocao  flight  
+7 victory  B27R   
+B27R result victory 7 [('chengpu', 3816, (16, 7)), ('ganning', 5137, (7, 8)), ('handang', 3687, (14, 7)), ('huanggai', 4416, (10, 4)), ('huojun', 3115, (29, 11)), ('jianyong', 0, (30, 11)), ('liubei', 2568, (30, 11)), ('liuqi', 3134, (31, 11)), ('mizhu', 0, (31, 11)), ('troop_archer#1', 3300, (21, 10)), ('troop_archer#2', 3300, (15, 6)), ('troop_archer#3', 3300, (13, 5)), ('troop_archer#4', 3300, (23, 11)), ('troop_archer#5', 3300, (22, 10)), ('troop_archer#6', 3300, (24, 10)), ('troop_footman#1', 3931, (12, 4)), ('troop_footman#2', 3931, (17, 5)), ('troop_footman#3', 3931, (15, 5)), ('troop_footman#4', 3931, (20, 8)), ('troop_footman#5', 3931, (22, 8)), ('troop_footman#6', 3931, (24, 9)), ('zhouyu', 4887, (13, 8)), ('zhugeliang', 0, (31, 10))]

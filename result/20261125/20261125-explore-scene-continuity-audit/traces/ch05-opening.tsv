@@ -1,0 +1,9 @@
+f0000	story	node=c05-o1	def=c05-e-town	screen=map:S_road_town	fade=1.00	leaving=false
+f0010	fade	0.50	leaving=false	darkness=0.00
+f0125	story	node=c05-o2	def=c05-e-town	screen=map:S_road_town	fade=0.00	leaving=false
+f0220	fade	0.50	leaving=true	darkness=0.00
+f0230	walk	node=c05-walk-town	def=c05-e-town	screen=map:S_road_town	fade=1.00	leaving=false
+f0231	walk	node=c05-walk-town	def=explore:town	screen=map:S_road_town	fade=0.95	leaving=false
+f0231	JUMP	관우	(9.8,3.8)->(9.2,3.2)	node=c05-walk-town	fade=0.95	dir=NW
+f0231	JUMP	장비	(9.8,5.2)->(9.2,4.8)	node=c05-walk-town	fade=0.95	dir=NW
+f0240	fade	0.50	leaving=false	darkness=0.00

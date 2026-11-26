@@ -113,3 +113,26 @@
 - `20c548c` docs(scroll): scroll window design, scrollbar options, result (설계 문서·비교 페이지·결과·history)
 - push 하지 않음.
 - 주의: `ver5/docs/history.md`의 다른 세션 미커밋 항목은 커밋하지 않았다(내 항목만 커밋).
+
+## 테스트 실패 2건 확인
+
+스크롤·출진 커밋(cebd66d, 20c548c, 5ce99e0)은 이 두 테스트의 입력(assets/scenes, assets/scenario, internal/scenes, scene_maps_test.go, uidemo_zz_tmp_story_farewell.go)을 건드리지 않았다. 두 실패 모두 우리 변경 때문이 아니다. 코드·데이터는 바꾸지 않았고 커밋도 없다.
+
+### TestScenarioNodesAreStaged
+- 실패 메시지: `node c23-xinye-arrival has a place but no scene`, `node c25-sick-news has a place but no scene`
+- 원인: 두 노드는 커밋 702d2c5에서 story23.json, story25.json에 추가됐는데 커밋된 assets/scenes/ch23.json, ch25.json 어디에도 Nodes로 배치되지 않았다. 작업 트리의 ch23.json, story23.json은 커밋본과 같다.
+- 재현: 작업 트리 복제본에서 커밋본 story13.json, story25.json, ch25.json으로 돌리면 `c13-x11`, `c13-x-notice`, `c13-x14`, `c23-xinye-arrival`, `c25-sick-news` 5건이 실패했다. 커밋 데이터 자체의 결함이다.
+- 조치: 없음 (우리 것 아님, 미변경). 장면 배치 작업(scene-staging) 쪽에서 채울 항목이다.
+- 최종: 실패 (작업 트리 기준 2건 남음)
+
+### TestStoryManagementDeputy
+- 실패 메시지: `reach the farewell notice from c13-wait-zhaoyun: WrongPhase`
+- 원인: `uidemo_zz_tmp_story_farewell.go`(추적됨)는 `c13-x-notice`에 닿을 때까지 `next`를 보낸다. 작업 트리의 story13.json(다른 세션의 미커밋 수정)에서는 `c13-x-notice` 노드가 없어져서 루프가 지나쳐 `c13-wait-zhaoyun`에서 `next`가 WrongPhase를 낸다.
+- 재현: 작업 트리 복제본에서 story13.json만 커밋본으로 바꾸면 테스트가 통과했다(`ok srpg/internal/gui`).
+- 조치: 없음 (다른 세션의 미커밋 story13.json, 미변경). 이 테스트는 story13 변경이 커밋되거나 헬퍼가 새 노드 ID에 맞게 바뀔 때까지 실패한다.
+- 최종: 실패 (작업 트리 기준)
+
+### 참고
+- 커밋 cebd66d 단독 체크아웃은 컴파일되지 않는다(`st.NoFocus`, `Stage.Excluded`, `scenes.Scene.Cut` 미정의). 해당 필드는 다른 세션의 미커밋 core·content·scenes 변경에만 있다. 그래서 커밋 단독으로는 이 두 테스트를 돌릴 수 없었다.
+- 복제본 실험 디렉터리: /private/tmp/claude-501/-Users-younwookim-orca-mhdemo1-ver5/e1c24e1a-75cd-4342-808c-482480821a91/scratchpad/exp/ver5 (작업 트리를 APFS 복제한 것, 공유 작업 트리는 건드리지 않았다)
+- 이 섹션은 이 문서에만 추가했고 커밋하지 않았다.

@@ -1,0 +1,19 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2026-11-23 작업 결과</title>
+<style>body{font-family:sans-serif;max-width:1000px;margin:auto;padding:16px;background:#222;color:#eee;line-height:1.5}img,video{max-width:100%;border-radius:6px}h2{margin-top:32px;border-bottom:1px solid #555}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}small{color:#aaa}</style>
+<h1>2026-11-23 작업 결과</h1>
+<h2>1. 영천 관우·장비 이벤트 포커스 끔 / 이벤트 중 스크롤 잠금</h2><p>컷신 단계에 <code>NoFocus</code>, 이벤트 재생 중 카메라 고정. <small>(캡처 없음: 화면 변화가 카메라 동작이라 직접 플레이 확인 필요)</small></p>
+<h2>2. 스토리 장면 확대 2배·배속 ×1.5 고정</h2><p>탐험에서는 해제. 우상단에 "배속 ×1.5" 고정 표시.</p><img src="guide/guide.png">
+<h2>3. 출전 준비: 2열·2배 카드</h2><div class="g"><div><small>이전</small><img src="sortie/before.png"></div><div><small>이후(수정 1차: 창에 맞춤)</small><img src="sortie/after.png"></div></div><p>2차 수정: 카드를 창 크기와 무관한 고정 크기로, 도트는 정수 2배 고정(칸이 모자라면 스크롤).</p><img src="sortie/fixed/frame-0020.png"><p>3차 수정: 이름이 카드 안에 들어오게, 부관 칸은 항상 전면(평소 어둡게, 마우스·선택 시 즉시 밝게, 0.2초 어두워짐).</p><img src="sortie/fixed2/frame-0020.png"><p>4차 수정: 이름 위쪽 가운데, 부관 칸 (60%,60%)~(110%,110%).</p><img src="sortie/fixed3/frame-0020.png"><p>5차 수정: 부관 칸 정사각형·둥근 모서리(초상은 위쪽 정사각 크롭, 비면 +).</p><img src="sortie/fixed4/frame-0020.png">
+<h2>4. 7장 진영 말풍선</h2><p>원술군(군장·보물)/원소군(소문 확인) 말풍선 데이터 반영. <small>(캡처 미확인)</small></p>
+<h2>5. 8장 수레·병사</h2><div class="g"><div><small>이전</small><img src="ch08/before.png"></div><div><small>이후</small><img src="ch08/after.png"></div></div><video src="ch08/ch08_cart.mp4" controls></video>
+<h2>6. 어좌: 등쪽 병풍 의자</h2><div class="g"><div><small>이전</small><img src="throne/before.png"></div><div><small>이후</small><img src="throne/after.png"></div></div>
+<h2>7. 점원 광고 말풍선</h2><p>탁군·8장·14장·19장 예 주점/도구점/대장간 입구. <small>(캡처 미확인)</small></p>
+<h2>8. 1~2장 간옹 가이드</h2><p>주점 → 성문 → 주둔지 → 무기 관리, 조건별 변형. <small>(조건 후 화면 미확인)</small></p>
+<h2>9. 계교(B10) 문추 매복</h2><p>초반 대사 교체, 문추·기병은 여울 건넘/4턴에 등장 후 전군 공격. <small>(자동 AI 0/5는 수정 전과 동일, 실제 흐름 미확인)</small></p>
+<h2>10. 원소·원술 초상</h2>
+<p><small>왼쪽부터: 이전 원소 | 새 원소 | 이전 원술 | 새 원술(살 조금 붙임)</small></p><img src="portraits/compare_before_after.png" style="width:100%">
+<div class="g"><img src="portraits/yuanshao.png" alt="원소 전신"><img src="portraits/yuanshu.png" alt="원술 전신"></div>
+<div class="g"><img src="portraits/shao/frame-0060.png" alt="원소 게임"><img src="portraits/shu/frame-0060.png" alt="원술 게임"></div>
+<p><small>자세한 내용은 README.md</small></p><h2>11. 출전 카드 재설계 (PC / 모바일)</h2><p>그림 카드 + 우하단 원형 부관 메달, 그림=선택·⇄/+=부관 임명. 빌드 태그 <code>mobile</code>로 크기 분기(메달 56→72(카드 면적 약 35%), 스왑 20→40). <small>(폰은 우측 표를 줄여 2열)</small></p>
+<p>PC</p><img src="sortie/redesign/pc.png" style="max-width:100%"><p>모바일 (<code>UIDEMO_TAGS=mobile</code>)</p><img src="sortie/redesign/mobile.png" style="max-width:100%">
+</html>
