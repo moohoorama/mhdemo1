@@ -54,7 +54,7 @@ func (g *Game) beginSceneSuigong(st scenes.Step) {
 		g.toast(err.Error(), bad)
 		return
 	}
-	show.extras = extras
+	show.extras, show.damPlace = extras, st.DamPlace
 	show.change = func() {
 		for _, key := range append(cast, st.Actor) { // whoever was still wading across stops where the story left them
 			s.paths[key] = nil

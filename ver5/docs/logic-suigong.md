@@ -16,7 +16,7 @@
 | 쇼 | `internal/gui/field_surge_show.go`, `uidemo_suigong.go`(상수·행군) | 카메라·암전·하양·병사 행군·외침·소리 큐를 시간으로 몰고 간다 |
 | 장면 연결 | `internal/gui/field_surge_scene.go`, `scene.go`, `internal/scenes` `Step.Surge` | 이야기 장면의 비트 `Surge`가 쇼를 장면의 필드·배역 위에서 돌린다 |
 | 데이터 | `assets/scenes/ch25.json`(장면 `c25-flood`), `assets/scenario/hero/story25.json`(노드 `c25-flood`·`c25-e05`) | 어디서 무엇이 나오는지 |
-| 지도 | `tools/scene_maps/baihe_dike.py` → `assets/graphics/maps/S_baihe_dike.json` | 장면 지도(48×44): 협곡·둑·강·여울 |
+| 지도 | `tools/scene_maps/baihe_dike.py` → `assets/graphics/maps/S_baihe_dike.json` | 장면 지도(48×44): 협곡·둑·강·여울(여울은 얕은 물 글자 `S`) |
 | 소리 | `tools/sfx/flood.py` → `assets/sounds/flood-{surge,crash,spray}.ogg` | 받아 둔 물 소리를 이어 붙여 만든 세 소리 |
 
 ## 2. 지도 배치 (모든 층이 같은 칸을 쓴다)
@@ -26,8 +26,11 @@
 
 - 강: 열 u 12~17(폭 6칸, `RIVER`·`WIDTH`).
 - 둑: 행 v 8 한 줄(`DAM`). 둑 위쪽(v ≤ 10)이 협곡이고 강 양옆 u 9~11과 u 18~22가 바위 언덕(높이 26px, `CLIFF`/`HILL`).
-- 여울: v 30 이하(`suigongFord`; 굽기에서는 `FORD = 16`에 `GAP = 14`를 더한 30). 모래톱 위를 병사가 건넌다.
-- 둑 장면과 여울 장면은 서로 22칸 떨어져 **한 화면에 함께 잡히지 않는다**(두 장면 사이는 컷).
+- 여울: v 30 이하(`suigongFord`, 굽기의 `FORD`도 30, `GAP = 0`). 장면 지도에서는 강이 얕은 물(`S`: `scene.json` `flood.kinds`의
+  맑은 강물 색, 모래 위)로 남서쪽(하류)으로 이어지고, 그 위를 병사가 건넌다. 시뮬레이션에서는 강바닥보다 높은 모래톱이다.
+- 둑과 여울은 22칸 떨어져 있다. 2026-11-28 전에는 시뮬레이션이 그 사이를 8칸으로 줄여 계산하고 여울 샷만 14칸(`GAP`) 밀어 그렸는데,
+  2배율 화면에서는 여울 샷의 우상단(북동, 상류)에서 물이 직선으로 끊겨 보였다. 지금은 **둑부터 여울 아래(v 50)까지 실제 거리로**
+  시뮬레이션하고, 저수지는 v −20까지 둔다(길어진 하류에서도 물머리가 벽으로 서 있게).
 - 관우·미축은 오른쪽 언덕 위 (19, 7), (20, 7). 장면 지도가 그 칸을 언덕 높이로 올려 두어(`height 7`) 배우가 서면 저절로 그 높이에 선다.
 
 게임 쪽 상수는 `uidemo_suigong.go` 맨 위(`suigongW/H`, `suigongRiver`, `suigongWidth`, `suigongDam`, `suigongFord`)에 있고 굽는 쪽은
@@ -36,23 +39,27 @@
 
 ## 3. 굽기 — `tools/floodsim.py`
 
-실행(오래 걸린다. 기본 해상도로 약 45분, `FLOOD_RES=1`이면 옛 2×2픽셀로 약 4분):
+실행(오래 걸린다. 기본 해상도로 2~3시간, `FLOOD_RES=1`이면 옛 2×2픽셀로 20분 남짓):
 
 ```
 uv run --with numpy --with scipy --with pillow python tools/floodsim.py            # 미리보기: reports/floodsim/
 uv run --with numpy --with scipy --with pillow python tools/floodsim.py --bake     # 게임으로
+FLOOD_RES=0.5 uv run --with numpy --with scipy --with pillow python tools/floodsim.py --probe   # 물머리 위치만, 1~2분
 ```
+`FLOOD_V0`(저수지 위 끝), `FLOOD_POOL`(둑 뒤 수면, 둑 꼭대기 25보다 낮게), `FLOOD_END`(마지막 프레임), `FLOOD_OUT`(쓸 곳)로 바꿔 볼 수 있다.
+시뮬레이션 중 프레임은 칠한 상자만 잘라 deflate로 눌러 들고 있다(`squeeze`) — 길어진 굽기가 8GB 맥에서 메모리를 넘지 않게.
 
 ### 3.1 시뮬레이션
 - **물**은 입자가 아니라 **높이장**이다. 얕은물방정식(`h`, `hu`, `hv`)을 2단위 격자에서 1차 유한체적법으로 푼다. 바닥 재구성은 Audusse
-  등(2004)의 정수압 재구성, 플럭스는 Rusanov — 고인 강은 가만히 있고 둑·기슭이 젖고 마른다. 중력은 둑에서 여울까지 약 1.3초에 닿게
+  등(2004)의 정수압 재구성, 플럭스는 Rusanov — 고인 강은 가만히 있고 둑·기슭이 젖고 마른다. 중력은 처음 굽기 때 줄인 8칸 거리를 약 1.3초에 닿게(지금 22칸은 약 3.7초)
   맞춘 값(`GRAV`).
 - **바닥**(`terrain()`): 강 바닥, 여울 모래톱, 기슭, 벽으로만 아는 바위 언덕, 둑. 둑은 가운데에서 바깥으로 가라앉는 바닥이다.
 - **둑**(`Dam`): 4단위 복셀. 안은 흙, 겉면은 판자(켜켜이 쌓은 널·말뚝). 터지는 순간 판자 한 장(최대 두 칸 길이)이 하나의 강체로,
   흙덩이·말뚝은 하나씩 제각각의 속도로 떨어져 나간다. 물이 끌고(흐름 쪽으로 끌림) 돌린다 — 판자는 뜨고 흙은 가라앉아 삼켜진다. 강체끼리·
   기슭과는 부딪히지 않고, 판자의 회전은 모형이다(강체 풀이 아님).
-- **슬로모션**: 시뮬레이션은 실제보다 느리게 틀린다. 컷 앞(둑)은 1/30초당 4프레임으로 굽고 2.5초 동안, 컷 뒤(여울)는 3프레임으로
-  굽고 4.4초 동안 보인다(`SLOW`). 게임은 터진 뒤 `surgeRate = 2`배로 틀어 각각 1.25초·2.2초로 본다.
+- **슬로모션**: 시뮬레이션은 실제보다 느리게 틀린다. 컷 앞(둑, 구운 0.9초)은 1/30초당 4프레임으로 굽고 2.5초 동안, 컷 뒤(여울, 1.9~5.8초)는
+  2.4프레임으로 굽고 시뮬레이션 1초당 2.34초 동안 보인다(`SLOW`, `FORD_SLOW`). 게임은 터진 뒤 `surgeRate = 2`배로 틀어 둑 1.25초, 여울
+  약 4.6초(`fordSecs`)로 본다. 물머리는 초당 약 6칸으로 내려와 시뮬레이션 4.7초 무렵 여울에 닿는다(`--probe`로 잰다).
 - **물보라**: 파도 앞이 여울의 병사에 부서지는 자리만 `spellsim.py`의 입자 물로 따로 굽는다(`spray()`, 맨 위에 그림).
 
 ### 3.2 그림 — 한 격자 = 도트 하나
@@ -61,7 +68,7 @@ uv run --with numpy --with scipy --with pillow python tools/floodsim.py --bake  
 - 색은 강 색을 평평한 단계로 나눈 팔레트(`PAL`: 깊은물·몸·밝은·거품·흰색, 바닥 위 얇은 물은 같은 몸 색)와 판자·흙의 면별 톤. 거품은
   빠르게 오르거나 얕고 빠르게 흐르는 곳에서 생기는, 흐름이 나르는 필드다.
 - 아직 범람이 닿지 않은 고인 강은 **굽지 않고** 게임의 물을 그대로 둔다. 바위 언덕은 게임 지도의 것(장면에서는 장면 지도의 높이 7).
-- 장면마다 보이는 줄만 굽는다(`SHOTS`): 둑 장면은 v 0~`DAM+7`, 여울 장면은 `FORD-6`~끝. 둑 장면에는 여울이 없다.
+- 두 샷 모두 시뮬레이션한 줄 전부를 굽는다(`SHOTS`): 2배율 화면은 강 대부분을 보므로 줄을 자르면 물이 직선으로 끊긴다.
 
 ### 3.3 깊이 순서를 위한 조각 — "띠(band)"
 한 프레임을 **칸 대각선 d = u + v 별 띠**로 잘라 굽는다. 게임은 띠를 같은 대각선 유닛의 **앞**(그 유닛 칸의 물은 유닛 밑에, 다음 띠의 물은 다리
@@ -107,8 +114,9 @@ uv run --with numpy --with scipy --with pillow python tools/floodsim.py --bake  
 | 6.6 + 1.0 | 말풍선이 사라진다(`tHush`, `speechFade`) → 7.6부터 카메라가 2초에 걸쳐 둑으로 스크롤(`tScroll`, `scrollSecs`) |
 | 9.6 ~ 11.4 | 화면이 흔들리고 바위 소리(`tShake`, `shakeSecs` 1.8) |
 | 11.4 (`tBurst`) | 하양 번쩍(`flashSecs` .3)·둑 붕괴·물 소리. 여기부터 구운 시간이 2배속(`surgeRate`) |
-| 12.65 (`tCut`) | 컷 — 여울로. 병사 둘이 상류를 보며 "물이다!"(+0.2) "피해라!"(+0.4)(`suigongCries`) |
-| 12.65 + 1.6 | 물이 화면 끝에 닿고 흰색이 들어오기 시작(`fordWater`) → +0.6에 가득(`fordWhite`) → +0.8 유지(`fordHold`). 이때가 `end`(15.65) |
+| 12.65 (`tCut`) | 컷 — 여울로. 우상단(상류)에서 물이 강을 따라 내려온다 |
+| 물보라 시작(`strike`, 구운 `spray.at`) | 물머리가 병사에 부서진다: `flood-crash`·`flood-spray`. 그 1.4초·1.1초 전에 병사 둘이 상류를 보며 "물이다!" "피해라!"(`suigongCries`) |
+| `tCut + fordSecs − fordWhite` | 흰색이 들어오기 시작 → `fordWhite`(0.6)에 가득 → `fordHold`(0.8) 유지. 이때가 `end`. `fordSecs`는 구운 여울 샷 길이 ÷ `surgeRate` |
 | end + 0.7 | 흰 화면이 걷힌다(`suigongClearSecs`) |
 
 ### 5.2 병사의 행군
@@ -119,13 +127,16 @@ uv run --with numpy --with scipy --with pillow python tools/floodsim.py --bake  
 흔들리며) 서서히 사라진다. 외친 병사는 걸음을 멈추고 NE(상류)를 본다.
 
 ### 5.3 소리 큐 (`arrange()`)
-`boulder`(`tShake`, `tShake+.9`) → `water-big`(`tBurst`) → `flood-surge`(`tBurst+.25`) → `flood-crash`(`tCut+.5`) → `flood-spray`(`tBurst+1.7`). 앞의 둘은 게임에
+`boulder`(`tShake`, `tShake+.9`) → `water-big`(`tBurst`) → `flood-surge`(`tBurst+.25`) → `flood-spray`(`strike−.15`) → `flood-crash`(`strike−.1`).
+`flood-surge`는 흰 화면 정점까지 부풀어야 하므로 여울 샷이 길어진 만큼 `tools/sfx/flood.py --longer <초>`로 늘려 만든다. 앞의 둘은 게임에
 있던 소리, 뒤의 셋은 `tools/sfx/flood.py`가 만든 새 소리(7절).
 
 ## 6. 이야기 장면에 연결 — 25장
 
 ### 6.1 데이터 (`assets/scenes/ch25.json`의 `c25-flood`, `story25.json`)
-노드 순서: `… c25-e04`(신야 밤, 조홍 "불이다!… 동문으로!") → `c25-flood`(장면 머리, Place "백하 · 나루") → `c25-e05`(조홍의 줄) → `c25-battle`(출전 준비).
+노드 순서: `… c25-e04`(신야 밤, 조홍 "불이다!… 서문으로!") → `c25-flood`(장면 머리, Place "백하 · 하류") → `c25-e05`(조홍의 줄) → `c25-battle`(출전 준비).
+둑 위 대화 장면(`c25-dike`·`c25-dike2`)의 Place는 "백하 · 나루". 쇼가 둑과 관우를 보는 동안(`tBlack`~`tCut`) 왼쪽 위 장소 칸은 `Surge` 단계의
+`DamPlace`("백하 · 상류")를 보인다(`suigongShow.place`).
 
 장면 `c25-flood`(지도 `S_baihe_dike`):
 - 배역: 조홍, 병사 열(`조인군#1`~`#8` 보병 `light_infantry`, `#9`·`#10` 기병 `light_cavalry`, 위 진영), 관우(전투 조형 `guanyu_heavy_cavalry`+적토마, (19,7)), 미축((20,7)).
@@ -184,7 +195,7 @@ uv run --with numpy --with scipy --with pillow python tools/floodsim.py --bake  
 
 - 구운 물은 **이 지도 배치에서만 맞는다**(캔버스 픽셀 고정). 배치를 바꾸면 다시 굽는다(45분).
 - 대군은 쇼가 시작되는 어둠 속에서 갑자기 나타난다(장면의 병사 열은 열 명). 컷이 아니라 서서히 불어나게 하려면 대군을 장면에서 미리 내보내야 한다.
-- 대군이 545명(`suigongArmy()`)이다. 칸은 4배율 여울 샷 기준으로 계산돼 있는데 쇼의 샷은 지금 2배율이라, 화면 가장자리가 비는지 확인이 필요하다(`seen()`의 범위를 2배율에 맞게 넓혀야 할 수 있다).
+- 대군이 552명(`suigongArmy()`)이다. 칸은 4배율 여울 샷 기준으로 계산돼 있는데 쇼의 샷은 지금 2배율이라, 화면 가장자리가 비는지 확인이 필요하다(`seen()`의 범위를 2배율에 맞게 넓혀야 할 수 있다).
 - 쇼 동안 배속은 1 고정. 건너뛰기(`NoSkip`)도 막혀 있다.
 - 병사 행군의 발소리·말발굽은 칸마다 하나씩 울린다(거리 감쇠로 들리는 것만). 대군이 크니 큐 수도 많다(테스트가 600회 넘게 확인).
 - 낮 장면이다(원문은 밤). 구운 팔레트가 낮 색이다.

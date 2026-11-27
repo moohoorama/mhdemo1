@@ -27,6 +27,7 @@ import numpy as np
 from scipy.signal import butter, sosfilt
 
 SR = 44100
+LONGER = 2.36  # seconds the ford shot shows longer than 2.2 s (field_surge_show.go fordSecs - 2.2)
 ROOT = Path(__file__).resolve().parents[2]
 SOUNDS = ROOT / 'assets/sounds'
 
@@ -104,16 +105,24 @@ def sources():
     return boat, water, big, wash, plateau
 
 
-def make_surge(wash, plateau):
-    """The flood's rush, 4.4 s: in under the burst's own sound within 0.35 s, swelling for 3.2 s to the peak of the white, dying away within 1 s after."""
-    n = 4.4
+def stretch(points, longer):
+    """An envelope's points with the swell after 0.35 s drawn out by longer seconds up to its peak at 3.2 s (the
+    ford's shot plays longer), and everything after that moved on by as much."""
+    k = (3.2 + longer - .35) / (3.2 - .35)
+    return [(t if t <= .35 else .35 + (t - .35) * k if t <= 3.2 else t + longer, db) for t, db in points]
+
+
+def make_surge(wash, plateau, longer=0.0):
+    """The flood's rush, 4.4 s (and longer): in under the burst's own sound within 0.35 s, swelling for 3.2 s (+ longer)
+    to the peak of the white, dying away within 1 s after."""
+    n = 4.4 + longer
     low = stereo(wash, n, .45, .25, 11, 50, 1000)
     mid = stereo(plateau, n, .22, .1, 12, 350, None)
     low /= loud20(low)
     mid /= loud20(mid)
     N = len(low)
-    low *= envelope([(0, -70), (.15, -26), (.35, -14), (1.0, -10), (1.5, -9), (2.1, -8), (2.8, -6), (3.2, -3), (3.6, -3), (4.0, -16), (4.4, -60)], N)[:, None]
-    mid *= envelope([(0, -80), (.15, -44), (.35, -28), (1.0, -18), (1.5, -15), (2.1, -12), (2.8, -8), (3.2, -4), (3.6, -4), (4.0, -20), (4.4, -70)], N)[:, None]
+    low *= envelope(stretch([(0, -70), (.15, -26), (.35, -14), (1.0, -10), (1.5, -9), (2.1, -8), (2.8, -6), (3.2, -3), (3.6, -3), (4.0, -16), (4.4, -60)], longer), N)[:, None]
+    mid *= envelope(stretch([(0, -80), (.15, -44), (.35, -28), (1.0, -18), (1.5, -15), (2.1, -12), (2.8, -8), (3.2, -4), (3.6, -4), (4.0, -20), (4.4, -70)], longer), N)[:, None]
     x = low + mid
     return x / loud20(x) * .26
 
@@ -171,9 +180,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default=str(SOUNDS))
     ap.add_argument('--report', action='store_true', help='only print the analysis of the three sources and of the made cues')
+    ap.add_argument('--longer', type=float, default=LONGER, help="seconds the ford's shot plays longer than the first bake's 2.2 s")
     a = ap.parse_args()
     boat, water, big, wash, plateau = sources()
-    made = {'flood-surge': make_surge(wash, plateau), 'flood-crash': make_crash(boat, big, wash, plateau), 'flood-spray': make_spray(plateau)}
+    made = {'flood-surge': make_surge(wash, plateau, a.longer), 'flood-crash': make_crash(boat, big, wash, plateau), 'flood-spray': make_spray(plateau)}
     for name, x in (('boat', boat), ('water', water), ('water-big', big)):
         report(x, name + ' (source)')
     for name, x in made.items():

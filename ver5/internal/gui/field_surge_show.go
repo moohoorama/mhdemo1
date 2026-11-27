@@ -43,6 +43,7 @@ type suigongShow struct {
 	cues    []suigongCue
 	next    int
 	tCut    float64
+	white0  float64 // when the white starts to come in over the ford
 	end     float64 // when the picture is white all over, a battle swaps its units back
 	dark    float64
 	white   float64
@@ -56,8 +57,18 @@ type suigongShow struct {
 		zoom, camX, camY, speech float64
 		unitsHeld                bool
 	}
-	clock float64
-	over  bool
+	clock    float64
+	over     bool
+	damPlace string // the place the story's corner names while the shots are up at the dam (Step.DamPlace)
+}
+
+// place is the place the story's corner names now: the dam's from the dark before 관우's shot to the cut back to
+// the ford, else nothing (the scene's own).
+func (s *suigongShow) place() string {
+	if s.damPlace != "" && s.clock >= tBlack && s.clock < s.tCut {
+		return s.damPlace
+	}
+	return ""
 }
 
 // suigongClearSecs is how long the white takes to clear when the show hands the battle back.
@@ -122,7 +133,9 @@ func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 		return fmt.Errorf("suigong: %d soldiers stand on the ford", len(s.soldier))
 	}
 	s.tCut = tBurst + (s.surge.Cut()-surgeBreak)/surgeRate // the shot changes from the dam to the ford
-	s.end = s.tCut + fordWater + fordWhite + fordHold
+	s.white0 = s.tCut + fordSecs(s.surge) - fordWhite
+	strike := tBurst + (s.surge.sprayT-surgeBreak)/surgeRate // the front breaks on the soldiers, as the baked spray starts
+	s.end = s.tCut + fordSecs(s.surge) + fordHold
 	s.hold = s.end
 	cue := func(at float64, fn func()) { s.cues = append(s.cues, suigongCue{at, fn}) }
 	sound := func(at float64, name string, vol float64) { cue(at, func() { g.sfxVol(name, vol) }) }
@@ -130,8 +143,8 @@ func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 	sound(tShake+.9, "boulder", .7) // the rumble goes on for the whole shaking
 	sound(tBurst, "water-big", 1)
 	sound(tBurst+.25, "flood-surge", 1) // the flood's rush, from the gap to the swell of the white
-	sound(s.tCut+.5, "flood-crash", 1)  // the front breaks on the soldiers
-	sound(tBurst+1.7, "flood-spray", 1) // as the spray flies
+	sound(strike-.1, "flood-crash", 1)  // the front breaks on the soldiers
+	sound(strike-.15, "flood-spray", 1) // as the spray flies
 	for _, l := range lines {
 		cue(l.at, func() { g.showBattleSpeech([]content.Speech{{Actor: l.unit, Text: l.text, Offstage: l.big}}) })
 		cue(l.at+2.2, g.dropSpeech)
@@ -147,7 +160,7 @@ func (s *suigongShow) arrange(order suigongLine, lines []suigongLine) error {
 	}
 	cue(s.tCut-1.0/60, func() { g.player.Fading = nil }) // a bubble must not fade across the cut
 	for _, c := range suigongCries {
-		cue(s.tCut+c.at, func() {
+		cue(strike+c.at, func() {
 			if u := s.soldier[[2]int{c.u + marchLead, c.v}]; u != nil {
 				s.cried[u.id] = true
 				if s.scene != nil {
@@ -224,7 +237,7 @@ func (s *suigongShow) at(t float64) {
 		}
 	}
 	s.white = suigongPhase(t, tBurst-.06, tBurst) * (1 - suigongPhase(t, tBurst, tBurst+flashSecs))
-	s.white = math.Max(s.white, suigongSmooth(suigongPhase(t, s.tCut+fordWater, s.tCut+fordWater+fordWhite)))
+	s.white = math.Max(s.white, suigongSmooth(suigongPhase(t, s.white0, s.white0+fordWhite)))
 	if t >= s.end {
 		s.finish()
 		s.white = 1
@@ -352,8 +365,11 @@ func (s *suigongShow) Advance(dt float64) bool {
 
 // suigongSeconds is how long the show of surge takes.
 func suigongSeconds(surge *Surge) float64 {
-	return tBurst + (surge.Cut()-surgeBreak)/surgeRate + fordWater + fordWhite + fordHold + suigongClearSecs
+	return tBurst + (surge.Cut()-surgeBreak)/surgeRate + fordSecs(surge) + fordHold + suigongClearSecs
 }
+
+// fordSecs is how long the ford's shot shows after the cut: the rest of the baked surge at surgeRate.
+func fordSecs(surge *Surge) float64 { return (surge.Length() - surge.Cut()) / surgeRate }
 
 // beginSuigong starts the flood show of the surge called name over the battle. The group tells the cast: the unit of
 // the step "surge" leads the army across the ford; the units of its "face" steps stand on the cliff over the dam

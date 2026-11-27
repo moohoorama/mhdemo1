@@ -68,6 +68,7 @@ type Step struct {
 	IfWalking bool      // the step runs only while its actor is still on its way (a line for players who read fast)
 	Surge     string    // the flood of this baked surge (assets/graphics/effects/flood) plays, led by the actor across the ford; the rest of the cast stands on the cliff over the dam
 	Army      []string  // with Surge: the cast keys of a footman and a horseman, whose sprites and faction the army that wades the ford wears
+	DamPlace  string    // with Surge: where the corner says the story is while the show looks up the river at the dam (the scene's Place names the ford)
 	Bound     *bool     // false unties a bound prisoner (the rope comes off and he may gesture again), true binds one
 	Fall      bool      // the actor is struck down: reels, sinks to its knees and falls over (a commoner sheet lies on its prone frame)
 	Kill      bool      // with Strike: the target falls as the blow lands

@@ -5,8 +5,9 @@ water equations on the battle map's ground), drawn as iso pixel art and baked fo
 (internal/gui/field_surge.go, demo `-ui suigong`). The cliffs are the game's own tiles and are not drawn here (the
 sim only knows them as walls); the dam is built of voxels, and the same voxels fly apart when it bursts.
 
-It plays as two shots that never show together: the dam up to T_CUT, then the ford, which the game's map has GAP
-cells further down the river than the simulation does (the river between them is not simulated twice).
+It plays as two shots: the dam up to T_CUT, then the ford. The whole river from the gorge to below the ford is
+simulated at the game map's own distances (GAP 0), so the ford shot at the game's 2x zoom shows the flood coming
+down the river from its upper right edge instead of a slab cut off where the simulation used to end.
 
     uv run --with numpy --with scipy --with pillow python tools/floodsim.py            # preview: reports/floodsim/
     uv run --with numpy --with scipy --with pillow python tools/floodsim.py --bake     # into the game
@@ -55,23 +56,29 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(os.environ.get("FLOOD_OUT", ROOT / "assets/graphics/effects/flood"))
 
 # the demo's map (uidemo_suigong.go)
-RIVER, WIDTH, DAM, FORD = 12, 6, 8, 16   # the river's first column and its width, the dam's row, the ford's first row
+RIVER, WIDTH, DAM, FORD = 12, 6, 8, 30   # the river's first column and its width, the dam's row, the ford's first row
 CELL = 32.0
-U0, U1, V0, V1 = 8, 24, -8, 24      # the cells simulated
-RES = int(os.environ.get("FLOOD_RES", 2))   # dots per old dot, along each side: 1 is the first bake (2 canvas pixels a dot), 2 halves the dot
+U0, U1, V1 = 8, 24, 50
+V0 = int(os.environ.get("FLOOD_V0", -20))  # the cells simulated: the pool behind the dam reaches up to V0, long enough
+                                            # that the front still stands up as a wall when it has come the 22 cells to the ford
+RES = float(os.environ.get("FLOOD_RES", 2))
+RES = int(RES) if RES == int(RES) else RES   # a fraction (0.5) only for --probe, which builds no dam   # dots per old dot, along each side: 1 is the first bake (2 canvas pixels a dot), 2 halves the dot
 DX = 2.0 / RES                      # grid step: one dot, which is also DX canvas pixels wide on the map's canvas
 NX, NY = int((U1 - U0) * CELL / DX), int((V1 - V0) * CELL / DX)
 
 GRAV = 1500.0                       # tuned so the front runs from the dam to the ford in about 1.3 s
-REST, POOL = -9.0, 22.0             # the river's surface (field_water.go sunkDepth) and the surface behind the dam
+REST = -9.0                         # the river's surface (field_water.go sunkDepth)
+POOL = float(os.environ.get("FLOOD_POOL", 22.0))   # the surface behind the dam
 BED, FORD_BED, FORD_TOP = -15.0, -6.0, -5.0
 CLIFF, DAM_TOP = 26.0, 25.0         # the cliff tiles' height (assets/graphics/index.json cliff_rise) and the dam's crest
-T_BREAK, T_END, FPS = 1.0, 3.78, 30  # simulated seconds: the dam bursts at T_BREAK, the last frame is at T_END
-T_CUT, GAP = 1.9, 14                # the shot changes from the dam to the ford, GAP cells down the game's map
+T_BREAK, FPS = 1.0, 30              # simulated seconds: the dam bursts at T_BREAK
+T_END = float(os.environ.get("FLOOD_END", 5.8))   # the last frame: the front reaches the ford at about 4.7 s
+T_CUT, GAP = 1.9, 0                 # the shot changes from the dam to the ford, GAP cells down the game's map
 # slow motion: the sim is played slower than it runs, so each shot is baked with more frames than FPS gives, and each
 # frame shows for longer. (shot's simulated seconds, frames per 1/FPS second, seconds it plays for) per shot
-SLOW = ((T_CUT - T_BREAK, 4, 2.5), (T_END - T_CUT, 3, 4.4))
-SHOTS = ((0, DAM + 7), (FORD - 6, V1))   # the rows each shot can show: nothing else is drawn
+FORD_SLOW = 4.4 / 1.88 * 1.0        # seconds the ford shot is baked to play for, per simulated second (the game plays it 2x)
+SLOW = ((T_CUT - T_BREAK, 4, 2.5), (T_END - T_CUT, 2.4, FORD_SLOW * (T_END - T_CUT)))
+SHOTS = ((V0, V1), (V0, V1))        # the rows each shot can show: all of them, at 2x zoom a shot sees most of the river
 CAMS = ((RIVER + WIDTH / 2, DAM), (RIVER + WIDTH / 2, FORD + .8))   # preview: the cell each shot looks at
 EPS = .05
 CREST = 10.0                        # pixels the foaming front is drawn above the height field
@@ -582,6 +589,10 @@ class Flood:
         nqy[1:] += k * gr
         nqx[:-1] -= k * gt
         nqx[1:] += k * gt
+        wall = .5 * GRAV * h * h   # the domain's top and side edges are walls: they push back as hard as the water presses
+        nqy[0] += k * wall[0]
+        nqx[:, 0] += k * wall[:, 0]
+        nqx[:, -1] -= k * wall[:, -1]
         nh = np.maximum(nh, 0)
         nh[-1], nqx[-1], nqy[-1] = nh[-2], nqx[-2], nqy[-2]   # the river runs on downstream
         speed = np.hypot(nqx, nqy) / np.maximum(nh, EPS)
@@ -749,15 +760,55 @@ def spray():
     return frames
 
 
-T_SPRAY = 2.4
+T_SPRAY = 4.7
 SPRAY_AT = ((RIVER + 1.5) * CELL, (FORD + 1.2) * CELL)
 
 
+def squeeze(tone, band):
+    """A painted frame kept small while the rest are simulated: the box its dots fill, deflated."""
+    if not (tone >= 0).any():
+        return None
+    x0, y0, x1, y1 = crop(tone >= 0)
+    t, b = tone[y0:y1, x0:x1], band[y0:y1, x0:x1]
+    return y0, x0, t.shape, zlib.compress(t.tobytes(), 1), zlib.compress(b.tobytes(), 1)
+
+
+def unsqueeze(packed):
+    """The frame squeeze kept, as the full (tone, band)."""
+    tone = np.full((PH, PW), -1, np.int8)
+    band = np.zeros((PH, PW), np.int16)
+    if packed is not None:
+        y0, x0, shape, t, b = packed
+        tone[y0:y0 + shape[0], x0:x0 + shape[1]] = np.frombuffer(zlib.decompress(t), np.int8).reshape(shape)
+        band[y0:y0 + shape[0], x0:x0 + shape[1]] = np.frombuffer(zlib.decompress(b), np.int16).reshape(shape)
+    return tone, band
+
+
+def probe():
+    """The water alone, without the dam's pictures or the frames: where the front is down the river's middle as
+    simulated time goes, for setting T_END and T_SPRAY."""
+    f = Flood()
+    f.t = 0.0
+    f.advance(T_BREAK)
+    while f.t < T_END - 1e-9:
+        f.advance(.1)
+        f.carry(.1)
+        reached = f.touched & ~f.pool
+        rows = np.nonzero(reached.any(1))[0]
+        v_front = V0 + (rows.max() + 1) * DX / CELL if len(rows) else 0
+        cols = np.nonzero(reached.any(0))[0]
+        wide = f"{U0 + cols.min() * DX / CELL:.1f}..{U0 + (cols.max() + 1) * DX / CELL:.1f}" if len(cols) else "-"
+        j = int((FORD + 1 - V0) * CELL / DX)
+        print(f"t={f.t:.1f} front v={v_front:.1f} flooded u {wide} ford depth {(f.h[j] * f.ford[j]).max():.1f} "
+              f"{time.time() - T0:.0f}s", flush=True)
+
+
 def simulate(log=False, rot=None):
-    """Frames [seconds it shows, tone, band, depth, shot, simulated time]: the burst's seconds in slow motion."""
+    """Frames [seconds it shows, the painted tone and band squeezed, None, depth, shot, simulated time]: the burst's
+    seconds in slow motion."""
     f, dam = Flood(), Dam()
     dry = np.zeros_like(depth_grid(f))
-    frames = [[T_BREAK, *paint(f, 0, dam), dry, 0, T_BREAK]]   # the dam standing: it shows until the burst
+    frames = [[T_BREAK, squeeze(*paint(f, 0, dam)), None, dry, 0, T_BREAK]]   # the dam standing: it shows until the burst
     f.t = T_BREAK
     for shot, (sim_secs, per, real_secs) in enumerate(SLOW):
         n = int(round(sim_secs * FPS * per))
@@ -776,7 +827,7 @@ def simulate(log=False, rot=None):
                     rot.append(f"t={f.t:.2f} free planks={int(live.sum())} median turn yaw/pitch/roll deg "
                                f"{np.median(deg[:, 0]):.0f}/{np.median(deg[:, 1]):.0f}/{np.median(deg[:, 2]):.0f}, max yaw {deg[:, 0].max():.0f}, "
                                f"planks turned >45 deg: {int((deg.max(1) > 45).sum())}")
-            frames.append([real_secs / n, *paint(f, shot, dam), depth_grid(f) if shot else dry, shot, f.t])
+            frames.append([real_secs / n, squeeze(*paint(f, shot, dam)), None, depth_grid(f) if shot else dry, shot, f.t])
             if k % 10 == 9:
                 print(f"shot {shot} frame {k + 1}/{n} t={f.t:.2f} {time.time() - T0:.0f}s", file=sys.stderr, flush=True)
             if log and k % (per * 3) == per * 3 - 1:
@@ -798,22 +849,23 @@ def rgba(tone):
 
 
 def preview(frames, sprays, out):
-    """Each frame as its shot's view at the game's 4x zoom would frame it (320x212 canvas pixels round CAMS) over
+    """Each frame as its shot's view at the game's 2x zoom would frame it (640x424 canvas pixels round CAMS) over
     flat grass: for looking at the rock, the water's shape and the timing without the game."""
     shots = []
-    for secs, tone, _, _, shot, sim in frames:
+    for secs, packed, _, _, shot, sim in frames:
+        tone, _ = unsqueeze(packed)
         cu, cv = CAMS[shot]
         cx, cy = (cu - cv) * CELL, (cu + cv + 1) * CELL / 2
-        x0, y0 = int(cx / 2) - 80 - PX0, int(cy / 2) - 53 - PY0
-        im = Image.new("RGBA", (160, 106), (104, 140, 72, 255))
-        im.alpha_composite(Image.fromarray(rgba(tone)).crop((x0, y0, x0 + 160, y0 + 106)))
+        w, h = int(640 / DX), int(424 / DX)
+        x0, y0 = int(cx / DX) - w // 2 - PX0, int(cy / DX) - h // 2 - PY0
+        im = Image.new("RGBA", (w, h), (104, 140, 72, 255))
+        im.alpha_composite(Image.fromarray(rgba(tone)).crop((x0, y0, x0 + w, y0 + h)))
         im = im.resize((640, 424), Image.NEAREST)
         i = int(round((sim - T_SPRAY) * FPS * SLOW[1][1])) - 1
         if 0 <= i < len(sprays):
             sp = Image.fromarray(sprays[i])
-            sp = sp.resize((sp.width * 2, sp.height * 2), Image.NEAREST)
             ox, oy = SPRAY_AT[0] - SPRAY_AT[1] - spellsim.ORIGIN[0], (SPRAY_AT[0] + SPRAY_AT[1]) / 2 - spellsim.ORIGIN[1]
-            im.alpha_composite(sp, (int((ox - cx + 160) * 2), int((oy - cy + 106) * 2)))
+            im.alpha_composite(sp, (int(ox - cx + 320), int(oy - cy + 212)))
         shots.append(im.convert("RGB"))
     out.mkdir(parents=True, exist_ok=True)
     shots[0].save(out / "suigong.gif", save_all=True, append_images=shots[1:], loop=0,
@@ -859,7 +911,8 @@ def bake(frames, sprays):
     indices (255: clear) deflated one frame at a time, so the game makes pictures of only the frame showing."""
     OUT.mkdir(parents=True, exist_ok=True)
     blobs, bands = [], []
-    for k, (_, tone, band, _, shot, _) in enumerate(frames):
+    for k, (_, packed, _, _, shot, _) in enumerate(frames):
+        tone, band = unsqueeze(packed)
         g = GAP * shot
         raw, entries = bytearray(), []
         for d in np.unique(band[tone >= 0]):
@@ -939,11 +992,15 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "reports/floodsim"))
     ap.add_argument("--no-spray", action="store_true")
     ap.add_argument("--end", type=float, help="preview only this many seconds")
+    ap.add_argument("--probe", action="store_true", help="print where the front is as time goes, nothing else")
     a = ap.parse_args()
+    if a.probe:
+        probe()
+        return
     if a.end:
         global T_END, SLOW
         T_END = a.end
-        SLOW = (SLOW[0], (T_END - T_CUT, 3, 4.4 * (T_END - T_CUT) / 1.88))
+        SLOW = (SLOW[0], (T_END - T_CUT, SLOW[1][1], FORD_SLOW * (T_END - T_CUT)))
     rot = []
     frames = simulate(log=not a.bake, rot=rot)
     print(*rot, sep="\n")

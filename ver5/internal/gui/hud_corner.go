@@ -225,6 +225,9 @@ func (g *Game) storyPanels(dst *ebiten.Image, o core.Observation) {
 			place, _, _ = strings.Cut(art.Name, "(")
 			place = strings.TrimSpace(place)
 		}
+		if g.show != nil && g.show.place() != "" { // the flood's shots up at the dam
+			place = g.show.place()
+		}
 		skip = g.skipSlot()
 	}
 	g.leftPanel(dst, place, g.chapterName(o.Node), money, g.speedSlot(), zoom, g.autoSlot(), skip)

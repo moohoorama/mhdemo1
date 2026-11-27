@@ -89,3 +89,14 @@ func TestSuigongMarch(t *testing.T) {
 	assert.Greater(t, d.g.sfxCalls-fed, 600, "a crowd of footsteps")
 	assert.Greater(t, soldier.animT, 0.0)
 }
+
+func TestSuigongPlace(t *testing.T) {
+	s := &suigongShow{damPlace: "백하 · 상류", tCut: 12}
+	for _, c := range []struct {
+		at   float64
+		want string
+	}{{0, ""}, {tFadeOut, ""}, {tBlack, "백하 · 상류"}, {11.9, "백하 · 상류"}, {12, ""}, {15, ""}} {
+		s.clock = c.at
+		assert.Equal(t, c.want, s.place(), "at %.2f s the corner names the dam only while the shots are up there", c.at)
+	}
+}

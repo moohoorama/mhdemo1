@@ -1,3 +1,14 @@
+## 2026-11-28 수공 여울 샷: 북동쪽이 끊기지 않게 실제 거리로 다시 굽고 2.4초 길게, 백하 장소 이름, 여울은 얕은 물, 영천 방위
+
+- `tools/floodsim.py`: 둑과 여울 사이를 8칸으로 줄여 계산하고 여울 샷을 14칸 밀어 그리던 것(`GAP`)을 실제 22칸 거리로(`FORD` 30, `GAP` 0, 하류 v 50까지, 저수지 v −20까지) — 2배율 여울 샷 우상단에서 물이 직선으로 끊겨 보이던 것. 두 샷 모두 모든 줄을 굽고, 여울 샷은 1.9~5.8초(물머리는 4.7초 무렵 여울에 닿음, `T_SPRAY`). 계산 영역 위·옆 끝에 벽 압력이 없어 고인 물이 경계에 쌓여 발산하던 것을 반사벽으로 고침(옛 굽기에서는 그 줄이 화면 밖이라 안 보였음, 계산도 빨라짐). 프레임은 잘라 눌러 들고 있음(`squeeze`), `--probe`(물머리 위치만), `FLOOD_V0`·`FLOOD_POOL`·`FLOOD_END`·`FLOOD_OUT`. 미리보기는 2배율 틀.
+- `assets/graphics/effects/flood/suigong.*`: 다시 구움(390프레임, idx 12MB). 여울 샷이 2.2초 → 4.56초.
+- `internal/gui/field_surge_show.go`, `uidemo_suigong.go`: `fordWater` 상수 대신 구운 여울 샷 길이(`fordSecs`)로 흰 화면 시작·끝을 정함, 물이 부서지는 소리·물보라 소리·병사 외침은 구운 물보라 시작(`strike`) 기준, `marchAfter` 4.6.
+- `tools/sfx/flood.py` `--longer`(기본 2.36): `flood-surge`의 부풂을 흰 화면 정점까지 늘려 다시 만듦.
+- `internal/scenes/scenes.go` `Step.DamPlace`, `field_surge_scene.go`, `hud_corner.go`: 쇼가 둑과 관우를 보는 동안 장소 칸에 "백하 · 상류". `story25.json`: 수공 장면 Place "백하 · 나루" → "백하 · 하류", 둑 위 대화 장면 "백하 · 둑 위" → "백하 · 나루". `ch25.json` `DamPlace`. 사용자 지정.
+- `internal/scenemap` `Flood.Kinds`, `field_flood.go`, `scene.json`(`S`: 맑은 강물 색 얕은 물, 걸을 수 있음), `tools/scene_maps/baihe_dike.py`: 백하 여울(v 30 이하)을 마른 흙 띠(황무지로 보임) 대신 얕은 물로 — 깊은 강이 남서쪽으로 여울로 이어짐.
+- `assets/scenario/hero/story02.json`, `stage02.json`, `tools/mapgen/layouts/hero/stage02.txt`, `docs/fullstory.md`: 영천 방위를 화면 기준(우상단 북)으로 — 남동→동, 동북→북, 남서→남, 서북→서, 성문은 북문·남문.
+- `docs/logic-suigong.md`: 위 내용 반영.
+
 ## 2026-11-28 25장 신야 서문, 방위 규칙, 영천 파재 대사, 수공 배율 2
 
 - `assets/scenario/hero/story25.json`, `docs/fullstory.md`, `docs/presentation-scene.md`: 조홍 대사를 "동문·남문·북문은 불, 서문만 불이 없다 — 서문으로!"로, 백하는 신야에서 서쪽 — 조인군이 서쪽으로 건너가는 방향과 맞춤.

@@ -38,7 +38,8 @@ const (
 	DrawFill   = "fill"   // a game cell's diamond filled with Color, 64 x 32 (DiamondRow)
 	DrawAnim   = "anim"   // frame 0 of a looping strip (Catalog.Anims); the game plays it
 	// DrawFlood is the flood water over one small tile (Rules.Flood), X, Y its diamond's top vertex, 32 x 16; Tile
-	// holds the sides that meet dry ground (FloodSides) and, from bit 4 up, which of FloodVariants it takes.
+	// holds the sides that meet dry ground (FloodSides), from bit 4 up which of FloodVariants it takes and from bit 8
+	// up its glyph (FloodGlyph), which picks its water from Flood.Kinds.
 	DrawFlood = "flood"
 	// DrawWaterline is the foam along where the flood meets what stands in it: a line through the Line points.
 	DrawWaterline = "waterline"
@@ -52,6 +53,7 @@ const (
 	FloodSW
 	FloodNW
 	FloodVariants = 4
+	FloodGlyph    = 8 // the shift of a DrawFlood Tile's glyph
 )
 
 // Piece is one item of the standing layer: a raised block's faces, a wall piece, an object. Its draws go out
@@ -339,22 +341,27 @@ func (w *view) ground() []Draw {
 // flood is the water over each flooded small tile at height 0, in screen order.
 func (w *view) flood() []Draw {
 	var out []Draw
-	wet := func(u, v int) bool { return !w.inside(u, v) || w.c.flooded(w.glyph(u, v)) && w.step(u, v) == 0 }
+	wet := func(u, v int, river bool) bool {
+		g := w.glyph(u, v)
+		return !w.inside(u, v) || w.c.flooded(g) && w.step(u, v) == 0 || river && g == '~'
+	}
 	for v := w.v0; v < w.v1; v++ {
 		for u := w.u0; u < w.u1; u++ {
-			if !w.c.flooded(w.glyph(u, v)) || w.step(u, v) > 0 {
+			g := w.glyph(u, v)
+			if !w.c.flooded(g) || w.step(u, v) > 0 {
 				continue
 			}
+			_, river := w.c.Rules.Flood.Kinds[string(g)]
 			sides := 0
 			for bit, d := range [][2]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}} {
-				if !wet(u+d[0], v+d[1]) {
+				if !wet(u+d[0], v+d[1], river) {
 					sides |= 1 << bit
 				}
 			}
 			mu, mv := w.orig(u, v)
 			variant := int(hashTile(mu, mv) % FloodVariants)
 			x, y := center(u, v)
-			out = append(out, Draw{Kind: DrawFlood, Tile: sides | variant<<4, X: x, Y: y - 8})
+			out = append(out, Draw{Kind: DrawFlood, Tile: sides | variant<<4 | int(g)<<FloodGlyph, X: x, Y: y - 8})
 		}
 	}
 	return out

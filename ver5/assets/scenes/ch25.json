@@ -572,7 +572,7 @@
       [{"Wait": 2.6}]
      ],
      [
-      [{"Surge": "suigong", "Actor": "조홍", "Army": ["조인군#1", "조인군#9"]}, {"Actor": "관우", "Play": "attack", "After": 4.1}, {"Actor": "관우", "Say": "지금이다!", "After": 4.2}]
+      [{"Surge": "suigong", "Actor": "조홍", "Army": ["조인군#1", "조인군#9"], "DamPlace": "백하 · 상류"}, {"Actor": "관우", "Play": "attack", "After": 4.1}, {"Actor": "관우", "Say": "지금이다!", "After": 4.2}]
      ]
     ]
    }

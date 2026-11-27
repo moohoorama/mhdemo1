@@ -5,7 +5,8 @@ earth and sacks into the gorge, before and after the flashbacks to 하비.
   python3 ver5/tools/scene_maps/baihe_dike.py
 
 Format 2, 48 x 44 cells, the battle map's own size (S_bridge, which the scene used before, was 12 x 10): the ford of the
-show's second shot lies at v 30 and below, a bar of sand across the river the army wades over, as the battle map's ford is. It is the place the flood show of
+show's second shot lies at v 30 and below, the river running on shallow over sand (scene.json flood kind 'S') where
+the army wades over. It is the place the flood show of
 internal/gui/uidemo_suigong.go (assets/graphics/effects/flood/suigong, tools/floodsim.py) opens up the dam of, laid out
 by the same cells: the river six cells wide down the v axis (u 12-17), the gorge's cliffs above row 10 (u 9-11 and
 u 18-22, scene.json height 7: the battle map's own 26 px hill, the lift the show stands 관우 on) and the dam of
@@ -41,7 +42,7 @@ for V in range(rows):
         u, v = cell(U, V)
         in_river = RIVER <= u < RIVER + WIDTH
         if in_river:
-            ground[V][U] = 'd' if DAM <= v < DAM + 1 or v >= FORD else '~'
+            ground[V][U] = 'd' if DAM <= v < DAM + 1 else 'S' if v >= FORD else '~'   # the ford: shallow water over sand
         elif v < CLIFF_END and (RIVER - 3 <= u < RIVER or RIVER + WIDTH <= u < RIVER + WIDTH + 5):
             height[V][U] = '7'
             ground[V][U] = 'd'  # a hill's top is bare earth (the battle map's 'h')

@@ -6,6 +6,8 @@ import (
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"srpg/internal/scenemap"
 )
 
 // floodTile is the flood water over one small tile (scenemap.DrawFlood), 32 x 16: the rules' muddy colour over its
@@ -19,8 +21,11 @@ func (a *Assets) floodTile(tile int) *ebiten.Image {
 		a.floods = map[int]*ebiten.Image{}
 	}
 	fl := a.SceneRules.Rules.Flood
-	water, foam := hexColor(fl.Color), hexColor(fl.Foam)
-	sides, variant := tile&15, tile>>4
+	water, foam, depth := hexColor(fl.Color), hexColor(fl.Foam), fl.Alpha
+	if k, ok := fl.Kinds[string(rune(tile>>scenemap.FloodGlyph))]; ok {
+		water, depth = hexColor(k.Color), k.Alpha
+	}
+	sides, variant := tile&15, tile>>4&15
 	pix := make([]byte, 32*16*4)
 	for y := range 16 {
 		for x := range 32 {
@@ -35,7 +40,7 @@ func (a *Assets) floodTile(tile int) *ebiten.Image {
 					shore = math.Min(shore, d)
 				}
 			}
-			c, alpha := water, fl.Alpha
+			c, alpha := water, depth
 			switch {
 			case shore < .09:
 				c, alpha = mixRGBA(water, foam, .6), .7

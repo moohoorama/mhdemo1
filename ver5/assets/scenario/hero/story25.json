@@ -269,7 +269,7 @@
   {
    "ID": "c25-dike",
    "Kind": "scene",
-   "Place": "백하 · 둑 위"
+   "Place": "백하 · 나루"
   },
   {
    "ID": "c25-d01",
@@ -362,7 +362,7 @@
   {
    "ID": "c25-dike2",
    "Kind": "scene",
-   "Place": "백하 · 둑 위"
+   "Place": "백하 · 나루"
   },
   {
    "ID": "c25-d14",
@@ -438,7 +438,7 @@
   {
    "ID": "c25-flood",
    "Kind": "scene",
-   "Place": "백하 · 나루"
+   "Place": "백하 · 하류"
   },
   {
    "ID": "c25-e05",

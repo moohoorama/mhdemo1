@@ -59,13 +59,13 @@ t14 Enemies[16]  troop_turban, enemy, group westcamp, policy react
 t15 Enemies[17]  troop_turban, enemy, group westcamp, policy react
 t16 Enemies[18]  troop_turban, enemy, group westcamp, policy react
 
-# area 1 남동 문 옆 울타리: x 16..16, y 12..12
-# area 2 남동 문 옆 울타리: x 16..16, y 16..16
-# area 3 남동 울타리 오른편: x 16..16, y 7..11
-# area 4 남동 울타리 왼편: x 16..16, y 17..22
-# area 5 동북 울타리: x 3..7, y 6..6
-# area 6 동북 울타리: x 11..16, y 6..6
-# area 7 남서 울타리: x 3..7, y 23..23
-# area 8 남서 울타리: x 11..16, y 23..23
-# area 9 동북 성문: x 6..6, y 11..11
-# area 10 남서 성문: x 6..6, y 18..18
+# area 1 동쪽 문 옆 울타리: x 16..16, y 12..12
+# area 2 동쪽 문 옆 울타리: x 16..16, y 16..16
+# area 3 동쪽 울타리 오른편: x 16..16, y 7..11
+# area 4 동쪽 울타리 왼편: x 16..16, y 17..22
+# area 5 북쪽 울타리: x 3..7, y 6..6
+# area 6 북쪽 울타리: x 11..16, y 6..6
+# area 7 남쪽 울타리: x 3..7, y 23..23
+# area 8 남쪽 울타리: x 11..16, y 23..23
+# area 9 북문: x 6..6, y 11..11
+# area 10 남문: x 6..6, y 18..18

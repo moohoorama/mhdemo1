@@ -52,7 +52,7 @@ const suigongFordCamU, suigongFordCamV = suigongRiver + suigongWidth/2, suigongF
 const (
 	marchLead  = 11
 	marchSpeed = 1 / stepTime
-	marchAfter = 2.4 // seconds of marching after the cut that the cells entering the screen are counted for
+	marchAfter = 4.6 // seconds of marching after the cut that the cells entering the screen are counted for (the ford shot, fordSecs)
 )
 
 // marchPhase is how far into its first cell a soldier of row v starts, so that the rows do not step as one.
@@ -97,14 +97,14 @@ func suigongArmy() []struct {
 }
 
 // suigongCries are what the soldiers who see the water coming shout, turning up the river: where each stands (cell
-// of the army), when (seconds after the cut to the ford) and what.
+// of the army), when (seconds from the front breaking on the army, the baked spray's start) and what.
 var suigongCries = []struct {
 	u, v int
 	at   float64
 	text string
 }{
-	{suigongRiver + 1, suigongFord, .2, "물이다!"},
-	{suigongRiver + 4, suigongFord + 1, .4, "피해라!"},
+	{suigongRiver + 1, suigongFord, -1.4, "물이다!"},
+	{suigongRiver + 4, suigongFord + 1, -1.1, "피해라!"},
 }
 
 // The flood's timeline, in seconds of the capture (60 frames a second). The ford shows first, sinks to black, and
@@ -112,8 +112,8 @@ var suigongCries = []struct {
 // to the dam in scrollSecs, the screen shakes under the sound of a boulder, flashes white at the burst and clears in
 // flashSecs as the dam goes; from the burst on everything plays surgeRate times as fast as the surge was baked
 // (floodsim.py SLOW): the dam for the surge's own cut (2.5 s baked, 1.25 s shown), then the ford for the rest of the
-// surge (4.4 s baked, 2.2 s shown) while the water, the white and the sound of the flood swell: the white takes the
-// last of the water (fordWater, fordWhite) and is full as the water's last picture shows.
+// surge (fordSecs) while the water comes down the river onto the army and the white and the sound of the flood swell:
+// the white takes the last fordWhite of the water and is full as the water's last picture shows.
 const (
 	tFadeOut, tBlack, tFadeIn = 2.5, 3.2, 3.9
 	tOrder                    = 4.1
@@ -127,8 +127,7 @@ const (
 	aftershock                = .6  // seconds the shaking dies away after the burst
 	surgeBreak                = 1.0 // the surge's own seconds the standing dam shows before it bursts
 	surgeRate                 = 2.0 // the surge's own seconds that pass in one second from the burst on
-	fordWater                 = 1.6 // seconds after the cut the water reaches the screen's edge and the white starts to come in
-	fordWhite                 = .6  // seconds the white takes to fill the screen: the last moving picture of the water (2.2 s after the cut) shows white
+	fordWhite                 = .6  // seconds the white takes to fill the screen: the last moving picture of the water shows white
 	fordHold                  = .8  // seconds the white stays after
 )
 
