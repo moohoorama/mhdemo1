@@ -1,0 +1,26 @@
+--- FAIL: TestExploreChatterBubblesDoNotOverlap (3.20s)
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore02/zhuo (0.01s)
+        explore_layout_test.go:235: at 1.5s the balloons of 노인 [15 11] and 간옹 [9 12] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore07/camp (0.04s)
+        explore_layout_test.go:235: at 1.0s the balloons of 원소군 병졸#3 [17 18] and 원소군 병졸 [19 20] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore14/tavern (0.00s)
+        explore_layout_test.go:235: at 1.5s the balloons of 술꾼 [8 7] and 손님 [9 5] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore14/town (0.05s)
+        explore_layout_test.go:235: at 4.7s the balloons of 주점 점원 [33 16] and 소금 장수 [31 19] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore19_ye/street (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아낙#1 [44 39] and 상인#1 [47 36] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore22_xiangyang/town (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아이#2 [21 19] and 아이#1 [16 19] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore23_xiangyang/town (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아이#2 [21 19] and 아이#1 [16 19] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore24/xiangyang (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아이#2 [21 19] and 아이#1 [16 19] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore25_back/town (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아이#2 [21 19] and 아이#1 [16 19] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore25_visit/xiangyang (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아이#2 [21 19] and 아이#1 [16 19] cover each other
+    --- FAIL: TestExploreChatterBubblesDoNotOverlap/explore27v_town/town (0.03s)
+        explore_layout_test.go:235: at 0.2s the balloons of 아이#2 [21 19] and 아이#1 [16 19] cover each other
+FAIL
+FAIL	srpg/internal/gui	3.878s
+FAIL

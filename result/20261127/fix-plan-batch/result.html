@@ -1,0 +1,138 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수정 적용 결과 16건</title><style>
+:root{--bg:#faf8f4;--fg:#222;--mut:#666;--card:#fff;--bd:#ddd5c8;--ok:#2d6a3e;--warn:#b06a00;--bad:#b3261e}
+@media(prefers-color-scheme:dark){:root{--bg:#1d1b19;--fg:#e8e2d8;--mut:#a39b8d;--card:#27241f;--bd:#3d382f;--ok:#7cc592;--warn:#e5b45a;--bad:#ef8a80}}
+body{background:var(--bg);color:var(--fg);font:15px/1.65 -apple-system,"Apple SD Gothic Neo",sans-serif;margin:0;padding:24px 16px 80px}
+main{max-width:1000px;margin:auto}h1{font-size:24px}h2{font-size:18px;margin:0 0 6px}
+section{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:16px 18px;margin:16px 0}
+.st{font-size:12px;border-radius:10px;padding:1px 9px;margin-left:6px;border:1px solid}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.q{border-left:4px solid var(--warn);background:rgba(176,106,0,.08);padding:8px 12px;margin:10px 0;border-radius:4px}
+code{font:13px ui-monospace,Menlo,monospace;background:rgba(128,128,128,.15);padding:1px 4px;border-radius:3px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}td,th{border:1px solid var(--bd);padding:5px 8px;text-align:left;vertical-align:top}
+figure{margin:8px 0}figure img{width:100%;border:1px solid var(--bd);border-radius:4px}figcaption{font-size:12.5px;color:var(--mut)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:700px){.pair{grid-template-columns:1fr}}
+ul{margin:4px 0;padding-left:20px}.mut{color:var(--mut)}</style></head><body><main>
+<h1>수정 적용 결과 16건</h1>
+<p class="mut">2026-11-27 · 커밋은 하지 않았습니다(작업 트리에만 반영). 이미지를 누르면 원본이 열립니다.</p>
+
+<section><h2>결정사항 반영 요약</h2><table>
+<tr><th>#</th><th>결정</th><th>반영</th></tr>
+<tr><td>1</td><td>조조군은 이벤트 진입 없이 총공세(assault) AI로 문을 통해 진입</td><td>반영. 단 AI가 남서문으로 들어가는 것은 아직 확인 못 함(아래 1번)</td></tr>
+<tr><td>4</td><td>명조 유지, 막음·EXP·HP 등도 이미지로</td><td class="bad">에셋 미생성(이미지 생성 한도). 글자 집합·helper까지만</td></tr>
+<tr><td>6</td><td>아이콘도 글씨와 함께 눌렀을 때 선택범위가 칠해짐</td><td>반영(호버 기준, 터치는 미구현)</td></tr>
+<tr><td>9</td><td>엔진 수정</td><td>반영 + 테스트. 데이터 91곳도 정리</td></tr>
+<tr><td>11</td><td>기존 연녹 테두리 재사용</td><td>반영</td></tr>
+<tr><td>12</td><td>관평 특성 A/B 설명 요청</td><td class="warn">선택 대기(아래)</td></tr>
+<tr><td>13</td><td>맵의 단을 옮김</td><td>반영 + 좌석 테스트</td></tr>
+<tr><td>14</td><td>안 B</td><td>반영</td></tr>
+<tr><td>15</td><td>제갈량은 줄거리상 필요하면 유지, 시민 구성은 봐야 함</td><td>제갈량 유지(27v). 시민 구성은 아래 표로 검토 요청</td></tr>
+<tr><td>16</td><td>(b) 나룻배 출구로 직접 찾아감</td><td>반영</td></tr></table>
+<div class="q"><b>선택 필요</b><br>① 관평 특성 — <b>A</b> 기습(이동한 칸×명중률 +3%p) · 추살(병력 절반 이하 대상 반드시 치명타) · 원시(원거리 사거리 +2) / <b>B</b> 십자사격(선택한 적과 상하좌우 적을 쏘는 병법) · 기습 · 결사(병력 절반 이하면 주는 피해 +50%). 현재는 옛 특성(기습·결사·추살) 그대로이고 테스트상 문제는 없음.<br>
+② 4번 글자 이미지: codex 이미지 생성이 <b>11월 29일 10:49 이후</b>에야 풀립니다. (a) 그때까지 기다림(추천) (b) 다른 생성 수단을 지정 — 폰트를 이미지로 굽는 방식은 쓰지 않습니다.<br>
+③ 15번 시민 대사 검토(아래 표).</div></section>
+
+<section><h2>1. 하비 전투 <span class="st ok">반영</span><span class="st warn">AI 진입 미확인</span></h2>
+<ul><li>북서·남동문 개방과 앞뒤 wait 삭제(남서문만 열림). 조조군 이동 컷신 삭제 — 조인 "유비군을 구해라!", 하후연 "우리도 들어가자!"로 끝남. 여포 문 견제 보병 8기는 SW를 바라봄. 조조군은 <code>assault</code> 유지. fullstory 갱신.</li>
+<li>난이도 <code>_balance</code>(10시드): 전 승리 0/10·평균 2.5라운드 → 후 0/10·2.1라운드. 승률은 원래부터 0이라 이번 수정과 무관.</li>
+<li class="warn">캡처로 조조군이 성 밖 줄에 선 것만 확인했고, 닫혔던 문 대신 열린 남서문으로 길을 찾아 들어오는지·첫 턴에 유비를 밀어내지 않는지는 검증하지 못했습니다. 승낙하시면 이어서 확인합니다.</li></ul>
+<div class="pair"><figure><a href="img/1-b16-opening-before.png"><img src="img/1-b16-opening-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/1-b16-opening-after.png"><img src="img/1-b16-opening-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>2. 아군 클릭 시 공격 범위 <span class="st ok">반영</span></h2>
+<p>이동 단계·메뉴 단계에서 지금 자리(이동 후엔 새 자리)에서 닿는 칸을 붉은 외곽선으로 표시. 파랑=이동 칸. 테스트 <code>TestRangeBorderDuringOrder</code> 통과.</p>
+<div class="pair"><figure><a href="img/02-order-move-before.png"><img src="img/02-order-move-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/02-order-move-after.png"><img src="img/02-order-move-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div><div class="pair"><figure><a href="img/02-order-menu-before.png"><img src="img/02-order-menu-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/02-order-menu-after.png"><img src="img/02-order-menu-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>3. 17장 관우·장비 <span class="st ok">반영</span></h2>
+<p>관우 [3,5], 장비 [2,5]. 확대해서 반투명이 사라진 것을 확인.</p><div class="pair"><figure><a href="img/3-c17-h24-before.png"><img src="img/3-c17-h24-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/3-c17-h24-after.png"><img src="img/3-c17-h24-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>4. 붓글씨 글자 이미지 <span class="st bad">미완</span></h2>
+<p>이미지 생성 한도로 글리프 에셋이 없어 화면은 그대로입니다. 끝낸 것: 글자 집합 확정, 그리기 helper <code>glyph.go</code>와 테스트.</p>
+<table><tr><th>구분</th><th>글자</th></tr>
+<tr><td>숫자·기호·영문(20)</td><td>0~9 · + - % ! : · E X P M H</td></tr>
+<tr><td>한글(54)</td><td>제 턴 치 명 막 음 상 태 회 복 학 습 이 동 력 + 상태 라벨 38자(감 거 격 경 계 고 공 교 기 독 란 략 러 리 물 박 반 발 방 보 봉 사 소 속 수 순 신 약 어 정 중 찔 책 팔 피 필 해 혼 화)</td></tr>
+<tr><td>폰트 유지</td><td>스킬 이름(79개)·특성 이름(210개)은 가변 데이터라 기존 폰트(원하면 2차로 이미지화, 시트 약 6장 추가)</td></tr></table>
+<p class="warn">주의: <code>TestGlyphAtlasCoversScreenText</code>는 에셋이 없어 지금 실패합니다. 에셋이 생기면 통과하도록 만든 테스트이고 이번 작업과 별개로 트리에 실패가 하나 남아 있습니다. 원하시면 에셋 전까지 skip 처리하겠습니다.</p></section>
+
+<section><h2>5. 방천화극 <span class="st ok">반영</span></h2>
+<p>퇴각 연쇄 추가 공격 계수 1.0→0.5(첫 일반 공격 100%). 설명문·문서 갱신. <code>TestRetreatSweepCoefficient</code>: 계수 1일 때 대비 0.5일 때 추가 공격 피해가 절반(±10%) 통과. <code>core</code> 패키지 전체 통과(84.9s).</p></section>
+
+<section><h2>6. 병법 행 선택 범위 <span class="st ok">반영</span><span class="st warn">터치 미구현</span></h2>
+<p>병법 행(아이콘·글씨 같은 영역)에 호버하면 그 병법의 선택 범위를 옅은 적색으로 칠함. 자기 대상은 자기 칸. MP 모자란(회색) 행은 칠하지 않음. 터치 입력 경로는 따로 만들지 않았습니다. 낙석·탁류 두 병법으로 확인.</p>
+<div class="pair"><figure><a href="img/06-skill-hover-nakseok-before.png"><img src="img/06-skill-hover-nakseok-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/06-skill-hover-nakseok-after.png"><img src="img/06-skill-hover-nakseok-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div><div class="pair"><figure><a href="img/06-skill-hover-takryu-before.png"><img src="img/06-skill-hover-takryu-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/06-skill-hover-takryu-after.png"><img src="img/06-skill-hover-takryu-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>7. 심공 회복 표시 <span class="st ok">반영</span></h2>
+<p>회복 이벤트(<code>heal</code>)를 내도록 수정, 반격 타이밍 분리. 피해 22 → 초록 "+2". 풀 HP면 표시 없음, 최대 HP 상한 적용(테스트).</p>
+<figure><a href="img/07-leech-heal-after.png"><img src="img/07-leech-heal-after.png" loading="lazy"></a><figcaption>프레임 시트(피해 후 +2가 올라옴)</figcaption></figure></section>
+
+<section><h2>8. 돌파-반격 순서 <span class="st ok">반영</span></h2>
+<p>반격자의 밀침이 반격 스윙 뒤에 재생. 전: 반격 전(f130)에 이미 밀려남 → 후: 반격 스윙(f140) 뒤 f150~170에 밀림.</p>
+<div class="pair"><figure><a href="img/08-counter-push-before.png"><img src="img/08-counter-push-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/08-counter-push-after.png"><img src="img/08-counter-push-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>9. 퇴장 규칙 <span class="st ok">반영</span><span class="st warn">전령 재현 안 됨</span></h2>
+<ul><li>엔진: <code>Exit</code> 뒤 맵 정면(SE·SW) 가장자리까지 경로를 찾아 걸어 나감. 퇴장 303건 중 141건을 엔진이 보정. 뒤쪽 바깥으로 가던 데이터 91곳 정리. 테스트 <code>TestSceneExitsWalkToFrontEdge</code> 통과.</li>
+<li>번아의 실제 원인은 백스텝이 아니라 마지막 걸음이 NE라 맵 한가운데서 등을 보이며 사라진 것. 이제 SW(정면)로 걸어 나감.</li>
+<li class="warn">여남군청 전령(관도대전 보고)은 수정 전에도 규칙을 만족해 전후 화면이 같습니다. 보신 백스텝이 다른 장면일 수 있어 장면을 알려 주시면 확인하겠습니다.</li>
+<li>강하 회의(c22)의 관우·고순 퇴장은 맵 동쪽 길로 나가도록 고쳤습니다(북쪽 나루는 정면 경로가 없음).</li></ul>
+<figure><a href="img/09-banya-exit-sheet.png"><img src="img/09-banya-exit-sheet.png" loading="lazy"></a><figcaption>번아 퇴장: 위 전 / 아래 후</figcaption></figure><figure><a href="img/09-runan-messenger-sheet.png"><img src="img/09-runan-messenger-sheet.png" loading="lazy"></a><figcaption>여남 전령(전후 동일)</figcaption></figure></section>
+
+<section><h2>10. 19장 업 말풍선 <span class="st ok">반영</span></h2>
+<p>이름 길이 대신 해시로 시작·간격을 정하고, 다른 풍선과 겹치면 0.3초씩 미룸. 해시만으론 11개 지역에서 겹침이 남아 겹침 회피를 더함. 테스트 <code>TestExploreChatterBubblesDoNotOverlap</code>: 수정 전 11곳 실패(기록: <code>10-chatter-test-before-fail.txt</code>) → 후 통과.</p>
+<div class="pair"><figure><a href="img/10-ye-street-chatter-before.png"><img src="img/10-ye-street-chatter-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/10-ye-street-chatter-after.png"><img src="img/10-ye-street-chatter-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>11. 도구점 능력치 상승 아군 <span class="st ok">반영</span></h2>
+<p>구매 탭에서 장비를 고르면 "사면 오르는 동료" 줄에 연녹 테두리 초상과 이유(순발 +11). 없으면 문구 표시. 표 영역이 줄 높이(68px)만큼 줄어듭니다(선택 안 했을 때도 자리 유지).</p>
+<div class="pair"><figure><a href="img/11-shop-gain-before.png"><img src="img/11-shop-gain-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/11-shop-gain-after.png"><img src="img/11-shop-gain-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div></section>
+
+<section><h2>12. 여남전투 <span class="st ok">반영</span><span class="st warn">관평 특성 대기</span></h2>
+<ul><li>장비 (18,21)·공도 (16,21)로 내리고, 하후연(궁기병 명시)과 기병이 북쪽 통로에서 달려와 일기토 시작. 합 수 불변.</li>
+<li>진도: 인물·스토리·NPC·장면·테스트·문서에서 삭제(초상 파일은 유지). 출전 명단에서도 빠짐.</li>
+<li>관평: 궁기병·단궁으로 변경(특성은 선택 대기). 진진 지력 75. 허저 민첩·운 95.</li>
+<li class="warn">장합 일기토는 여남(B21)에 없고 19장 연주 전투에 있어서 그쪽에 경기병 모습을 지정했습니다. 해석이 맞는지 확인 부탁드립니다.</li>
+<li>B21 난이도는 전후 모두 승리 0/10(원래부터 0). 허저가 나오는 다른 판: stage18, stage25.</li></ul>
+<div class="pair"><figure><a href="img/12-b21-brothers-before.png"><img src="img/12-b21-brothers-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/12-b21-brothers-after.png"><img src="img/12-b21-brothers-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div><figure><a href="img/12-b21-brothers-after-run-and-duel.png"><img src="img/12-b21-brothers-after-run-and-duel.png" loading="lazy"></a><figcaption>하후연이 달려와 일기토가 시작되는 장면</figcaption></figure></section>
+
+<section><h2>13. 양양 의자(좌석) <span class="st ok">반영</span></h2>
+<ul><li><code>S_council</code>·<code>S_mansion</code>의 단을 앉는 칸 중앙으로 옮김(12개 장면 일괄). 도겸·유비·유기 <code>Pose: sit</code> 추가.</li>
+<li>테스트 <code>scene_seats_test.go</code>: 수정 전 위반 17건 → 0건. 빈 좌석 16곳은 로그만.</li></ul>
+<div class="pair"><figure><a href="img/13-c22-banquet-before.png"><img src="img/13-c22-banquet-before.png" loading="lazy"></a><figcaption>전: 단과 떨어진 유표</figcaption></figure><figure><a href="img/13-c22-banquet-after.png"><img src="img/13-c22-banquet-after.png" loading="lazy"></a><figcaption>후: 단에 앉은 유표</figcaption></figure></div></section>
+
+<section><h2>14. 유표 후사 대화(안 B) <span class="st ok">반영</span></h2>
+<p>story22·장면·fullstory 반영, 장비·관우 반응 노드 2개 추가. 이음매로 s207에 "그건 그렇고," 추가, 채모의 속내 줄은 삭제. 장비 줄은 새로 씀: "저 양반들 속닥거리는 게 영 수상쩍구먼유……".</p>
+<p class="warn">참고: 앞 장면(관청 논쟁)은 유비 수용 문제였고 후사 이야기는 없어서 "아까 관청이 소란스러웠지"는 약간 비약입니다. 확정안이라 그대로 두었습니다.</p>
+<figure><a href="img/14-c22-banquet-after.png"><img src="img/14-c22-banquet-after.png" loading="lazy"></a><figcaption>연회 구간 프레임 시트</figcaption></figure></section>
+
+<section><h2>15. 양양성 맵·NPC <span class="st ok">반영</span><span class="st warn">시민 검토</span></h2>
+<ul><li>관청 (24,13)·저택 (35,13)를 북쪽 중앙 길 끝으로, 민가 9채 추가, 남쪽 성벽에 붙은 집 4채 삭제. 성벽 근접 규칙을 <code>scenemap.Check</code>에 추가(양양 위반 4→0).</li>
+<li>미축 삭제(22·23·25·27v). 제갈량은 유지. 새 시민 NPC가 5개 장면에 대사를 달리하며 등장.</li>
+<li class="warn">새 규칙이 다른 맵 7곳에서도 걸립니다(S_xiapi 4건, S_xinye 5건, S_jiangling 2건, S_xudu 2건, S_checkpoint(2) 망루, S_ye 1건). 허용 이유는 두지 않았고 고치지 않았습니다. 집이 성벽에 붙은 곳은 양양과 같은 문제로 보이니 고칠지 정해 주세요. <code>go test ./internal/scenemap</code>는 이 규칙 때문에 해당 맵 검사에서 걸리는지 확인이 필요합니다(양양 자체는 통과).</li>
+<li class="warn">새 건물 입구 출구는 테스트(<code>TestExploreExitPlatesOnBuildings</code>)로만 확인했고 화면에서 열어 보지는 않았습니다.</li></ul>
+<div class="pair"><figure><a href="img/15-xiangyang-overview-before.png"><img src="img/15-xiangyang-overview-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/15-xiangyang-overview-after.png"><img src="img/15-xiangyang-overview-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div><div class="pair"><figure><a href="img/15-xiangyang-street-before.png"><img src="img/15-xiangyang-street-before.png" loading="lazy"></a><figcaption>전</figcaption></figure><figure><a href="img/15-xiangyang-street-after.png"><img src="img/15-xiangyang-street-after.png" loading="lazy"></a><figcaption>후</figcaption></figure></div>
+<h3>시민 NPC 시안 (검토 요청)</h3><table>
+<tr><th>사람</th><th>위치</th><th>22장</th><th>23장</th><th>24장</th><th>25장</th><th>27v</th></tr>
+<tr><td>짐꾼</td><td>(30,21)</td><td>북쪽에서 손님이 오셨다고 관청 앞에 짐수레가 줄을 섰소. 오늘은 품삯이 괜찮겠구먼.</td><td>강하 뱃길이 열렸다니 쌀섬이 또 밀려오겠소.</td><td>연회에 올릴 고기와 술동이를 관청까지 날랐소.</td><td>저택으로 약재 짐이 연달아 들어가오. 좋은 일은 아닌 듯하오.</td><td>조조 군이 내려온다 해서 피난 짐을 지고 사흘을 걸었소.</td></tr>
+<tr><td>소금 장수</td><td>(42,22)</td><td>도적이 길을 막아 소금값이 올랐소.</td><td>뱃길이 열렸으니 소금값이 내리겠소.</td><td>조인이 물러가니 소금 배가 눈치만 봅디다.</td><td>형주목 병세 소문에 소금 사재기가 시작됐소.</td><td>소금 배는 이제 누구에게 세를 내야 하는지 모르겠소.</td></tr>
+<tr><td>빨래하는 아낙#1</td><td>(12,12)</td><td>손님이 왔다던데 / 물이 맑아 빨래가 잘 되네</td><td>강하 도적이 잡혔다지</td><td>관청 잔치에 쓸 천이라네</td><td>형주목께서 편찮으시대</td><td>이제 마음 놓고 빨래하네</td></tr>
+<tr><td>아이#1·#2</td><td>(16,19),(21,19)</td><td>북쪽 손님이 왔대 / 수염 긴 아저씨 봤어?</td><td>도적이 잡혔대 / 난 장수가 될 거야</td><td>잔치다 잔치 / 나도 한 점 얻어먹을까</td><td>칼 찬 아저씨가 많아 / 쉿, 조용히 해</td><td>조조 군사 갔대 / 큰 배가 들어왔어</td></tr>
+<tr><td>대장장이</td><td>(12,29)</td><td>군사가 늘면 대장간도 바빠지는 법이오.</td><td>도적들이 버린 칼은 녹이 슬어 쓸 게 없소.</td><td>화살촉 이천 개를 사흘에 만들었소.</td><td>채 장군 쪽에서 창과 칼을 곱절로 주문했소.</td><td>두고 간 갑옷과 창을 녹여 농기구를 만들라 하시오.</td></tr>
+<tr><td>젊은 선비</td><td>(20,27)</td><td>선비들이 강릉 쪽과 양양 쪽으로 갈려 서로 못마땅해한다오.</td><td>강하가 평정되니 강릉은 남쪽 땅부터, 양양은 북쪽 방비가 먼저라 하오.</td><td>조인을 물리치고 나니 강릉은 몸을 사리자 하오.</td><td>강릉 쪽은 큰 공자를, 양양 쪽은 채씨 쪽을 바라본다오.</td><td>조조가 남하할 때 강릉은 항복을, 양양은 싸우자 했다지요.</td></tr>
+<tr><td>주점 심부름꾼#1</td><td>(30,29)</td><td>술 두 동이 더!</td><td>강하 소식 들었어?</td><td>연회 술이 모자라네</td><td>오늘은 손님이 뜸하네</td><td>주점 문을 다시 열었소</td></tr>
+<tr><td>의원</td><td>25장만</td><td colspan="5">기존 대사 유지, 저택 곁으로 이동</td></tr></table>
+<p class="mut">일부 대사는 표에서 줄였습니다. 전체 문구는 <code>explore22~27v_xiangyang</code> 파일에 있습니다. 27v는 파일의 실제 시점(조인이 물러간 뒤)에 맞췄습니다.</p></section>
+
+<section><h2>16. 강하 진지 <span class="st ok">반영</span></h2>
+<ul><li>새 맵 <code>S_jiangxia_camp</code>(64×52): 북쪽 본진, 강(8칸 폭), 북·남 나루와 배, 남쪽 별동대 진지. 기존 <code>S_luzhi_camp</code>와 다른 장 맵은 그대로.</li>
+<li>(b)안: 북쪽 나루 "나룻배"가 남쪽 구역으로, 남쪽 나루 "나룻배"가 본진으로 연결. 남쪽에 관우·고순. 회의 뒤 새 대사 두 줄(관우 "형님, 별동대는 채비를 마쳤습니다. 강 건너에서 신호만 기다리겠습니다." / 고순 "배는 세 번이면 군사가 다 건너오. 별동대는 날이 밝는 대로 움직이겠소.").</li>
+<li>회의 장면에서 관우·고순은 나루에서 걸어 들어오고, 퇴장은 동쪽 길(위 9번 규칙).</li>
+<li class="warn">남쪽→북쪽 나룻배는 화면 확인 못 함(테스트만). 북쪽에서는 강 건너 관우·고순이 보이지 않음(구역별로 사람을 그림). 나룻배 그림은 <code>boat_u</code>를 나루 사이에 놓은 것이라 다리처럼도 보임. 갈대 소품이 없어 밭·덤불로 대신함.</li></ul>
+<figure><a href="img/16-jiangxia-guanyu-gaoshun-before.png"><img src="img/16-jiangxia-guanyu-gaoshun-before.png" loading="lazy"></a><figcaption>전: 옛 맵 — 강 없이 본진 막사에 서 있던 관우·고순</figcaption></figure>
+<figure><a href="img/16-jiangxia-overview-after.png"><img src="img/16-jiangxia-overview-after.png" loading="lazy"></a><figcaption>후: 새 맵 전경</figcaption></figure>
+<div class="pair"><figure><a href="img/16-jiangxia-north-after.png"><img src="img/16-jiangxia-north-after.png" loading="lazy"></a><figcaption>북쪽 기슭 탐험 화면</figcaption></figure><figure><a href="img/16-jiangxia-south-after.png"><img src="img/16-jiangxia-south-after.png" loading="lazy"></a><figcaption>나룻배로 건넌 뒤 남쪽 기슭(관우·고순)</figcaption></figure></div>
+<figure><a href="img/16-jiangxia-meeting-after.png"><img src="img/16-jiangxia-meeting-after.png" loading="lazy"></a><figcaption>회의 장면: 관우가 나루에서 걸어 들어옴</figcaption></figure></section>
+
+<section><h2>16-2. 강하 진지 수정 <span class="st ok">반영</span></h2><ul><li>밭·덤불 제거, 곡식 자루 2→1개. 강 폭 8→36칸(맵 64×80), 나루 간 거리 약 31칸이라 데스크톱·폰 줌 1~2 어느 시야에서도 맞은편이 화면 밖(계산 확인).</li><li>양쪽 나루터 곁 배가 각각 "나룻배" 출구. 북→남, 남→북 모두 실제로 건너 확인. 중간 배·다리 모양 제거.</li><li style="color:var(--warn)">줌 1 캡처는 못 찍고 계산으로만 확인. 폰 크기 캡처는 북쪽 나루·남쪽 기슭 두 장만.</li></ul><figure><a href="img/16b-overview.png"><img src="img/16b-overview.png" loading="lazy"></a><figcaption>전경</figcaption></figure><div class="pair"><figure><a href="img/16b-north-pier-desktop.png"><img src="img/16b-north-pier-desktop.png" loading="lazy"></a><figcaption>북쪽 나루(데스크톱) — 맞은편 안 보임</figcaption></figure><figure><a href="img/16b-north-pier-phone.png"><img src="img/16b-north-pier-phone.png" loading="lazy"></a><figcaption>북쪽 나루(폰)</figcaption></figure></div><div class="pair"><figure><a href="img/16b-ferry-arrive-south-desktop.png"><img src="img/16b-ferry-arrive-south-desktop.png" loading="lazy"></a><figcaption>배를 누른 직후 남쪽 나루 도착</figcaption></figure><figure><a href="img/16b-ferry-return-north-desktop.png"><img src="img/16b-ferry-return-north-desktop.png" loading="lazy"></a><figcaption>남쪽에서 배를 눌러 북쪽 복귀</figcaption></figure></div><figure><a href="img/16b-south-bank-no-fields-phone.png"><img src="img/16b-south-bank-no-fields-phone.png" loading="lazy"></a><figcaption>남쪽 기슭(밭 없음, 폰)</figcaption></figure></section>
+
+<section><h2>검증과 주의</h2>
+<ul><li>core 전체, gui(Scene·Explore·Shop·Range·SkillRange·Split·GlyphLayout 묶음), scenemap, duel 통과. content·Officer/Campaign 계열 통과. gui 전체와 <code>go vet</code>·전체 스위트는 돌리지 않았습니다(8GiB 맥).</li>
+<li class="bad">실패하는 테스트: <code>TestGlyphAtlasCoversScreenText</code>(에셋 없음, 4번 참조).</li>
+<li>캡처 전용 임시 데모 <code>internal/gui/uidemo_zz_batch.go</code>가 남아 있습니다(필요 없으면 지움). 프로젝트 루트의 빈 <code>ver5/go</code> 파일은 이번 작업이 만든 것이 아닙니다.</li>
+<li>다른 세션 변경과 같은 파일(ch22.json 등)을 함께 고쳤고 stash·커밋은 하지 않았습니다.</li></ul></section>
+</main></body></html>

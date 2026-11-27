@@ -1,0 +1,184 @@
+{
+ "cottage_1": {
+  "size": [
+   99,
+   119
+  ],
+  "pivot": [
+   52,
+   102
+  ],
+  "footprint": [
+   4,
+   4
+  ]
+ },
+ "cottage_2": {
+  "size": [
+   96,
+   126
+  ],
+  "pivot": [
+   39,
+   103
+  ],
+  "footprint": [
+   4,
+   4
+  ]
+ },
+ "cottage_3": {
+  "size": [
+   105,
+   108
+  ],
+  "pivot": [
+   55,
+   80
+  ],
+  "footprint": [
+   4,
+   4
+  ]
+ },
+ "cottage_4": {
+  "size": [
+   104,
+   109
+  ],
+  "pivot": [
+   53,
+   87
+  ],
+  "footprint": [
+   4,
+   4
+  ]
+ },
+ "smithy": {
+  "size": [
+   115,
+   123
+  ],
+  "pivot": [
+   60,
+   97
+  ],
+  "footprint": [
+   6,
+   4
+  ]
+ },
+ "tavern": {
+  "size": [
+   133,
+   122
+  ],
+  "pivot": [
+   66,
+   87
+  ],
+  "footprint": [
+   6,
+   4
+  ]
+ },
+ "shop": {
+  "size": [
+   116,
+   116
+  ],
+  "pivot": [
+   57,
+   87
+  ],
+  "footprint": [
+   6,
+   4
+  ]
+ },
+ "yamen": {
+  "size": [
+   160,
+   128
+  ],
+  "pivot": [
+   77,
+   89
+  ],
+  "footprint": [
+   8,
+   3
+  ]
+ },
+ "mansion_1": {
+  "size": [
+   152,
+   118
+  ],
+  "pivot": [
+   76,
+   80
+  ],
+  "footprint": [
+   6,
+   4
+  ]
+ },
+ "mansion_2": {
+  "size": [
+   143,
+   116
+  ],
+  "pivot": [
+   76,
+   84
+  ],
+  "footprint": [
+   6,
+   4
+  ]
+ },
+ "mansion_3": {
+  "size": [
+   168,
+   136
+  ],
+  "pivot": [
+   84,
+   94
+  ],
+  "footprint": [
+   8,
+   3
+  ]
+ },
+ "mansion_4": {
+  "size": [
+   113,
+   107
+  ],
+  "pivot": [
+   60,
+   77
+  ],
+  "footprint": [
+   4,
+   4
+  ]
+ },
+ "field_paddy": {
+  "size": [
+   118,
+   63
+  ],
+  "pivot": [
+   59,
+   33
+  ],
+  "footprint": [
+   4,
+   4
+  ]
+ }
+}
