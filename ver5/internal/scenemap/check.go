@@ -14,7 +14,8 @@ type Problem struct {
 
 // Check finds what the rules draw without complaint but a map should not have: a standing object on a wall line
 // (in a gate's way), the same object twice at one point, and buildings and other wide objects (scene.json
-// footprints at least a tile wide and deep) whose footprints overlap. Small objects may stand close together and
+// footprints at least a tile wide and deep) whose footprints overlap or that stand within two tiles of a wall in front
+// of them (greater u or v, seen over the object's own picture). Small objects may stand close together and
 // thin ones (a wall, a curtain) along others: those are left alone.
 func Check(m *Map, c *Catalog) []Problem {
 	type stand struct {
@@ -46,6 +47,18 @@ func Check(m *Map, c *Catalog) []Problem {
 		for _, b := range stands[x+1:] {
 			if a.wide && b.wide && overlap(a.u0, a.u1, b.u0, b.u1) > 1e-6 && overlap(a.v0, a.v1, b.v0, b.v1) > 1e-6 {
 				out = append(out, Problem{ob.U, ob.V, fmt.Sprintf("%s와 %s가 겹침", ob.Name, m.Objects[b.i].Name)})
+			}
+		}
+		if a.wide {
+			for _, line := range m.Walls {
+				lu0, lu1 := float64(min(line.From[0], line.To[0])), float64(max(line.From[0], line.To[0])+1)
+				lv0, lv1 := float64(min(line.From[1], line.To[1])), float64(max(line.From[1], line.To[1])+1)
+				const near = 2
+				if line.From[1] == line.To[1] && a.v0 < lv1 && lv0-a.v1 <= near && overlap(a.u0, a.u1, lu0, lu1) > 1e-6 ||
+					line.From[0] == line.To[0] && a.u0 < lu1 && lu0-a.u1 <= near && overlap(a.v0, a.v1, lv0, lv1) > 1e-6 {
+					out = append(out, Problem{ob.U, ob.V, fmt.Sprintf("%s가 앞쪽 성벽과 2칸 이내", ob.Name)})
+					break
+				}
 			}
 		}
 		// on a wall line: the object's own small tile (where it stands) is one of the line's

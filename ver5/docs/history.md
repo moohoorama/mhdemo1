@@ -1,3 +1,90 @@
+## 2026-11-28 타이틀 영상: 일기토 뒷걸음·템포, 구출 관우, 서주·적벽 다시 짬, 칸 크기 바로잡음
+
+- `internal/gui/scene.go`: 곧은 한 번 이동(`Ease`)의 뒷걸음(`Back`)이 몸을 먼저 돌려 늘 등을 보이던 것을 고침, 뒷걸음 뒤 보통 걸음은 다시 앞을 봄; 타이틀 영상은 카메라가 목표점에 바로 붙음(늦게 따라가 관도 화면이 대열로 늦게 돌아오고 작은 방이 원 가장자리로 밀리던 것).
+- `internal/gui/player.go`, `scene_strike.go`, `internal/scenes/scenes.go`: `Tempo` — 때리는 동작과 받는 쪽 동작을 배속으로; 일기토는 2배에 합 사이 쉼 없앰.
+- `internal/gui/scene_arrow.go`: 불화살 연기 꼬리(타원) 뺌.
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 화면 칸 크기를 64×32로 바로잡음(32×16으로 계산해 원이 두 배 넓은 줄 알았음); 등장해야 할 이름 있는 인물이 끝내 안 나오면 검사 실패(구출의 관우가 진입 경로가 막혀 빠지던 것); 서주는 북서쪽에서 백성을 베고 계속 쫓던 조조군을 동쪽에서 온 관우가 한 칼에 베고, 이어 3~4합씩, 유비·장비 합류, 남서쪽 조조군은 원 밖에서 들어옴, 유비군이 보일 즈음 닫힘, 화면 오른쪽으로 2칸; 관도는 기병과 창병이 한창 싸울 때 닫음; 적벽은 배로 강을 건너 나루에 내리는 손권군부터, 한 줄 걸러 달려 겹치지 않음 — 사용자 피드백.
+- `tools/title_reel/turn_map.py`, `assets/graphics/maps/S_title_chibi_shore.json`, `assets/graphics/index.json`: 강하 나루를 반 바퀴 돌린 적벽 진영(강·나루가 남서쪽).
+
+## 2026-11-27 타이틀 영상: 관도 밤 불화살, 적벽 추격 다시 짬, 회피 방향·삼영전·서주·구출 고침
+
+- `internal/gui/scene_arrow.go`, `internal/gui/field_night.go`, `internal/gui/scene.go`, `internal/scenes/scenes.go`: `FireArrow` 불화살(촉의 불꽃·연기 꼬리·주변 빛, 꽂힌 자리에서 잠시 탐), `Time` `deepnight`(짙은 어둠, 사람은 횃불 없이 불빛 곁만 보임), `blaze` 효과(화로의 큰 불빛) — 관도를 밤으로.
+- `tools/title_reel/guandu_camp.py`, `assets/graphics/maps/S_title_guandu_field.json`: 진영 녹각·목책·망루와 화로 둘을 맵 오브젝트로(장면 소품은 밤 어둠 위에 그려져 밝게 뜸), 목책은 원 가장자리 쪽 양옆에만.
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 일기토 회피는 피하는 쪽이 상대를 보고 뒷걸음, 따라붙는 쪽은 앞을 봄(예전엔 따라붙는 쪽이 등을 보임); 삼영전은 여포가 우세; 서주에 유비·장비가 실제로 나옴(등장 전 경로 계산이 실패해 빠지던 것), 남서쪽 조조군이 허공을 찌르던 것 대신 백성을 쫓다 관우에게 몰림; 구출은 황건적이 포위를 좁히고 유관장이 달려와 베고 유비가 다가가 인사받음; 헌제 맞이를 백문루 앞으로; 관도는 몇 기가 둘째 줄에 닿을 즈음 닫음; 적벽은 줄마다 달아나는 조조군을 화면이 북서로 따라가고 손권군(조조군과 비슷한 수)이 맨 뒤부터 베거나 둘러싸며 남서·북동에서도 옴, 진영 곳곳 불; 조조 도주 컷 뺌 — 사용자 피드백.
+- `assets/graphics/maps/S_title_jiangxia_harbor.json`: 추격을 따라가게 사방 66칸으로 넓힘.
+
+## 2026-11-27 타이틀 영상: 구출·삼영전·헌제 맞이 추가, 관도·서주·적벽·계교 다시 짬
+
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 장세평·소쌍 구출, 호뢰관 삼영전, 헌제 맞이 컷 추가; 관도는 화면이 기병 돌격을 따라간 뒤 대열로 돌아오고 대열은 합친 자리를 지키며 진영 입구(녹각·울타리·망루)를 둠, 기병은 닿는 대로 2~3합 뒤 돌파; 서주는 들판의 학살과 관우 쪽으로 몰리는 조조군; 적벽은 서 있던 병사 정리; 계교 피하기는 마주 본 채 뒷걸음; 진군 유비 부대 6×6 경보병과 다른 제후 상급 병종, 유비 부대가 보이면 닫음; 사람을 따라다니는 소품 없앰; 정해진 합수의 `fight`·일기토 `duel`; 검사가 걸음·밀려남을 시간 순으로 계산 — 사용자 피드백.
+- `tools/title_reel/cliff_map.py`, `assets/graphics/maps/S_title_gyeqiao.json`, `S_title_guandu_field.json`, `S_title_jiangxia_harbor.json`(넓힘), `assets/graphics/index.json`: 서에서 북으로 곧은 절벽의 계교 들판, 넓힌 관도 들판.
+
+## 2026-11-27 장면 맵 화면 크기 렌더·타이틀 난전 다시 짬
+
+- `internal/gui/scene.go` `drawScene`: 장면 맵도 전투 맵처럼 `prepareRender`로 화면 크기 캔버스에 보이는 것만 그리고 확대 없이 옮김 — 맵 전체 크기 캔버스(넓힌 평원 레이어당 361MB)가 메모리와 속도를 잡아먹던 것. 전후 픽셀 비교(장면 맵 60종·타이틀 컷).
+- `internal/gui/scene.go` 소품 그리기: 사람을 따라다니는 소품(배) 위에 그 사람을 다시 그림 — 배에 탄 병사가 가려지던 것.
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 칼이 닿는 순간의 거리 검사, 추격은 도착하는 칸에서 벰, 약탈 아낙은 원 밖에서 곧게 쫓아온 황건적이 등 뒤에서 벰, 나루터·서주·관도를 차례식 난전으로(아무도 서 있지 않음), 관도는 궁병이 원 밖까지 빠지고 창병 네 줄이 메운 대열을 기병이 줄마다 뚫음(순간이동하던 `Through` 뺌) — 사용자 피드백.
+
+## 2026-11-27 타이틀 평원 맵 크기 줄임
+
+- `tools/title_reel/extend_map.py`, `assets/graphics/maps/S_title_long_field.json`: 165칸 긴 들판을 타이틀이 쓰는 줄·칸(v −30~92, u −50~62)만 남기고 자름 — 장면은 맵 전체를 한 장에 그려서, 넓힌 평원 한 장이 13248×6816px(레이어당 361MB, 텍스처 최대 8192 초과)이 되어 도주 컷이 느리고 메모리를 3GiB 넘게 썼음. 7840×4112px(129MB)로 줄고 캡처 기준 400프레임 20초 → 10초.
+
+## 2026-11-27 타이틀 영상 4차: 진군 줄 맞춤·서주 고을 난전·관도 궁병 교대
+
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 진군 병사의 자리·출발 흩어짐을 줄임, 서주를 성벽 안 큰 고을(`S_title_xuzhou_town`)의 곳곳 약탈·학살과 진행 방향대로 베고 지나가는 관우·합류하는 유비군으로 다시 짬, 관도를 녹각 앞 궁병의 짝수 자리 후퇴·옆걸음과 그 틈으로 오르는 창병의 교대, 기병 충돌과 둘째 줄 난전으로 다시 짬, 관군과 황건적의 싸움 컷을 뺌, 같은 편끼리는 도망길에서 비켜 지나가고 추격 줄은 피함 — 사용자 피드백.
+- `assets/graphics/maps/S_title_xuzhou_town.json`, `assets/graphics/index.json`: 서주 고을의 타이틀용 넓힌 사본.
+
+## 2026-11-27 타이틀 영상 3차: 필름 색감·무음·말풍선·화면 밖 그리기 생략·엇갈림 검사
+
+- `internal/gui/title_film.go`, `title_reel.go`: 바랜 색·밝기 흔들림·필름 입자·긁힘·먼지의 옛 필름 효과, 원 오른쪽 끝을 메뉴 왼쪽에, 디버그 빌드의 컷 넘기기 줄 — 사용자 요청(옛 영화 느낌, 특정 장면 전환 버튼).
+- `internal/gui/sound.go`: 타이틀 영상 중 `ui-` 아닌 효과음을 내지 않음 — 회상은 소리 없이 장면으로.
+- `internal/gui/scene.go` `bubble`·`bubbleRect`: 타이틀 영상의 말풍선을 절반 크기로 — 1배율 장면에 맞춤.
+- `internal/gui/scene.go` `drawScene`: 장면 맵 전체 캔버스에서 카메라에 들어올 범위(`DrawBounds`)만 그림, 바꾸기 전과 픽셀 동일 — 큰 타이틀 맵(평원)에서 300프레임 286초 → 18초.
+- `internal/gui/scene_shot.go` `sceneFlash`: 타이틀 영상의 섬광을 30%로 — 치명타 섬광이 원 전체를 하얗게 덮던 것.
+- `internal/gui/scene_melee.go`: `Brawl`이 떨어진 상대에게는 휘두르지 않음 — 허공 칼질 방지.
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 걷는 도중 편이 다른 사람끼리 지나치는지 시간별 검사, 쓰러진 몸 위는 지나가되 선 사람은 돌아가는 길, 궁수는 난전 중 쏘지 않음, 서주 학살·방어를 한 컷(관우 돌입)으로, 나루터는 배로 와서 배를 남기고 북서쪽으로 공격·조조군 흐트러짐, 관도는 낙마 말이 다섯 칸 뒤 옆으로 빠지고 기병 40기가 문을 뚫고 진영 안을 휘저음, 백문루 뒷걸음 미끄러짐 제거와 카메라 위치 — 사용자 피드백.
+
+## 2026-11-27 타이틀 영상 2차: 회상 원·1배율·쓰러짐·난전·검사
+
+- `internal/gui/title_reel.go`: 컷을 1배율로, 무작위 자리의 회상 원(가운데 밝고 바깥으로 어두워짐, 메뉴 왼쪽)에 보이게, 메뉴 쪽 어둠은 옅게 — 사용자 요청(작게, 회상 느낌, 자리 무작위).
+- `internal/scenes/scenes.go`, `internal/gui/scene_melee.go`, `scene.go`, `scene_strike.go`, `player.go`, `field.go`: 단계 `Fall`(피격→탈진→넘어져 누움, 민중은 엎드림)·`Kill`·`Hop`(환호 점프)·`Brawl`(배경 난전)·`Drop`(낙마, 빈 말은 계속 달림)·`End`(도착 후 방향), `pant` 자세, 쓰러진 배역은 남은 길을 걷지 않음 — 회색 사망·제자리 칼질·가만히 선 병사 지적.
+- `internal/gui/scene_arrow.go`: 화살이 떨어진 자리에 꽂혀 남고, 멀리 쏠수록 높게 솟음 — 화살이 어디로 갔는지 모르겠다는 지적.
+- `cmd/_reelgrid`, `tools/title_reel/build.py`, `tools/title_reel/extend_map.py`, `assets/graphics/maps/S_title_*.json`, `assets/graphics/index.json`: 엔진 보행 판정으로 걸음·겹침·칼 거리·원 밖 퇴장·맵 끝을 검사하는 생성기, 길 찾기, 넓힌 타이틀용 맵 사본 — 벽·강 통과, 중간에 사라짐, 맵 끝 노출 지적.
+- `assets/scenes/title/reel.json`: 21컷으로 다시 씀 — 곡식은 들어서 건넴, 기호만 쓰는 말풍선, 진군은 장수 1+8×8 방진 3진, 계교·백문루·관도(궁병→기병 돌격→녹각 난전, 발석차 뺌)·삼고초려 눈·나루터 북서 공격·화용도 관우 북서 배치.
+- `internal/gui/title_reel_test.go`, `docs/presentation-scene.md`: 새 단계와 타이틀 영상 설명 — 문서 동기화.
+
+## 2026-11-27 타이틀 영상 맵: 관도 들판·부서진 선단
+
+- `tools/scene_maps/guandu_field.py`, `assets/graphics/maps/S_guandu_field.json`, `assets/graphics/index.json`: 관도 들판 장면 맵 새로 만듦 — 북동쪽 40칸 들판을 달려오는 원소 기병, 녹각·목책과 문 넷을 지키는 창병, 그 뒤 넓은 맨땅의 궁병 60명을 타이틀 영상에 세우려고(배율 1에서 판 끝이 안 보이게 사방 30칸).
+- `tools/scene_maps/chibi_wreck.py`, `assets/graphics/maps/S_chibi_wreck.json`, `assets/graphics/index.json`: `S_chibi_fleet`의 긴 갑판을 물로 가른 조각 다섯·끊긴 난간·부러진 창과 깃발로 바꾼 맵, 지도 탁자 뺌, 물을 사방 30칸으로 넓힘 — 가운데 긴 갑판이 무엇인지 헷갈린다는 사용자 의견, 가라앉은 배의 잔해로 읽히게.
+- `docs/presentation-scene.md` 장면 맵 표: 두 맵 줄 추가 — 문서 동기화.
+
+## 2026-11-27 타이틀 영상용 화용도·계교 장면 맵
+
+- `tools/scene_maps/huarong_pass.py`, `assets/graphics/maps/S_huarong_pass.json`, `assets/graphics/index.json`: 화용도 — 북동 절벽과 물러선 남서 절벽 사이 25칸 고개 길, 북서 끝 14×14 평지, 양 끝으로 이어지는 흙길 — 타이틀 영상에서 관우가 길을 막는 컷을 줌 1 원 안에서 판 끝 없이 보이려고.
+- `tools/scene_maps/gyeqiao_gully.py`, `assets/graphics/maps/S_gyeqiao_gully.json`, `assets/graphics/index.json`: 계교 골짜기 — 남동 들판(개울·나무다리)에서 막다른 골짜기로, 북동쪽 옆 골짜기로 조운이 들어옴 — 공손찬이 문추에게 쫓기다 조운에게 구해지는 컷.
+- `docs/presentation-scene.md` "장면 맵": 두 맵 설명 — 문서 동기화.
+
+## 2026-11-27 타이틀 배경 영상
+
+- `internal/scenes/reel.go`, `internal/gui/title_reel.go`, `internal/gui/view.go`, `internal/gui/scene.go` `sceneCam`: 타이틀에서 장면 컷 묶음을 대사 없이 자동 재생(컷이 끝나면 머물고 어두워진 뒤 다음 컷, 끝나면 처음으로), 메뉴를 피해 카메라를 오른쪽으로 비켜 겨눔, 타이틀을 떠나면 컷을 닫음 — 메뉴만 있던 타이틀에 이야기 흐름을 보여 주려고.
+- `internal/gui/game.go` `title`·`titleMenu`: 영상 위에 옅은 어둠과 오른쪽으로 짙어지는 그라데이션, 제목과 메뉴를 오른쪽 세로 줄로(이어하기·시작하기·불러오기 순), 초상 셋을 뺌 — 사용자 요청 배치.
+- `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 황건적 곡식 나눔부터 화용도까지 17컷 — 사용자가 고른 장면들(백문루는 내용 미정이라 뺌).
+- `internal/gui/uidemo_titlereel.go`, `internal/gui/title_reel_test.go`: 컷부터 재생하는 데모, 맵·스프라이트·배역·동작 시험 — 컷 확인과 오타 방지.
+- `docs/presentation-scene.md` "타이틀 영상", `docs/presentation-ui.md`: 타이틀 배경·메뉴 설명 — 문서 동기화.
+
+## 2026-11-27 하비 남서문·후원 입장·여남 일기토 배치·진도 삭제·양양 좌석·유표 후사 대화
+
+- `assets/scenario/hero/stage16.json`, `docs/fullstory.md`: 개전 사건에서 북서·남동문 개방과 앞 대기, 조조군 돌입 이동 컷신을 없애고 남서문만 열림. 조인 "유비군을 구해라!"·하후연 "우리도 들어가자!"로 컷신 종료, 북서·남동 견제 보병 8기는 남서를 바라봄 — 조조군은 총공세 AI가 열린 문으로 들어가게 하려고.
+- `assets/scenes/ch17.json`: 후원 비트 c17-h24에서 관우 [3,5]·장비 [2,5]로 멈춤 — 정자에 너무 가까워 반투명해지던 것을 막으려고.
+- `assets/scenario/hero/stage21.json`: 형제 합류 장비 (18,21)·공도 (16,21), 하후연 궁기병(Class horse_archer) (19,12)·기병 (19,11)·(18,12)에서 등장해 공도에게 달려온 뒤 일기토 — 사용자 요청 배치.
+- `assets/scenario/hero/stage19.json`: 조운-장합 일기토 Melee에 장합 light_cavalry — 일기토에서 장합이 기병으로 나오게(해석 확인 필요).
+- `assets/data/characters_story.json`: 진도 삭제, 관평 궁기병·단궁, 진진 지력 75, 허저 민첩·운 95 — 사용자 결정.
+- `assets/scenario/hero/story19.json`, `story20.json`, `story27.json`, `explore20.json`, `explore27_*.json`, `assets/scenes/ch19.json`·`ch20.json`·`ch27.json`·`ascii/c19-mangdang·c20-alarm·c20-reunion.txt`, `internal/core/campaign_content_test.go`, `internal/gui/uidemo_zz_tmp_sortie_deputy.go`, `docs/fullstory.md`, `docs/todo/data.md`, `hero_ver5.md`: 진도의 대사·합류·NPC·장면 배치 제거 — 인물 삭제.
+- `assets/graphics/maps/S_council.json`, `S_mansion.json`: dais를 앉은 사람 자리로 옮김(게임 칸 (1,3)·(4,1)) — 앉은 사람이 단 옆 걸상에 등지고 앉던 어긋남 수정.
+- `assets/scenes/ch13.json`·`ch14.json`·`ch27v.json`: 서주 홀의 도겸·유비, 유기에 Pose sit — 단 위에 선 채 있던 것.
+- `internal/gui/scene_seats_test.go`: 장면·탐험 좌석 규칙 시험(앉은 사람은 좌석 위, 선 사람은 좌석·걸상 위 금지) — 재발 방지.
+- `assets/scenario/hero/story22.json`, `assets/scenes/ch22.json`, `docs/fullstory.md`: 유표의 후사 대화를 안 B(아까 관청에서)로 교체, 노드 c22-s214·s215 추가, 시선 비트 정리 — 후사 이야기의 맥락과 이음.
+
 ## 2026-11-26 논변 시점과 장수 병종 중복 수정
 
 - `assets/data/traits.json`, `assets/data/characters_story.json`: 논변 선행을 혼란으로 정하고 곽가의 논변을 40레벨로 이동 — 병종 계획에서 혼란을 얻은 시점에 논변이 등장.
@@ -4827,3 +4914,9 @@
 - `result/20261126/combat-class-overhaul-consolidated/plan.md`, `index.html`: 전투 계수·병종 특성·진영 구성 대화와 미확정 항목을 통합 — 후속 설계와 구현의 기준으로 활용.
 
 - `docs/logic-traits.md` 4.1절 표 삭제 후 계획 특성 개념·배치 규칙(선행·길이·학습 풀과의 관계)으로 재작성, `tools/scenario_doc/trait_plans.py` 추가, 도독 계획 11개·중보병/근위병 Lv20 부관임명·화계/수계/지계 선행 고유 계획 추가, 중복 검사를 `Learn` 기준으로 정정 — 문서가 데이터와 어긋나지 않게 하고 계획 선행 검사를 통과시키기 위해.
+
+- `tools/scene_maps/jingzhou_towns.py`, `assets/graphics/maps/S_xiangyang.json`: 양양성에서 관청·유표 저택을 북쪽 두 길 끝(hall_u (24,13)·(35,13))으로 옮기고 민가 9채 추가, 남쪽 성벽 2칸 이내 건물 삭제(남쪽 줄은 나무·덤불만), 우물 (14,31) — 구조물이 남쪽에 몰린 문제와 성벽을 뚫고 보이는 집 해소.
+- `internal/scenemap/check.go`, `check_test.go`: 넓은 물체가 앞쪽 성벽과 2칸 이내이면 오류인 규칙과 시험 추가 — 같은 실수 방지.
+- `assets/scenario/hero/explore22_xiangyang.json`, `explore23_xiangyang.json`, `explore24.json`, `explore25_visit.json`, `explore25_back.json`, `explore27v_town.json`: 양양 출구를 새 관청·저택 위치로 바꾸고 미축을 지움, 아군 재배치, 짐꾼·소금 장수·빨래하는 아낙·아이 둘·대장장이·젊은 선비·주점 심부름꾼 추가 — 아군이 많던 양양에 시민을 늘리기 위해(시안, 사용자 확인 대기).
+- `tools/scene_maps/jiangxia_camp.py`, `assets/graphics/maps/S_jiangxia_camp.json`, `index.json`: 강을 사이에 두고 북쪽 본진·남쪽 별동대 진지를 둔 새 맵 — 대사·줄거리에 강하 진지 맵을 맞추기 위해.
+- `assets/scenario/hero/explore22.json`, `explore22b.json`, `assets/scenes/ch22.json`: 강하 진지를 새 맵으로 바꾸고 남쪽 구역(관우·고순)과 나룻배 출구 추가, 회의 장면의 관우·고순이 나루에서 걸어 들고 나게 함 — 사용자가 고른 (b)안.

@@ -97,23 +97,33 @@ def xiangyang():
         t.paint(bank, v, 59, v, '~')
     t.paint(-12, 20, 47, 23, 'i')
     t.paint(22, 15, 26, 39, 'i')
+    t.paint(33, 15, 37, 19, 'i')
     t.paint(7, 26, 18, 35, '.')
-    t.paint(9, 34, 16, 36, 'i')
     t.paint(30, 27, 45, 35, 'i')
-    estate(t, 2, '#8c5a40', ('stree_pine_0', 'stree_pine_1'))
-    estate(t, 26, '#544032', ('stree_plum_0', 'stree_plum_1'))
-    t.place(('sgate_open', -1, 22), ('hall_u', 12, 30),
-            ('stree_plum_0', 8, 28), ('stree_plum_1', 16, 28),
-            ('stree_plum_0', 7, 34), ('lantern', 10, 32), ('lantern', 15, 32),
-            ('flagstones_0', 12, 32), ('flagstones_1', 12, 33),
-            ('well', 17, 36), ('field_sprout', 19, 33),
-            ('hall_v', 4, 27), ('notice_board', 7, 24), ('banner', 8, 25),
+    t.place(('sgate_open', -1, 22),
+            # the office and the Liu house at the end of the two north roads
+            ('hall_u', 24, 13), ('flagstones_0', 24, 15), ('flagstones_1', 24, 16),
+            ('lantern', 22, 15), ('lantern', 27, 15), ('banner', 21, 16), ('banner', 27, 16),
+            ('hall_u', 35, 13), ('flagstones_0', 35, 15), ('flagstones_1', 35, 16),
+            ('lantern', 33, 15), ('lantern', 38, 15),
+            # north quarter
+            ('stree_pine_0', 4, 6), ('stree_pine_1', 19, 6), ('stree_plum_0', 28, 6), ('stree_plum_1', 43, 6),
+            ('house_tile_x', 9, 6), ('house_tile', 15, 7), ('house_tile', 6, 11), ('house_tile_x', 17, 11),
+            ('house_tile', 33, 6), ('house_tile_x', 39, 7), ('house_tile', 30, 11), ('house_tile_x', 42, 11),
+            ('well', 12, 10), ('stree_willow', 49, 5), ('stree_willow', 49, 17),
+            # houses added along the streets
+            ('house_thatch', 15, 16), ('house_tile', 19, 16), ('house_thatch', 29, 16),
+            ('house_tile', 26, 8), ('house_thatch', 16, 26), ('house_tile_x', 10, 27),
+            ('house_thatch', 10, 33), ('house_tile', 18, 31), ('house_thatch', 28, 31),
+            ('well', 14, 31), ('notice_board', 7, 24),
+            ('stree_plum_0', 8, 29), ('stree_plum_1', 14, 28), ('field_sprout', 12, 34),
+            # market and tavern
             ('tavern', 32, 26), ('wine_jar', 29, 27), ('lantern', 30, 28),
             ('house_tile', 41, 25), ('market_stall_jar', 44, 27),
-            ('market_stall_cloth', 33, 34), ('market_stall', 39, 34),
-            ('grain_cart', 44, 35), ('house_tile_x', 44, 39),
-            ('house_tile', 36, 38), ('house_tile_x', 5, 37), ('house_tile', 23, 37),
-            ('stree_willow', 49, 5), ('stree_willow', 49, 17),
+            ('market_stall_cloth', 33, 34), ('market_stall', 39, 34), ('grain_cart', 44, 35),
+            # the south row: trees only
+            ('stree_plum_0', 5, 37), ('stree_pine_0', 15, 37), ('stree_bush_0', 20, 38),
+            ('stree_bush_1', 29, 37), ('stree_plum_1', 28, 38), ('stree_bush_0', 43, 38),
             ('boat_v', 54, 22), ('boat_v', 54, 36))
     return t
 

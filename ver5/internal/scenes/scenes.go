@@ -40,7 +40,7 @@ type Step struct {
 	Say     string // a speech bubble on the map, without the dialogue scroll
 	Wait    float64
 	Intro   string // an officer's first appearance
-	Effect  string // petals, fire, smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
+	Effect  string // petals, fire, blaze (a brazier fire lighting far), smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
 	At      []float64
 	Shake   float64 // seconds of screen shake
 	Cam     string  // look at this actor
@@ -59,6 +59,8 @@ type Step struct {
 	If        []string  // Ambient only: the step runs when these story conditions hold (carts there only once won back)
 	Shoot     *Shoot    // the actor looses an arrow at the stage's halberd and the camera chases it
 	Arrow     []float64 // with Play "attack": the actor's arrow leaves as the bow is let go and lands on this [u, v] (volleys from a wall)
+	FireArrow bool      // with Arrow: the arrow flies burning and goes on burning a while where it comes down
+	Tempo     float64   // with Strike or Play: the motions (the blow and the answer to it) play this many times their speed
 	Free      bool      // the walk goes on without holding up the beats: people talking as they ride
 	Stop      bool      // the actor stops walking at the next whole cell
 	Follow    string    // the camera keeps on this actor from now on ("-" stops)
@@ -67,6 +69,12 @@ type Step struct {
 	Surge     string    // the flood of this baked surge (assets/graphics/effects/flood) plays, led by the actor across the ford; the rest of the cast stands on the cliff over the dam
 	Army      []string  // with Surge: the cast keys of a footman and a horseman, whose sprites and faction the army that wades the ford wears
 	Bound     *bool     // false unties a bound prisoner (the rope comes off and he may gesture again), true binds one
+	Fall      bool      // the actor is struck down: reels, sinks to its knees and falls over (a commoner sheet lies on its prone frame)
+	Kill      bool      // with Strike: the target falls as the blow lands
+	Hop       int       // the actor jumps this many times where it stands (a cheer)
+	Brawl     string    // the actor keeps trading blows with this cast member, without holding up the beats, until either falls; "-" stops
+	Drop      string    // an off-stage cast member that appears where the actor is and falls (a rider thrown from the saddle; Sprite gives the actor its riderless horse)
+	End       string    // with Move: the facing the actor takes once the walk is done
 }
 
 // Shoot is an arrow loosed at the halberd standing on the stage (the scene's halberd effect), flown over the map with

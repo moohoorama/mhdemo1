@@ -26,4 +26,14 @@ func TestCheck(t *testing.T) {
 			Object{Name: "wine_jar", U: 24, V: 24}, Object{Name: "wine_jar", U: 24, V: 24, DX: 6})
 		assert.Equal(t, []Problem{{20, 20, "house_tile와 house_thatch가 겹침"}}, Check(m, c))
 	})
+	t.Run("a wide object close to the wall in front of it", func(t *testing.T) {
+		m, c := load(t, "S_xiangyang")
+		assert.Empty(t, Check(m, c), "the map as it is")
+		m.Objects = append(m.Objects, Object{Name: "house_tile_x", U: 44, V: 39}, Object{Name: "house_tile", U: 44, V: 37},
+			Object{Name: "house_tile", U: 20, V: 36}, Object{Name: "stree_plum_0", U: 30, V: 39})
+		assert.Equal(t, []Problem{
+			{44, 39, "house_tile_x가 앞쪽 성벽과 2칸 이내"},
+			{44, 37, "house_tile가 앞쪽 성벽과 2칸 이내"},
+		}, Check(m, c))
+	})
 }
