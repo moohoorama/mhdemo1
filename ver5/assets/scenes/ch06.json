@@ -99,7 +99,7 @@
       [{"Actor": "조조", "Move": [22.75, 15.75], "Face": "SW"}]
      ],
      [
-      [{"Actor": "교모", "Move": [11.75, 17.75], "Face": "NW", "Exit": true}, {"Actor": "한복", "Move": [11.75, 18.75], "Face": "NW", "Exit": true}, {"Actor": "조조", "Move": [30.75, 17.25], "Face": "SE", "Via": [[22.75, 17.25]], "Exit": true}, {"Actor": "원술", "Move": [11.75, 17.75], "Face": "NW", "Via": [[23.75, 17.75]], "Exit": true, "After": 1}],
+      [{"Actor": "교모", "Exit": true}, {"Actor": "한복", "Exit": true}, {"Actor": "조조", "Move": [30.75, 17.25], "Face": "SE", "Via": [[22.75, 17.25]], "Exit": true}, {"Actor": "원술", "Exit": true, "After": 1}],
       [{"Actor": "전령", "Move": [19.75, 29.75], "Face": "SW", "Via": [[19.75, 19.75]], "Exit": true}, {"Actor": "유비", "Move": [21.25, 18.25], "Face": "NW"}, {"Actor": "관우", "Move": [16.25, 18.25], "Face": "SE", "Via": [[25.25, 17.75], [16.25, 17.75]]}, {"Actor": "장비", "Move": [22.25, 18.75], "Face": "NW"}, {"Actor": "원소", "Move": [19.75, 19.75], "Face": "SE", "After": 0.4}]
      ]
     ]

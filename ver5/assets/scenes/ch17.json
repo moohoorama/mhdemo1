@@ -315,7 +315,7 @@
      ],
      [
       [{"Actor": "허저", "Enter": [3, 9], "Move": [3, 3], "Face": "SW", "Speed": 1.4}],
-      [{"Actor": "관우", "Enter": [3, 9], "Move": [3, 4], "Face": "NE"}, {"Actor": "장비", "Enter": [2, 9], "Move": [2, 4], "Face": "NE", "Speed": 1.4, "After": 0.3}]
+      [{"Actor": "관우", "Enter": [3, 9], "Move": [3, 5], "Face": "NE"}, {"Actor": "장비", "Enter": [2, 9], "Move": [2, 5], "Face": "NE", "Speed": 1.4, "After": 0.3}]
      ]
     ],
     "c17-h27": [

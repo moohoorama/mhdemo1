@@ -2,6 +2,7 @@
  "Scenes": {
   "c25-start": {
    "Map": "S_xuzhou_room",
+   "Music": "suno-farewell",
    "Nodes": ["c25-sick-news", "c25-start", "c25-a01", "c25-a02", "c25-a03", "c25-a04"],
    "Cast": {
     "유표": {"At": [2, 1], "Face": "SE", "Hold": true, "Pose": "bed"},
@@ -146,6 +147,7 @@
    "Map": "S_castle_out_siege",
    "Time": "memory",
    "Steps": 0.33,
+   "Music": "suno-last-stand",
    "Nodes": ["c25-flash2", "c25-d10", "c25-d11", "c25-d12", "c25-d13"],
    "Ambient": [{"CamAt": [3, 8]}, {"Zoom": 2}],
    "Cast": {

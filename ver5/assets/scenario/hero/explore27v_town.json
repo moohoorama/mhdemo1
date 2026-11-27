@@ -20,13 +20,13 @@
     {
      "Name": "관청",
      "At": [
-      7,
-      27
+      24,
+      15
      ],
      "Node": "c27v-hall-out",
      "Object": [
-      4,
-      27
+      24,
+      13
      ]
     },
     {
@@ -56,12 +56,12 @@
     {
      "Name": "유표의 저택",
      "At": [
-      12,
-      32
+      35,
+      15
      ],
      "Object": [
-      12,
-      30
+      35,
+      13
      ],
      "To": "liu",
      "Residence": "large"
@@ -88,7 +88,7 @@
     },
     "제갈량": {
      "At": [
-      10,
+      9,
       23
      ],
      "Face": "SW",
@@ -101,8 +101,8 @@
     },
     "관우": {
      "At": [
-      10,
-      25
+      12,
+      21
      ],
      "Face": "NW",
      "Talk": [
@@ -114,8 +114,8 @@
     },
     "장비": {
      "At": [
-      13,
-      23
+      15,
+      22
      ],
      "Face": "NW",
      "Talk": [
@@ -140,27 +140,14 @@
     },
     "간옹": {
      "At": [
-      29,
-      30
+      35,
+      29
      ],
-     "Face": "NE",
+     "Face": "NW",
      "Talk": [
       [
        "jianyong",
        "양양 장터가 사흘 만에 다시 열렸네. 장사꾼들 눈치 하나는 빠르구먼."
-      ]
-     ]
-    },
-    "미축": {
-     "At": [
-      35,
-      33
-     ],
-     "Face": "NE",
-     "Talk": [
-      [
-       "mizhu",
-       "성 안 백성들에게 곡식을 풀었습니다. 조인의 군사가 곳간을 반쯤 비워 두고 갔습니다."
       ]
      ]
     },
@@ -209,13 +196,113 @@
     },
     "우물가 아낙#1": {
      "At": [
-      25,
-      35
+      15,
+      33
      ],
      "Face": "NE",
      "Sprite": "commoner_woman",
      "Faction": "merchant",
      "Chatter": "문이 다시 열렸네|오늘은 장이 서겠지"
+    },
+    "짐꾼": {
+     "At": [
+      30,
+      21
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조조 군이 내려온다 해서 피난 짐을 지고 사흘을 걸었소. 이제야 짐을 내려놓는구려."
+      ]
+     ]
+    },
+    "소금 장수": {
+     "At": [
+      42,
+      22
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조조 군이 물러가고 강동 배가 수문에 들었소. 소금 배는 이제 누구에게 세를 내야 하는지 모르겠소."
+      ]
+     ]
+    },
+    "빨래하는 아낙#1": {
+     "At": [
+      12,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "조조 군사가 갔다지|이제 마음 놓고 빨래하네"
+    },
+    "아이#1": {
+     "At": [
+      16,
+      19
+     ],
+     "Face": "SE",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "조조 군사 갔대|이제 안 무서워"
+    },
+    "아이#2": {
+     "At": [
+      21,
+      19
+     ],
+     "Face": "NW",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "큰 배가 들어왔어|구경 가자"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조조 군이 두고 간 갑옷과 창을 녹여 농기구를 만들라 하시니, 이제야 쟁기를 두드리겠소."
+      ]
+     ]
+    },
+    "젊은 선비": {
+     "At": [
+      20,
+      27
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조조가 남하할 때 강릉 쪽은 항복을 논하고 양양 쪽은 싸우자 했다지요. 이제 아무도 그 말을 꺼내지 않소."
+      ]
+     ]
+    },
+    "주점 심부름꾼#1": {
+     "At": [
+      30,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "주점 문을 다시 열었소|오늘 술은 한 잔씩 덤이오"
     }
    },
    "Zoom": 1.4,

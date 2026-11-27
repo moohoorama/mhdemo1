@@ -51,6 +51,7 @@
   "c18-flight": {
    "Map": "S_road",
    "Time": "night",
+   "Music": "suno-last-stand",
    "Nodes": ["c18-flight", "c18-f00", "c18-f01", "c18-f02", "c18-f03", "c18-f04", "c18-f05"],
    "Ambient": [{"CamAt": [3, 2]}],
    "Cast": {
@@ -96,7 +97,7 @@
      ],
      [
       [{"Actor": "장비", "Face": "SE"}, {"Actor": "장비", "Play": "attack"}],
-      [{"Actor": "장비", "Move": [9, 3], "Speed": 2.2, "Exit": true}, {"Actor": "유비", "Move": [-2, 2], "Speed": 1.4, "Exit": true, "After": 0.6}, {"Actor": "간옹", "Move": [-2, 1], "Speed": 1.4, "Exit": true, "After": 0.8}, {"Actor": "손건", "Move": [-2, 3], "Speed": 1.4, "Exit": true, "After": 0.9}]
+      [{"Actor": "장비", "Move": [9, 3], "Speed": 2.2, "Exit": true}, {"Actor": "유비", "Speed": 1.4, "Exit": true, "After": 0.6}, {"Actor": "간옹", "Speed": 1.4, "Exit": true, "After": 0.8}, {"Actor": "손건", "Speed": 1.4, "Exit": true, "After": 0.9}]
      ]
     ]
    }

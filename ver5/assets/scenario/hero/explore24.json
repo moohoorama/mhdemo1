@@ -247,12 +247,12 @@
     {
      "Name": "관청",
      "At": [
-      7,
-      27
+      24,
+      15
      ],
      "Object": [
-      4,
-      27
+      24,
+      13
      ],
      "Node": "c24-banquet",
      "If": [
@@ -309,12 +309,12 @@
     {
      "Name": "유표의 저택",
      "At": [
-      12,
-      32
+      35,
+      15
      ],
      "Object": [
-      12,
-      30
+      35,
+      13
      ],
      "To": "liu",
      "Residence": "large"
@@ -323,10 +323,10 @@
    "People": {
     "양양 문지기": {
      "At": [
-      9,
-      26
+      22,
+      17
      ],
-     "Face": "NW",
+     "Face": "SW",
      "Sprite": "guards",
      "Faction": "jing",
      "Talk": [
@@ -377,10 +377,10 @@
     },
     "양양 병사": {
      "At": [
-      9,
-      28
+      26,
+      17
      ],
-     "Face": "SE",
+     "Face": "SW",
      "Sprite": "guards",
      "Faction": "jing",
      "Talk": [
@@ -442,8 +442,8 @@
     },
     "연회 하인": {
      "At": [
-      14,
-      26
+      28,
+      19
      ],
      "Face": "NW",
      "Sprite": "commoner_man",
@@ -475,13 +475,113 @@
     },
     "우물가 아낙#1": {
      "At": [
-      16,
-      34
+      15,
+      33
      ],
      "Face": "NE",
      "Sprite": "commoner_woman",
      "Faction": "merchant",
      "Chatter": "오늘 관청에 잔치가 있대|고기 굽는 냄새가 나네"
+    },
+    "짐꾼": {
+     "At": [
+      30,
+      21
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "연회에 올릴 고기와 술동이를 관청까지 날랐소. 오늘은 어깨가 다 빠지겠소."
+      ]
+     ]
+    },
+    "소금 장수": {
+     "At": [
+      42,
+      22
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조인이 쳐들어왔다 물러가니 소금 배가 서로 눈치만 봅디다. 연회가 끝나야 값이 풀리겠소."
+      ]
+     ]
+    },
+    "빨래하는 아낙#1": {
+     "At": [
+      12,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "관청 잔치에 쓸 천이라네|빨래가 산더미구먼"
+    },
+    "아이#1": {
+     "At": [
+      16,
+      19
+     ],
+     "Face": "SE",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "잔치다 잔치|고기 냄새 난다"
+    },
+    "아이#2": {
+     "At": [
+      21,
+      19
+     ],
+     "Face": "NW",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "나도 한 점 얻어먹을까|하인 아저씨한테 가 보자"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조인 군사가 오던 때 화살촉 이천 개를 사흘에 만들었소. 팔이 아직도 얼얼하오."
+      ]
+     ]
+    },
+    "젊은 선비": {
+     "At": [
+      20,
+      27
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조인을 물리치고 나니 강릉 쪽은 남쪽에서 몸을 사리자 하고, 양양 쪽은 신야 분을 앞세우자 하오. 오늘 연회가 볼만하겠소."
+      ]
+     ]
+    },
+    "주점 심부름꾼#1": {
+     "At": [
+      30,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "연회 술이 모자라네|어서 관청에 날라라"
     }
    },
    "Zoom": 1.4,

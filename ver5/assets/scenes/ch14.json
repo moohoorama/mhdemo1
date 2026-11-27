@@ -118,7 +118,7 @@
    "Map": "S_xuzhou_hall",
    "Nodes": ["c14-hall", "c14-lh01", "c14-lh02", "c14-lh03", "c14-lh04", "c14-lh05", "c14-lh06", "c14-lh07", "c14-lh08", "c14-lh09", "c14-lh10"],
    "Cast": {
-    "유비": {"At": [4, 1], "Face": "SW"},
+    "유비": {"At": [4, 1], "Face": "SW", "Pose": "sit"},
     "관우": {"At": [2, 2], "Face": "SE"},
     "미축": {"At": [2, 3], "Face": "SE"},
     "미방": {"At": [2, 4], "Face": "SE"},
@@ -166,7 +166,7 @@
    "Map": "S_xuzhou_hall",
    "Nodes": ["c14-envoy", "c14-e00", "c14-e01", "c14-e02", "c14-e02b", "c14-e03", "c14-e03b", "c14-e03c", "c14-e04", "c14-e05", "c14-e06", "c14-e06a", "c14-e06b", "c14-e06c", "c14-e06d", "c14-e06e", "c14-e06f", "c14-e06g", "c14-e07", "c14-e08"],
    "Cast": {
-    "유비": {"At": [4, 1], "Face": "SW", "Hold": true},
+    "유비": {"At": [4, 1], "Face": "SW", "Hold": true, "Pose": "sit"},
     "관우": {"At": [2, 2], "Face": "SE"},
     "미축": {"At": [2, 3], "Face": "SE"},
     "미방": {"At": [2, 4], "Face": "SE"},

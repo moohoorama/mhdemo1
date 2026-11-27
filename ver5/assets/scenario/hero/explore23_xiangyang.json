@@ -20,12 +20,12 @@
     {
      "Name": "관청",
      "At": [
-      7,
-      27
+      24,
+      15
      ],
      "Object": [
-      4,
-      27
+      24,
+      13
      ],
      "Node": "c23-start",
      "If": [
@@ -76,12 +76,12 @@
     {
      "Name": "유표의 저택",
      "At": [
-      12,
-      32
+      35,
+      15
      ],
      "Object": [
-      12,
-      30
+      35,
+      13
      ],
      "To": "liu",
      "Residence": "large"
@@ -108,8 +108,8 @@
     },
     "관우": {
      "At": [
-      10,
-      25
+      12,
+      21
      ],
      "Face": "NW",
      "Talk": [
@@ -121,8 +121,8 @@
     },
     "장비": {
      "At": [
-      13,
-      23
+      15,
+      22
      ],
      "Face": "NW",
      "Talk": [
@@ -134,7 +134,7 @@
     },
     "손건": {
      "At": [
-      10,
+      9,
       23
      ],
      "Face": "SW",
@@ -179,10 +179,10 @@
     },
     "간옹": {
      "At": [
-      29,
-      30
+      35,
+      29
      ],
-     "Face": "NE",
+     "Face": "NW",
      "Talk": [
       [
        "jianyong",
@@ -190,25 +190,12 @@
       ]
      ]
     },
-    "미축": {
-     "At": [
-      35,
-      33
-     ],
-     "Face": "NE",
-     "Talk": [
-      [
-       "mizhu",
-       "신야로 옮길 짐은 미리 꾸려 두었습니다. 말씀만 하시면 바로 떠납니다."
-      ]
-     ]
-    },
     "관청 문지기": {
      "At": [
-      9,
-      28
+      26,
+      17
      ],
-     "Face": "SE",
+     "Face": "SW",
      "Sprite": "guards",
      "Faction": "jing",
      "Talk": [
@@ -250,13 +237,113 @@
     },
     "우물가 아낙#1": {
      "At": [
-      16,
-      34
+      15,
+      33
      ],
      "Face": "NE",
      "Sprite": "commoner_woman",
      "Faction": "merchant",
      "Chatter": "강하 뱃길이 열렸대|소금값이 내리려나"
+    },
+    "짐꾼": {
+     "At": [
+      30,
+      21
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강하 뱃길이 열렸다니 쌀섬이 또 밀려오겠소. 내 허리도 바빠지겠구먼."
+      ]
+     ]
+    },
+    "소금 장수": {
+     "At": [
+      42,
+      22
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강하 뱃길이 열렸으니 소금값이 이제 내리겠소. 양양 사람 입이 다 시원해지겠구먼."
+      ]
+     ]
+    },
+    "빨래하는 아낙#1": {
+     "At": [
+      12,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "강하 도적이 잡혔다지|이제 뱃길이 열리려나"
+    },
+    "아이#1": {
+     "At": [
+      16,
+      19
+     ],
+     "Face": "SE",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "도적이 잡혔대|우리 아버지 배도 다닐 수 있대"
+    },
+    "아이#2": {
+     "At": [
+      21,
+      19
+     ],
+     "Face": "NW",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "난 장수가 될 거야|넌 심부름꾼이나 해"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강하 도적들이 버린 칼을 사 왔는데 녹이 슬어 쓸 만한 게 없소. 쇠를 다시 녹여야겠소."
+      ]
+     ]
+    },
+    "젊은 선비": {
+     "At": [
+      20,
+      27
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강하가 평정됐으니 강릉 쪽 선비들은 남쪽 땅부터 닦자 하고, 양양 쪽은 북쪽 방비가 먼저라 하오. 학당이 시끄럽겠소."
+      ]
+     ]
+    },
+    "주점 심부름꾼#1": {
+     "At": [
+      30,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "강하 소식 들었어?|술값은 외상 안 됩니다"
     }
    },
    "Zoom": 1.4,

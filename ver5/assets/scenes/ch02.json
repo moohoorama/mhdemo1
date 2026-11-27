@@ -232,7 +232,7 @@
     "c02-e9": [
      [],
      [
-      [{"Actor": "조조", "Move": [3, -18], "Speed": 1.6, "Exit": true}, {"Actor": "하후돈", "Move": [3, -18], "Speed": 1.6, "Exit": true, "After": 0.5}]
+      [{"Actor": "조조", "Speed": 1.6, "Exit": true}, {"Actor": "하후돈", "Speed": 1.6, "Exit": true, "After": 0.5}]
      ]
     ]
    }

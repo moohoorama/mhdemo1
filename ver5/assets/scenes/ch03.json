@@ -38,7 +38,7 @@
      [
       [{"Actor": "관우", "Move": [2, 1]}, {"Actor": "유비", "Move": [3, 1]}],
       [{"Actor": "관우", "Face": "SW"}, {"Actor": "유비", "Face": "SW"}, {"Actor": "장비", "Face": "SW"}],
-      [{"Prop": ["prison_cart", "노식"]}, {"Actor": "노식", "Move": [-8, 2], "Speed": 0.6, "Exit": true}, {"Actor": "호송병#1", "Move": [-8, 2], "Speed": 0.6, "Exit": true, "After": 0.5}, {"Actor": "호송병#2", "Move": [-8, 2], "Speed": 0.6, "Exit": true, "After": 1.0}],
+      [{"Prop": ["prison_cart", "노식"]}, {"Actor": "노식", "Speed": 0.6, "Exit": true}, {"Actor": "호송병#1", "Speed": 0.6, "Exit": true, "After": 0.5}, {"Actor": "호송병#2", "Speed": 0.6, "Exit": true, "After": 1.0}],
       [{"Actor": "관우", "Move": [2, 2]}],
       [{"Actor": "관우", "Move": [4, 2]}],
       [{"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "SW"}]

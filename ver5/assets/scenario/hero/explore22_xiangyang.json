@@ -20,12 +20,12 @@
     {
      "Name": "관청",
      "At": [
-      7,
-      27
+      24,
+      15
      ],
      "Object": [
-      4,
-      27
+      24,
+      13
      ],
      "Node": "c22-debate"
     },
@@ -56,12 +56,12 @@
     {
      "Name": "유표의 저택",
      "At": [
-      12,
-      32
+      35,
+      15
      ],
      "Object": [
-      12,
-      30
+      35,
+      13
      ],
      "To": "liu",
      "Residence": "large"
@@ -88,8 +88,8 @@
     },
     "관우": {
      "At": [
-      10,
-      25
+      12,
+      21
      ],
      "Face": "NW",
      "Talk": [
@@ -101,8 +101,8 @@
     },
     "장비": {
      "At": [
-      13,
-      23
+      15,
+      22
      ],
      "Face": "NW",
      "Talk": [
@@ -114,7 +114,7 @@
     },
     "손건": {
      "At": [
-      10,
+      9,
       23
      ],
      "Face": "SW",
@@ -140,10 +140,10 @@
     },
     "간옹": {
      "At": [
-      29,
-      30
+      35,
+      29
      ],
-     "Face": "NE",
+     "Face": "NW",
      "Talk": [
       [
        "jianyong",
@@ -151,25 +151,12 @@
       ]
      ]
     },
-    "미축": {
-     "At": [
-      35,
-      33
-     ],
-     "Face": "NE",
-     "Talk": [
-      [
-       "mizhu",
-       "양양 장터는 물건이 넉넉합니다. 쌀값도 서주보다 쌉니다."
-      ]
-     ]
-    },
     "관청 문지기": {
      "At": [
-      9,
-      28
+      26,
+      17
      ],
-     "Face": "SE",
+     "Face": "SW",
      "Sprite": "guards",
      "Faction": "jing",
      "Talk": [
@@ -211,13 +198,113 @@
     },
     "우물가 아낙#1": {
      "At": [
-      16,
-      34
+      15,
+      33
      ],
      "Face": "NE",
      "Sprite": "commoner_woman",
      "Faction": "merchant",
      "Chatter": "물이 맑아 좋구먼|북쪽 손님이 왔다지?"
+    },
+    "짐꾼": {
+     "At": [
+      30,
+      21
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "북쪽에서 손님이 오셨다고 관청 앞에 짐수레가 줄을 섰소. 오늘은 품삯이 괜찮겠구먼."
+      ]
+     ]
+    },
+    "소금 장수": {
+     "At": [
+      42,
+      22
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "형주 소금은 강하 뱃길로 오는데 도적이 길을 막아 값이 올랐소. 북쪽 손님들이 길을 틔워 주면 좋겠소."
+      ]
+     ]
+    },
+    "빨래하는 아낙#1": {
+     "At": [
+      12,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "손님이 왔다던데|물이 맑아 빨래가 잘 되네"
+    },
+    "아이#1": {
+     "At": [
+      16,
+      19
+     ],
+     "Face": "SE",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "북쪽 손님이 왔대|말이 엄청 커"
+    },
+    "아이#2": {
+     "At": [
+      21,
+      19
+     ],
+     "Face": "NW",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "수염 긴 아저씨 봤어?|내가 먼저 봤다"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "군사가 늘면 대장간도 바빠지는 법이오. 쇠는 형주가 넉넉하니 칼 갈 일 있으면 들르시오."
+      ]
+     ]
+    },
+    "젊은 선비": {
+     "At": [
+      20,
+      27
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "형주 학당 선비들이 강릉 쪽과 양양 쪽으로 갈려 서로 못마땅해한다오. 북쪽 손님이 오셨으니 어느 편에 서실지 구경이오."
+      ]
+     ]
+    },
+    "주점 심부름꾼#1": {
+     "At": [
+      30,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "술 두 동이 더!|북쪽 손님은 안주를 많이 드시나"
     }
    },
    "Zoom": 1.4,

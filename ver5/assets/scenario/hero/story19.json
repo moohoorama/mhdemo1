@@ -48,18 +48,6 @@
    "Text": "장 장군께서 산길을 거꾸로 달리고 계셨어요. 길을 일러 드리고 이 마을로 모셨지요."
   },
   {
-   "ID": "c19-k03c",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "그리고 여기서 이 사람을 만났슈. 창 솜씨가 보통이 아니길래, 형 찾으러 같이 가자고 했지 뭐유."
-  },
-  {
-   "ID": "c19-k03d",
-   "Kind": "say",
-   "Speaker": "chendao",
-   "Text": "진도라 합니다. 예주 사람입니다."
-  },
-  {
    "ID": "c19-k03e",
    "Kind": "say",
    "Speaker": "fanya",
@@ -118,12 +106,6 @@
    "Kind": "join",
    "Character": "fangong",
    "Event": "join-fangong-2"
-  },
-  {
-   "ID": "c19-join-chendao",
-   "Kind": "join",
-   "Character": "chendao",
-   "Event": "join-chendao"
   },
   {
    "ID": "c19-gao-br",

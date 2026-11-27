@@ -204,7 +204,7 @@
      ],
      [
       [{"Actor": "문추", "Face": "NW"}],
-      [{"Actor": "문추", "Move": [-8, 6], "Speed": 1.6, "Exit": true}, {"Actor": "기병#1", "Move": [-8, 4], "Speed": 1.6, "Exit": true, "After": 0.36}, {"Actor": "기병#2", "Move": [-8, 4], "Speed": 1.6, "Exit": true, "After": 0.42}, {"Actor": "기병#3", "Move": [-8, 4], "Speed": 1.6, "Exit": true, "After": 0.48}, {"Actor": "기병#4", "Move": [-8, 3], "Speed": 1.6, "Exit": true, "After": 0.54}, {"Actor": "기병#5", "Move": [-8, 3], "Speed": 1.6, "Exit": true, "After": 0.6}, {"Actor": "기병#6", "Move": [-8, 3], "Speed": 1.6, "Exit": true, "After": 0.6599999999999999}, {"Actor": "기병#7", "Move": [-8, 2], "Speed": 1.6, "Exit": true, "After": 0.72}, {"Actor": "기병#8", "Move": [-8, 2], "Speed": 1.6, "Exit": true, "After": 0.78}, {"Actor": "기병#9", "Move": [-8, 2], "Speed": 1.6, "Exit": true, "After": 0.8400000000000001}, {"Actor": "기병#10", "Move": [-8, 1], "Speed": 1.6, "Exit": true, "After": 0.8999999999999999}, {"Actor": "기병#11", "Move": [-8, 1], "Speed": 1.6, "Exit": true, "After": 0.96}, {"Actor": "기병#12", "Move": [-8, 1], "Speed": 1.6, "Exit": true, "After": 1.02}, {"Actor": "기병#13", "Move": [-8, 0], "Speed": 1.6, "Exit": true, "After": 1.08}, {"Actor": "기병#14", "Move": [-8, 0], "Speed": 1.6, "Exit": true, "After": 1.14}, {"Actor": "기병#15", "Move": [-8, 0], "Speed": 1.6, "Exit": true, "After": 1.2}, {"Actor": "기병#16", "Move": [-8, -1], "Speed": 1.6, "Exit": true, "After": 1.26}, {"Actor": "기병#17", "Move": [-8, -1], "Speed": 1.6, "Exit": true, "After": 1.32}, {"Actor": "기병#18", "Move": [-8, -1], "Speed": 1.6, "Exit": true, "After": 1.3800000000000001}, {"Wait": 1.2}]
+      [{"Actor": "문추", "Move": [3, 7], "Speed": 1.6, "Exit": true}, {"Actor": "기병#1", "Move": [2, 7], "Speed": 1.6, "Exit": true, "After": 0.36}, {"Actor": "기병#2", "Move": [3, 7], "Speed": 1.6, "Exit": true, "After": 0.42}, {"Actor": "기병#3", "Move": [4, 7], "Speed": 1.6, "Exit": true, "After": 0.48}, {"Actor": "기병#4", "Move": [2, 7], "Speed": 1.6, "Exit": true, "After": 0.54}, {"Actor": "기병#5", "Move": [3, 7], "Speed": 1.6, "Exit": true, "After": 0.6}, {"Actor": "기병#6", "Move": [4, 7], "Speed": 1.6, "Exit": true, "After": 0.6599999999999999}, {"Actor": "기병#7", "Move": [2, 7], "Speed": 1.6, "Exit": true, "After": 0.72}, {"Actor": "기병#8", "Move": [3, 7], "Speed": 1.6, "Exit": true, "After": 0.78}, {"Actor": "기병#9", "Move": [4, 7], "Speed": 1.6, "Exit": true, "After": 0.8400000000000001}, {"Actor": "기병#10", "Move": [2, 7], "Speed": 1.6, "Exit": true, "After": 0.8999999999999999}, {"Actor": "기병#11", "Move": [3, 7], "Speed": 1.6, "Exit": true, "After": 0.96}, {"Actor": "기병#12", "Move": [4, 7], "Speed": 1.6, "Exit": true, "After": 1.02}, {"Actor": "기병#13", "Move": [2, 7], "Speed": 1.6, "Exit": true, "After": 1.08}, {"Actor": "기병#14", "Move": [3, 7], "Speed": 1.6, "Exit": true, "After": 1.14}, {"Actor": "기병#15", "Move": [4, 7], "Speed": 1.6, "Exit": true, "After": 1.2}, {"Actor": "기병#16", "Move": [2, 7], "Speed": 1.6, "Exit": true, "After": 1.26}, {"Actor": "기병#17", "Move": [3, 7], "Speed": 1.6, "Exit": true, "After": 1.32}, {"Actor": "기병#18", "Move": [4, 7], "Speed": 1.6, "Exit": true, "After": 1.3800000000000001}, {"Wait": 1.2}]
      ]
     ],
     "c19-yj05": [
@@ -512,7 +512,7 @@
   },
   "c19-mangdang": {
    "Map": "S_mangdang",
-   "Nodes": ["c19-mangdang", "c19-k01", "c19-k02", "c19-k03", "c19-k03b", "c19-k03c", "c19-k03d", "c19-k03e", "c19-k03f", "c19-k04", "c19-k05", "c19-k06", "c19-k07", "c19-k08", "c19-k09"],
+   "Nodes": ["c19-mangdang", "c19-k01", "c19-k02", "c19-k03", "c19-k03b", "c19-k03e", "c19-k03f", "c19-k04", "c19-k05", "c19-k06", "c19-k07", "c19-k08", "c19-k09"],
    "Ambient": [{"CamAt": [9, 4]}],
    "Cast": {
     "유비": {"At": [17, 4], "Face": "NW", "Off": true},
@@ -525,7 +525,6 @@
     "번궁": {"At": [6, 3], "Face": "SE"},
     "고순": {"At": [6, 5], "Face": "SE", "If": ["party:gaoshun"]},
     "번아": {"At": [4, 5], "Face": "SE"},
-    "진도": {"At": [7, 4], "Face": "SE"},
     "마을사람#1": {"At": [3, 2], "Face": "SE", "Sprite": "commoner_man", "Faction": "han"},
     "마을사람#2": {"At": [2, 4], "Face": "SE", "Sprite": "commoner_woman", "Faction": "han"}
    },
@@ -546,18 +545,8 @@
     ],
     "c19-k03": [
      [
-      [{"Actor": "번궁", "Move": [8, 3], "Face": "SE"}, {"Actor": "번아", "Move": [8, 4], "Face": "SE"}, {"Actor": "진도", "Move": [8, 5], "Face": "SE"}, {"Actor": "고순", "Move": [7, 5], "Face": "SE"}],
-      [{"Actor": "번궁", "Face": "SE"}, {"Actor": "번아", "Face": "SE"}, {"Actor": "진도", "Face": "SE"}, {"Actor": "고순", "Face": "SE"}]
-     ]
-    ],
-    "c19-k03c": [
-     [
-      [{"Actor": "장비", "Look": "NW"}]
-     ]
-    ],
-    "c19-k03d": [
-     [
-      [{"Actor": "진도", "Play": "action"}]
+      [{"Actor": "번궁", "Move": [8, 3], "Face": "SE"}, {"Actor": "번아", "Move": [8, 4], "Face": "SE"}, {"Actor": "고순", "Move": [7, 5], "Face": "SE"}],
+      [{"Actor": "번궁", "Face": "SE"}, {"Actor": "번아", "Face": "SE"}, {"Actor": "고순", "Face": "SE"}]
      ]
     ],
     "c19-k03f": [

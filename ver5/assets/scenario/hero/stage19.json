@@ -408,6 +408,9 @@
    "AllyResult": "stay",
    "EnemyResult": "stay",
    "Text": "조운과 장합이 수십 합을 겨루었으나 승부가 나지 않았다.",
+   "Melee": {
+    "zhanghe": "light_cavalry"
+   },
    "Beats": [
     {
      "Kind": "talk",

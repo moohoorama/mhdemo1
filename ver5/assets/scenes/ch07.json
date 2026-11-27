@@ -179,6 +179,7 @@
   "c07-scene-2": {
    "Map": "S_coalition_camp",
    "Time": "dawn",
+   "Music": "suno-defeat",
    "Nodes": ["c07-scene-2", "c07-f01", "c07-f02", "c07-f03", "c07-f04", "c07-f05", "c07-f06", "c07-f08", "c07-f09", "c07-f10", "c07-f11", "c07-f12", "c07-x01", "c07-x02", "c07-y01", "c07-y02", "c07-y03", "c07-y04", "c07-y05", "c07-y06", "c07-y07", "c07-y08", "c07-y09", "c07-y12", "c07-y13", "c07-y14"],
    "Ambient": [{"Prop": ["straw_mat#1", 31, 9]}, {"Prop": ["straw_mat#2", 32, 9]}, {"Prop": ["straw_mat#3", 33, 9]}, {"Prop": ["straw_mat#4", 34, 9]}, {"Prop": ["straw_mat#5", 35, 9]}, {"Prop": ["straw_mat#6", 36, 9]}, {"Prop": ["straw_mat#7", 36, 8]}, {"Actor": "패잔병#1", "Chatter": "으으…"}],
    "Cast": {

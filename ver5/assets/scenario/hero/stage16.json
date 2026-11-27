@@ -257,44 +257,6 @@
      "Steps": [
       [
        {
-        "Kind": "wait",
-        "Seconds": 0.8
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "terrain",
-     "Area": 2,
-     "State": "O"
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.8
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "terrain",
-     "Area": 3,
-     "State": "O"
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.8
-       }
-      ],
-      [
-       {
         "Kind": "move",
         "Unit": "player",
         "To": {
@@ -341,7 +303,7 @@
        "Group": "lu-nw",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "NW",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       },
@@ -352,7 +314,7 @@
        "Group": "lu-nw",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "NW",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       },
@@ -363,7 +325,7 @@
        "Group": "lu-nw",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "NW",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       },
@@ -374,7 +336,7 @@
        "Group": "lu-nw",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "NW",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       }
@@ -401,7 +363,7 @@
        "Group": "lu-se",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "SE",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       },
@@ -412,7 +374,7 @@
        "Group": "lu-se",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "SE",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       },
@@ -423,7 +385,7 @@
        "Group": "lu-se",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "SE",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       },
@@ -434,7 +396,7 @@
        "Group": "lu-se",
        "Policy": "assault",
        "Faction": "dong",
-       "Facing": "SE",
+       "Facing": "SW",
        "Shift": -0.07,
        "Side": "enemy"
       }
@@ -614,7 +576,7 @@
      "Lines": [
       {
        "Actor": "caoren",
-       "Text": "이런, 함정이었나."
+       "Text": "유비군을 구해라!"
       }
      ]
     },
@@ -623,35 +585,8 @@
      "Lines": [
       {
        "Actor": "xiahouyuan",
-       "Text": "우리도 어서 돌입한다!"
+       "Text": "우리도 들어가자!"
       }
-     ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "move",
-        "Unit": "cao-se",
-        "To": {
-         "X": 20,
-         "Y": 13
-        },
-        "Facing": "NW"
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "cao-nw",
-        "To": {
-         "X": 7,
-         "Y": 13
-        },
-        "Facing": "SE"
-       }
-      ]
      ]
     },
     {

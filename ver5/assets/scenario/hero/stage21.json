@@ -580,7 +580,7 @@
       {
        "Character": "zhangfei",
        "X": 18,
-       "Y": 20,
+       "Y": 21,
        "Facing": "NW"
       }
      ]
@@ -590,8 +590,8 @@
      "Spawns": [
       {
        "Character": "gongdu",
-       "X": 17,
-       "Y": 20,
+       "X": 16,
+       "Y": 21,
        "Facing": "NE",
        "Group": "gongdu",
        "AI": true,
@@ -602,8 +602,9 @@
       },
       {
        "Character": "xiahouyuan",
+       "Class": "horse_archer",
        "X": 19,
-       "Y": 19,
+       "Y": 12,
        "Facing": "SW",
        "Group": "yuan",
        "Policy": "assault",
@@ -613,7 +614,7 @@
       {
        "Character": "troop_cavalry",
        "X": 19,
-       "Y": 18,
+       "Y": 11,
        "Facing": "SW",
        "Group": "yuan",
        "Policy": "assault",
@@ -624,7 +625,7 @@
       {
        "Character": "troop_cavalry",
        "X": 18,
-       "Y": 19,
+       "Y": 12,
        "Facing": "SW",
        "Group": "yuan",
        "Policy": "assault",
@@ -659,6 +660,25 @@
        "Actor": "xiahouyuan",
        "Text": "도적놈이 어디까지 달아나느냐! 군량 도둑의 목은 내가 벤다!"
       }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "xiahouyuan",
+        "By": "gongdu"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "yuan",
+        "By": "gongdu"
+       }
+      ]
      ]
     },
     {

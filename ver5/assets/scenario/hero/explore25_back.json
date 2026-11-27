@@ -3,8 +3,8 @@
  "Start": {
   "Area": "town",
   "At": [
-   12,
-   33
+   35,
+   18
   ],
   "Face": "SW"
  },
@@ -52,12 +52,12 @@
     {
      "Name": "유표의 저택",
      "At": [
-      12,
-      32
+      35,
+      15
      ],
      "Object": [
-      12,
-      30
+      35,
+      13
      ],
      "To": "liu",
      "Residence": "large"
@@ -65,12 +65,12 @@
     {
      "Name": "관청",
      "At": [
-      7,
-      27
+      24,
+      15
      ],
      "Object": [
-      4,
-      27
+      24,
+      13
      ],
      "To": "hall"
     }
@@ -96,8 +96,8 @@
     },
     "관우": {
      "At": [
-      8,
-      34
+      31,
+      19
      ],
      "Face": "NE",
      "Talk": [
@@ -109,8 +109,8 @@
     },
     "장비": {
      "At": [
-      21,
-      32
+      40,
+      19
      ],
      "Face": "NW",
      "Talk": [
@@ -122,10 +122,10 @@
     },
     "조운": {
      "At": [
-      17,
-      33
+      33,
+      17
      ],
-     "Face": "SW",
+     "Face": "SE",
      "Talk": [
       [
        "zhaoyun",
@@ -135,8 +135,8 @@
     },
     "손건": {
      "At": [
-      18,
-      31
+      37,
+      19
      ],
      "Face": "NW",
      "Talk": [
@@ -148,8 +148,8 @@
     },
     "간옹": {
      "At": [
-      21,
-      29
+      28,
+      22
      ],
      "Face": "NW",
      "Talk": [
@@ -159,23 +159,10 @@
       ]
      ]
     },
-    "미축": {
-     "At": [
-      23,
-      31
-     ],
-     "Face": "NW",
-     "Talk": [
-      [
-       "mizhu",
-       "약재는 저택 사람에게 전했습니다. 쓰실 수 있을지 모르겠습니다."
-      ]
-     ]
-    },
     "채씨 병사": {
      "At": [
-      14,
-      33
+      38,
+      16
      ],
      "Face": "SW",
      "Sprite": "guards",
@@ -189,10 +176,10 @@
     },
     "의원": {
      "At": [
-      10,
-      34
+      41,
+      17
      ],
-     "Face": "NE",
+     "Face": "NW",
      "Sprite": "commoner_elder",
      "Faction": "merchant",
      "Talk": [
@@ -219,13 +206,113 @@
     },
     "우물가 아낙#1": {
      "At": [
-      25,
-      35
+      15,
+      33
      ],
      "Face": "NE",
      "Sprite": "commoner_woman",
      "Faction": "merchant",
      "Chatter": "관청 앞이 조용하네|형주목께서 편찮으시대"
+    },
+    "짐꾼": {
+     "At": [
+      30,
+      21
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "저택으로 약재 짐이 연달아 들어가오. 품삯은 후하지만 좋은 일은 아닌 듯하오."
+      ]
+     ]
+    },
+    "소금 장수": {
+     "At": [
+      42,
+      22
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "형주목의 병세가 깊다는 소문에 소금 사재기가 시작됐소. 난리 낌새만 보이면 소금값부터 뛰지요."
+      ]
+     ]
+    },
+    "빨래하는 아낙#1": {
+     "At": [
+      12,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "저택 이불이 자꾸 는다네|형주목께서 편찮으시대"
+    },
+    "아이#1": {
+     "At": [
+      16,
+      19
+     ],
+     "Face": "SE",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "칼 찬 아저씨가 많아|무서워"
+    },
+    "아이#2": {
+     "At": [
+      21,
+      19
+     ],
+     "Face": "NW",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "Chatter": "쉿, 조용히 해|어른들이 화낼라"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "채 장군 쪽에서 창과 칼을 평소의 곱절로 주문했소. 누구와 싸울 일이라도 있는지 모르겠소."
+      ]
+     ]
+    },
+    "젊은 선비": {
+     "At": [
+      20,
+      27
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "형주목의 병세가 깊어지니 강릉 쪽 선비는 큰 공자를, 양양 쪽은 채씨 쪽을 바라본다오. 글 읽는 사람도 줄은 서야 하나 보오."
+      ]
+     ]
+    },
+    "주점 심부름꾼#1": {
+     "At": [
+      30,
+      29
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "오늘은 손님이 뜸하네|다들 쉬쉬하는구먼"
     }
    },
    "Zoom": 1.4,

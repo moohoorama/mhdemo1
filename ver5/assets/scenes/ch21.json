@@ -232,6 +232,7 @@
   "c21-south": {
    "Map": "S_road",
    "Time": "dawn",
+   "Music": "suno-farewell",
    "Nodes": ["c21-south", "c21-s01", "c21-s02", "c21-s03", "c21-p01", "c21-p02", "c21-p03", "c21-p04", "c21-p05", "c21-d01", "c21-d02", "c21-e01", "c21-e02"],
    "Ambient": [{"CamAt": [4, 2]}],
    "Cast": {

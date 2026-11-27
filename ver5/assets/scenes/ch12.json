@@ -23,6 +23,7 @@
   "c12-village": {
    "Map": "S_xuzhou_ruin",
    "Time": "dusk",
+   "Music": "mystical-china",
    "Nodes": ["c12-village", "c12-v1", "c12-v2", "c12-v3", "c12-v4", "c12-v5", "c12-v6", "c12-v7", "c12-v8", "c12-v9"],
    "Ambient": [{"Effect": "smoke", "At": [6.5, 2.0]}, {"Effect": "smoke", "At": [10.0, 1.5]}, {"Effect": "smallfire", "At": [9.5, 7.0]}, {"Effect": "smoke", "At": [4.0, 7.0]}, {"Effect": "smallfire", "At": [12.0, 6.5]}, {"Effect": "smoke", "At": [9.0, 7.5]}, {"Effect": "smallfire", "At": [3.0, 7.5]}, {"Effect": "smoke", "At": [12.5, 1.5]}],
    "Cast": {
