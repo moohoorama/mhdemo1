@@ -17,16 +17,37 @@ type EquipmentUpgrade struct {
 // EquipmentUpgrades compares legal changes in preparation, including effects that the stat sheet
 // omits. A shared warehouse piece is evaluated independently for each officer.
 func (e *Engine) EquipmentUpgrades() []EquipmentUpgrade {
+	return e.upgrades("")
+}
+
+// EquipmentUpgradesFor tests one piece as if one copy were in the warehouse, as when it is for sale.
+func (e *Engine) EquipmentUpgradesFor(item string) []EquipmentUpgrade {
+	if _, known := e.data.Equipment[item]; !known {
+		return nil
+	}
+	return e.upgrades(item)
+}
+
+func (e *Engine) upgrades(extra string) []EquipmentUpgrade {
 	kind := e.data.Node(e.state.Node).Kind
 	if e.state.Phase != "scenario" || kind != "battle" && kind != "explore" || len(e.state.Learning) > 0 {
 		return nil
 	}
-	items := keys(e.state.Warehouse)
+	// Try changes in a private world. Preparation's equipment rules do not depend on placement.
+	trial := fromState(e.data, e.Snapshot())
+	if extra != "" {
+		if trial.state.Warehouse == nil {
+			trial.state.Warehouse = map[string]int{}
+		}
+		trial.state.Warehouse[extra]++
+	}
+	items := keys(trial.state.Warehouse)
+	if extra != "" {
+		items = []string{extra}
+	}
 	if len(items) == 0 {
 		return nil
 	}
-	// Try changes in a private world. Preparation's equipment rules do not depend on placement.
-	trial := fromState(e.data, e.Snapshot())
 	var out []EquipmentUpgrade
 	for _, id := range keys(trial.charIDs) {
 		c := trial.char(id)

@@ -208,7 +208,6 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
 	assert.Nil(t, e.char("fanya"), "Fan A finds Zhang Fei in the hills but goes back to Xuzhou at once")
-	assert.NotNil(t, e.char("chendao"), "Chen Dao joins at the Mangdang village")
 	assert.NotNil(t, e.char("zhaoyun"), "Zhao Yun, wandering since Gongsun Zan fell, joins on the flight from Yuan Shao")
 	for _, id := range []string{"guanyu", "guanping", "zhoucang", "chenzhen"} {
 		assert.NotNil(t, e.char(id), id+" comes with Guan Yu to Mangdang and joins in the battle against Cai Yang")
@@ -366,7 +365,12 @@ func TestChangsheSiegeUnfolds(t *testing.T) {
 	dd.Campaign.Start = "c02-battle"
 	e := New(&dd, 3)
 	applyOK(t, e, Command{Kind: "start"})
-	require.Equal(t, "battle", e.state.Phase, "the brothers sortie with no deployment screen")
+	plan, err := e.DeploymentPlan()
+	require.NoError(t, err)
+	for _, c := range plan {
+		applyOK(t, e, c)
+	}
+	require.Equal(t, "battle", e.state.Phase)
 	require.True(t, executed(e, "battle-B02-night-raid"), "the whole night attack plays before the first turn")
 	assert.Equal(t, byte('F'), e.Cell(16, 20).State, "the southeast fence burns")
 	assert.Equal(t, byte('F'), e.Cell(13, 6).State, "Cao Cao fires the northeast fence")
@@ -398,6 +402,11 @@ func TestYingchuanGuanYuAttackDoesNotSummonLiuBeiDuel(t *testing.T) {
 	e := New(&dd, 3)
 	e.unchecked = true // the officers are set down on cells the rules do not allow
 	applyOK(t, e, Command{Kind: "start"})
+	plan, err := e.DeploymentPlan()
+	require.NoError(t, err)
+	for _, c := range plan {
+		applyOK(t, e, c)
+	}
 
 	bocai, guanyu, liubei := e.unit("bocai"), e.unit("guanyu"), e.unit("liubei")
 	require.NotNil(t, bocai)

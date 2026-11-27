@@ -107,14 +107,14 @@ func TestAMarkingArrowLeavesEmbersWhereItHits(t *testing.T) {
 	x, y := boss.X, boss.Y
 	t.Run("a miss leaves nothing", func(t *testing.T) {
 		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 0, 0
-		e.attackOn(a, boss, []*Unit{boss}, s, map[string]float64{boss.ID: 1}, false, false, false)
+		e.attackOn(a, boss, []*Unit{boss}, s, map[string]float64{boss.ID: 1}, ext{}, false, false, false)
 		assert.NotEqual(t, byte('e'), e.Cell(x, y).State)
 	})
 	t.Run("a hit marks without a critical", func(t *testing.T) {
 		e.data.Rules.Crit = content.Chance{}
 		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
 		boss.HP = 999
-		e.attackOn(a, boss, []*Unit{boss}, s, map[string]float64{boss.ID: 1}, false, false, false)
+		e.attackOn(a, boss, []*Unit{boss}, s, map[string]float64{boss.ID: 1}, ext{}, false, false, false)
 		assert.Equal(t, byte('e'), e.Cell(x, y).State)
 	})
 }

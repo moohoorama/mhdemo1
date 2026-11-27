@@ -45,7 +45,7 @@ func TestWardsMeditationAndForesight(t *testing.T) {
 		full := e.CounterDamage(c)
 		require.Positive(t, full)
 		with(e, "hero", "counter_ward_t")
-		assert.InDelta(t, float64(full)*.2/.5, float64(e.CounterDamage(c)), 1)
+		assert.InDelta(t, float64(full)*.7, float64(e.CounterDamage(c)), 1, "a critical counter is 0.5+0.5, the ward takes 0.3 off the sum")
 	})
 
 	t.Run("a 30-point heavy counter cancels the ward", func(t *testing.T) {

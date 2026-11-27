@@ -1071,12 +1071,12 @@
   },
   "halberd_sweep": {
    "Name": "요극",
-   "Desc": "적을 퇴각시키면 공격범위 안의 적 1기를 공격하고, 그 적도 퇴각하면 이어서 공격한다.",
+   "Desc": "적을 퇴각시키면 공격범위 안의 적 1기를 피해 50%로 공격하고, 그 적도 퇴각하면 이어서 공격한다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 0,
    "Effects": {
-    "retreat_sweep": 1
+    "retreat_sweep": 0.5
    }
   },
   "red_hare": {

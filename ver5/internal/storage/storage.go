@@ -70,6 +70,33 @@ type Settings struct {
 	Speed       int    `json:"speed,omitempty"`         // the GUI's replay speed (×1, 2, 4, 8); 0 is ×1
 	ExploreZoom int    `json:"explore_zoom,omitempty"`  // the zoom the player last chose on the walk and in story scenes; 0 is the area's own
 	BattleZoom  int    `json:"battle_zoom,omitempty"`   // the zoom the player last chose on a battle map; 0 is the default
+	// The battle's three panels (upper left, upper right, lower right) folded while the player commands, and open while
+	// others act or an event plays: both read as "the default" when unset, which is open to command and folded to watch.
+	HudFolded [3]bool `json:"hud_folded,omitempty"`
+	HudOpen   [3]bool `json:"hud_open,omitempty"`
+}
+
+// HudFolds are the folded panels of the battle's commanding or idle (watching) state.
+func (s Settings) HudFolds(idle bool) [3]bool {
+	if !idle {
+		return s.HudFolded
+	}
+	var folded [3]bool
+	for i, open := range s.HudOpen {
+		folded[i] = !open
+	}
+	return folded
+}
+
+// SetHudFolds keeps the folded panels of the battle's commanding or idle state.
+func (s *Settings) SetHudFolds(idle bool, folded [3]bool) {
+	if !idle {
+		s.HudFolded = folded
+		return
+	}
+	for i, f := range folded {
+		s.HudOpen[i] = !f
+	}
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.

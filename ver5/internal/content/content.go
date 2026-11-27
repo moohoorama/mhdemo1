@@ -226,6 +226,7 @@ type Skill struct {
 	Duration      int
 	Length        int // cells of a line
 	Coeff         float64
+	Rule          float64 `json:"-"` // set at run time: the rule coefficient a blow starts from (요극's), zero for 1
 	Weapon        string  // the weapon type that must be equipped
 	Pierce        float64 // share of damage the enemy behind the target takes
 	AcademyBuff   bool    // attack buff raises mind instead on fan classes

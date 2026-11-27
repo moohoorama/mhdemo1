@@ -261,7 +261,9 @@ func (e *Engine) retreatSweep(u, fallen *Unit, derived bool) {
 			return
 		}
 		e.emit("followup-start", u.ID, v.ID, 0)
-		e.physical(u, v, e.basic(), Command{Kind: "attack", Actor: u.ID, Target: v.ID})
+		s := e.basic()
+		s.Rule = e.fx(u, content.FxRetreatSweep)
+		e.physical(u, v, s, Command{Kind: "attack", Actor: u.ID, Target: v.ID})
 		e.emit("followup-end", u.ID, v.ID, 0)
 		if v.HP > 0 {
 			return

@@ -783,7 +783,7 @@ func TestKnockbackPushesOrHitsHarder(t *testing.T) {
 	n, _, _ := e2.strike(a2, b2, e2.basic(), blow{share: 1})
 	e3, a3, b3 := setup(t)
 	e3.unit("troop#2").HP, e3.unit("troop#2").X, e3.unit("troop#2").Y = 1000, 7, 6
-	dealt := e3.attackOn(a3, b3, []*Unit{b3}, e3.basic(), map[string]float64{b3.ID: 1}, false, true, false)
+	dealt := e3.attackOn(a3, b3, []*Unit{b3}, e3.basic(), map[string]float64{b3.ID: 1}, ext{}, false, true, false)
 	if b3.X != 6 || float64(dealt[b3.ID]) < math.Floor(free*1.25)-1 || n == 0 {
 		t.Fatalf("blocked: stays at %d, deals %d (free blow %.0f)", b3.X, dealt[b3.ID], free)
 	}
@@ -802,6 +802,22 @@ func TestKnockbackOnCounter(t *testing.T) {
 	if h := e.unit("hero"); !pushed || h.X == x && h.Y == y {
 		t.Fatalf("the boss's counter should push the hero: event %t, at (%d,%d)", pushed, h.X, h.Y)
 	}
+	t.Run("strike, counter, then the push", func(t *testing.T) {
+		hit, back, push := -1, -1, -1
+		for i, ev := range r.Events {
+			switch {
+			case ev.Kind == "damage" && ev.Actor == "hero" && ev.Target == "boss" && hit < 0:
+				hit = i
+			case ev.Kind == "damage" && ev.Actor == "boss" && ev.Target == "hero" && back < 0:
+				back = i
+			case ev.Kind == "knockback" && ev.Actor == "boss" && ev.Target == "hero":
+				push = i
+			}
+		}
+		if hit < 0 || back <= hit || push <= back {
+			t.Fatalf("order hero damage %d, boss damage %d, push %d", hit, back, push)
+		}
+	})
 }
 func TestSkillNeedsItsWeapon(t *testing.T) {
 	e, _, _ := arena(t)
@@ -865,7 +881,7 @@ func TestSpellWardedByTargetsIntelligence(t *testing.T) {
 func TestSpellGainsOnItsElementsTerrain(t *testing.T) {
 	e, a, b := arena(t)
 	fire := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "fire"}
-	land := func(s content.Skill, crit bool) float64 { return e.damage(a, b, s) * e.boost(a, b, s, crit) }
+	land := func(s content.Skill, crit bool) float64 { return e.damageAt(a, b, s, ext{crit: crit}) }
 	plain := land(fire, false)
 	ground := string(e.Cell(b.X, b.Y).Ground)
 	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}, "water": {ground: 15}}

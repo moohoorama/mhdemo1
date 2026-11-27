@@ -77,6 +77,25 @@ func TestLifeStealRecoversTenPercentOfDamage(t *testing.T) {
 	with(e, "hero", "life_test")
 	hero.HP = e.stats(hero).MaxHP - 100
 	before := hero.HP
+	e.events = nil
 	e.leech(hero, 100)
 	assert.Equal(t, before+10, hero.HP)
+	require.Len(t, e.events, 1)
+	assert.Equal(t, "heal", e.events[0].Kind)
+	assert.Equal(t, 10, e.events[0].Amount)
+	assert.Equal(t, hero.ID, e.events[0].Target)
+
+	t.Run("full HP emits nothing", func(t *testing.T) {
+		hero.HP = e.stats(hero).MaxHP
+		e.events = nil
+		e.leech(hero, 100)
+		assert.Empty(t, e.events)
+	})
+	t.Run("recovery is capped at the missing HP", func(t *testing.T) {
+		hero.HP = e.stats(hero).MaxHP - 4
+		e.events = nil
+		e.leech(hero, 100)
+		require.Len(t, e.events, 1)
+		assert.Equal(t, 4, e.events[0].Amount)
+	})
 }

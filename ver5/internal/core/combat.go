@@ -30,8 +30,26 @@ const rangePowerCells = 4
 // walked is the cells the unit walked in its own last turn, which count until its next turn begins.
 func (e *Engine) walked(u *Unit) int { return u.Steps + u.LastSteps }
 
-// damage is the unrounded damage of one blow before its terrain and critical boost, share and armor-like reductions.
-func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
+// ext is what a blow brings to its damage coefficient besides the unit's traits: the rule coefficient it starts
+// from (a counter's, a second strike's, 요극's; zero is 1), shares added to and taken off it, and a critical's.
+type ext struct {
+	rule, plus, minus float64
+	crit              bool
+}
+
+func (x ext) base() float64 {
+	if x.rule == 0 {
+		return 1
+	}
+	return x.rule
+}
+
+// damage is the unrounded damage of one plain blow before its share and armor-like reductions.
+func (e *Engine) damage(u, v *Unit, s content.Skill) float64 { return e.damageAt(u, v, s, ext{}) }
+
+// damageAt is damage of a blow that also carries x: its rule coefficient, critical and terrain bonus are summed
+// with every trait's share into the one coefficient applied at the end.
+func (e *Engine) damageAt(u, v *Unit, s content.Skill, x ext) float64 {
 	R := e.data.Rules
 	a, b := e.stats(u), e.stats(v)
 	var base float64
@@ -61,8 +79,15 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
 	}
 	// Every share a blow gains or loses is added into one coefficient and applied once.
-	plus, minus := 0.0, 0.0
+	rule, plus, minus := x.base(), x.plus, x.minus
+	if s.Rule > 0 {
+		rule *= s.Rule
+	}
+	if x.crit {
+		plus += R.CritMultiplier - 1 + e.fx(u, content.FxCritBoost)
+	}
 	if s.Kind == content.KindMagic {
+		plus += float64(e.data.ElementTerrain(e.Cell(v.X, v.Y), s.Element)) / 100
 		out *= R.MagicPower
 		if R.MagicWardSpan > 0 {
 			out *= 1 - clamp((e.attributes(e.char(v.Character))[2]-R.MagicWardFrom)/R.MagicWardSpan, 0, 1)
@@ -104,7 +129,7 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if k := e.fx(v, content.FxGrit); k > 0 && e.wounded(v) {
 		minus += k
 	}
-	out *= math.Max(0, 1+plus-minus)
+	out *= math.Max(0, rule+plus-minus)
 	if d := e.difficulty(); u.Faction != v.Faction { // 쉬움: the player's side hits harder and is hit softer
 		if p := d.DealtPct; p > 0 && u.Faction == "ally" {
 			out *= float64(p) / 100
@@ -117,19 +142,6 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		out = math.Max(1, out*float64(p)/100)
 	}
 	return out
-}
-
-// boost is what a landed blow is multiplied by: its element's terrain bonus and, when critical, the critical
-// bonus, added together rather than multiplied.
-func (e *Engine) boost(u, v *Unit, s content.Skill, crit bool) float64 {
-	k := 1.0
-	if s.Kind == content.KindMagic {
-		k += float64(e.data.ElementTerrain(e.Cell(v.X, v.Y), s.Element)) / 100
-	}
-	if crit {
-		k += e.data.Rules.CritMultiplier - 1 + e.fx(u, content.FxCritBoost)
-	}
-	return k
 }
 
 // wounded tells whether the unit is down to half its HP or less.
@@ -313,6 +325,7 @@ type blow struct {
 	share   float64
 	derived bool
 	second  bool
+	x       ext
 }
 
 // strike is one blow: hit, critical and damage, with a missed blow still landing a share of it for 급소-like traits.
@@ -323,10 +336,6 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	}
 	R := e.data.Rules
 	phys := s.Kind == content.KindPhysical
-	d := e.damage(u, v, s) * b.share
-	if !b.derived && u.ID == e.reprisalActor {
-		d *= 1 + e.reprisalBonus
-	}
 	if s.Kind == content.KindMagic && e.has(v, content.FxImmune+s.Element) {
 		e.hurt(v, 0, u) // 화덕성군: the fire does not touch it
 		return 0, true, false
@@ -343,6 +352,12 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		}
 	}
 	e.defenseXP(v, u, s.Kind == content.KindMagic)
+	x := b.x
+	x.crit = crit
+	d := e.damageAt(u, v, s, x) * b.share
+	if !b.derived && u.ID == e.reprisalActor {
+		d *= 1 + e.reprisalBonus
+	}
 	if !hit {
 		e.emit("miss", u.ID, v.ID, 0)
 		half := e.fx(u, content.FxMissHalf)
@@ -350,11 +365,8 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 			return 0, false, false
 		}
 		d *= half
-	} else {
-		d *= e.boost(u, v, s, crit)
-		if crit {
-			e.emit("critical", u.ID, v.ID, 0)
-		}
+	} else if crit {
+		e.emit("critical", u.ID, v.ID, 0)
 	}
 	n := e.hurt(v, int(math.Floor(e.bulwark(v, d))), u)
 	if hit && n > 0 && v.HP > 0 && e.has(v, content.FxReprisal) {
@@ -431,7 +443,10 @@ func (e *Engine) bulwark(v *Unit, d float64) float64 {
 // leech is the HP a striker takes back from damage it dealt.
 func (e *Engine) leech(u *Unit, dealt int) {
 	if k := e.fx(u, content.FxLifeSteal); k > 0 && u.HP > 0 && dealt > 0 {
-		u.HP = min(e.stats(u).MaxHP, u.HP+int(float64(dealt)*k))
+		if n := min(e.stats(u).MaxHP-u.HP, int(float64(dealt)*k)); n > 0 {
+			u.HP += n
+			e.emit("heal", u.ID, u.ID, n)
+		}
 	}
 }
 
@@ -441,7 +456,7 @@ func (e *Engine) leech(u *Unit, dealt int) {
 // attack of its own or a counter) a landed first blow on the aim pushes it a cell back, or deals more where
 // it cannot be pushed. A marking skill leaves its element's mark under every victim it hit, after all
 // its strikes, so its own second blow does not gain from it.
-func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[string]float64, derived, knocks, twice bool) map[string]int {
+func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[string]float64, x ext, derived, knocks, twice bool) map[string]int {
 	var again []*Unit
 	if twice || float64(e.rand(100)) < e.doubleChance(u, aim, s) || s.Strikes > 1 {
 		again = vs
@@ -456,7 +471,7 @@ func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[s
 			if v.HP <= 0 {
 				continue
 			}
-			b := blow{share: share[v.ID], derived: derived, second: i == 1}
+			b := blow{share: share[v.ID], derived: derived, second: i == 1, x: x}
 			if i == 1 {
 				e.emit("double", u.ID, v.ID, 0)
 				b.share *= e.data.Rules.DoubleShare + e.fx(u, content.FxHeavy)
@@ -522,11 +537,11 @@ func (e *Engine) pushCell(u, v *Unit) (content.Point, bool) {
 	return p, true
 }
 
-// strikeBack is a basic attack set off by another one (a counter, assist or guard) at share k of a
+// strikeBack is a basic attack set off by another one (a counter, assist or guard) at rule coefficient x of a
 // normal blow. It is aimed at the first of aims and also hits the rest, each widened by u's area traits,
 // and strikes twice like any attack of u's, or surely when twice is set; a counter pushes like u's own
 // attack (돌파). u heals by what it deals.
-func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, counter, twice bool) {
+func (e *Engine) strikeBack(u *Unit, aims []*Unit, x ext, counter, twice bool) {
 	var vs []*Unit
 	var area []content.Point
 	share := map[string]float64{}
@@ -536,17 +551,17 @@ func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, counter, twice boo
 			if share[q.ID] == 0 {
 				vs = append(vs, q)
 			}
-			share[q.ID] = math.Max(share[q.ID], sh[q.ID]*k)
+			share[q.ID] = math.Max(share[q.ID], sh[q.ID])
 		}
 		area = append(area, ar...)
 	}
 	e.emitArea(u, area)
-	for _, n := range e.attackOn(u, aims[0], vs, e.basic(), share, true, counter, twice) {
+	for _, n := range e.attackOn(u, aims[0], vs, e.basic(), share, x, true, counter, twice) {
 		e.leech(u, n)
 	}
 }
 
-// counterShare is the share of a normal blow v strikes back at u with: CounterShare in a counter stance,
+// counterShare is the rule coefficient of a normal blow v strikes back with: CounterShare in a counter stance,
 // PlainCounterShare otherwise, either raised by 참격 and 반격강화.
 func (e *Engine) counterShare(v *Unit) float64 {
 	k := e.data.Rules.PlainCounterShare
@@ -562,12 +577,12 @@ func (e *Engine) counterBack(u, v *Unit) {
 	if v.HP <= 0 || u.HP <= 0 || confused(v) || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return
 	}
-	e.strikeBack(v, []*Unit{u}, e.counterTaken(u, e.counterShare(v)), true, false)
+	e.strikeBack(v, []*Unit{u}, e.counterBlow(u, v), true, false)
 }
 
-// counterTaken is the share of a counter struck at share k that lands on u: its 반격피해감소 takes points off.
-func (e *Engine) counterTaken(u *Unit, k float64) float64 {
-	return math.Max(0, k-e.fx(u, content.FxCounterWard))
+// counterBlow is what v's counter at u carries: its share as the rule coefficient, u's 반격피해감소 taken off it.
+func (e *Engine) counterBlow(u, v *Unit) ext {
+	return ext{rule: e.counterShare(v), minus: e.fx(u, content.FxCounterWard)}
 }
 
 // guard is what 호위 does after u's melee attack on the struck: each ally next to one of them that has
@@ -582,7 +597,7 @@ func (e *Engine) guard(u *Unit, struck []*Unit) {
 			}
 			if k := e.fx(w, content.FxGuardian); k > 0 && e.inRange(w, u, e.basic()) {
 				done[w.ID] = true
-				e.strikeBack(w, []*Unit{u}, e.counterTaken(u, k), false, false)
+				e.strikeBack(w, []*Unit{u}, ext{rule: k, minus: e.fx(u, content.FxCounterWard)}, false, false)
 			}
 		}
 	}
@@ -901,7 +916,7 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 	for _, q := range hit {
 		melee[q.ID] = !e.rangedAttack(u, q, s)
 	}
-	dealt, total := e.attackOn(u, v, hit, s, share, false, true, false), 0
+	dealt, total := e.attackOn(u, v, hit, s, share, ext{}, false, true, false), 0
 	delete(u.Status, "sure_crit")
 	for _, q := range hit {
 		total += dealt[q.ID]
@@ -928,7 +943,7 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 			continue
 		}
 		slices.SortStableFunc(reach, func(a, b *Unit) int { return btoi(b == v) - btoi(a == v) })
-		e.strikeBack(w, reach, k, false, false)
+		e.strikeBack(w, reach, ext{rule: k}, false, false)
 	}
 	var struck []*Unit
 	for _, q := range hit {

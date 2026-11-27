@@ -81,3 +81,33 @@ func TestEquipmentUpgrades(t *testing.T) {
 		assert.False(t, recommended("archer1", "rider_charm"))
 	})
 }
+
+func TestEquipmentUpgradesFor(t *testing.T) {
+	e := New(data(t), 17)
+	apply(t, e, Command{Kind: "next"})
+	apply(t, e, Command{Kind: "choose", Option: "go"})
+	require.Equal(t, "battle", e.Observe().Dialogue.Kind)
+	e.data.Equipment["strong_charm"] = content.Equipment{Slot: "accessory", Bonus: [6]float64{3, 3}}
+	e.data.Equipment["weak_charm"] = content.Equipment{Slot: "accessory"}
+	delete(e.char("hero").Equipment, "accessory")
+	require.Empty(t, e.state.Warehouse["strong_charm"])
+	before := e.Snapshot()
+	t.Run("a piece not in the warehouse still helps whoever gains from it", func(t *testing.T) {
+		ups := e.EquipmentUpgradesFor("strong_charm")
+		i := slices.IndexFunc(ups, func(up EquipmentUpgrade) bool { return up.Actor == "hero" })
+		require.GreaterOrEqual(t, i, 0)
+		assert.Equal(t, "strong_charm", ups[i].Item)
+		assert.Equal(t, before, e.Snapshot(), "the preview leaves inventory and gear intact")
+	})
+	t.Run("a useless or unknown piece helps nobody", func(t *testing.T) {
+		assert.Empty(t, e.EquipmentUpgradesFor("weak_charm"))
+		assert.Empty(t, e.EquipmentUpgradesFor("no_such_item"))
+	})
+	t.Run("only the asked piece is tried", func(t *testing.T) {
+		e.state.Warehouse["attack_charm"] = 1
+		e.data.Equipment["attack_charm"] = content.Equipment{Slot: "accessory", Bonus: [6]float64{3}}
+		for _, up := range e.EquipmentUpgradesFor("strong_charm") {
+			assert.Equal(t, "strong_charm", up.Item)
+		}
+	})
+}

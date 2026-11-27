@@ -53,6 +53,20 @@ func TestClassTraitOverhaul(t *testing.T) {
 		assert.InDelta(t, melee*(1-.35), e.damage(hero, boss, e.basic()), 1e-6)
 	})
 
+	t.Run("a critical, a counter, a second strike and 요극 add into the same coefficient", func(t *testing.T) {
+		e, hero, boss := arena(t)
+		trait(e, "ward_t", map[string]float64{content.FxPhysicalWard: .2})
+		with(e, "boss", "ward_t")
+		R := e.data.Rules
+		full := e.damage(hero, boss, e.basic()) / .8
+		assert.InDelta(t, full*(1+R.CritMultiplier-1-.2), e.damageAt(hero, boss, e.basic(), ext{crit: true}), 1e-6, "critical adds its 0.5")
+		assert.InDelta(t, full*(R.PlainCounterShare-.2), e.damageAt(hero, boss, e.basic(), ext{rule: R.PlainCounterShare}), 1e-6, "a counter starts from 0.5")
+		assert.InDelta(t, full*(R.PlainCounterShare+R.CritMultiplier-1-.2), e.damageAt(hero, boss, e.basic(), ext{rule: R.PlainCounterShare, crit: true}), 1e-6)
+		sweep := e.basic()
+		sweep.Rule = .5
+		assert.InDelta(t, full*(.5-.2), e.damage(hero, boss, sweep), 1e-6, "요극 starts from 0.5")
+	})
+
 	t.Run("원거리 위력 grows by 5% for each cell beyond two up to four, 밀집사격 by 4% per adjacent ally", func(t *testing.T) {
 		e, _, boss := arena(t)
 		trait(e, "range_t", map[string]float64{content.FxRangePower: .05})

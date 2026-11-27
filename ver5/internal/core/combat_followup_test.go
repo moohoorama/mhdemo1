@@ -94,6 +94,21 @@ func TestRetreatSweepUsesNormalExchange(t *testing.T) {
 	})
 }
 
+func TestRetreatSweepCoefficient(t *testing.T) {
+	loss := func(t *testing.T, k float64) int {
+		e, a, b, c := sweepArena(t)
+		e.data.Traits["sweep_test"] = content.Trait{Name: "Sweep", Effects: map[string]float64{content.FxRetreatSweep: k}}
+		e.data.Rules.CritMultiplier = 1
+		require.NoError(t, e.useSkill(a, Command{Kind: "attack", Actor: a.ID, Target: b.ID}))
+		return 10000 - c.HP
+	}
+	t.Run("half coefficient halves the follow-up", func(t *testing.T) {
+		full, half := loss(t, 1), loss(t, .5)
+		require.Positive(t, full)
+		assert.InDelta(t, float64(full)/2, float64(half), float64(full)*.1)
+	})
+}
+
 func TestSplashSharesOneDoubleRoll(t *testing.T) {
 	setup := func(t *testing.T, traits ...string) (*Engine, *Unit, []string) {
 		e, a, b := arena(t)
@@ -313,7 +328,7 @@ func TestHeavyBlowRaisesShares(t *testing.T) {
 				with(e, "boss", "full_share_t")
 			}
 			e.events = nil
-			e.attackOn(b, a, []*Unit{a}, e.basic(), map[string]float64{a.ID: 1}, true, false, true)
+			e.attackOn(b, a, []*Unit{a}, e.basic(), map[string]float64{a.ID: 1}, ext{}, true, false, true)
 			got := dealt(e, b.ID)
 			require.Len(t, got, 2)
 			assert.Equal(t, full, got[0] == got[1], "full %t: %v", full, got)

@@ -663,7 +663,7 @@
    "Stats": [
     68,
     64,
-    48,
+    75,
     62,
     52,
     50
@@ -1624,7 +1624,7 @@
   "guanping": {
    "Name": "관평",
    "Biography": "관우의 양자. 아버지를 따라 형주를 지키며 방덕과 겨룬다. 맥성에서 관우와 함께 사로잡혀 죽는다. 효성과 충의로 아버지를 끝까지 따른다.",
-   "Class": "royal_guard",
+   "Class": "horse_archer",
    "Stats": [
     82,
     85,
@@ -1646,7 +1646,7 @@
     "pursuit"
    ],
    "Equipment": [
-    "copper_spear",
+    "short_bow",
     "leather_armor"
    ],
    "Look": {
@@ -2622,8 +2622,8 @@
     72,
     96,
     36,
-    70,
-    60,
+    95,
+    95,
     52
    ],
    "Level": 12,
@@ -2965,40 +2965,6 @@
    "Look": {
     "Scene": "official_noncombat",
     "Faction": "wei"
-   }
-  },
-  "chendao": {
-   "Name": "진도",
-   "Biography": "예주 사람. 망탕산 산속 마을에서 서주에서 흩어진 장비 일행과 지내다 유비를 따른다. 훗날 백이병을 이끌고 유비 곁을 지킨다.",
-   "Class": "chariot",
-   "Stats": [
-    79,
-    83,
-    60,
-    80,
-    66,
-    74
-   ],
-   "Level": 20,
-   "Playable": true,
-   "Traits": [
-    "physical_ward",
-    "bodyguard",
-    "discipline"
-   ],
-   "Learn": [
-    "physical_ward",
-    "bodyguard",
-    "discipline"
-   ],
-   "Equipment": [
-    "copper_spear",
-    "leather_armor"
-   ],
-   "Look": {
-    "Portrait": "chendao",
-    "Faction": "shu",
-    "Scene": "infantry_noncombat"
    }
   },
   "zhoucang": {

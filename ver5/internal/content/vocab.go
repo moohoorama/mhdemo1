@@ -9,7 +9,7 @@ package content
 const (
 	FxDiagonal           = "diagonal"             // the melee reach also takes the four diagonal cells
 	FxLongReach          = "long_reach"           // the melee reach runs two cells along the four straight lines
-	FxRetreatSweep       = "retreat_sweep"        // defeats trigger one extra strike on surrounding foes
+	FxRetreatSweep       = "retreat_sweep"        // defeats trigger one extra strike on surrounding foes, its normal-attack coefficient being the value
 	FxCritAlways         = "crit_always"          // physical attacks always crit
 	FxCritBoost          = "crit_boost"           // added to the critical multiplier of its blows
 	FxSpellCrit          = "spell_crit"           // landed attack spells always crit

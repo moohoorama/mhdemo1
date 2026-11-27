@@ -252,8 +252,8 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 			if phys {
 				k = share[q.ID]
 			}
-			d := e.damage(u, q, s) * k
-			normal, crit := int(math.Floor(e.bulwark(q, d*e.boost(u, q, s, false)))), int(math.Floor(e.bulwark(q, d*e.boost(u, q, s, true))))
+			normal := int(math.Floor(e.bulwark(q, e.damageAt(u, q, s, ext{})*k)))
+			crit := int(math.Floor(e.bulwark(q, e.damageAt(u, q, s, ext{crit: true})*k)))
 			p.MaxDamage += crit
 			if p.Damage == nil {
 				p.Damage, p.CritDamage = map[string]int{}, map[string]int{}
@@ -849,7 +849,9 @@ func (e *Engine) CounterDamage(c Command) int {
 	if u == nil {
 		return 0
 	}
-	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterTaken(u, e.counterShare(v))))
+	x := e.counterBlow(u, v)
+	x.crit = true
+	return int(math.Floor(e.damageAt(v, u, e.basic(), x)))
 }
 
 // CounterOdds returns the target's chances when it can counter the action. The counter
@@ -902,7 +904,7 @@ func (e *Engine) strikeEstimate(a, b string, cureConfusion bool) float64 {
 	for _, name := range e.skills(e.char(u.Character)) {
 		s := e.data.Skills[name]
 		if (s.Kind == content.KindPhysical || s.Kind == content.KindMagic) && e.cost(u, s) <= u.MP {
-			best = max(best, e.damage(u, v, s)*e.boost(u, v, s, false)*e.hitChanceFor(u, v, s, true)/100)
+			best = max(best, e.damage(u, v, s)*e.hitChanceFor(u, v, s, true)/100)
 		}
 	}
 	return best
