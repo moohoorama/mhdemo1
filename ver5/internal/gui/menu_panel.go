@@ -51,6 +51,7 @@ type panelSpec struct {
 	anim       *panelAnim
 	hoveredOut *string // receives the hovered row's help when there is no strip
 	tipOut     *string // receives the hovered row's tip
+	hoverOut   *int    // receives the index of the hovered usable row, -1 for none
 	held       int     // row kept lit while its sub-list is open, -1 for none
 }
 
@@ -125,6 +126,9 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 		top += 24
 	}
 	help := ""
+	if p.hoverOut != nil {
+		*p.hoverOut = -1
+	}
 	for i, it := range p.items {
 		b := image.Rect(x+panelPad, top+i*rowHeight, x+p.w-panelPad, top+i*rowHeight+rowHeight-2)
 		hot := it.click != nil && hovered(b)
@@ -135,6 +139,9 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 			}
 		}
 		if hovered(b) {
+			if p.hoverOut != nil && it.click != nil {
+				*p.hoverOut = i
+			}
 			help = it.help
 			if p.tipOut != nil {
 				*p.tipOut = it.tip

@@ -477,5 +477,8 @@ func (g *Game) sceneFlash() float64 {
 			}
 		}
 	}
+	if g.reelPlaying() { // a remembered blow flares, it does not blind
+		a *= reelFlash
+	}
 	return math.Max(0, a)
 }

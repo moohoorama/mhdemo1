@@ -264,6 +264,9 @@ func teamColor(u *core.UnitView) color.NRGBA {
 	return color.NRGBA{R: 120, G: 180, B: 240, A: 255}
 }
 
+// briefTraitRows is how many trait names an enemy's card stacks before it starts another column.
+const briefTraitRows = 8
+
 // brief is the small card right of the cursor while it rests on a cell: the unit on it, if
 // any, then the terrain. While a target is being picked the forecast takes its place.
 func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
@@ -281,11 +284,31 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 	cell := g.engine().Cell(g.hover.x, g.hover.y)
 	lines := terrainInfoLines(g.S.Data, cell, move, class)
 	w, uh := 226, 0
+	var traits []string // an enemy's trait names, briefTraitRows to a column
 	if u != nil {
 		uh = 74
 		if u.Faction == "ally" {
 			uh += 16
+		} else {
+			for _, id := range u.Traits {
+				traits = append(traits, g.S.Data.Traits[id].Name)
+			}
 		}
+	}
+	var traitCols []float64
+	for i, name := range traits {
+		if i%briefTraitRows == 0 {
+			traitCols = append(traitCols, 0)
+		}
+		traitCols[i/briefTraitRows] = max(traitCols[i/briefTraitRows], g.width(name, 11)+12)
+	}
+	if len(traits) > 0 {
+		uh += 6 + min(len(traits), briefTraitRows)*14
+		sum := 0.0
+		for _, cw := range traitCols {
+			sum += cw
+		}
+		w = max(w, 28+int(sum))
 	}
 	h := uh + 40 + len(lines)*16
 	x, y := cursorPos()
@@ -314,6 +337,13 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		row(1, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpColor(u.MP, u.Stats.MaxMP, g.uiSeconds))
 		if u.Faction == "ally" {
 			row(2, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
+		}
+		tx := float64(x + 14)
+		for i, name := range traits {
+			if i > 0 && i%briefTraitRows == 0 {
+				tx += traitCols[i/briefTraitRows-1]
+			}
+			g.label(dst, name, tx, float64(y+66+i%briefTraitRows*14), 11, ink)
 		}
 		rect(dst, float32(x+12), float32(y+uh-2), float32(w-24), 1, goldDim)
 	}

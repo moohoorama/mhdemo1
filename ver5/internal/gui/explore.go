@@ -716,7 +716,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 		speakers = w.talk[w.talkI].speakers
 	}
 	g.clickRing(w.mark, w.markT)
-	g.drawScene(dst, speakers)
+	g.drawSceneMap(dst, speakers)
 	if w.show {
 		var exits []smallTile
 		for _, e := range a.Exits {
@@ -777,6 +777,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 	for _, p := range plates {
 		w.plates = append(w.plates, explorePlate{g.namePlate(dst, p.name, p.x, p.y, p.style, p.hover), p.person, p.exit})
 	}
+	g.drawBalloons(dst, speakers)
 	if w.talk != nil {
 		l := w.talk[w.talkI]
 		text, done := g.shownText(l)

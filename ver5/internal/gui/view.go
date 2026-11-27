@@ -28,9 +28,18 @@ func (g *Game) speedRate() float64 {
 		return 1 // the flood is baked at its own pace
 	}
 	if g.scene != nil {
+		if g.walkSpeedIsFree() {
+			return float64(g.speed)
+		}
 		return sceneSpeed
 	}
 	return float64(g.speed)
+}
+
+// walkSpeedIsFree is true while the hero walks an explore area, where the player picks the speed; a story scene
+// and the title's shots keep sceneSpeed.
+func (g *Game) walkSpeedIsFree() bool {
+	return g.scene != nil && len(g.scene.def.Nodes) == 0 && !g.reelPlaying() && g.exploring()
 }
 
 // advance moves the clock, the replay and every unit's animation by one frame.
@@ -69,6 +78,7 @@ func (g *Game) advance(dt float64) {
 	}
 	g.followWalk(dt)
 	g.updateEffects(dt)
+	g.updateTitleReel(dt)
 	g.updateScene(dt)
 	keptToasts := g.toasts[:0]
 	for _, t := range g.toasts {

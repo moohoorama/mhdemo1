@@ -742,6 +742,12 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	if ghost == 0 {
 		f.drawStatusMarks(u, x, y, true)
 	}
+	y -= u.hopLift()
+	if _, angle := u.toppled(); angle != 0 { // struck down: going over about its feet
+		op.GeoM.Translate(-s.PivotX, -s.PivotY)
+		op.GeoM.Rotate(angle)
+		op.GeoM.Translate(s.PivotX, s.PivotY)
+	}
 	if bt := f.boat(u); bt.k > 0 {
 		f.drawAfloat(u, s, bt, x, y, op)
 	} else if u.wade > .01 || u.flood > 0 {

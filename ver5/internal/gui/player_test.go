@@ -54,6 +54,20 @@ func TestSplitCounters(t *testing.T) {
 		check(t, blow, []core.Event{events[0], events[2]})
 		check(t, counters, []counter{{by: "b", events: events[1:2]}})
 	})
+	t.Run("a counter's knockback and drain stay in its swing", func(t *testing.T) {
+		events := []core.Event{
+			ev("damage", "a", "b"), ev("damage", "b", "a"), ev("knockback", "b", "a"), ev("heal", "b", "b"), ev("attack-hit", "a", "b"),
+		}
+		blow, counters := splitCounters("a", events)
+		check(t, blow, []core.Event{events[0], events[4]})
+		check(t, counters, []counter{{by: "b", events: events[1:4]}})
+	})
+	t.Run("the attacker's own knockback and drain stay in its blow", func(t *testing.T) {
+		events := []core.Event{ev("damage", "a", "b"), ev("knockback", "a", "b"), ev("heal", "a", "a")}
+		blow, counters := splitCounters("a", events)
+		check(t, blow, events)
+		check(t, counters, []counter{})
+	})
 	t.Run("no counter", func(t *testing.T) {
 		events := []core.Event{ev("damage", "a", "b"), ev("retreat", "b", "")}
 		blow, counters := splitCounters("a", events)

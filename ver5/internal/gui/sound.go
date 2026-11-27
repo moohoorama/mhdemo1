@@ -215,6 +215,9 @@ func (g *Game) sfxVol(cue string, vol float64) {
 	if cue == "" || vol <= 0 {
 		return
 	}
+	if g.reelPlaying() && !strings.HasPrefix(cue, "ui-") { // the title's shots are remembered, felt in silence; the menu still clicks
+		return
+	}
 	g.sfxCalls++
 	if sfxTrace != nil && vol < 1 {
 		fmt.Fprintf(sfxTrace, "%d %s %.2f\n", g.ticks, cue, vol)

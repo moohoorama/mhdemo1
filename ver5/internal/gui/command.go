@@ -21,11 +21,13 @@ type order struct {
 	actor      string
 	stage      string // move, menu, sub, target
 	sandbox    *core.Engine
+	preview    string // the skill whose row the pointer is on, its reach shown on the field
 	move       *core.Command
 	sub        string // skill, item
 	skillTab   string
 	pick       core.Command // the chosen action, Target unset
 	moves      []content.Point
+	strike     []content.Point // what the actor strikes from its tentative cell
 	attackFrom map[string]content.Point
 	armed      hoverCell // touch: the cell tapped once, waiting for a second tap
 }
@@ -91,7 +93,7 @@ func (g *Game) cancel() bool {
 			g.selected = ""
 			return true
 		}
-		g.ord.sandbox, g.ord.move, g.ord.stage = nil, nil, "move"
+		g.ord.sandbox, g.ord.move, g.ord.strike, g.ord.stage = nil, nil, nil, "move"
 		g.player.Skip()
 	case "move":
 		g.clearOrder()
@@ -119,6 +121,7 @@ func (g *Game) tentative(x, y int) {
 	a := replay.New(g.S.View(), c.Actor)
 	a.Add(c, r.Events)
 	g.ord.sandbox, g.ord.move, g.ord.stage, g.ord.armed = sb, &c, "menu", hoverCell{}
+	g.ord.strike = sb.Ranges(c.Actor).Strike
 	g.player.Play([]*replay.Action{a}, sb.Observe())
 }
 
@@ -250,10 +253,11 @@ type menuItem struct {
 // entry is an action-menu line with the explanation shown while it is hovered.
 type entry struct {
 	menuItem
-	help string
-	icon string // line icon of a main command
-	note string // right-aligned: › for a sub-list, a cost or a count
-	tip  string // shown beside the panel while the pointer rests on the row, for a row that cannot be used now
+	help  string
+	icon  string // line icon of a main command
+	note  string // right-aligned: › for a sub-list, a cost or a count
+	skill string // the skill a row of the skill list uses
+	tip   string // shown beside the panel while the pointer rests on the row, for a row that cannot be used now
 }
 
 // menuItems is the action menu: actions that are unavailable stay listed, greyed out.
@@ -282,10 +286,10 @@ func (g *Game) menuItems() []entry {
 		attack = fmt.Sprintf("무기로 공격합니다(사거리 %d–%d).\n정해진 상대와 맞붙으면 일기토가 벌어집니다.", lo, hi)
 	}
 	return []entry{
-		{menuItem{"공격", pick("attack")}, attack, "attack", "", ""},
-		{menuItem{"병법", sub("skill")}, "병법치를 써서 병법을 사용합니다.", "skill", "›", ""},
-		{menuItem{"도구", sub("item")}, "군량·병법단 등 도구를 자신이나 인접 부대에 씁니다.", "item", "›", ""},
-		{menuItem{"대기", func() { g.confirm(core.Command{Kind: "wait", Actor: g.ord.actor}) }}, "이번 턴 행동을 마칩니다.", "wait", "", ""},
+		{menuItem{"공격", pick("attack")}, attack, "attack", "", "", ""},
+		{menuItem{"병법", sub("skill")}, "병법치를 써서 병법을 사용합니다.", "skill", "›", "", ""},
+		{menuItem{"도구", sub("item")}, "군량·병법단 등 도구를 자신이나 인접 부대에 씁니다.", "item", "›", "", ""},
+		{menuItem{"대기", func() { g.confirm(core.Command{Kind: "wait", Actor: g.ord.actor}) }}, "이번 턴 행동을 마칩니다.", "wait", "", "", ""},
 	}
 }
 
@@ -326,7 +330,7 @@ func (g *Game) subItems() []entry {
 			if click == nil && u.MP < s.Cost {
 				help = "병법치가 모자랍니다.\n" + help
 			}
-			out = append(out, entry{menuItem: menuItem{s.Name, click}, help: help, note: fmt.Sprint(s.Cost)})
+			out = append(out, entry{menuItem: menuItem{s.Name, click}, help: help, note: fmt.Sprint(s.Cost), skill: id})
 		}
 	case "item":
 		ok := map[string]bool{}
@@ -439,8 +443,8 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 		} else {
 			spec.header = "도구"
 		}
-		tip := ""
-		spec.tipOut = &tip
+		tip, hover := "", -1
+		spec.tipOut, spec.hoverOut = &tip, &hover
 		if tabWidth > 0 {
 			bounds := g.panelBounds()
 			spec.x = max(bounds.Min.X+tabWidth, min(bounds.Max.X-spec.w, spec.x))
@@ -457,13 +461,19 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 			g.drawPanel(dst, tabSpec)
 		}
 		sr := g.drawPanel(dst, spec)
+		g.ord.preview = ""
+		if g.ord.sub == "skill" && hover >= 0 {
+			g.ord.preview = spec.items[hover].skill
+		}
 		if tip != "" {
 			g.tooltip(dst, tip, sr.Max.X+6, sr.Min.Y)
 		}
 	} else {
 		g.subAnim = panelAnim{}
 	}
-	g.label(dst, "우클릭/Esc: 취소", float64(r.Min.X), float64(r.Max.Y+4), 12, muted)
+	if g.ord.stage != "sub" { // the skill and item panels open below the menu, over where it would stand
+		g.label(dst, "우클릭/Esc: 취소", float64(r.Min.X), float64(r.Max.Y+4), 12, muted)
+	}
 	if help != "" && g.ord.stage == "menu" {
 		g.tooltip(dst, help, r.Max.X+6, r.Min.Y)
 	}
@@ -512,6 +522,12 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 				add(content.Point{X: u.X, Y: u.Y}, color.RGBA{240, 70, 50, 150})
 			}
 		}
+	case "sub":
+		if id := g.ord.preview; id != "" {
+			for _, p := range g.skillReach(e, a.ID, id) {
+				add(p, color.RGBA{230, 90, 60, 60})
+			}
+		}
 	case "target":
 		pick := g.ord.pick
 		pick.Actor = a.ID
@@ -530,6 +546,23 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 		}
 	}
 	add(content.Point{X: a.X, Y: a.Y}, color.RGBA{255, 214, 96, 150})
+	return out
+}
+
+// skillReach is the cells a skill picked from the list could be aimed at: the actor's own cell for a self skill.
+func (g *Game) skillReach(e *core.Engine, actor, skill string) []content.Point {
+	if g.S.Data.Skills[skill].Mode == content.ModeSelf {
+		if a := g.unitView(g.view(), actor); a != nil {
+			return []content.Point{{X: a.X, Y: a.Y}}
+		}
+		return nil
+	}
+	var out []content.Point
+	for _, p := range e.ActionCells(core.Command{Kind: "skill", Skill: skill, Actor: actor}) {
+		if g.field.Inside(p.X, p.Y) && g.field.Tile(p.X, p.Y) != '~' {
+			out = append(out, p)
+		}
+	}
 	return out
 }
 
@@ -637,10 +670,20 @@ func (g *Game) rangeMarks(id string, add func(content.Point, color.RGBA)) {
 	}
 }
 
-// rangeBorder is what the unit picked outside an order strikes from where it stands, to ring in red.
+// rangeBorder is what the unit picked, or the unit under orders before it picks an action, strikes from
+// where it stands, to ring in red. The blue fill of an order is where the unit can move.
 func (g *Game) rangeBorder(o core.Observation) []content.Point {
-	if g.busy() || g.ord.actor != "" || o.Phase != "battle" {
+	if g.busy() || o.Phase != "battle" {
 		return nil
+	}
+	if g.ord.actor != "" {
+		switch {
+		case g.ord.stage != "move" && g.ord.stage != "menu":
+			return nil
+		case g.ord.sandbox != nil:
+			return g.ord.strike
+		}
+		return g.ranges(g.ord.actor).Strike
 	}
 	if sel := g.unitView(o, g.selected); sel != nil && sel.HP > 0 {
 		return g.ranges(sel.ID).Strike

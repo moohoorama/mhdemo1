@@ -16,6 +16,9 @@ import (
 // byPrice is the shop tables' first order: the dearest first.
 var byPrice = tableSort{"price", 2}
 
+// gainH is the strip above the picked thing that names the officers a buy would strengthen.
+const gainH = 68
+
 type shopView struct {
 	of   string
 	sell bool
@@ -93,6 +96,10 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 		cols = g.goodsColumns(goodsNumber("count", "보유", func(r *goodsRow) int { return r.count }), goodsNumber("price", "판매가", func(r *goodsRow) int { return r.price }))
 		empty = "팔 물건이 없습니다."
 	}
+	gain := 0
+	if !v.sell {
+		gain = gainH
+	}
 	drawTable(g, dst, &v.list, table[goodsRow]{
 		cols: cols, rowH: 36, headH: 32, size: 15, center: true, empty: empty,
 		dim:      func(r *goodsRow) bool { return !r.ok },
@@ -102,7 +109,11 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 				v.pick, v.n = r.id, 1
 			}
 		},
-	}, rows, image.Rect(left, y+118, right, y+h-272))
+	}, rows, image.Rect(left, y+118, right, y+h-272-gain))
+
+	if !v.sell && picked != nil {
+		g.shopGainStrip(dst, o, picked.id, image.Rect(left, y+h-268-gain, right, y+h-272))
+	}
 
 	// the thing picked, in full, with how many to trade
 	box := image.Rect(left, y+h-264, right, y+h-72)
@@ -178,6 +189,33 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 		verb = fmt.Sprintf("%d개 %s", v.n, verb)
 	}
 	g.overlayActs = append(g.overlayActs, action{verb, true, trade})
+}
+
+// shopGainStrip shows, for equipment on the buy tab, the officers whose stats would rise by wearing it, each
+// ringed in the recommendation green with the reason.
+func (g *Game) shopGainStrip(dst *ebiten.Image, o core.Observation, item string, r image.Rectangle) {
+	if _, ok := g.S.Data.Equipment[item]; !ok || g.S.Settings.NoGuide {
+		return
+	}
+	ups := g.shopAdvice(o, item)
+	if len(ups) == 0 {
+		g.label(dst, "사면 능력이 오르는 동료가 없습니다.", float64(r.Min.X+4), float64(r.Min.Y+gainH/2-10), 13, muted)
+		return
+	}
+	g.label(dst, "사면 오르는 동료", float64(r.Min.X+4), float64(r.Min.Y+2), 13, muted)
+	const face, step = 40, 128
+	x, y := r.Min.X+8, r.Min.Y+20
+	for i, up := range ups {
+		if x+step > r.Max.X {
+			g.label(dst, fmt.Sprintf("외 %d명", len(ups)-i), float64(x), float64(y+12), 13, muted)
+			return
+		}
+		g.portrait(dst, up.Actor, "", float64(x), float64(y), face)
+		recommendationRim(dst, image.Rect(x-3, y-3, x+face+3, y+face+3))
+		g.label(dst, g.name(up.Actor), float64(x+face+8), float64(y+4), 14, ink)
+		g.label(dst, g.equipmentReason(up), float64(x+face+8), float64(y+24), 13, guideGreen[1])
+		x += step
+	}
 }
 
 // itemDesc is what a thing does, equipment or item.

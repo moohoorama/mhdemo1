@@ -15,8 +15,10 @@ import (
 
 const (
 	stepTime        = .28 // seconds per cell while walking
-	knockTime       = .4  // seconds a knocked-back unit slides its cell
-	stagger         = .2  // minimum delay between two actions starting
+	battleMoveRate  = 1.2 // the battlefield's troops walk this many times faster than stepTime
+	battleStepTime  = stepTime / battleMoveRate
+	knockTime       = .4 // seconds a knocked-back unit slides its cell
+	stagger         = .2 // minimum delay between two actions starting
 	shakeTime       = .45
 	shakePx         = 3.0
 	critShake       = 2.8 // a critical blow shakes the target this many times harder
@@ -43,6 +45,8 @@ func facing(du, dv float64) string {
 // replay starts; these fields catch up action by action.
 type unitVis struct {
 	id           string
+	quick        float64 // the motion quickAnim plays this many times its own speed (a duel's sharp blows); others at 1
+	quickAnim    string
 	ally         bool
 	art          *sprite.Art
 	look         string // the class and weapon art was picked for; a change picks it again
@@ -58,6 +62,9 @@ type unitVis struct {
 	charge       float64    // 0..1: how white the sprite is drawn while gathering a critical blow
 	charging     bool       // holds the first attack frame and whitens
 	killed       bool       // a scene actor slain: its colours drain to grey
+	fall         *fallState // a scene actor struck down, going to the ground (scene_melee.go)
+	hops         int        // jumps left of a cheer
+	hopT         float64    // seconds into the current jump
 	grey         float64    // 0..1: how far they have drained
 	dying        float64    // < 0: alive
 	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
@@ -110,7 +117,13 @@ func (u *unitVis) play(anim string) {
 	if _, ok := u.art.Animations[anim]; !ok {
 		anim = "idle"
 	}
-	u.anim, u.animT = anim, 0
+	u.anim, u.animT, u.quick = anim, 0, 0
+}
+
+// playQuick plays anim at k times its own speed.
+func (u *unitVis) playQuick(anim string, k float64) {
+	u.play(anim)
+	u.quick, u.quickAnim = k, u.anim
 }
 func (u *unitVis) rest() string {
 	if !u.actor && u.shownHP*2 <= u.maxHP {
@@ -118,6 +131,9 @@ func (u *unitVis) rest() string {
 	}
 	if _, ok := u.art.Animations[u.pose]; ok && u.actor {
 		return u.pose
+	}
+	if u.actor && u.pose == "pant" { // worn out, on its knees and breathing hard
+		return "exhausted"
 	}
 	return "idle"
 }
@@ -148,6 +164,8 @@ func (u *unitVis) update(dt float64) {
 	} else {
 		if u.frozenRest() {
 			u.animT = 0
+		} else if u.quick > 0 && u.anim == u.quickAnim {
+			u.animT += dt * u.quick
 		} else {
 			u.animT += dt
 		}
@@ -184,6 +202,8 @@ func (u *unitVis) update(dt float64) {
 	if !a.Loop && u.animT >= u.art.Length(u.anim) && u.dying < 0 {
 		u.play(u.rest())
 	}
+	u.advanceFall(dt)
+	u.advanceHop(dt)
 	u.shakeT = math.Max(0, u.shakeT-dt)
 	u.flash = math.Max(0, u.flash-dt*4)
 	u.bar.update(float64(u.shownHP)/float64(max(1, u.maxHP)), dt)
@@ -342,7 +362,7 @@ func (p *Player) Update(dt float64) {
 				ok = ok && p.done[j]
 			}
 			for _, l := range p.actions[i].Trail {
-				ok = ok && p.started[l.Index] >= 0 && p.clock >= p.started[l.Index]+l.Steps*stepTime
+				ok = ok && p.started[l.Index] >= 0 && p.clock >= p.started[l.Index]+l.Steps*battleStepTime
 			}
 			if ok {
 				ready = append(ready, k)
@@ -446,7 +466,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 				}
 				for _, p := range e.Path[1:] {
 					cell := p
-					add(stepTime, func() { g.stepTo(actor, cell) })
+					add(battleStepTime, func() { g.stepTo(actor, cell) })
 				}
 				add(0, func() { actor.play(actor.rest()) })
 			}
@@ -627,16 +647,25 @@ func (g *Game) perform(a *replay.Action) []beat {
 				if x, y, ok := g.areaCenter(e.Amount); ok {
 					look("terrain", x, y, "")
 				}
+				if g.S.Data.States[e.Target].Blaze > 0 { // a fire catches where it was lit and spreads a cell a frame
+					if i > 0 && events[i-1].Kind == "terrain" && g.S.Data.States[events[i-1].Target].Blaze > 0 {
+						break // the first fire of the run spreads them all
+					}
+					var run []core.Event
+					for _, r := range events[i:] {
+						if r.Kind != "terrain" || g.S.Data.States[r.Target].Blaze == 0 {
+							break
+						}
+						run = append(run, r)
+					}
+					g.spreadFire(add, run)
+					break
+				}
 				wait := .4
-				if i > 0 && events[i-1].Kind == "terrain" { // a run of changes comes up together, like a fire taking hold
+				if i > 0 && events[i-1].Kind == "terrain" { // a run of changes comes up together
 					wait = .03
 				}
-				add(wait, func() {
-					if wait > .03 && g.S.Data.States[event.Target].Blaze > 0 { // an event's fire sounds like the big fire spells
-						g.sfx("fire-big")
-					}
-					g.changeLooks(event)
-				})
+				add(wait, func() { g.changeLooks(event) })
 			case "mark":
 				// the marks one spell leaves come up together
 				event, wait := e, .3
@@ -716,17 +745,21 @@ type counter struct {
 // splitCounters separates the counter-attacks (and assists) from an attack's events. A counter is a
 // blow (critical, damage, miss) by someone other than the actor, with the retreats its blows
 // cause; each one is shown as its own swing after the attack lands. A pouch heal goes with the
-// swing that last hurt its eater, though the engine only eats once every blow is in.
+// swing that last hurt its eater, though the engine only eats once every blow is in. A counter's
+// knockback is part of its swing, so the pushed unit is not moved by the blow it has not yet received. The life a counter drains goes with its swing too.
 func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) {
 	blow, counters := []core.Event{}, []counter{}
 	struck := map[string]string{}
 	hurtBy := map[string]int{} // 1 + the counter whose swing last hurt each unit, 0 for the attack's own
 	for _, e := range events {
-		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double" || e.Kind == "counter-spell")
+		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double" || e.Kind == "counter-spell" || e.Kind == "knockback")
 		switch {
 		case back && (len(counters) == 0 || counters[len(counters)-1].by != e.Actor):
 			counters = append(counters, counter{by: e.Actor, events: []core.Event{e}})
 		case back || e.Kind == "retreat" && len(counters) > 0 && struck[e.Actor] == counters[len(counters)-1].by:
+			k := &counters[len(counters)-1]
+			k.events = append(k.events, e)
+		case e.Kind == "heal" && e.Actor != actor && len(counters) > 0 && counters[len(counters)-1].by == e.Actor:
 			k := &counters[len(counters)-1]
 			k.events = append(k.events, e)
 		case e.Kind == "pouch-heal" && hurtBy[e.Actor] > 0:
@@ -792,7 +825,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	}
 	var hits, heals []core.Event
 	for _, e := range events {
-		if e.Kind == "pouch-heal" {
+		if e.Kind == "pouch-heal" || e.Kind == "heal" && e.Actor == e.Target {
 			heals = append(heals, e)
 		} else {
 			hits = append(hits, e)
@@ -965,6 +998,7 @@ func (g *Game) stepTo(u *unitVis, p content.Point) {
 		g.sfx(cue)
 	}
 	g.walkTo(u, float64(p.X), float64(p.Y))
+	u.walk.dur = battleStepTime
 }
 
 // stepCue is the sound of u's step onto cell p: a footstep or hoof beat, but the boat's water sound from water to water,
@@ -1135,4 +1169,33 @@ func (g *Game) showStrike(attacker *unitVis, events []core.Event) {
 			}
 		}
 	}
+}
+
+// fireStep is how long a fire takes to catch the next cell.
+const fireStep = 1.0 / 60
+
+// spreadFire adds the beats of a run of fires the events light: one cell catches per frame, outward from where the
+// officers stand who set it, and the replay goes on once it has taken them all.
+func (g *Game) spreadFire(add func(float64, func()), run []core.Event) {
+	var cells []litCell
+	for _, e := range run {
+		look := g.S.Data.States[e.Target].Look
+		for _, c := range g.areaCells(e.Amount) {
+			cells = append(cells, litCell{c, look})
+		}
+	}
+	var order []litCell
+	for k := range cells {
+		add(fireStep, func() {
+			if k == 0 {
+				g.sfx("fire-big")
+				order = slices.Clone(cells)
+				g.spreadOrder(order)
+			}
+			if g.player.looks != nil && k < len(order) {
+				g.setLook(order[k].at, order[k].look)
+			}
+		})
+	}
+	add(.4, func() {})
 }

@@ -109,3 +109,39 @@ func TestEquipmentAdviceTracksSharedStock(t *testing.T) {
 	g.S.Settings.NoGuide = true
 	assert.Empty(t, reason("liubei"))
 }
+
+func TestShopAdviceNamesWhoGainsAndHonoursNoGuide(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	start := core.New(d, 1)
+	for i := 0; i < 200 && start.Observe().Dialogue.Kind != "battle"; i++ {
+		start.Apply(core.Command{Kind: "next"})
+	}
+	snap := start.Snapshot()
+	require.NotEmpty(t, snap.Characters)
+	snap.Characters[0].Equipment = map[string]string{}
+	snap.Warehouse = map[string]int{}
+	e, err := core.Restore(d, snap)
+	require.NoError(t, err)
+	s := &session.Session{Data: d, Engine: e}
+	g := &Game{S: s}
+	o := e.Observe()
+	item := ""
+	for _, id := range sorted(d.Equipment) {
+		if ups := e.EquipmentUpgradesFor(id); len(ups) > 0 {
+			item = id
+			break
+		}
+	}
+	require.NotEmpty(t, item, "some piece strengthens an unarmed officer")
+	t.Run("lists the officers a purchase would improve", func(t *testing.T) {
+		ups := g.shopAdvice(o, item)
+		require.NotEmpty(t, ups)
+		assert.NotEmpty(t, g.equipmentReason(ups[0]))
+		assert.Equal(t, item, g.shopGain.item)
+	})
+	t.Run("the no-guide setting hides it", func(t *testing.T) {
+		g.S.Settings.NoGuide = true
+		assert.Empty(t, g.shopAdvice(o, item))
+	})
+}

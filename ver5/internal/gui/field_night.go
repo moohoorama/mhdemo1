@@ -34,8 +34,11 @@ type nightLayers struct {
 	props  []scenemap.Light // the lights the map's objects carry (scenemap.Attachment), canvas points
 	color  color.NRGBA      // the dark's colour; nightColor when unset (a scene's dusk or dawn is lighter)
 	flat   bool             // an even wash with no lights cut out (a scene remembered)
-	dark   *ebiten.Image    // canvas-size scratch
-	light  *ebiten.Image    // a soft disc: opaque at the centre, clear at the rim
+	// torchless: the units carry no light of their own; extra lights the frame's own (burning arrows), canvas points
+	torchless bool
+	extra     []scenemap.Light
+	dark      *ebiten.Image // canvas-size scratch
+	light     *ebiten.Image // a soft disc: opaque at the centre, clear at the rim
 }
 
 // nightFire is a scene fire at fractional cells; a big fire is a house or a quarter burning, seen from afar.
@@ -109,8 +112,11 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		}
 		lamps = append(lamps, at(p.u, p.v, f.Lift(int(p.u), int(p.v)), r, true, p.big))
 	}
+	for _, l := range n.extra {
+		lamps = append(lamps, lamp{l.X, l.Y, l.Radius, l.Glow, false})
+	}
 	for _, u := range units {
-		if !u.gone && u.visible() {
+		if !n.torchless && !u.gone && u.visible() {
 			lamps = append(lamps, at(u.u, u.v, u.lift+f.groundLift(u.u, u.v), unitLight, false, false))
 		}
 	}

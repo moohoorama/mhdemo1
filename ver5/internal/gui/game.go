@@ -133,6 +133,7 @@ type Game struct {
 	threats                   map[string]core.Ranges
 	itemEffects               map[itemEffectKey]itemEffect
 	gearAdvice                equipmentAdviceCache
+	shopGain                  shopAdviceCache
 	equip                     equipState
 	waypoints                 waypointList
 	chron                     chronicleView
@@ -147,6 +148,9 @@ type Game struct {
 	hudInfo                   image.Rectangle // the info panel at the bottom right as last drawn
 	hudFolded, hudAnimated    bool            // the panel (or the right corner panel) shows its head only; it has been drawn before
 	leftFolded                bool            // the left corner panel shows its head only
+	infoFolded                bool            // the battle's info panel at the bottom right shows its tab row only
+	hudIdle, hudModeSet       bool            // the folds are those of the idle (not commanding) battle, and have been set for a mode
+	hudApplied                [3]bool         // the folds last loaded from or saved to the settings: left, upper right, lower right
 	party                     partyView       // the party window's tab and what it shows
 	hudH, hudAlpha, hudAnimAt float64         // its drawn height and opacity, and when they last eased
 	hudLayer                  *ebiten.Image   // where it is drawn while faded
@@ -191,6 +195,7 @@ type Game struct {
 	tableDrag                 *tableDrag // the press held on a table (table.go)
 	flinging                  *tableList // the list a release left gliding (table.go updateFlings)
 	scene                     *scene
+	reel                      *titleReel // the title screen's backdrop of story shots (title_reel.go)
 	tour                      *tourWalk    // the walk round the format 2 scene maps (tour.go, cmd/_town2)
 	world                     *worldWalk   // the walk over the world map (worldmap.go, cmd/_cnmap)
 	explore                   *exploreWalk // the story's walk between battles (explore.go)
@@ -245,6 +250,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	g.player.g = g
 	g.names = nameIndex(s.Data)
 	g.scenes, _ = scenes.Load(filepath.Join(filepath.Dir(fontPath), "..", "scenes"))
+	g.loadTitleReel(filepath.Join(filepath.Dir(fontPath), "..", "scenes", "title", "reel.json"))
 	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"), source, s.Data)
 	if err != nil {
 		return nil, err
@@ -947,7 +953,7 @@ func (g *Game) keys() {
 		}
 		g.player.Skip()
 	}
-	if pressed(ebiten.KeyF) {
+	if pressed(ebiten.KeyF) && (g.scene == nil || g.walkSpeedIsFree()) {
 		g.setSpeed(nextSpeed[g.speed])
 		g.toast(fmt.Sprintf("재생 속도 ×%d", g.speed), gold)
 	}
@@ -1121,66 +1127,54 @@ func (g *Game) screenshot(dst *ebiten.Image) {
 	}
 }
 
-// title is the start screen: the dragon pattern drifting slowly, darker toward the edges,
-// under the menu.
+// title is the start screen: the title reel's story shots playing under a veil that deepens toward the menu on
+// the right (the drifting dragon pattern when there is no reel).
 func (g *Game) title(dst *ebiten.Image) {
-	drift := g.uiSeconds * 7
-	g.drawDragon(dst, 0, 0, float64(uiW), float64(uiH), drift, drift, dragonTeal)
-	for i := float32(1); i <= 20; i++ {
-		t := i * 12
-		shade := color.NRGBA{A: 8}
-		rect(dst, 0, 0, float32(uiW), t, shade)
-		rect(dst, 0, float32(uiH)-t, float32(uiW), t, shade)
-		rect(dst, 0, 0, t, float32(uiH), shade)
-		rect(dst, float32(uiW)-t, 0, t, float32(uiH), shade)
+	if g.reelPlaying() {
+		g.drawTitleReel(dst)
+	} else {
+		drift := g.uiSeconds * 7
+		g.drawDragon(dst, 0, 0, float64(uiW), float64(uiH), drift, drift, dragonTeal)
+		for i := float32(1); i <= 20; i++ {
+			t := i * 12
+			shade := color.NRGBA{A: 8}
+			rect(dst, 0, 0, float32(uiW), t, shade)
+			rect(dst, 0, float32(uiH)-t, float32(uiW), t, shade)
+			rect(dst, 0, 0, t, float32(uiH), shade)
+			rect(dst, float32(uiW)-t, 0, t, float32(uiH), shade)
+		}
 	}
 	g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, g.titleMenu)
 }
 
-// titleCast is the three officers the title shows: the starting roster, then those who join in story order.
-func (g *Game) titleCast() []string {
-	d := g.S.Data
-	cast := slices.Clone(d.Campaign.Roster)
-	for _, c := range d.Chapters {
-		for _, id := range append(slices.Clone(c.Nodes), c.Events...) {
-			if n := d.Node(id); n.Kind == "join" && !slices.Contains(cast, n.Character) {
-				cast = append(cast, n.Character)
-			}
-		}
-	}
-	return cast[:min(3, len(cast))]
-}
-
-// titleMenu is the title screen's content, laid out on the Width×Height design.
+// titleMenu is the title screen's content, laid out on the Width×Height design: the title and the menu on the right.
 func (g *Game) titleMenu(dst *ebiten.Image) {
-	g.label(dst, g.S.Data.Title, 96, 70, 64, gold)
-	for i, id := range g.titleCast() {
-		g.portrait(dst, id, "", float64(650+i*190), float64(205+i%2*50), 170)
+	cont := menuItem{label: "이어하기"}
+	if slot, ok := g.S.Store.Latest(); ok {
+		cont.click = func() { g.request(session.Request{Op: "load", Slot: slot}) }
 	}
-	items := []menuItem{{"새로 시작", func() {
+	items := []menuItem{cont, {"시작하기", func() {
 		if len(g.S.Data.Rules.Difficulties) == 0 {
 			g.request(session.Request{Op: "new", Seed: g.seed})
 			return
 		}
 		g.jumpNode = ""
 		g.openOverlay("difficulty")
-	}}, {"장면 이동", func() { g.waypoints = waypointList{}; g.openOverlay("waypoints") }}}
-	cont := menuItem{label: "이어하기"}
-	if slot, ok := g.S.Store.Latest(); ok {
-		cont.click = func() { g.request(session.Request{Op: "load", Slot: slot}) }
-	}
-	items = append(items[:1], append([]menuItem{cont}, items[1:]...)...)
-	items = append(items, menuItem{"불러오기", func() { g.openOverlay("load") }}, menuItem{"지난 이야기", func() { g.openOverlay("chronicle") }})
+	}}, {"불러오기", func() { g.openOverlay("load") }},
+		{"장면 이동", func() { g.waypoints = waypointList{}; g.openOverlay("waypoints") }},
+		{"지난 이야기", func() { g.openOverlay("chronicle") }}}
 	if g.Debug {
 		items = append(items, menuItem{"일기토", func() { _ = g.OpenDuel("", "", true) }},
 			menuItem{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }})
 	}
 	items = append(items, menuItem{"설정", func() { g.openOverlay("settings") }}, menuItem{"종료", func() { g.request(session.Request{Op: "quit"}) }})
-	r := image.Rect(96, 290, 420, 290+54+len(items)*56)
-	g.window(dst, r)
+	const left, right, rowH = Width - 400, Width - 96, 52
+	top := max(250, Height-90-len(items)*rowH)
+	g.label(dst, g.S.Data.Title, left, float64(top-150), 60, gold)
 	for i, it := range items {
-		g.btn(dst, image.Rect(r.Min.X+28, r.Min.Y+30+i*56, r.Max.X-28, r.Min.Y+30+i*56+44), it.label, it.click)
+		g.btn(dst, image.Rect(left, top+i*rowH, right, top+i*rowH+42), it.label, it.click)
 	}
+	g.reelPicker(dst)
 }
 
 func (g *Game) play(dst *ebiten.Image) {
@@ -1362,6 +1356,7 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 		rect(dst, float32(float64(uiW)/2-w/2-30), 356, float32(w+60), 2, gold)
 		g.label(dst, g.banner, float64(uiW/2)-w/2, 308, 30, gold)
 	}
+	g.syncHudFolds(o)
 	if o.Phase == "deployment" {
 		g.drawDeployment(dst, o)
 		g.messages(dst)

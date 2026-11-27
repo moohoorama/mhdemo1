@@ -41,6 +41,7 @@ func demoSceneFile(d *Demo) error {
 		return fmt.Errorf("no scene %q with a known map in %s", id, path)
 	}
 	def.ID = id
+	d.g.reel = nil // the title reel would take the stage back on the next frame
 	d.g.openScene(def)
 	d.g.zoomFrom, d.g.zoomTo = d.g.zoom, d.g.zoom
 	d.replace = true

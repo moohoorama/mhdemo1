@@ -37,7 +37,7 @@ func timelineEnd(entries []timedFn) float64 {
 	for _, e := range entries {
 		end = max(end, e.at)
 	}
-	return end + stepTime
+	return end + battleStepTime
 }
 
 // walkTimeline has a unit walk a path cell by cell from the moment start, then stand at rest turned
@@ -49,9 +49,9 @@ func (g *Game) walkTimeline(id string, path []content.Point, facing string, star
 	var out []timedFn
 	for i, cell := range path[1:] {
 		cell := cell
-		out = append(out, timedFn{start + float64(i)*stepTime, g.onUnit(id, func(v *unitVis) { g.stepTo(v, cell) })})
+		out = append(out, timedFn{start + float64(i)*battleStepTime, g.onUnit(id, func(v *unitVis) { g.stepTo(v, cell) })})
 	}
-	out = append(out, timedFn{start + float64(len(path)-1)*stepTime, g.onUnit(id, func(v *unitVis) {
+	out = append(out, timedFn{start + float64(len(path)-1)*battleStepTime, g.onUnit(id, func(v *unitVis) {
 		if facing != "" {
 			v.dir = facing
 		}
@@ -122,7 +122,7 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 			switch st.Kind {
 			case "move":
 				entries = append(entries, g.walkTimeline(st.Unit, st.Path, st.Facing, total)...)
-				length = float64(max(0, len(st.Path)-1)) * stepTime
+				length = float64(max(0, len(st.Path)-1)) * battleStepTime
 				if st.NoFocus {
 					entries = append(entries, timedFn{total, g.onUnit(st.Unit, func(v *unitVis) { v.noFocus = true })},
 						timedFn{total + length, g.onUnit(st.Unit, func(v *unitVis) { v.noFocus = false })})
@@ -145,7 +145,7 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 					timedFn{total + length, func() { g.dropSpeech() }})
 			case "leave":
 				entries = append(entries, g.walkTimeline(st.Unit, st.Path, "", total)...)
-				walked := float64(max(0, len(st.Path)-1)) * stepTime
+				walked := float64(max(0, len(st.Path)-1)) * battleStepTime
 				dir := image.Point{}
 				if n := len(st.Path); n > 1 {
 					dir = image.Pt(st.Path[n-1].X-st.Path[n-2].X, st.Path[n-1].Y-st.Path[n-2].Y)

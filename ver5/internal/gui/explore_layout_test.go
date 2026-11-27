@@ -205,3 +205,105 @@ func TestExploreExitPlatesOnBuildings(t *testing.T) {
 		}
 	}
 }
+
+// chatterSeconds is how long the murmur of every area is played out: long enough for each pair's beats to drift
+// through every offset.
+const chatterSeconds = 120
+
+// chatterTick is the step the murmur is played in.
+const chatterTick = 1.0 / 30
+
+// TestExploreChatterBubblesDoNotOverlap plays out the murmur (Chatter) of every area of every walk for two minutes
+// as the scene screen would, with the balloons laid where they stand on the screen, and fails when two people who
+// can stand there at once have balloons up together that cover each other, or when someone is kept from speaking by
+// the others.
+func TestExploreChatterBubblesDoNotOverlap(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "hudpanel"})
+	require.NoError(t, err)
+	g := d.g
+	g.fit(2400, 1080)
+	g.S.Settings.UIScale = 160
+	for _, name := range slices.Sorted(maps.Keys(g.S.Data.Explores)) {
+		x := g.S.Data.Explores[name]
+		for _, aid := range slices.Sorted(maps.Keys(x.Areas)) {
+			a := x.Areas[aid]
+			if art := g.assets.Maps[a.Map]; art == nil || art.SceneMap == nil {
+				continue
+			}
+			t.Run(name+"/"+aid, func(t *testing.T) {
+				for _, f := range chatterOverlaps(g, a) {
+					t.Error(f)
+				}
+			})
+		}
+	}
+}
+
+// chatterOverlaps plays the area's murmur and lists the balloons that overlap in time and place.
+func chatterOverlaps(g *Game, a *content.ExploreArea) []string {
+	def := &scenes.Scene{ID: "check", Map: a.Map, Cast: map[string]scenes.Actor{}}
+	keys := slices.Sorted(maps.Keys(a.People))
+	ids := map[string]string{}
+	for _, k := range keys {
+		p := a.People[k]
+		id := content.PersonName(k)
+		if strings.Contains(k, "#") {
+			id = k
+		}
+		ids[k] = id
+		u, v := smallTile(p.At).cell()
+		def.Cast[id] = scenes.Actor{At: []float64{u, v}, Face: p.Face, Faction: p.Faction, Sprite: p.Sprite, Pose: p.Pose}
+	}
+	g.openScene(def)
+	g.zoom = 2
+	if a.Zoom >= 1 {
+		g.zoom = a.Zoom
+	}
+	type speaker struct {
+		key  string
+		line *chatterLine
+		till float64
+		rect image.Rectangle
+		n    int
+	}
+	var talkers []*speaker
+	for _, k := range keys {
+		if p := a.People[k]; p.Chatter != "" {
+			talkers = append(talkers, &speaker{key: k, line: &chatterLine{id: ids[k], lines: strings.Split(p.Chatter, "|"), t: chatStart(scenes.Step{}, len(talkers))}})
+		}
+	}
+	var found []string
+	reported := map[string]bool{}
+	apart := func(p, q *speaker) bool { return p == q || !together(a.People[p.key], a.People[q.key], p.key, q.key) }
+	for now := 0.0; now < chatterSeconds; now += chatterTick {
+		for _, s := range talkers {
+			if s.till <= now {
+				s.till = 0
+			}
+			if s.line.t -= chatterTick; s.line.t > 0 || s.till > 0 {
+				continue
+			}
+			v := g.scene.actors[ids[s.key]]
+			clear := func(text string) bool {
+				r := g.bubbleRect(v, text)
+				return !slices.ContainsFunc(talkers, func(o *speaker) bool { return !apart(s, o) && o.till > 0 && o.rect.Overlaps(r) })
+			}
+			if text, spoke := s.line.speak(clear); spoke {
+				s.till, s.rect = now+chatterLife, g.bubbleRect(v, text)
+				s.n++
+				for _, o := range talkers {
+					if !apart(s, o) && o.till > 0 && o.rect.Overlaps(s.rect) && !reported[s.key+o.key] && !reported[o.key+s.key] {
+						reported[s.key+o.key] = true
+						found = append(found, fmt.Sprintf("at %.1fs the balloons of %s %v and %s %v cover each other", now, s.key, a.People[s.key].At, o.key, a.People[o.key].At))
+					}
+				}
+			}
+		}
+	}
+	for _, s := range talkers {
+		if float64(s.n) < chatterSeconds/chatterLife/8 {
+			found = append(found, fmt.Sprintf("%s %v spoke only %d times in %d seconds", s.key, a.People[s.key].At, s.n, chatterSeconds))
+		}
+	}
+	return found
+}

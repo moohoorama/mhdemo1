@@ -15,9 +15,9 @@ import (
 // small tile along u and v where the map rules (scenemap.Walkable) let him, round whoever stands in the way.
 
 const (
-	walkFade = .35 // seconds the screen goes black through an exit
-	markTime = .6  // seconds the click ring spreads on the ground
-	heroStep = 2.0 // the hero's walking speed: a scene walk's step is a game cell, a small step half one
+	walkFade = .35       // seconds the screen goes black through an exit
+	markTime = .6        // seconds the click ring spreads on the ground
+	heroStep = 2.0 * 1.2 // the hero's walking speed: a scene walk's step is a game cell, a small step half one
 )
 
 // smallTile is a small tile (U, V): half a game cell. Its centre is game cell point ((U - .5) / 2, (V - .5) / 2).

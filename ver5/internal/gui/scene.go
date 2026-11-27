@@ -37,6 +37,7 @@ type scene struct {
 	paths     map[string][][2]float64
 	speed     map[string]float64
 	exits     map[string]bool
+	ground    *exitGround // where an actor leaving the stage can walk to the front edge
 	plays     map[string]string
 	emotes    map[string]*emote
 	looks     map[string]*look
@@ -62,6 +63,8 @@ type scene struct {
 	stride    map[string]float64     // cells walked since each walker's last footfall sounded
 	back      map[string]string      // walkers backing away, with the way they keep facing
 	strikes   []*sceneStrike         // Strike steps playing out
+	brawls    map[string]*brawl      // actors trading blows in the background of a melee (scene_melee.go)
+	stuck     []stuckArrow           // arrows that came down and stand in the ground
 	swing     map[string]string      // riders dealing a blow on the move: the motion the walk must not cut short
 	dust      []dustPuff             // dust kicked up by targets driven back by a blow
 	arrows    []*sceneArrow          // arrows loosed by Play steps with an Arrow
@@ -78,6 +81,7 @@ type patrol struct {
 }
 
 type chatterLine struct {
+	id    string
 	lines []string
 	t     float64
 	i     int
@@ -124,17 +128,20 @@ type look struct {
 }
 
 const (
-	emoteTime = 1.4
-	lookTime  = .9
-	camEase   = 4.0
-	fadeTime  = .5
-	chatEvery = 2.6
+	emoteTime   = 1.4
+	lookTime    = .9
+	camEase     = 4.0
+	fadeTime    = .5
+	chatterLife = 2.4 // seconds a murmured line stays up
+	chatPeriod  = 6.0 // from the start of one line of an actor to the start of its next: up chatterLife, silent the rest
+	chatSlot    = 1.5 // between the starts of two neighbouring actors' turns
+	chatSlots   = chatPeriod / chatSlot
 )
 
 // sceneZoom and sceneSpeed are fixed in a story scene; only the walk lets the player change them.
 const (
 	sceneZoom  = 2
-	sceneSpeed = 1.5
+	sceneSpeed = 1
 )
 
 // enterScene sets up the scene of a dialogue node; false when the node has none.
@@ -181,6 +188,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{},
 		free: map[string]bool{}, stride: map[string]float64{}, back: map[string]string{}, swing: map[string]string{}}
 	s.base = def
+	s.ground = newExitGround(art, g.assets.SceneRules)
 	g.scene = s
 	for key, a := range def.Cast {
 		if v := g.castActor(key, a); v != nil {
@@ -234,11 +242,16 @@ func (g *Game) castCentre() (float64, float64) {
 // the dialogue scroll.
 func (g *Game) sceneCam() (float64, float64) {
 	x, y := g.field.Center(g.scene.camU, g.scene.camV)
+	if g.reelPlaying() {
+		dx, dy := g.reelOffset()
+		x, y = x+dx, y+dy
+	}
 	return x, y - 20
 }
 
 // setSceneTime darkens or tints the scene: night is the battle maps' night, dusk and dawn a lighter wash,
-// memory an even faded brown for a scene remembered.
+// memory an even faded brown for a scene remembered, deepnight a darker night where nobody carries a torch and only
+// the fires show the people.
 func (g *Game) setSceneTime(t string) {
 	if g.scene != nil {
 		g.scene.tod = t
@@ -246,8 +259,9 @@ func (g *Game) setSceneTime(t string) {
 	f := g.field
 	f.setNight(t != "", nil)
 	f.night.color = map[string]color.NRGBA{"night": nightColor, "dusk": {R: 70, G: 28, B: 12, A: 95}, "dawn": {R: 30, G: 40, B: 80, A: 85},
-		"memory": {R: 112, G: 100, B: 84, A: 165}}[t]
+		"memory": {R: 112, G: 100, B: 84, A: 165}, "deepnight": {R: 5, G: 8, B: 24, A: 222}}[t]
 	f.night.flat = t == "memory"
+	f.night.torchless = t == "deepnight"
 }
 
 // actorArt is the sprite a cast member stands in: the cast's own pick (any sprite id: extras, soldiers, or a
@@ -294,12 +308,15 @@ func (g *Game) updateScene(dt float64) {
 		} else {
 			v.update(dt * k)
 		}
+		if v.fallen() { // struck down: the rest of its way is not walked
+			s.paths[key] = nil
+		}
 		if p := s.paths[key]; v.walk == nil && len(p) > 0 {
 			g.sceneFootfall(key, v, p[0])
-			anim, at := v.anim, v.animT
+			anim, at, quick := v.anim, v.animT, v.quick
 			g.walkTo(v, p[0][0], p[0][1])
 			if swinging = s.swing[key] != "" && anim == s.swing[key]; swinging {
-				v.anim, v.animT = anim, at
+				v.anim, v.animT, v.quick = anim, at, quick
 			}
 			if s.swing[key] != "" {
 				v.walk.dur = stepTime / math.Max(1, s.speed[key])
@@ -321,18 +338,27 @@ func (g *Game) updateScene(dt float64) {
 			if pt := s.patrol[key]; pt != nil {
 				s.paths[key] = scenePath(v.u, v.v, pt.ends[pt.next][0], pt.ends[pt.next][1])
 				pt.next = 1 - pt.next
-			} else if v.anim == "walk" && v.leave == nil {
+			} else if v.anim == "walk" && v.leave == nil && !s.exits[key] {
 				v.play(v.rest())
 			}
-			if s.exits[key] { // walks on past the end of its path and fades out, like a unit leaving a battle
-				s.exits[key] = false
-				d := sceneStep[v.dir]
-				v.play("walk")
-				v.leave = &walkState{fu: v.u, fv: v.v, tu: v.u + d[0]*leaveCells, tv: v.v + d[1]*leaveCells}
+			route := [][2]float64(nil)
+			if s.exits[key] { // walks to the front edge, on past it and fades out, like a unit leaving a battle
+				route, _ = s.ground.route([2]float64{v.u, v.v}, v.dir, s.crowded(key))
 			}
-			delete(s.speed, key)
-			delete(s.stride, key)
-			delete(s.back, key)
+			if len(route) > 0 {
+				s.paths[key] = route
+				delete(s.back, key)
+			} else {
+				if s.exits[key] {
+					s.exits[key] = false
+					d := sceneStep[v.dir]
+					v.play("walk")
+					v.leave = &walkState{fu: v.u, fv: v.v, tu: v.u + d[0]*leaveCells, tv: v.v + d[1]*leaveCells}
+				}
+				delete(s.speed, key)
+				delete(s.stride, key)
+				delete(s.back, key)
+			}
 		}
 	}
 	for key, l := range s.looks {
@@ -376,11 +402,16 @@ func (g *Game) updateScene(dt float64) {
 	}
 	for key, c := range s.chatter {
 		if c.t -= dt; c.t <= 0 && s.emotes[key] == nil && !s.actors[key].gone {
-			if text := c.lines[c.i%len(c.lines)]; text != "" {
-				s.emotes[key] = &emote{text: text, life: emoteTime + .4}
+			v := s.actors[key]
+			clear := func(text string) bool {
+				r := g.bubbleRect(v, text)
+				return !slices.ContainsFunc(slices.Collect(maps.Keys(s.emotes)), func(o string) bool {
+					return s.actors[o] != nil && !s.actors[o].gone && g.bubbleRect(s.actors[o], s.emotes[o].text).Overlaps(r)
+				})
 			}
-			c.i++
-			c.t = chatEvery + float64((len(key)*13+c.i*7)%10)/10
+			if text, spoke := c.speak(clear); spoke {
+				s.emotes[key] = &emote{text: text, life: chatterLife}
+			}
 		}
 	}
 	if a := s.actors[s.follow]; a != nil {
@@ -389,13 +420,18 @@ func (g *Game) updateScene(dt float64) {
 	}
 	if g.show == nil { // the flood frames its own shots
 		tx, ty := g.sceneCam()
-		if len(s.def.Nodes) > 0 { // a story scene, not a walk the hero leads
-			tx, ty = g.keepInView(tx, ty)
+		if g.reelPlaying() { // the title's shots move their camera themselves (a followed stand-in): no lag behind it
+			g.camX, g.camY = tx, ty
+		} else {
+			if len(s.def.Nodes) > 0 { // a story scene, not a walk the hero leads
+				tx, ty = g.keepInView(tx, ty)
+			}
+			g.panCamera(tx, ty, dt, len(s.def.Nodes) > 0)
 		}
-		g.panCamera(tx, ty, dt, len(s.def.Nodes) > 0)
 	}
 	g.updateShot(dt)
 	g.updateStrikes(dt)
+	g.updateBrawls(dt)
 	g.updateArrows(dt)
 	if !g.sceneBusy() {
 		return
@@ -552,6 +588,7 @@ func (g *Game) startStep(st scenes.Step) {
 	if len(st.Enter) == 2 || len(st.Move) == 2 || st.Exit {
 		g.walkStep(v, st)
 	}
+	g.meleeStep(v, st)
 	if st.Stop {
 		s.paths[v.id] = nil
 		delete(s.free, v.id)
@@ -572,14 +609,14 @@ func (g *Game) startStep(st scenes.Step) {
 		}
 		v.dir, s.looks[st.Actor], s.held[st.Actor] = st.Look, &look{back: back, t: lookTime}, true
 	}
-	if anim := motion(v.art, st.Play); anim != "" && s.tied[st.Actor] == nil {
-		v.play(anim)
+	if anim := motion(v.art, st.Play); anim != "" && s.tied[st.Actor] == nil && !v.fallen() {
+		v.playQuick(anim, max(1, st.Tempo))
 		g.sfxAtCell(g.sceneMotionCue(v, anim), v.u, v.v)
 		if !v.art.Animations[anim].Loop {
 			s.plays[v.id] = anim
 		}
 		if len(st.Arrow) == 2 {
-			g.looseArrow(v, anim, st.Arrow[0], st.Arrow[1])
+			g.looseArrow(v, anim, st.Arrow[0], st.Arrow[1], st.FireArrow)
 		}
 	}
 	if st.Emote != "" {
@@ -606,7 +643,7 @@ func (g *Game) startStep(st scenes.Step) {
 	case "-":
 		delete(s.chatter, v.id)
 	default:
-		s.chatter[v.id] = &chatterLine{lines: strings.Split(st.Chatter, "|"), t: chatStart(st, v.id)}
+		s.chatter[v.id] = &chatterLine{id: v.id, lines: strings.Split(st.Chatter, "|"), t: chatStart(st, len(s.chatter))}
 	}
 }
 
@@ -629,8 +666,8 @@ func (g *Game) stageStep(st scenes.Step) {
 	if st.Effect != "" && g.field != nil {
 		g.field.night.fires = g.field.night.fires[:0]
 		for _, e := range s.effects {
-			if e.kind == "fire" || e.kind == "smallfire" || e.kind == "bigfire" {
-				g.field.night.fires = append(g.field.night.fires, nightFire{e.u, e.v, e.kind == "bigfire"})
+			if e.kind == "fire" || e.kind == "smallfire" || e.kind == "bigfire" || e.kind == "blaze" {
+				g.field.night.fires = append(g.field.night.fires, nightFire{e.u, e.v, e.kind == "bigfire" || e.kind == "blaze"})
 			}
 		}
 	}
@@ -720,6 +757,18 @@ func (g *Game) tie(key string, bound bool) {
 	}
 }
 
+// crowded tells whether another actor stands on a cell, for a route that keeps clear of the others.
+func (s *scene) crowded(key string) func(u, v float64) bool {
+	return func(u, v float64) bool {
+		for k, o := range s.actors {
+			if k != key && !o.gone && o.leave == nil && math.Hypot(o.u-u, o.v-v) < .6 {
+				return true
+			}
+		}
+		return false
+	}
+}
+
 // sceneStep is the map step of a facing, for an actor walking on past the end of its path.
 var sceneStep = map[string][2]float64{"SE": {1, 0}, "SW": {0, 1}, "NW": {-1, 0}, "NE": {0, -1},
 	"E": {.7, -.7}, "S": {.7, .7}, "W": {-.7, .7}, "N": {-.7, -.7}}
@@ -731,6 +780,8 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 		v.u, v.v, v.gone, v.walk, v.leave, v.arriving = st.Enter[0], st.Enter[1], false, nil, nil, leaveTime
 		v.lift = g.field.Lift(int(v.u), int(v.v))
 	}
+	// a walk backing away keeps the way it faced (Back)
+	facing := v.dir
 	if len(st.Move) == 2 && st.Ease != "" { // one stroke straight there, at its own pace
 		delete(s.patrol, v.id)
 		tu, tv := st.Move[0], st.Move[1]
@@ -739,10 +790,10 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 			speed = 1
 		}
 		g.sceneFootfall(v.id, v, [2]float64{tu, tv})
-		anim, at := v.anim, v.animT
+		anim, at, quick := v.anim, v.animT, v.quick
 		g.walkTo(v, tu, tv)
 		if s.swing[v.id] != "" && anim == s.swing[v.id] { // a blow under way plays on
-			v.anim, v.animT = anim, at
+			v.anim, v.animT, v.quick = anim, at, quick
 		}
 		v.walk.dur = math.Max(.01, math.Hypot(tu-v.u, tv-v.v)*stepTime/speed)
 		switch st.Ease {
@@ -768,7 +819,10 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 	}
 	s.exits[v.id] = st.Exit
 	if st.Back && len(st.Move) == 2 {
-		s.back[v.id] = v.dir
+		v.dir = facing
+		s.back[v.id] = facing
+	} else if len(st.Move) == 2 { // a walk of its own faces the way it goes again
+		delete(s.back, v.id)
 	}
 	if s.free == nil {
 		s.free = map[string]bool{}
@@ -974,6 +1028,13 @@ func (g *Game) addressee(name string) string {
 
 // drawScene draws the scene map and its actors, the speakers' bubbles and emotes; the caller darkens it by the fade.
 func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
+	g.drawSceneMap(dst, speakers)
+	g.drawBalloons(dst, speakers)
+}
+
+// drawSceneMap draws the scene map and its actors, props and effects, without the balloons: the walk draws its
+// name plates before them, so that no plate covers a balloon.
+func (g *Game) drawSceneMap(dst *ebiten.Image, speakers []string) {
 	s := g.scene
 	actors := make([]*unitVis, 0, len(s.actors))
 	for _, key := range slices.Sorted(maps.Keys(s.actors)) {
@@ -1012,11 +1073,18 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		}
 	}
 	g.field.setGoals(nil)
+	// the field draws only what is in view, at its own scale, on a canvas just the size of the view laid on whole map
+	// pixels; enlarged afterwards as the whole map's canvas was, the picture is the same, and a big map costs no more
+	vp := g.battleViewport()
+	hw, hh := float64(vp.Dx())/2/g.zoom, float64(vp.Dy())/2/g.zoom
+	rx, ry := math.Floor(g.camX-hw)-2, math.Floor(g.camY-hh)-2
+	g.field.prepareRender(1, rx, ry, roundUp(int(2*hw)+6, 64), roundUp(int(2*hh)+6, 64))
+	g.field.DrawBounds = image.Rect(int(g.camX-hw)-64, int(g.camY-hh)-96, int(g.camX+hw)+64, int(g.camY+hh)+96)
+	g.field.night.extra = g.arrowLights(g.field.night.extra[:0])
 	g.field.Draw(g.clockMS, actors, nil)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(-g.camX, -g.camY)
+	op.GeoM.Translate(rx-g.camX, ry-g.camY)
 	op.GeoM.Scale(g.zoom, g.zoom)
-	vp := g.battleViewport()
 	op.GeoM.Translate(float64(vp.Min.X+vp.Dx()/2), float64(vp.Min.Y+vp.Dy()/2))
 	if s.shake > 0 {
 		op.GeoM.Translate(math.Round(math.Sin(g.clockMS/18)*6*math.Min(1, s.shake*4)), 0)
@@ -1033,6 +1101,12 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 				}
 				x, y := g.field.Center(u, v)
 				g.drawCanvasSprite(dst, pr.Sprite, x, y, 1)
+				if a := s.actors[p.follow]; a != nil && !a.gone { // whoever rides in it stands in it, not under it
+					anim, frame := g.field.pose(a)
+					ax, ay := g.field.Center(a.u, a.v)
+					ay -= a.lift + g.field.groundLift(a.u, a.v)
+					g.drawCanvasSprite(dst, Sprite{a.art.Frame(a.dir, anim, frame), a.art.Pivot[0], a.art.Pivot[1]}, ax, ay, 1)
+				}
 			}
 		}
 		g.drawSceneEffects(dst)
@@ -1046,6 +1120,17 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		}
 		g.drawShotScreen(dst)
 	})
+}
+
+// drawBalloons draws the speakers' dots, emotes and lines over their heads.
+func (g *Game) drawBalloons(dst *ebiten.Image, speakers []string) {
+	s := g.scene
+	talking := map[string]bool{}
+	if !g.sceneBusy() {
+		for _, name := range speakers {
+			talking[name] = true
+		}
+	}
 	type balloon struct {
 		name, mark string
 		v          *unitVis
@@ -1102,6 +1187,25 @@ func (g *Game) drawGlow(dst *ebiten.Image) {
 	dst.DrawImage(glowImage, op)
 }
 
+// bubbleRect is where the balloon of text over actor v lies on the UI, before the screen's edges push it in.
+func (g *Game) bubbleRect(v *unitVis, text string) image.Rectangle {
+	x, y := g.field.Center(v.u, v.v)
+	sx, sy := worldToUI(g.toScreen(x, y-v.lift-g.field.groundLift(v.u, v.v)-v.top))
+	k := g.bubbleScale()
+	w, h := g.assets.Bubble.Size("", text)
+	w, h = w*k, h*k
+	return image.Rect(int(sx-28*k), int(sy-h), int(sx-28*k+w), int(sy))
+}
+
+// bubbleScale is the size of the balloons over people: drawn for a story scene's zoom 2, half that for the title's
+// shots seen at zoom 1.
+func (g *Game) bubbleScale() float64 {
+	if g.reelPlaying() {
+		return .5
+	}
+	return 1
+}
+
 // bubble is a speech balloon above the actor's head: animated dots while talking, or an
 // emote mark or a short line.
 func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) {
@@ -1110,7 +1214,9 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	}
 	x, y := g.field.Center(v.u, v.v)
 	sx, sy := worldToUI(g.toScreen(x, y-v.lift-g.field.groundLift(v.u, v.v)-v.top))
+	k := g.bubbleScale()
 	w, h := g.assets.Bubble.Size("", mark)
+	w, h = w*k, h*k
 	// a speaker off the screen talks from its edge, the tail turned toward where they stand; above the dialogue box,
 	// or on the walk, where no box is open, from the screen's bottom
 	const margin = 12.0
@@ -1118,13 +1224,13 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	if w := g.explore; w != nil && w.talk == nil {
 		floor = float64(uiH)
 	}
-	bx := max(margin, min(float64(uiW)-margin-w, sx-28))
+	bx := max(margin, min(float64(uiW)-margin-w, sx-28*k))
 	by := max(margin, min(floor-margin-h, sy-h))
 	tail := duelview.Tail{Up: by > sy}
-	if bx != sx-28 {
-		tail.X = sx - bx
+	if bx != sx-28*k {
+		tail.X = (sx - bx) / k
 	}
-	g.assets.Bubble.DrawText(dst, "", mark, tail, bx, by, drawPx)
+	g.assets.Bubble.DrawText(dst, "", mark, tail, bx/k, by/k, drawPx*k) // DrawText scales its corner along with the balloon
 }
 
 // drawSceneEffects draws the stage effects: peach petals falling all around the camera,
@@ -1138,7 +1244,7 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 		switch e.kind {
 		case "petals":
 			g.drawPetals(dst, e.t)
-		case "fire":
+		case "fire", "blaze": // a blaze is a fire built up high in a brazier: no bigger, but it lights as far as a burning house
 			g.flames(dst, x, y, e.t, true)
 		case "smallfire":
 			g.flames(dst, x, y, e.t, false)
@@ -1244,3 +1350,6 @@ func (g *Game) AddScenes(path string) error {
 func (g *Game) RestartScene() {
 	g.scene, g.shownNode, g.intro = nil, "", nil
 }
+
+// roundUp is n rounded up to a multiple of step: a canvas sized so does not change with every small zoom or resize.
+func roundUp(n, step int) int { return (n + step - 1) / step * step }

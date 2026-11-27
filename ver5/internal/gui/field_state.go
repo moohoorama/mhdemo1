@@ -66,31 +66,89 @@ func (g *Game) areaCenter(id int) (int, int, bool) {
 	return 0, 0, false
 }
 
-// changeLooks applies one terrain event (a state put on an area) to the looks a replay holds.
-func (g *Game) changeLooks(e core.Event) {
-	looks := g.player.looks
+// areaCells are the cells of the area with the id that lie on the map.
+func (g *Game) areaCells(id int) []image.Point {
 	o := g.player.final
-	if looks == nil || o.Map == nil {
-		return
+	if o.Map == nil {
+		return nil
 	}
-	look := g.S.Data.States[e.Target].Look
+	var cells []image.Point
 	for _, a := range o.Map.Areas {
-		if a.ID != e.Amount {
+		if a.ID != id {
 			continue
 		}
 		for y := a.Rect.Y; y < a.Rect.Y+a.Rect.H; y++ {
 			for x := a.Rect.X; x < a.Rect.X+a.Rect.W; x++ {
-				if x < 0 || y < 0 || x >= o.Map.Width || y >= o.Map.Height {
-					continue
-				}
-				if look == "" {
-					delete(looks, image.Pt(x, y))
-				} else {
-					looks[image.Pt(x, y)] = look
+				if x >= 0 && y >= 0 && x < o.Map.Width && y < o.Map.Height {
+					cells = append(cells, image.Pt(x, y))
 				}
 			}
 		}
 	}
+	return cells
+}
+
+// setLook puts a look on a cell of the replay's looks, none taking it off.
+func (g *Game) setLook(c image.Point, look string) {
+	if look == "" {
+		delete(g.player.looks, c)
+	} else {
+		g.player.looks[c] = look
+	}
+}
+
+// changeLooks applies one terrain event (a state put on an area) to the looks a replay holds.
+func (g *Game) changeLooks(e core.Event) {
+	if g.player.looks == nil || g.player.final.Map == nil {
+		return
+	}
+	look := g.S.Data.States[e.Target].Look
+	for _, c := range g.areaCells(e.Amount) {
+		g.setLook(c, look)
+	}
+}
+
+// litCell is a cell a fire is to take, with the look it takes.
+type litCell struct {
+	at   image.Point
+	look string
+}
+
+// fireSeedReach is how far from a fire's cells (in cells, along the grid) a unit may stand and still be the one who
+// lit it.
+const fireSeedReach = 3
+
+// spreadOrder sorts the cells of a fire by how far each lies from where it was lit, so that it can spread one cell
+// at a time: it starts at the cell nearest each unit that stands by it (the officers who set it), or else in the middle.
+func (g *Game) spreadOrder(cells []litCell) {
+	if len(cells) == 0 {
+		return
+	}
+	dist := func(a, b image.Point) int { return abs(a.X-b.X) + abs(a.Y-b.Y) }
+	var seeds []image.Point
+	for _, u := range g.vis {
+		at := image.Pt(int(math.Round(u.u)), int(math.Round(u.v)))
+		near := cells[0].at
+		for _, c := range cells {
+			if dist(c.at, at) < dist(near, at) {
+				near = c.at
+			}
+		}
+		if dist(near, at) <= fireSeedReach {
+			seeds = append(seeds, near)
+		}
+	}
+	if len(seeds) == 0 {
+		seeds = []image.Point{cells[len(cells)/2].at}
+	}
+	from := func(c litCell) int {
+		d := math.MaxInt
+		for _, s := range seeds {
+			d = min(d, dist(c.at, s))
+		}
+		return d
+	}
+	sort.SliceStable(cells, func(i, j int) bool { return from(cells[i]) < from(cells[j]) })
 }
 
 // markLook applies one mark event (a state a critical spell left on a cell) to the looks a replay holds.

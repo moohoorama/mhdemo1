@@ -37,6 +37,25 @@ func (g *Game) equipmentAdvice(o core.Observation, actor string) map[string]map[
 	return cache.byActor[actor]
 }
 
+type shopAdviceCache struct {
+	engine   *core.Engine
+	revision uint64
+	item     string
+	ups      []core.EquipmentUpgrade
+}
+
+// shopAdvice lists who would gain from buying one of an item, cached like equipmentAdvice.
+func (g *Game) shopAdvice(o core.Observation, item string) []core.EquipmentUpgrade {
+	if g.S.Settings.NoGuide || g.S.Engine == nil {
+		return nil
+	}
+	c := &g.shopGain
+	if c.engine != g.S.Engine || c.revision != o.Revision || c.item != item {
+		*c = shopAdviceCache{engine: g.S.Engine, revision: o.Revision, item: item, ups: g.S.Engine.EquipmentUpgradesFor(item)}
+	}
+	return c.ups
+}
+
 func (g *Game) equipmentReason(up core.EquipmentUpgrade) string {
 	switch {
 	case len(up.Skills) > 0:

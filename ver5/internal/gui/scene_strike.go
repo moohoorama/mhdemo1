@@ -24,7 +24,9 @@ type sceneStrike struct {
 	landed  bool
 	riding  bool    // the striker is on the move: the motion plays over the ride
 	through float64 // cells the striker comes out beyond the target as the blow lands (a cut dealt dashing through)
+	kill    bool    // the target falls as the blow lands
 	puff    float64 // seconds to the next dust puff while the target slides
+	tempo   float64 // the motions play this many times their speed (Step.Tempo); 1 when 0
 }
 
 // slideTime is how long a target driven back n cells slides, digging in: longer for a heavier push.
@@ -44,14 +46,14 @@ func (g *Game) startStrike(st scenes.Step) {
 		return
 	}
 	k := &sceneStrike{by: st.Actor, at: st.Strike, motion: st.Motion, react: st.React, push: st.Push, crit: st.Crit, charge: st.Gather,
-		through: st.Through}
+		through: st.Through, kill: st.Kill, tempo: max(1, st.Tempo)}
 	if motion(by.art, k.motion) == "" {
 		k.motion = "attack"
 	}
 	if k.react == "" {
 		k.react = "block"
 	}
-	k.blow = k.charge + impactTime(by, k.motion)
+	k.blow = k.charge + impactTime(by, k.motion)/k.tempo
 	k.riding = by.walk != nil || len(s.paths[st.Actor]) > 0
 	s.swing[st.Actor] = k.motion // a step taken during the blow does not cut it short
 	if !k.riding {               // a blow dealt in passing keeps facing the way it rides
@@ -134,7 +136,7 @@ func (g *Game) updateStrike(k *sceneStrike, dt float64) {
 		if k.t >= k.charge {
 			k.started = true
 			by.charging = false
-			by.play(k.motion)
+			by.playQuick(k.motion, k.tempo)
 			cue := "swing"
 			if k.crit {
 				cue = "swing-crit"
@@ -155,8 +157,11 @@ func (g *Game) updateStrike(k *sceneStrike, dt float64) {
 	if k.push > 0 { // a target driven back braces facing the blow
 		at.face(by.u, by.v)
 	}
-	if motion(at.art, k.react) != "" {
-		at.play(motion(at.art, k.react))
+	if motion(at.art, k.react) != "" && !at.fallen() {
+		at.playQuick(motion(at.art, k.react), k.tempo)
+	}
+	if k.kill {
+		at.startFall()
 	}
 	at.flash = .25
 	at.shakeSign, at.shakeT, at.shakeAmp = 1, shakeTime, 1

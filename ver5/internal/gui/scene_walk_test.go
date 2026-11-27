@@ -46,10 +46,6 @@ func TestSceneWalksStayOnOpenGround(t *testing.T) {
 	t.Logf("%d problems", n)
 }
 
-// stepLift is the most a walk may go up or down from one small tile to the next: a stair's step (the pavilion's
-// steps, scene.json heights 5 and 6), not a cliff or a wall.
-const stepLift = 8
-
 // sceneWalkProblems are the walks of the scene that cross closed small tiles of walk or change height on m by more
 // than a step (lift gives a height level's pixels), one line each.
 func sceneWalkProblems(def *scenes.Scene, m *scenemap.Map, walk *scenemap.Walk, lift func(int) int) []string {

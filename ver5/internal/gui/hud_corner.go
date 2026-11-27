@@ -143,8 +143,8 @@ func (g *Game) rightPanel(dst *ebiten.Image, summary string, party func()) int {
 }
 
 func (g *Game) speedSlot() *cornerSlot {
-	if g.scene != nil {
-		return &cornerSlot{label: fmt.Sprintf("배속 ×%.1f", sceneSpeed)}
+	if g.scene != nil && !g.walkSpeedIsFree() {
+		return &cornerSlot{label: fmt.Sprintf("배속 ×%d", int(sceneSpeed))}
 	}
 	return &cornerSlot{label: fmt.Sprintf("배속 ×%d", g.speed), click: func() { g.setSpeed(nextSpeed[g.speed]) }}
 }

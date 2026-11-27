@@ -11,9 +11,9 @@ import (
 func init() { demos["sortie-deputy"] = demoSortieDeputy }
 
 // demoSortieDeputy jumps to the -node battle node (c20-battle has the party of the phone report: 장비, 유비, 손건,
-// 미축, 번궁, 번아 out, 진도, 고순 waiting), spends everyone's trait points, teaches 장비 (or the first officer out besides the lord) to name a
+// 미축, 번궁, 번아 out, 고순 waiting), spends everyone's trait points, teaches 장비 (or the first officer out besides the lord) to name a
 // deputy, names 미방 (or the next officer) and walks the sortie's 부관 tab for cmd/_uidemo-vm: the table by weight
-// with the deputy now on top in blue (1), 진도 picked in gold (40), sorted by 매력 (60), every trait of the pick
+// with the deputy now on top in blue (1), a waiting officer picked in gold (40), sorted by 매력 (60), every trait of the pick
 // (75), a trait's description (90), the deputy's own row picked in the list (120, basic at 124), the lead's 장비 (130), 특성 (136)
 // and 열전 (142) tabs, the deputy window (150) and the officers' window with the deputy plates (190).
 func demoSortieDeputy(d *Demo) error {
