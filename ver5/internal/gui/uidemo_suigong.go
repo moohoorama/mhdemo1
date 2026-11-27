@@ -133,7 +133,7 @@ const (
 )
 
 // demoSuigong plays the flood (suigongDemoGroup) as a battle's first picture, on a battle map (the story plays it in a
-// scene, the step "Surge"), in two shots at four times zoom
+// scene, the step "Surge"), in two shots at twice zoom
 // that never show the same ground: the ford where the army wades, then the dam and 관우 on the cliff over it, who
 // orders it broken; the view scrolls to the dam, which shakes, flashes and bursts; the view cuts to the ford, where
 // the army's north-east corner fills the left and bottom of the screen and soldiers turn and cry out as the water

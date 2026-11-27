@@ -1,3 +1,11 @@
+## 2026-11-28 25장 신야 서문, 방위 규칙, 영천 파재 대사, 수공 배율 2
+
+- `assets/scenario/hero/story25.json`, `docs/fullstory.md`, `docs/presentation-scene.md`: 조홍 대사를 "동문·남문·북문은 불, 서문만 불이 없다 — 서문으로!"로, 백하는 신야에서 서쪽 — 조인군이 서쪽으로 건너가는 방향과 맞춤.
+- `tools/scene_maps/xinye_town.py`, `S_xinye_town`: 열린 문을 동문에서 서문으로(동문은 닫힘). `assets/scenes/ch25.json`: 불 효과를 서문 대신 동문 자리로.
+- `assets/scenario/hero/stage02.json`, `docs/fullstory.md`: 파재 "북쪽에도…… 남쪽에도…… 동쪽에도!"(장보 북·장량 남·파재 동 진영 위치 기준).
+- `internal/gui/field_surge_show.go`, `uidemo_suigong.go`: 수공 연출 배율 4 → 2.
+- `../AGENTS.md`: 화면 방위(우상단 북·좌상단 서·우하단 동·좌하단 남) 규칙 추가.
+
 ## 2026-11-28 타이틀 영상: 일기토 뒷걸음·템포, 구출 관우, 서주·적벽 다시 짬, 칸 크기 바로잡음
 
 - `internal/gui/scene.go`: 곧은 한 번 이동(`Ease`)의 뒷걸음(`Back`)이 몸을 먼저 돌려 늘 등을 보이던 것을 고침, 뒷걸음 뒤 보통 걸음은 다시 앞을 봄; 타이틀 영상은 카메라가 목표점에 바로 붙음(늦게 따라가 관도 화면이 대열로 늦게 돌아오고 작은 방이 원 가장자리로 밀리던 것).

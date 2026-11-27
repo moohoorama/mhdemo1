@@ -8,8 +8,8 @@ Format 2 (internal/scenemap), 14×12 game cells like S_xiaopei, with these chang
   - the two near walls (south v = NEAR_V, east u = NEAR_U) a few tiles past the playing area, so the town reads as
     a walled whole; what stood beyond them in xiaopei.py is left out and the ground there is trodden fields.
   - four gates: the north one is xiaopei's (the lane through it runs on south), the west one opens on a street
-    north of the 관아 yard, the south one ends the lane, the east one ends the main street. The west, north and
-    south gates are shut (the scene lights them); the east gate stands open.
+    north of the 관아 yard, the south one ends the lane, the east one ends the main street. The east, north and
+    south gates are shut (the scene lights them); the west gate stands open.
 """
 import json
 import subprocess
@@ -45,10 +45,10 @@ for o in base.obj:
 paint(-M, NEAR_V, W + M, H + M, 'd')                                 # fields outside the near walls
 paint(NEAR_U, -M, W + M, H + M, 'd')
 paint(-M, WEST_GATE_V - 1, base.LANE[0], WEST_GATE_V, 'd')           # the street from the west gate to the lane
-obj.append(['sgate_closed', -1, WEST_GATE_V])
+obj.append(['sgate_open', -1, WEST_GATE_V])
 obj.append(['sgate_closed', SOUTH_GATE_U, NEAR_V])
-obj.append(['sgate_open', NEAR_U, EAST_GATE_V])
-obj = [o for o in obj if o[0] != 'sgate_open' or o[1] == NEAR_U]      # xiaopei's north gate becomes a shut one
+obj.append(['sgate_closed', NEAR_U, EAST_GATE_V])
+obj = [o for o in obj if o[0] != 'sgate_open' or o[1] == -1]          # xiaopei's north gate becomes a shut one
 obj.append(['sgate_closed', base.GATE, -1])
 
 walls = [['swall', [-1, -1], [NEAR_U, -1]], ['swall', [-1, 0], [-1, NEAR_V]],

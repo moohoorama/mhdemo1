@@ -104,9 +104,9 @@
   ["field_bare",-8,12],
   ["field_sprout",24,-8],
   ["field_ripe",30,-4],
-  ["sgate_closed",-1,4],
+  ["sgate_open",-1,4],
   ["sgate_closed",19,27],
-  ["sgate_open",31,11],
+  ["sgate_closed",31,11],
   ["sgate_closed",19,-1]
  ],
  "walls": [

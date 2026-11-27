@@ -536,7 +536,7 @@
     "c25-e04": [
      [
       [{"Zoom": 1}, {"CamAt": [9, 8]}],
-      [{"Effect": "bigfire", "At": [-0.5, 2.0]}, {"Shake": 0.6}],
+      [{"Effect": "bigfire", "At": [15.5, 5.5]}, {"Shake": 0.6}],
       [{"Effect": "bigfire", "At": [9.5, -0.5]}, {"Shake": 0.5}],
       [{"Effect": "bigfire", "At": [9.5, 14.0]}, {"Shake": 0.5}],
       [{"Effect": "bigfire", "At": [5.4, 2.4], "After": 0.0}, {"Effect": "bigfire", "At": [7.0, 0.4], "After": 0.35}, {"Effect": "bigfire", "At": [2.9, 0.4], "After": 0.7}, {"Effect": "bigfire", "At": [2.4, 9.4], "After": 1.0499999999999998}, {"Effect": "bigfire", "At": [8.0, 10.4], "After": 1.4}],

@@ -233,7 +233,7 @@ func (s *suigongShow) at(t float64) {
 	if s.scene != nil && t < sceneDarken {
 		return // the scene's own shot, darkening
 	}
-	g.setZoomImmediate(4)
+	g.setZoomImmediate(2)
 	switch {
 	case t < tBlack || t >= s.tCut:
 		g.camX, g.camY = g.field.Center(suigongFordCamU, suigongFordCamV)

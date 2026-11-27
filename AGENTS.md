@@ -97,6 +97,12 @@ stage sets it (adjacency, `DuelFirst`, a scripted event at a story moment). If a
 partner first, the duel simply does not happen; write the story after the battle so it does not depend on who
 struck the last blow.
 
+Compass on screen: the upper-right is north, the upper-left west, the lower-right east and the lower-left south, so
+straight up is north-west and straight down south-east. A map's u (x) grows toward the east (down-right) and v (y)
+toward the south (down-left); `Facing`/`Face` NW is the up-left (west) way, NE up-right (north), SE down-right (east),
+SW down-left (south). Write every direction word in story text, scene names and notes by this, never by the
+old 45°-turned naming (e.g. calling the up-right side 동북).
+
 Every task leaves a result folder: make `~/orca/mhdemo1/result/YYYYMMDD/<task-name>/` (today's date, one
 directory per task) and save what was done there as md, html, mp4, PNG or whatever fits (a summary of what changed
 and why, plus captures, videos or comparison pages). Do this for every task, not only art or UI work, and give the
