@@ -115,10 +115,32 @@ type Chapter struct {
 // ScenarioRef is one entry of assets/scenario/scenario.json.
 type ScenarioRef struct{ ID, Name, Path string }
 
-// ScenarioFile is a scenario's own file: where the campaign starts and the chapters in order.
+// ScenarioFile is a scenario's own file: where the campaign starts, the chapters in order and the forks the story's
+// tellings split at.
 type ScenarioFile struct {
 	Campaign
 	Chapters []Chapter
+	Forks    []Fork `json:",omitempty"`
+}
+
+// Fork is a stretch of the story whose waypoints are kept apart by the arm the player's game is on (지난 이야기):
+// the waypoints after After and before Until (every one after After when Until is empty) are kept once per arm.
+// The arm is told by the flags and the party when a waypoint is reached: the first Case whose conditions hold
+// names it, else Else. A waypoint an arm cannot have (the other telling's chapters) is not listed under it: Acts
+// are the acts it shows.
+type Fork struct {
+	ID, Name string
+	After    string // the waypoint node the stretch starts after
+	Until    string `json:",omitempty"` // the waypoint node it ends before, which is shared again
+	Cases    []NodeCase
+	Else     string
+	Arms     []Arm
+}
+
+// Arm is one way through a fork. Note says in a line how a game comes to it.
+type Arm struct {
+	ID, Name, Note string
+	Acts           []string
 }
 type Faction struct {
 	Name           string
@@ -652,6 +674,7 @@ type Data struct {
 	Campaign       Campaign
 	ScenarioID     string    `json:",omitempty"`
 	Chapters       []Chapter `json:",omitempty"`
+	Forks          []Fork    `json:",omitempty"`
 	Factions       map[string]Faction
 	Grounds        map[string]Ground
 	Structures     map[string]Structure

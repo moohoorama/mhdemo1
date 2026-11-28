@@ -16,10 +16,10 @@ import (
 // where a choice offers it), but with the battles' losses told: kill maps a stage id to the conditions
 // ("defeated:zhugexuan") to force before the stage is won. reached is told every waypoint the story enters, with
 // the state it settled in, the way the session keeps a chronicle point.
-func chroniclePlay(t *testing.T, d *content.Data, e *Engine, bonus bool, prefer string, kill map[string][]string, reached func(node string, s State)) {
+func chroniclePlay(t *testing.T, d *content.Data, e *Engine, bonus bool, prefer string, kill map[string][]string, reached func(node, route string, s State)) {
 	told := func(from string) {
 		if node := e.Reached(from); node != "" {
-			reached(node, e.Snapshot())
+			reached(node, e.Route(node), e.Snapshot())
 		}
 	}
 	told("")
@@ -104,7 +104,7 @@ func TestEveryWaypointIsReachedAndKept(t *testing.T) {
 	}{{"virtual", "느린 길", true}, {"yanyi", "빠른 길", false}} {
 		t.Run(mode.name, func(t *testing.T) {
 			var nodes []string
-			chroniclePlay(t, d, New(d, 3), mode.bonus, mode.prefer, nil, func(node string, s State) {
+			chroniclePlay(t, d, New(d, 3), mode.bonus, mode.prefer, nil, func(node, _ string, s State) {
 				nodes = append(nodes, node)
 				seen[node] = true
 				w := d.Waypoints()[order[node]]
@@ -134,7 +134,7 @@ func TestB12PointReplaysTheModeBranch(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	var before State
-	chroniclePlay(t, d, New(d, 3), true, "느린 길", nil, func(node string, s State) {
+	chroniclePlay(t, d, New(d, 3), true, "느린 길", nil, func(node, _ string, s State) {
 		if node == "c12-battle" {
 			before = s
 		}
@@ -147,7 +147,7 @@ func TestB12PointReplaysTheModeBranch(t *testing.T) {
 		e, err := Restore(d, before)
 		require.NoError(t, err)
 		var last State
-		chroniclePlay(t, d, e, bonus, prefer, map[string][]string{"B12": kill}, func(string, State) {})
+		chroniclePlay(t, d, e, bonus, prefer, map[string][]string{"B12": kill}, func(string, string, State) {})
 		last = e.Snapshot()
 		return last
 	}
@@ -177,4 +177,73 @@ func TestB12PointReplaysTheModeBranch(t *testing.T) {
 	})
 	again, _ := json.Marshal(before)
 	assert.JSONEq(t, string(kept), string(again), "the kept state is not changed by the replays")
+}
+
+// TestForkArmsFollowTheStory plays the story the ways the forks tell apart and checks the arm each waypoint is
+// kept on (the waypoints on a fork are kept once per arm): the 거록 일기토 seen or not till 계교 is over, and after
+// the 서주 전투 either both 고순 and 제갈현 gone, 고순 alone, or both alive, whose 느린 길 stays on its arm into
+// 가상 and whose 빠른 길 joins 고순 alone's.
+func TestForkArmsFollowTheStory(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	type play struct {
+		bonus  bool
+		prefer string
+		kill   []string
+	}
+	routes := func(p play) map[string]string {
+		got := map[string]string{}
+		chroniclePlay(t, d, New(d, 3), p.bonus, p.prefer, map[string][]string{"B12": p.kill}, func(node, route string, _ State) { got[node] = route })
+		return got
+	}
+	way := func(node string) content.Waypoint {
+		for _, w := range d.Waypoints() {
+			if w.Node == node {
+				return w
+			}
+		}
+		t.Fatalf("no waypoint %s", node)
+		return content.Waypoint{}
+	}
+	onArm := func(t *testing.T, got map[string]string, fork, arm string) {
+		n := 0
+		for node, route := range got {
+			if f := d.ForkAt(node); f != nil && f.ID == fork {
+				n++
+				assert.Equal(t, arm, route, "%s", node)
+			}
+		}
+		assert.Positive(t, n, fork)
+	}
+	t.Run("일기토 seen: the first fork's arm until 계교 is over", func(t *testing.T) {
+		got := routes(play{true, "느린 길", nil})
+		assert.Equal(t, "seen", got["c10-battle"])
+		assert.Empty(t, got["c11-start"], "after 계교 the story is shared again")
+		assert.Empty(t, got["c09-battle"], "the fork starts after 거록")
+	})
+	t.Run("일기토 missed", func(t *testing.T) {
+		assert.Equal(t, "unseen", routes(play{false, "빠른 길", nil})["c10-battle"])
+	})
+	t.Run("both alive, 느린 길: stays on its arm into 가상", func(t *testing.T) {
+		got := routes(play{true, "느린 길", nil})
+		onArm(t, got, "xuzhou", "both")
+		assert.Equal(t, "both", got["c25v-battle"])
+		assert.Empty(t, got["c12-battle"], "the fork starts after 서주")
+		assert.NotContains(t, got, "c25-battle")
+	})
+	t.Run("both alive, 빠른 길: joins 고순 alone's arm after the choice", func(t *testing.T) {
+		got := routes(play{true, "빠른 길", nil})
+		assert.Equal(t, "both", got["c23-battle"])
+		assert.Equal(t, "gaoshun", got["c24-battle"])
+		assert.Equal(t, "gaoshun", got["c25-battle"])
+		assert.Equal(t, "gaoshun", got["c27-redcliff-battle"])
+		assert.False(t, way("c25-battle").Act == "2막-가상")
+	})
+	t.Run("고순 alone", func(t *testing.T) {
+		got := routes(play{false, "느린 길", []string{"defeated:zhugexuan"}})
+		onArm(t, got, "xuzhou", "gaoshun")
+	})
+	t.Run("고순 gone: 제갈현 alone goes the same way", func(t *testing.T) {
+		onArm(t, routes(play{false, "느린 길", []string{"defeated:gaoshun"}}), "xuzhou", "none")
+	})
 }

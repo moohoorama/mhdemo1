@@ -205,5 +205,106 @@
    "Act": "2막-가상",
    "File": "story27v.json"
   }
+ ],
+ "Forks": [
+  {
+   "ID": "julu",
+   "Name": "거록의 일기토",
+   "After": "c09-battle",
+   "Until": "c11-start",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-julu-clear"
+     ],
+     "Next": "seen"
+    }
+   ],
+   "Else": "unseen",
+   "Arms": [
+    {
+     "ID": "seen",
+     "Name": "일기토를 봄",
+     "Note": "거록에서 장비와 안량의 일기토를 이뤘다. 계교에서 안량이 합류한다.",
+     "Acts": [
+      "1막"
+     ]
+    },
+    {
+     "ID": "unseen",
+     "Name": "일기토를 못 봄",
+     "Note": "거록에서 일기토를 이루지 못했다. 계교에서 안량이 합류하지 않는다.",
+     "Acts": [
+      "1막"
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "xuzhou",
+   "Name": "서주 이후",
+   "After": "c12-battle",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-mode-virtual"
+     ],
+     "Next": "both"
+    },
+    {
+     "If": [
+      "flag:flag-gaoshun",
+      "flag:flag-mode-yanyi"
+     ],
+     "Next": "gaoshun"
+    },
+    {
+     "If": [
+      "flag:flag-gaoshun",
+      "flag:flag-zhugexuan"
+     ],
+     "Next": "both"
+    },
+    {
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Next": "gaoshun"
+    }
+   ],
+   "Else": "none",
+   "Arms": [
+    {
+     "ID": "none",
+     "Name": "고순·제갈현 격퇴",
+     "Note": "서주 전투에서 고순이 격퇴됐다(제갈현만 살았어도 같다). 연의대로 간다.",
+     "Acts": [
+      "1막",
+      "2막",
+      "2막-연의"
+     ]
+    },
+    {
+     "ID": "gaoshun",
+     "Name": "고순만 생존",
+     "Note": "고순만 살았거나, 둘 다 살았어도 삼고초려에서 빠른 길을 골랐다. 연의대로 간다.",
+     "Acts": [
+      "1막",
+      "2막",
+      "2막-연의"
+     ]
+    },
+    {
+     "ID": "both",
+     "Name": "둘 다 생존",
+     "Note": "고순과 제갈현이 모두 살았다. 삼고초려에서 느린 길을 고르면 가상으로 간다.",
+     "Acts": [
+      "1막",
+      "2막",
+      "2막-가상"
+     ]
+    }
+   ]
+  }
  ]
 }

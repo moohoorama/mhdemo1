@@ -59,7 +59,7 @@ func TestLongzhongSettlesTheMode(t *testing.T) {
 		e, err := NewAtWith(d, 1, "c24-start", "normal", Start{Flags: []string{"flag-gaoshun", "flag-zhugexuan"}})
 		require.NoError(t, err)
 		require.NotNil(t, e.char("gaoshun"))
-		e.state.Flags["flag-guanyu-mifang"] = btoi(all) // the replayed chapter 22 sets it while Gao Shun is in the party
+		e.state.Flags["flag-zhugexuan"] = btoi(all)
 		return e
 	}
 	t.Run("short of a condition, the romance: no choice, ends at chapter 27", func(t *testing.T) {

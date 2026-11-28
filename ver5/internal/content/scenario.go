@@ -88,7 +88,7 @@ func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 	if err = strictDecode(b, &file); err != nil {
 		return fmt.Errorf("%s: %w", ref.Path, err)
 	}
-	d.ScenarioID, d.Campaign = ref.ID, file.Campaign
+	d.ScenarioID, d.Campaign, d.Forks = ref.ID, file.Campaign, file.Forks
 	for _, c := range file.Chapters {
 		if b, err = read(filepath.Join(scenarioDir, c.File)); err != nil {
 			return err
@@ -173,7 +173,7 @@ func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 		d.Stages[i].Order = order[d.Stages[i].ID]
 		d.Stages[i].GearTier = tier[d.Stages[i].ID]
 	}
-	return nil
+	return d.checkForks()
 }
 
 // Number is the chapter's number in the story: the leading digits of its ID, 0 when it has none. A chapter
@@ -418,4 +418,70 @@ func (d *Data) StoryFlags() []StoryFlag {
 		}
 	}
 	return out
+}
+
+// ForkAt is the fork whose stretch holds the waypoint node, nil when it is on none.
+func (d *Data) ForkAt(node string) *Fork {
+	ways := d.Waypoints()
+	at := slices.IndexFunc(ways, func(w Waypoint) bool { return w.Node == node })
+	for i := range d.Forks {
+		f := &d.Forks[i]
+		from := slices.IndexFunc(ways, func(w Waypoint) bool { return w.Node == f.After })
+		until := len(ways)
+		if f.Until != "" {
+			until = slices.IndexFunc(ways, func(w Waypoint) bool { return w.Node == f.Until })
+		}
+		if at > from && at < until {
+			return f
+		}
+	}
+	return nil
+}
+
+// Shows reports whether the arm lists the waypoint: its act is one of the arm's.
+func (a Arm) Shows(w Waypoint) bool { return slices.Contains(a.Acts, w.Act) }
+
+// checkForks verifies the forks: their ends are waypoints in story order, no two stretches meet, every arm
+// the cases name exists, every case reads, and every waypoint of a stretch is shown by some arm.
+func (d *Data) checkForks() error {
+	ways := d.Waypoints()
+	index := func(node string) int { return slices.IndexFunc(ways, func(w Waypoint) bool { return w.Node == node }) }
+	end := -1
+	for _, f := range d.Forks {
+		from, until := index(f.After), len(ways)
+		if f.Until != "" {
+			until = index(f.Until)
+		}
+		if from < 0 || until < 0 || until <= from+1 {
+			return fmt.Errorf("fork %s: its ends are not waypoints in story order", f.ID)
+		}
+		if from < end {
+			return fmt.Errorf("fork %s: starts inside another fork", f.ID)
+		}
+		end = until
+		arm := map[string]Arm{}
+		for _, a := range f.Arms {
+			arm[a.ID] = a
+		}
+		names := []string{f.Else}
+		for _, c := range f.Cases {
+			names = append(names, c.Next)
+			for _, s := range c.If {
+				if _, err := ParseCond(s); err != nil {
+					return fmt.Errorf("fork %s: %w", f.ID, err)
+				}
+			}
+		}
+		for _, n := range names {
+			if _, ok := arm[n]; !ok {
+				return fmt.Errorf("fork %s: no arm %q", f.ID, n)
+			}
+		}
+		for _, w := range ways[from+1 : until] {
+			if !slices.ContainsFunc(f.Arms, func(a Arm) bool { return a.Shows(w) }) {
+				return fmt.Errorf("fork %s: no arm shows %s", f.ID, w.Node)
+			}
+		}
+	}
+	return nil
 }

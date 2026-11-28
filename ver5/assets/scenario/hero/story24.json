@@ -148,8 +148,7 @@
     {
      "If": [
       "party:gaoshun",
-      "flag:flag-zhugexuan",
-      "flag:flag-guanyu-mifang"
+      "flag:flag-zhugexuan"
      ],
      "Next": "c24-v01"
     }

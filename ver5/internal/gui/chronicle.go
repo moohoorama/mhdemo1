@@ -3,7 +3,10 @@ package gui
 import (
 	"fmt"
 	"image"
+	"image/color"
+	"slices"
 	"strings"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
@@ -11,48 +14,102 @@ import (
 	"srpg/internal/storage"
 )
 
-// The chronicle window (지난 이야기, docs/system-chronicle.md) lists the chapters and battles this game's lines have reached.
-// Each row shows the lord's level and the day it was reached on its right; picking one asks, then plays on
-// from the state the player really had there. It has no level or flag to set, and lists only what was reached.
+// The chronicle window (지난 이야기, docs/system-chronicle.md) lists the story's chapters and battles in order, with the
+// lord's level and the day each was reached on its right; picking a point asks, then plays on from the state the
+// player really had there. Where the story forks (content.Fork) a header offers the arms and the rows below are
+// the chosen arm's, the ones never reached dimmed. It has no level or flag to set.
 const (
 	chronicleW, chronicleH = 860, 640
 	chronicleRowH          = 48
 	chronicleGap           = 6
-	chronicleTabs          = 7 // lines the tab row shows at once
+	chronicleHeadH         = 70 + touchH + 12 // the fork header: name, note, the arms' chips
 )
 
-// chronicleView is the window's state: the lines as read when it opened, the line shown, the first tab shown and
-// the list's scroll.
-type chronicleView struct {
-	lines []session.ChronicleLine
-	line  int
-	first int
-	list  scroller
-	way   map[string]content.Waypoint
+// chronicleRow is a row of the list: a fork's header (fork set, w empty) or a waypoint on the arm route.
+type chronicleRow struct {
+	fork  *content.Fork
+	w     content.Waypoint
+	route string
+	top   int
+	h     int
+	entry *storage.ChronicleEntry
 }
+
+// chronicleView is the window's state: the points as read when it opened, the arm chosen on each fork, the rows
+// built from them and the list's scroll.
+type chronicleView struct {
+	points map[string]storage.ChronicleEntry
+	arm    map[string]string
+	rows   []chronicleRow
+	list   scroller
+	total  int
+}
+
+func chronicleKey(node, route string) string { return node + "@" + route }
 
 func (g *Game) openChronicle() {
-	v := chronicleView{lines: g.S.Chronicle(), way: map[string]content.Waypoint{}}
-	for _, w := range g.S.Data.Waypoints() {
-		v.way[w.Node] = w
-	}
-	v.line = max(0, len(v.lines)-1)
-	for i, l := range v.lines {
-		if l.Current {
-			v.line = i
+	v := chronicleView{points: map[string]storage.ChronicleEntry{}, arm: map[string]string{}}
+	latest := map[string]time.Time{} // fork -> the newest point of the arm the default is
+	var newest time.Time
+	focus := ""
+	for _, e := range g.S.Chronicle() {
+		v.points[chronicleKey(e.Node, e.Route)] = e
+		if e.Bad {
+			continue
+		}
+		if f := g.S.Data.ForkAt(e.Node); f != nil && e.At.After(latest[f.ID]) {
+			latest[f.ID], v.arm[f.ID] = e.At, e.Route
+		}
+		if e.At.After(newest) {
+			newest, focus = e.At, e.Node
 		}
 	}
-	v.first = max(0, v.line-chronicleTabs+1)
-	v.list.top = 1 << 20 // the newest points show first
 	g.chron = v
+	g.buildChronicle()
+	g.chron.list.top = 0
+	for _, r := range g.chron.rows {
+		if r.fork == nil && r.w.Node == focus {
+			g.chron.list.top = max(0, r.top-(chronicleH-160)/2)
+		}
+	}
 }
 
-// chronicleName is a point's label: where in the story it is and, for the two tellings that split, which.
-func (g *Game) chronicleName(e storage.ChronicleEntry) (string, string) {
-	w, ok := g.chron.way[e.Node]
-	if !ok {
-		return "알 수 없는 지점", ""
+// buildChronicle lays the rows out for the arms chosen.
+func (g *Game) buildChronicle() {
+	v := &g.chron
+	v.rows = v.rows[:0]
+	y := 0
+	var in *content.Fork
+	for _, w := range g.S.Data.Waypoints() {
+		f := g.S.Data.ForkAt(w.Node)
+		if f != in && f != nil {
+			if !slices.ContainsFunc(f.Arms, func(a content.Arm) bool { return a.ID == v.arm[f.ID] }) {
+				v.arm[f.ID] = f.Arms[0].ID
+			}
+			v.rows = append(v.rows, chronicleRow{fork: f, top: y, h: chronicleHeadH})
+			y += chronicleHeadH + chronicleGap
+		}
+		in = f
+		route := ""
+		if f != nil {
+			arm := f.Arms[slices.IndexFunc(f.Arms, func(a content.Arm) bool { return a.ID == v.arm[f.ID] })]
+			if !arm.Shows(w) {
+				continue
+			}
+			route = arm.ID
+		}
+		r := chronicleRow{w: w, route: route, top: y, h: chronicleRowH}
+		if e, ok := v.points[chronicleKey(w.Node, route)]; ok {
+			r.entry = &e
+		}
+		v.rows = append(v.rows, r)
+		y += chronicleRowH + chronicleGap
 	}
+	v.total = max(0, y-chronicleGap)
+}
+
+// chronicleName is a waypoint's label: where in the story it is and, for the two tellings that split, which.
+func (g *Game) chronicleName(w content.Waypoint) (string, string) {
 	tag := ""
 	if _, mode, found := strings.Cut(w.Act, "-"); found {
 		tag = mode
@@ -69,122 +126,127 @@ func (g *Game) chronicleName(e storage.ChronicleEntry) (string, string) {
 
 func (g *Game) chronicleWindow(dst *ebiten.Image, x, y, w, h int) {
 	v := &g.chron
-	g.label(dst, "닿은 장과 전투마다 그때의 모습을 기록합니다. 고르면 지나온 시점부터 다시 시작하며, 지금까지의 진행은 그대로 남습니다.", float64(x+32), float64(y+56), 14, muted)
-	if len(v.lines) == 0 {
+	g.label(dst, "닿은 장과 전투마다 그때의 모습을 기록합니다. 고르면 그 시점부터 다시 시작하며, 같은 곳에 다시 닿으면 기록이 새로 덮입니다.", float64(x+32), float64(y+56), 14, muted)
+	if len(v.points) == 0 {
 		g.centered(dst, "아직 기록된 곳이 없습니다.", float64(x+w/2), float64(y+h/2-30), 18, ink)
 		g.centered(dst, "새 장이나 전투에 닿으면 여기에 남습니다.", float64(x+w/2), float64(y+h/2), 15, muted)
 		return
 	}
-	top := y + 86
-	v.line = max(0, min(v.line, len(v.lines)-1))
-	if len(v.lines) > 1 {
-		last := min(len(v.lines), v.first+chronicleTabs)
-		labels := make([]string, 0, chronicleTabs)
-		for i := v.first; i < last; i++ {
-			labels = append(labels, fmt.Sprintf("진행 %d", v.lines[i].Number))
-		}
-		g.tabRow(dst, x+24, top, labels, v.line-v.first, func(i int) { g.pickChronicleLine(v.first + i) })
-		if v.first > 0 {
-			g.centeredBtn(dst, image.Rect(x+w-24-2*(touchH+6), top, x+w-24-touchH-6, top+touchH), "‹", func() { v.first-- })
-		}
-		if last < len(v.lines) {
-			g.centeredBtn(dst, image.Rect(x+w-24-touchH, top, x+w-24, top+touchH), "›", func() { v.first++ })
-		}
-		top += touchH + 8
-	}
-	line := v.lines[v.line]
-	note := fmt.Sprintf("진행 %d", line.Number)
-	switch {
-	case line.From != nil:
-		from, _ := g.chronicleName(line.From.Entry)
-		note += fmt.Sprintf(" · 진행 %d의 「%s」에서 다시 시작해 갈라진 기록", line.From.Number, from)
-	default:
-		note += " · 처음부터 이어 온 기록"
-	}
-	if line.Current {
-		note += " · 지금 하는 진행"
-	}
-	g.label(dst, note, float64(x+32), float64(top+2), 14, gold)
-	top += 30
-
-	view := image.Rect(x+24, top, x+w-24, y+h-24)
-	total := max(0, len(line.Entries)*(chronicleRowH+chronicleGap)-chronicleGap)
+	view := image.Rect(x+24, y+86, x+w-24, y+h-24)
 	l := &v.list
-	clip := l.begin(dst, view, total)
-	if line.Err != "" {
-		g.label(clip, "이 기록을 읽을 수 없습니다.", float64(view.Min.X+16), float64(view.Min.Y+16), 16, bad)
+	clip := l.begin(dst, view, v.total)
+	for i, r := range v.rows {
+		rt := view.Min.Y + r.top - l.top
+		rr := image.Rect(view.Min.X, rt, view.Max.X-14, rt+r.h)
+		if !rr.Overlaps(view) {
+			continue
+		}
+		if r.fork != nil {
+			g.chronicleFork(clip, r, rr, view, i)
+			continue
+		}
+		g.chronicleRow(clip, r, rr, view, i)
 	}
-	for i, e := range line.Entries {
-		rt := view.Min.Y + i*(chronicleRowH+chronicleGap) - l.top
-		r := image.Rect(view.Min.X, rt, view.Max.X-14, rt+chronicleRowH)
-		if !r.Overlaps(view) {
-			continue
-		}
-		var click func()
-		if !e.Bad {
-			click = func() { g.askChronicle(line, e) }
-		}
-		l.row(i, r, view, click)
-		body, rim, fg := lacquer2, goldDim, ink
-		switch {
-		case e.Bad:
-			fg = muted
-		case hovered(r.Intersect(view)):
-			body, rim = hoverC, gold
-		}
-		rect(clip, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), body)
-		strokeRect(clip, float32(r.Min.X)+.5, float32(r.Min.Y)+.5, float32(r.Dx())-1, float32(r.Dy())-1, 1, rim)
-		ty := float64(rt + 14)
-		if e.Bad {
-			g.label(clip, "읽을 수 없는 기록", float64(r.Min.X+16), ty, 16, fg)
-			continue
-		}
-		name, tag := g.chronicleName(e)
-		g.label(clip, name, float64(r.Min.X+16), ty, 16, fg)
-		tx := float64(r.Min.X+16) + g.width(name, 16) + 12
-		if tag != "" {
-			g.label(clip, tag, tx, ty+2, 13, gold)
-			tx += g.width(tag, 13) + 10
-		}
-		if w := g.chron.way[e.Node]; w.Stage != "" {
-			status := "도전 중"
-			if i < len(line.Entries)-1 {
-				status = "승리"
+	l.drawBar(dst, view, v.total)
+}
+
+// chronicleFork draws a fork's header: its name, how the chosen arm is come to, and a chip for each arm.
+func (g *Game) chronicleFork(clip *ebiten.Image, r chronicleRow, rr, view image.Rectangle, index int) {
+	v := &g.chron
+	f, cur := r.fork, v.arm[r.fork.ID]
+	g.label(clip, "갈림길 · "+f.Name, float64(rr.Min.X+4), float64(rr.Min.Y+4), 16, gold)
+	note := ""
+	for _, a := range f.Arms {
+		if a.ID == cur {
+			note = a.Note
+			if !g.armKept(f, a) {
+				note += " 아직 가 보지 않은 길입니다. 갈림길 앞의 기록에서 다시 시작해 보세요."
 			}
-			g.label(clip, status, tx, ty+2, 13, muted)
-			tx += g.width(status, 13) + 10
 		}
-		if e.Line != line.ID {
-			g.label(clip, fmt.Sprintf("진행 %d와 같음", g.chronicleNumber(e.Line)), tx, ty+2, 13, muted)
+	}
+	g.label(clip, note, float64(rr.Min.X+4), float64(rr.Min.Y+30), 13, muted)
+	x := rr.Min.X
+	cy := rr.Min.Y + 70
+	for _, a := range f.Arms {
+		cw := max(96, int(g.width(a.Name, 15))+32)
+		c := image.Rect(x, cy, x+cw, cy+touchH)
+		fg := muted
+		switch {
+		case a.ID == cur:
+			rect(clip, float32(c.Min.X), float32(c.Min.Y), float32(cw), touchH, color.NRGBA{R: 46, G: 32, B: 25, A: 255})
+			rect(clip, float32(c.Min.X), float32(c.Max.Y-3), float32(cw), 3, gold)
+			fg = gold
+		case hovered(c.Intersect(view)):
+			rect(clip, float32(c.Min.X), float32(c.Min.Y), float32(cw), touchH, color.NRGBA{R: 255, G: 240, B: 210, A: 14})
 		}
+		if !g.armKept(f, a) && a.ID != cur {
+			fg = goldDim
+		}
+		id := a.ID
+		var click func()
+		if a.ID != cur {
+			click = func() { v.arm[f.ID] = id; g.buildChronicle() }
+		}
+		v.list.row(index*8+len(v.list.rows), c, view, click)
+		g.label(clip, a.Name, float64(c.Min.X)+(float64(cw)-g.width(a.Name, 15))/2, float64(c.Min.Y)+(touchH-15*1.45)/2, 15, fg)
+		x += cw + 6
+	}
+}
+
+// armKept reports whether any waypoint of the arm has a point.
+func (g *Game) armKept(f *content.Fork, a content.Arm) bool {
+	for k := range g.chron.points {
+		node, route, _ := strings.Cut(k, "@")
+		if route == a.ID && g.S.Data.ForkAt(node) == f {
+			return true
+		}
+	}
+	return false
+}
+
+func (g *Game) chronicleRow(clip *ebiten.Image, r chronicleRow, rr, view image.Rectangle, index int) {
+	l := &g.chron.list
+	e := r.entry
+	var click func()
+	if e != nil && !e.Bad {
+		click = func() { g.askChronicle(r) }
+	}
+	l.row(index, rr, view, click)
+	body, rim, fg := lacquer2, goldDim, ink
+	switch {
+	case e == nil || e.Bad:
+		fg = muted
+	case hovered(rr.Intersect(view)):
+		body, rim = hoverC, gold
+	}
+	rect(clip, float32(rr.Min.X), float32(rr.Min.Y), float32(rr.Dx()), float32(rr.Dy()), body)
+	strokeRect(clip, float32(rr.Min.X)+.5, float32(rr.Min.Y)+.5, float32(rr.Dx())-1, float32(rr.Dy())-1, 1, rim)
+	ty := float64(rr.Min.Y + 14)
+	name, tag := g.chronicleName(r.w)
+	g.label(clip, name, float64(rr.Min.X+16), ty, 16, fg)
+	if tag != "" {
+		g.label(clip, tag, float64(rr.Min.X+16)+g.width(name, 16)+12, ty+2, 13, gold)
+	}
+	right := float64(rr.Max.X - 16)
+	switch {
+	case e == nil:
+		g.label(clip, "아직 가 보지 않음", right-g.width("아직 가 보지 않음", 14), ty+1, 14, muted)
+	case e.Bad:
+		g.label(clip, "읽을 수 없는 기록", right-g.width("읽을 수 없는 기록", 14), ty+1, 14, muted)
+	default:
 		date := e.At.Format("01/02 15:04")
-		right := float64(r.Max.X - 16)
 		g.label(clip, date, right-g.width(date, 15), ty+1, 15, muted)
 		lv := fmt.Sprintf("Lv %d", e.Level)
 		g.label(clip, lv, right-g.width(date, 15)-24-g.width(lv, 16), ty, 16, fg)
 	}
-	l.drawBar(dst, view, total)
-}
-
-func (g *Game) chronicleNumber(line string) int {
-	for _, l := range g.chron.lines {
-		if l.ID == line {
-			return l.Number
-		}
-	}
-	return 0
-}
-
-func (g *Game) pickChronicleLine(i int) {
-	v := &g.chron
-	v.line, v.list = i, scroller{top: 1 << 20}
 }
 
 // askChronicle asks before playing on from a point, and says what stays.
-func (g *Game) askChronicle(line session.ChronicleLine, e storage.ChronicleEntry) {
-	name, _ := g.chronicleName(e)
+func (g *Game) askChronicle(r chronicleRow) {
+	name, _ := g.chronicleName(r.w)
+	e := r.entry
 	g.askWith(fmt.Sprintf("「%s」 (Lv %d · %s)에서 다시 시작합니다.\n지금 진행과 저장은 그대로 남습니다.", name, e.Level, e.At.Format("01/02 15:04")), "시작", "취소", func() {
-		g.request(session.Request{Op: "chronicle_load", Line: line.ID, Seq: e.Seq})
+		g.request(session.Request{Op: "chronicle_load", Node: e.Node, Route: e.Route})
 	})
 }
 

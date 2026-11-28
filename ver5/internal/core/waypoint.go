@@ -213,6 +213,17 @@ func (e *Engine) Reached(from string) string {
 	return out
 }
 
-// ClearLine drops the chronicle line a restored state carried: the session that loaded it keeps the line itself
-// and stamps it on what it saves, so the engine's own snapshots stay what they were before the state was saved.
-func (e *Engine) ClearLine() { e.state.Run, e.state.Steps = "", 0 }
+// Route is the arm of its fork (content.Fork) the game is on at a waypoint, told by the flags and the party it has
+// now: the waypoint is kept once per arm. It is empty when the waypoint is on no fork.
+func (e *Engine) Route(node string) string {
+	f := e.data.ForkAt(node)
+	if f == nil {
+		return ""
+	}
+	for _, c := range f.Cases {
+		if e.holdsAll(c.If) {
+			return c.Next
+		}
+	}
+	return f.Else
+}

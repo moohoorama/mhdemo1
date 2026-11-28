@@ -83,8 +83,6 @@ type State struct {
 	Merit                             *Merit            `json:",omitempty"` // what the battle fought last has brought, from its start
 	Checkpoint                        *State            `json:",omitempty"`
 	Ending                            string            `json:",omitempty"` // the end node the story stopped at, when it has a Text (the hero fell)
-	Run                               string            `json:",omitempty"` // the chronicle line this game plays ("-" for a debug start that is not chronicled); the session stamps it on what it saves
-	Steps                             int               `json:",omitempty"` // how many chronicle points that line had when this state was made
 }
 
 // Merit is what a battle has brought, for its result window: each officer's experience, the level each started
