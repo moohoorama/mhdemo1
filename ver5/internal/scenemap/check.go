@@ -14,8 +14,9 @@ type Problem struct {
 
 // Check finds what the rules draw without complaint but a map should not have: a standing object on a wall line
 // (in a gate's way), the same object twice at one point, and buildings and other wide objects (scene.json
-// footprints at least a tile wide and deep) whose footprints overlap or that stand within two tiles of a wall in front
-// of them (greater u or v, seen over the object's own picture). Small objects may stand close together and
+// footprints at least a tile wide and deep) whose footprints overlap or that stand within two tiles of a city wall in
+// front of them (greater u or v, seen over the object's own picture; a low compound wall or fence, a family drawn by
+// Piece, hides nothing and may run round a house's own yard). Small objects may stand close together and
 // thin ones (a wall, a curtain) along others: those are left alone.
 func Check(m *Map, c *Catalog) []Problem {
 	type stand struct {
@@ -51,6 +52,9 @@ func Check(m *Map, c *Catalog) []Problem {
 		}
 		if a.wide {
 			for _, line := range m.Walls {
+				if c.Rules.Walls[line.Family].Piece != "" {
+					continue
+				}
 				lu0, lu1 := float64(min(line.From[0], line.To[0])), float64(max(line.From[0], line.To[0])+1)
 				lv0, lv1 := float64(min(line.From[1], line.To[1])), float64(max(line.From[1], line.To[1])+1)
 				const near = 2

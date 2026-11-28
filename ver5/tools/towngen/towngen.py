@@ -23,14 +23,36 @@ import stage
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 VER5 = '/Users/younwookim/orca/mhdemo1/ver5'
-SRC_MAPS = os.path.join(VER5, 'assets/graphics/maps')
-SRC_SCN = os.path.join(VER5, 'assets/scenario/hero')
-SRC_SCENES = os.path.join(VER5, 'assets/scenes')
+# 생성은 towngen 이전의 맵·탐험·장면에서 한다 (TOWNGEN_BASE: git archive f96ad23로 푼 ver5/assets, batch.sh가 만든다)
+SRC = os.environ.get('TOWNGEN_BASE') or os.path.join(VER5, 'assets')
+SRC_MAPS = os.path.join(SRC, 'graphics/maps')
+SRC_SCN = os.path.join(SRC, 'scenario/hero')
+SRC_SCENES = os.path.join(SRC, 'scenes')
 ROOT = os.path.join(HERE, 'work', 'root')
 
 ROLE_BY_MAP = {'S_tool_shop': 'shop', 'S_tavern': 'tavern', 'S_zhuo_office': 'yamen', 'S_xiaopei_office': 'yamen',
                'S_council': 'yamen', 'S_liu_house': 'mansion', 'S_mansion': 'mansion', 'S_weapon_shop': 'smithy'}
 ROLE_KO = {'yamen': '관청', 'tavern': '주점', 'shop': '도구점', 'smithy': '대장간', 'mansion': '저택', 'palace': '황궁'}
+role_ko = lambda r: ROLE_KO[base_role(r)] + r[len(base_role(r)):]
+NAME_ROLE = {'관청': 'yamen', '관아': 'yamen', '현청': 'yamen'}
+
+
+def base_role(r):
+    return r.rstrip('0123456789') if r else r
+
+
+def exit_role(e, areas, named):
+    """출구의 역할: 잇는 실내 맵으로, 실내가 없는 출구(장면을 여는 출구)는 이름으로 (관청·관아·현청, …저택·…거처).
+    저택은 이름마다 따로 (named: 이름 → mansion, mansion2 …)"""
+    r = ROLE_BY_MAP.get((areas.get(e.get('To')) or {}).get('Map'))
+    n = e.get('Name') or ''
+    if r is None:
+        r = NAME_ROLE.get(n) or ('mansion' if n.endswith(('저택', '거처')) else None)
+    if r == 'mansion':
+        r = named.setdefault(n, 'mansion' + (str(len(named) + 1) if named else ''))
+    return r
+
+
 KEEP_INSIDE = ('notice_post', 'notice_board', 'well', 'sgate_open', 'sgate_closed', 'palace_gate', 'pavilion')
 TREES = ('stree_willow', 'stree_broad_0', 'stree_broad_1', 'stree_bush_0', 'stree_bush_1', 'stree_pine_0', 'stree_pine_1',
          'stree_plum_0', 'stree_plum_1', 'stree_old')
@@ -72,6 +94,7 @@ def place_obj(name, bu, bv, fu, fv):
 def gather(map_id):
     """이 맵을 쓰는 탐험·장면에서 지킬 칸, 출구·사인, 역할"""
     keep, exits, signs, roles, uses = set(), [], [], {}, []
+    named = {}
     for f in sorted(glob.glob(os.path.join(SRC_SCN, 'explore*.json'))):
         areas = (json.load(open(f)).get('Areas') or {})
         for k, a in areas.items():
@@ -83,8 +106,10 @@ def gather(map_id):
             for p in (a.get('People') or {}).values():
                 if 'At' in p:
                     keep.add(tuple(p['At']))
+                for t in ((p.get('Move') or {}).get('Patrol') or []):     # 순찰 끝도 걸어서 닿아야
+                    keep.add(tuple(t))
             for e in a.get('Exits') or []:
-                role = ROLE_BY_MAP.get((areas.get(e.get('To')) or {}).get('Map'))
+                role = exit_role(e, areas, named)
                 exits.append({'file': os.path.basename(f), 'area': k, 'to': e.get('To'), 'name': e.get('Name'),
                               'at': tuple(e['At']), 'role': role})
                 if role:
@@ -364,7 +389,8 @@ def attempt(src, meta, region, keep, exits, signs, roles, rnd, cfg=None):
         orig.add('mansion')
     if any(o[0] == 'tavern' for o in olds):
         orig.add('tavern')
-    need = [r for r in ('yamen', 'smithy', 'tavern', 'shop', 'mansion') if r in roles or r in orig]
+    need = [r for r in ('yamen', 'smithy', 'tavern', 'shop', 'mansion') if r in roles or r in orig] + \
+        sorted(r for r in roles if base_role(r) == 'mansion' and r != 'mansion')
     target = len(olds) if not cfg.get('ruin') else max(4, len(olds) // 2)
     taken = set()
     objs, lines = [], []
@@ -475,8 +501,9 @@ def attempt(src, meta, region, keep, exits, signs, roles, rnd, cfg=None):
             s -= 50
         return s
 
-    for role in need:
-        name = {'mansion': 'mansion_1'}.get(role, role)
+    for role_key in need:
+        role = base_role(role_key)
+        name = {'mansion': 'mansion_1'}.get(role, role) if role_key == role else 'mansion_2'
         encl = 'twall' if role in ('yamen', 'mansion') else None
         chain = ([(name, 'twall'), (name, 'twall1'), (name, 'yard'), (name, 'yard1')] if role == 'yamen' else [(name, encl)]) + \
                 ([(name, None)] if encl else []) + {'yamen': [('mansion_1', 'twall'), ('mansion_1', None)],
@@ -488,7 +515,7 @@ def attempt(src, meta, region, keep, exits, signs, roles, rnd, cfg=None):
         for rank, (nm, en) in enumerate(chain):          # 제 모양으로 모든 블록을 본 뒤에야 물러선다
             for blk in order:
                 for fc in faces(blk):
-                    done = try_place(blk, nm, en, fc, role in roles)
+                    done = try_place(blk, nm, en, fc, role_key in roles)
                     if done:
                         break
                 if done:
@@ -498,7 +525,7 @@ def attempt(src, meta, region, keep, exits, signs, roles, rnd, cfg=None):
                 done['fallback'] = rank
                 break
         if done:
-            placed_roles[role] = done
+            placed_roles[role_key] = done
             hard |= done['reserve']
     # 구역: 남은 블록에 부유층 저택(뒤쪽 큰 블록), 민가 초가, 앞 가장자리 밭
     village = not walls and not palace
@@ -1149,12 +1176,231 @@ def stage_pass(d, src, region, meta, res, cfg):
     return notes
 
 
+# ---------------------------------------------------------------- 맵 출구 (docs/plan-scene-exits.md)
+
+DIR_KO = {'NE': '오른쪽 위', 'SW': '왼쪽 아래', 'NW': '왼쪽 위', 'SE': '오른쪽 아래'}
+
+
+def odd(x):
+    return x if x % 2 else x + 1
+
+
+def map_exits(d, occ=frozenset(), keep=frozenset()):
+    """장면 사람이 나가는 출구: 성문 통로(성문 칸 -1·0 가운데 홀수 칸)와 길이 놀이 영역 끝에 닿는 곳(길 폭 가운데).
+    at은 홀수 소타일(정수 게임 칸), dir은 나가는 방향"""
+    ox, oy = d['origin']
+    W2, H2 = 2 * d['size'][0], 2 * d['size'][1]
+    cu, cv = W2 / 2, H2 / 2
+    out, used = [], set()
+    lines = [w for w in d.get('walls', []) if w[0] == 'swall']
+    for o in d['objects']:
+        if not o[0].startswith('sgate'):
+            continue
+        U, V = o[1], o[2]
+        line = next((w for w in lines if min(w[1][0], w[2][0]) <= U <= max(w[1][0], w[2][0]) and
+                     min(w[1][1], w[2][1]) <= V <= max(w[1][1], w[2][1])), None)
+        if line is None:
+            continue
+        if line[1][1] == line[2][1]:                  # u를 따라 선 성벽: 통로는 u-1·u, 나가는 길은 v 쪽
+            dir_ = 'NE' if V < cv else 'SW'
+            u = U if U % 2 else U - 1
+            v = V if V % 2 else (V - 1 if dir_ == 'NE' else V + 1)
+            at = (u, v)
+        else:
+            dir_ = 'NW' if U < cu else 'SE'
+            v = V if V % 2 else V - 1
+            u = U if U % 2 else (U - 1 if dir_ == 'NW' else U + 1)
+            at = (u, v)
+        out.append({'id': f'성문 {DIR_KO[dir_]}', 'at': list(at), 'dir': dir_})
+        used.add(dir_)
+    g = lambda u, v: d['ground'][v - oy][u - ox] if 0 <= v - oy < len(d['ground']) and 0 <= u - ox < len(d['ground'][0]) else '.'
+    walled = set()
+    for w in lines:
+        (a0, b0), (a1, b1) = w[1], w[2]
+        if b0 == b1:
+            walled.add('NE' if b0 < cv else 'SW')
+        else:
+            walled.add('NW' if a0 < cu else 'SE')
+    edges = {'SE': [(W2 - 1, v) for v in range(H2)], 'SW': [(u, H2 - 1) for u in range(W2)],
+             'NW': [(0, v) for v in range(H2)], 'NE': [(u, 0) for u in range(W2)]}
+    for dir_, cells in edges.items():
+        if dir_ in walled:
+            continue
+        runs, run = [], []
+        for c in cells + [None]:
+            if c is not None and g(*c) in 'di':
+                run.append(c)
+            elif run:
+                runs.append(run)
+                run = []
+        step = {'SE': (1, 0), 'SW': (0, 1), 'NW': (-1, 0), 'NE': (0, -1)}[dir_]
+        k = 0
+        for run in runs:
+            if len(run) < 2:
+                continue
+            ok = []
+            for u, v in run:                          # 길이 안쪽으로 곧게 이어지고 물건이 없는 칸만 (판 끝을 따라 눕는 길은 아님)
+                at = (u if u % 2 else u - 1, v) if dir_ in ('SW', 'NE') else (u, v if v % 2 else v - 1)
+                if dir_ == 'SE':
+                    at = (W2 - 1 if (W2 - 1) % 2 else W2 - 2, at[1])
+                elif dir_ == 'SW':
+                    at = (at[0], H2 - 1 if (H2 - 1) % 2 else H2 - 2)
+                elif dir_ == 'NW':
+                    at = (1, at[1])
+                else:
+                    at = (at[0], 1)
+                inward = [(at[0] - step[0] * i, at[1] - step[1] * i) for i in range(0, 6)]
+                if all(g(*c) in 'di' and c not in occ for c in inward):
+                    ok.append(at)
+            if ok:
+                at = ok[len(ok) // 2]
+                lane = {(at[0] - step[0] * i + a, at[1] - step[1] * i + b) for i in range(0, 6) for a in (-1, 0, 1) for b in (-1, 0, 1)}
+                d['objects'] = [o for o in d['objects'] if not ((o[1], o[2]) in lane and small_prop(o[0]))]   # 길목의 소품·나무는 비킨다
+                k += 1
+                out.append({'id': f'길 {DIR_KO[dir_]}' + (f' {k}' if k > 1 else ''), 'at': list(at), 'dir': dir_})
+    W, H = len(d['ground'][0]), len(d['ground'])
+    inside = lambda c: ox <= c[0] < ox + W and oy <= c[1] < oy + H
+    signs = []
+    village = not lines and not any(o[0].startswith(('palace', 'pwall')) for o in d['objects'])   # 성·황성 거리는 아님
+    keepr = {(u + a, v + b) for u, v in keep for a in (-1, 0, 1) for b in (-1, 0, 1)}
+    for e in out:                                     # 출구 너머 판 끝까지 걸어 나갈 줄: 그 줄과 옆 칸의 소품·나무를 비킨다
+        st = {'SE': (1, 0), 'SW': (0, 1), 'NW': (-1, 0), 'NE': (0, -1)}[e['dir']]
+        lane, c = set(), tuple(e['at'])
+        while inside(c):
+            lane |= {(c[0] + a, c[1] + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
+            c = (c[0] + st[0], c[1] + st[1])
+        d['objects'] = [o for o in d['objects'] if not ((o[1], o[2]) in lane and small_prop(o[0]))]
+        if not village or not e['id'].startswith('길'):
+            continue
+        # 마을 길 끝: 출구 한 칸 반 안쪽, 길 옆 풀밭에 화살표 이정표 (위 판이 출구 쪽). 앞(화면 아래)을 가리는 나무는 비킨다
+        side = (st[1], st[0])
+        base = (e['at'][0] - 3 * st[0], e['at'][1] - 3 * st[1])
+        for k in (2, -2, 3, -3):
+            t = (base[0] + side[0] * k, base[1] + side[1] * k)
+            taken = {(o[1], o[2]) for o in d['objects']}
+            if g(*t) == '.' and t not in taken and t not in occ and t not in keepr:
+                d['objects'] = [o for o in d['objects'] if not (small_prop(o[0]) and 0 <= o[1] - t[0] <= 3 and 0 <= o[2] - t[1] <= 3)]
+                d['objects'].append([f'signpost_arrow_{e["dir"].lower()}', t[0], t[1], 0, -8])
+                signs.append(e['id'])
+                break
+    d['_signs'] = signs
+    return out
+
+
+def small_prop(name):
+    """출구 길목에서 치워도 되는 것: 나무·항아리·웅덩이 같은 소품 (건물·성문·게시판·우물은 아님)"""
+    return not name.startswith(('huabei_', 'zhongyuan_', 'huainan_', 'jiangnan_', 'bashu_', 'sgate', 'swall', 'palace', 'pwall')) \
+        and not name.startswith(KEEP_INSIDE) and not name.startswith('signpost')
+
+
+def door_dir(pr):
+    """건물 문이 보는 쪽: 원래 그림은 +v(SW), 반전판 _r은 +u(SE)"""
+    return 'SE' if pr['name'].endswith('_r') else 'SW'
+
+
+OPP = {'NE': 'SW', 'SW': 'NE', 'NW': 'SE', 'SE': 'NW'}
+
+
+def inside_exit(pr, room_map, people=()):
+    """실내 출구: 성 건물의 문 방향과 같은 쪽 앞 벽, 건물 앞면에서 문이 놓인 비율 자리(홀수 칸), 가구가 있으면 벽을 따라
+    가장 가까운 빈 칸. 실내 맵의 소타일 좌표"""
+    W2, H2 = 2 * room_map['size'][0], 2 * room_map['size'][1]
+    dd = door_dir(pr)
+    if dd == 'SW':
+        r = (pr['door'][0] - pr['bu'] + .5) / pr['fu']
+        n, fixed = W2, H2 - 1
+    else:
+        r = (pr['door'][1] - pr['bv'] + .5) / pr['fv']
+        n, fixed = H2, W2 - 1
+    taken = {(o[1], o[2]) for o in room_map['objects'] if not o[0].startswith(('wall_', 'pillar', 'floor', 'rug', 'carpet'))}
+    want = odd(min(n - 3, max(1, round(r * n))))
+    for k in sorted(range(1, n - 1, 2), key=lambda x: abs(x - want)):
+        at = (k, fixed) if dd == 'SW' else (fixed, k)
+        step = (0, -1) if dd == 'SW' else (-1, 0)
+        if all((at[0] + step[0] * i, at[1] + step[1] * i) not in taken for i in range(5)) and \
+                all(max(abs(at[0] - a), abs(at[1] - b)) >= 2 for a, b in people):
+            return list(at), dd
+    return [want, fixed] if dd == 'SW' else [fixed, want], dd
+
+
 # ---------------------------------------------------------------- 탐험·사인 고치기
 
+def smith_spots(pr, others=()):
+    """거리의 대장간 앞: 대장장이는 문 칸(정수 게임 칸이 되게 홀수 소타일로 한 칸 밖으로), 견습공은 옆 두 칸,
+    유비가 다가와 서는 곳은 대장장이 앞 두 칸. 반전판(_r)은 +u 쪽 길을 본다. 다른 사람과 한 칸은 띄우게
+    (TestExplorePeopleSpaced) 대장간 앞을 따라 두 칸씩 옮겨 본다"""
+    odd = lambda x: x if x % 2 else x + 1
+    su, sv = odd(pr['door'][0]), odd(pr['door'][1])
+    flip = pr['name'].endswith('_r')
+    clear = lambda t: all(max(abs(t[0] - a), abs(t[1] - b)) >= 2 for a, b in others)
+    for k in (0, -2, 2, -4, 4):
+        for side in (1, -1):
+            if flip:
+                sm, he, hero = (su, sv + k), (su, sv + k - 2 * side), (su + 2, sv + k)
+            else:
+                sm, he, hero = (su + k, sv), (su + k + 2 * side, sv), (su + k, sv + 2)
+            if clear(sm) and clear(he) and clear(hero):
+                break
+        else:
+            continue
+        break
+    if flip:
+        return {'smith': sm, 'helper': he, 'hero': hero, 'smith_face': 'SE', 'hero_face': 'NW'}
+    return {'smith': sm, 'helper': he, 'hero': hero, 'smith_face': 'SW', 'hero_face': 'NE'}
+
+
+def map_id_of(area):
+    return area.get('Map')
+
+
+def patch_smith_scene(root, map_id, spots):
+    """2장 대장간 장면(c02-e-smith)을 거리에서: 맵을 성 맵으로, 유비는 대장장이 앞 두 칸으로 걸어가 마주 본다"""
+    p = os.path.join(root, 'assets/scenes/ch02.json')
+    d = json.load(open(p))
+    sc = d['Scenes'].get('c02-e-smith')
+    if not sc:
+        return
+    sc['Map'] = map_id
+    hu, hv = spots['hero']
+    cell = lambda t: (t - 1) // 2
+    for line in sc['Beats'].get('c02-k1', []):
+        for group in line:
+            for st in group:
+                if st.get('Actor') == '유비' and 'Move' in st:
+                    st['Move'] = [cell(hu), cell(hv)]
+                if st.get('Actor') == '유비' and 'Face' in st:
+                    st['Face'] = spots['hero_face']
+                if st.get('Actor') == '대장장이' and 'Face' in st:
+                    st['Face'] = spots['smith_face']
+    json.dump(d, open(p, 'w'), ensure_ascii=False, indent=1)
+
+
+def clear_smith(d, res, region, meta):
+    """거리 대장간 앞 사람 자리: 그 칸 위·바로 앞의 물건을 치우고 흙길로"""
+    cells = res.get('smith_cells') or set()
+    if not cells:
+        return []
+    sp = stage.Sprites(os.path.join(ROOT, 'assets/graphics'))
+    near = {(u + a, v + b) for u, v in cells for a in (-1, 0, 1) for b in (-1, 0, 1)}
+    roles = {p['name'] for p in res['roles'].values()}
+    keep = lambda o: o[0].startswith(KEEP_INSIDE + ('sgate',)) or o[0][len(region) + 1:] in roles
+    hid = set(stage.occluders(d['objects'], cells, sp, skip=keep))
+    hid |= {i for i, o in enumerate(d['objects']) if not keep(o) and occupied({'objects': [o]}, meta, region) & near}
+    d['objects'] = [o for i, o in enumerate(d['objects']) if i not in hid]
+    set_ground(d, near, 'd')
+    return [f'거리 대장간 앞 사람 자리 비움 (물건 {len(hid)}개 치움)'] if hid else []
+
+
 def patch_scenario(root, res, exits, signs, region):
-    """역할 건물 출구를 새 문 칸으로, Object를 새 건물 칸으로 (대장간 출구는 대장간 앞 → 마당 맵, smithy_yard.py)"""
+    """역할 건물 출구를 새 문 칸으로, Object를 새 건물 칸으로. 대장간은 거리에서: 실내 지역을 빼고 대장장이·견습공을 대장간 앞으로,
+    2장 대장간 장면도 성 맵에서 (사용자 11-28)"""
     scn = os.path.join(root, 'assets/scenario/hero')
     notes = []
+    named = {}
+    for r, names in res.get('role_names', {}).items():
+        for n in names:
+            named.setdefault(n, r)
+    smith_cells = res.setdefault('smith_cells', set())
     moved = res['map'].pop('_moved_gates', [])
     files = sorted({e['file'] for e in exits} | {s['file'] for s in signs})
     for f in files:
@@ -1166,12 +1412,36 @@ def patch_scenario(root, res, exits, signs, region):
                 continue
             new_exits = []
             for e in a.get('Exits') or []:
-                role = ROLE_BY_MAP.get((A.get(e.get('To')) or {}).get('Map'))
+                role = exit_role(e, A, named)
                 pr = res['roles'].get(role)
+                if role == 'smithy' and pr and e.get('To') in A:
+                    smith_area = A[e['To']]
+                    spots = smith_spots(pr, [tuple(p['At']) for p in (a.get('People') or {}).values() if 'At' in p])
+                    people = a.setdefault('People', {})
+                    for i, (n, p) in enumerate((smith_area.get('People') or {}).items()):
+                        q = dict(p)
+                        q['At'] = list(spots['smith'] if i == 0 else spots['helper'])
+                        q['Face'] = spots['smith_face']
+                        people[n if n not in people else n + ' (대장간)'] = q
+                    notes.append(f'{f}/{k}: 대장간은 거리에서, 대장장이 {list(spots["smith"])}')
+                    smith_cells.update([spots['smith'], spots['helper'], spots['hero']])
+                    del A[e['To']]
+                    if f == 'explore02.json':
+                        patch_smith_scene(root, map_id_of(a), spots)
+                    continue
                 if pr:
                     e['At'] = list(pr['door'])
+                    e['Face'] = OPP[door_dir(pr)]          # 길에서 건물로 들어가는 쪽
+                    room = A.get(e.get('To'))
+                    if room and room.get('Map'):
+                        rm = json.load(open(os.path.join(SRC_MAPS, room['Map'] + '.json')))
+                        at, dd = inside_exit(pr, rm, [tuple(p['At']) for p in (room.get('People') or {}).values() if 'At' in p])
+                        for back in room.get('Exits') or []:
+                            if back.get('To') == k:
+                                back['At'], back['Face'] = at, dd
+                        notes.append(f'{f}/{e.get("To")}: 실내 출구 {at} {dd} (성 문 {DIR_KO[dd]})')
                     if 'Object' in e:
-                        e['Object'] = [pr['bu'] + pr['fu'] // 2, pr['bv'] + pr['fv'] // 2]
+                        e['Object'] = place_obj(pr['name'], pr['bu'], pr['bv'], pr['fu'], pr['fv'])[1:3]
                     notes.append(f'{f}/{k}: {e.get("Name")} 출구 → {list(pr["door"])}')
                 new_exits.append(e)
             for e in new_exits:              # 밀려난 성문의 출구
@@ -1192,6 +1462,7 @@ if __name__ == '__main__':
     ROOT = root
     seed = int(sys.argv[4]) if len(sys.argv) > 4 else 0
     res, keep, exits, signs, roles, uses = generate(map_id, region, seed)
+    res['role_names'] = roles
     cfg = CFG.get(map_id, {})
     meta = load_meta(region)
     rnd = random.Random(seed + 7)
@@ -1209,14 +1480,20 @@ if __name__ == '__main__':
         extra += post_fence(d, region, meta, keep, rnd, res)
     d.pop('_hill_cells', None)
     d['_id'] = map_id
+    d['exits'] = map_exits(d, occupied(d, meta, region), keep)
+    if d.get('_signs'):
+        extra.append(f"길 끝 이정표 {len(d['_signs'])}개: {', '.join(d['_signs'])}")
+    d.pop('_signs', None)
     extra += stage_pass(d, json.load(open(os.path.join(SRC_MAPS, map_id + '.json'))), region, meta, res, cfg)
     d.pop('_id', None)
     json.dump(res['map'], open(os.path.join(root, 'assets/graphics/maps', map_id + '.json'), 'w'), ensure_ascii=False, indent=1)
     notes = extra + patch_scenario(root, res, exits, signs, region)
+    notes += clear_smith(d, res, region, meta)
+    json.dump(res['map'], open(os.path.join(root, 'assets/graphics/maps', map_id + '.json'), 'w'), ensure_ascii=False, indent=1)
     os.makedirs(os.path.join(root, 'roles'), exist_ok=True)
     info = {'map': map_id, 'region': region, 'uses': uses,
-            'roles': {ROLE_KO[r]: names for r, names in roles.items()},
-            'placed': {ROLE_KO[r]: {'name': p['name'], 'door': p['door']} for r, p in res['roles'].items()},
+            'roles': {role_ko(r): names for r, names in roles.items()},
+            'placed': {role_ko(r): {'name': p['name'], 'door': p['door']} for r, p in res['roles'].items()},
             'zones': [{k: b[k] for k in ('u0', 'u1', 'v0', 'v1', 'zone') if k in b} for b in res['blocks']],
             'ok': res['ok'], 'missing': res['missing'], 'covered': res['covered'], 'fenced_cottages': res['fence'],
             'main_avenue': res['main'], 'cross_avenue': res['cross'], 'bounds': res['bounds'], 'notes': notes,

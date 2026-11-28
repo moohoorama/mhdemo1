@@ -20,60 +20,51 @@
     {
      "Name": "관청",
      "At": [
-      13,
-      5
+      12,
+      22
      ],
      "Object": [
-      13,
-      3
+      12,
+      20
      ],
-     "To": "office"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      19,
-      9
-     ],
-     "Object": [
-      19,
-      7
-     ],
-     "To": "weapons"
+     "To": "office",
+     "Face": "NE"
     },
     {
      "Name": "주점",
      "At": [
-      11,
-      15
+      21,
+      9
      ],
      "Object": [
-      9,
-      15
+      21,
+      7
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
-      21,
-      19
+      27,
+      22
      ],
      "Object": [
-      21,
-      17
+      27,
+      20
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "저택",
      "At": [
-      7,
-      5
+      20,
+      22
      ],
      "Object": [
-      5,
-      5
+      21,
+      19
      ],
      "To": "mansion",
      "If": [
@@ -84,7 +75,8 @@
        "",
        "큰 저택이다. 대문이 굳게 닫혀 있다."
       ]
-     ]
+     ],
+     "Face": "NE"
     },
     {
      "Name": "노식의 진영으로",
@@ -228,6 +220,40 @@
        "의병 오백 군량 장부는 내가 맞춰 두지. 장세평 공이 더 대 준다는 것까지 숫자는 맞는데, 술독이 하나 비는군. 다 맞추면 따라가겠네."
       ]
      ]
+    },
+    "대장장이": {
+     "At": [
+      27,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "han",
+     "Shop": "weapons",
+     "Event": [
+      {
+       "If": [
+        "flag:c02-gift",
+        "!flag:c02-arms"
+       ],
+       "Node": "c02-e-smith"
+      }
+     ]
+    },
+    "견습공": {
+     "At": [
+      29,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "갑옷도 그렇소. 무장은 가죽갑옷, 서생은 무명옷이지. 장비를 바꾸면 그 값만큼 병종의 공격·방어 같은 능력에 더해진다오."
+      ]
+     ]
     }
    },
    "Signs": [
@@ -271,10 +297,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "zhuo"
+     "To": "zhuo",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -385,61 +412,6 @@
     }
    }
   },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "Zoom": 3,
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "zhuo"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "han",
-     "Shop": "weapons",
-     "Event": [
-      {
-       "If": [
-        "flag:c02-gift",
-        "!flag:c02-arms"
-       ],
-       "Node": "c02-e-smith"
-      }
-     ]
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "갑옷도 그렇소. 무장은 가죽갑옷, 서생은 무명옷이지. 장비를 바꾸면 그 값만큼 병종의 공격·방어 같은 능력에 더해진다오."
-      ]
-     ]
-    }
-   }
-  },
   "tools": {
    "Map": "S_tool_shop",
    "Name": "도구점",
@@ -452,10 +424,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "zhuo"
+     "To": "zhuo",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -498,10 +471,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "zhuo"
+     "To": "zhuo",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -758,10 +732,11 @@
     {
      "Name": "거리로",
      "At": [
-      15,
-      9
+      7,
+      11
      ],
-     "To": "zhuo"
+     "To": "zhuo",
+     "Face": "SW"
     }
    ],
    "People": {

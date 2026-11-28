@@ -21,38 +21,41 @@
     {
      "Name": "관아",
      "At": [
-      14,
-      6
+      30,
+      10
      ],
      "Object": [
-      14,
-      3
+      31,
+      4
      ],
-     "To": "office"
+     "To": "office",
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
-      22,
-      14
+      5,
+      23
      ],
      "Object": [
-      22,
-      12
+      5,
+      21
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "주점",
      "At": [
       6,
-      14
+      11
      ],
      "Object": [
       6,
-      12
+      9
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -184,10 +187,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      7,
+      11
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "Name": "신도성 · 관아",
@@ -227,10 +231,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -272,10 +277,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {

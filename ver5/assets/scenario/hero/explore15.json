@@ -20,32 +20,34 @@
     {
      "Name": "관아",
      "At": [
-      5,
-      11
+      6,
+      7
      ],
      "Object": [
-      2,
-      11
+      4,
+      7
      ],
      "Node": "c15-alarm",
      "If": [
       "!flag:c15-alarm"
-     ]
+     ],
+     "Face": "NW"
     },
     {
      "Name": "관아",
      "At": [
-      5,
-      11
+      6,
+      7
      ],
      "Object": [
-      2,
-      11
+      4,
+      7
      ],
      "To": "office",
      "If": [
       "flag:c15-alarm"
-     ]
+     ],
+     "Face": "NW"
     }
    ],
    "People": {
@@ -223,10 +225,11 @@
     {
      "Name": "거리로",
      "At": [
-      5,
-      11
+      15,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {

@@ -20,68 +20,60 @@
     {
      "Name": "관청",
      "At": [
-      7,
-      13
+      34,
+      11
      ],
      "Object": [
-      7,
-      10
+      28,
+      12
      ],
      "Node": "c18-news",
      "If": [
       "!flag:c18-news"
-     ]
+     ],
+     "Face": "NW"
     },
     {
      "Name": "관청",
      "At": [
-      7,
-      13
+      34,
+      11
      ],
      "Object": [
-      7,
-      10
+      28,
+      12
      ],
      "To": "office",
      "If": [
       "flag:c18-news"
-     ]
+     ],
+     "Face": "NW"
     },
     {
      "Name": "도구점",
      "At": [
-      29,
-      15
+      16,
+      31
      ],
      "Object": [
-      29,
-      13
+      16,
+      29
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "주점",
      "At": [
-      35,
-      15
+      23,
+      23
      ],
      "Object": [
-      35,
-      13
+      21,
+      23
      ],
-     "To": "tavern"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      42,
-      6
-     ],
-     "Object": [
-      40,
-      6
-     ],
-     "To": "weapons"
+     "To": "tavern",
+     "Face": "NW"
     }
    ],
    "People": {
@@ -412,6 +404,31 @@
        "……단양 사람들 집도 다시 세웠습니다."
       ]
      ]
+    },
+    "대장장이": {
+     "At": [
+      23,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      23,
+      11
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "하비에서 여포의 방천화극을 거두셨다지요? 그 극엔 요극 특성이 있어서, 한 놈을 물리치면 사거리 안의 다른 놈을 이어 치고, 그놈도 쓰러지면 또 친다오. 창을 드는 장수라야 쥘 수 있소."
+      ]
+     ]
     }
    }
   },
@@ -427,10 +444,11 @@
     {
      "Name": "거리로",
      "At": [
-      5,
-      11
+      15,
+      3
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -580,10 +598,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -627,9 +646,10 @@
      "Name": "거리로",
      "At": [
       13,
-      9
+      5
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -656,52 +676,6 @@
       [
        "손님",
        "여포가 망하고 나서야 술맛이 좀 납니다. 물난리 때는 술독까지 떠내려갔지요."
-      ]
-     ]
-    }
-   }
-  },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "Zoom": 3,
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "town"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "하비에서 여포의 방천화극을 거두셨다지요? 그 극엔 요극 특성이 있어서, 한 놈을 물리치면 사거리 안의 다른 놈을 이어 치고, 그놈도 쓰러지면 또 친다오. 창을 드는 장수라야 쥘 수 있소."
       ]
      ]
     }

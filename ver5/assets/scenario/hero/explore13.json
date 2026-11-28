@@ -20,14 +20,15 @@
     {
      "Name": "관아",
      "At": [
-      5,
-      11
+      6,
+      7
      ],
      "Object": [
-      2,
-      11
+      4,
+      7
      ],
-     "To": "office"
+     "To": "office",
+     "Face": "NW"
     }
    ],
    "People": {
@@ -248,10 +249,11 @@
     {
      "Name": "거리로",
      "At": [
-      5,
-      11
+      15,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {

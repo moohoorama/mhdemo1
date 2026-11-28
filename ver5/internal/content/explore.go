@@ -73,6 +73,9 @@ type ExploreExit struct {
 	// OneWay marks an exit meant to have no way back from the area it leads to (a road traveled once); the scenario
 	// checks expect every other exit to be returnable.
 	OneWay bool `json:",omitempty"`
+	// Face is the way one walks through the exit going out of this area: toward a building's door from the street,
+	// toward a room's door from inside it. Arriving by it, the hero faces the other way (docs/plan-scene-exits.md).
+	Face string `json:",omitempty"`
 	// Residence says the exit enters a home: small (a guest's), large (the lord's, a great house's) or palace.
 	Residence string `json:",omitempty"`
 }
@@ -161,6 +164,9 @@ func (x *Explore) Arrival(to, from string) Spot {
 	a := x.Areas[to]
 	for _, e := range a.Exits {
 		if e.To == from && from != "" {
+			if back, ok := oppositeFace[e.Face]; ok {
+				return Spot{to, e.At, back}
+			}
 			return Spot{to, e.At, "NW"}
 		}
 	}
@@ -195,6 +201,9 @@ func (d *Data) Price(id string) int {
 }
 
 var faces = map[string]bool{"NE": true, "NW": true, "SE": true, "SW": true}
+
+// oppositeFace is the way back of each facing.
+var oppositeFace = map[string]string{"NE": "SW", "SW": "NE", "NW": "SE", "SE": "NW"}
 
 func (d *Data) validateExplores(nodes map[string]Node) error {
 	for id, s := range d.Shops {
@@ -243,6 +252,9 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 				}
 				if err := conds(where+" exit "+e.Name, e.If); err != nil {
 					return err
+				}
+				if e.Face != "" && !faces[e.Face] {
+					return fmt.Errorf("%s exit %s: face %q", where, e.Name, e.Face)
 				}
 			}
 			for key, p := range a.People {

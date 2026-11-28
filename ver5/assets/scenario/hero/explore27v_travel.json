@@ -28,38 +28,41 @@
     {
      "Name": "주점",
      "At": [
-      25,
-      12
+      15,
+      14
      ],
      "Object": [
-      25,
-      10
+      15,
+      12
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
-      36,
-      13
+      23,
+      10
      ],
      "Object": [
-      36,
-      11
+      21,
+      10
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NW"
     },
     {
      "Name": "관청",
      "At": [
-      12,
-      12
+      31,
+      13
      ],
      "Object": [
-      12,
-      9
+      32,
+      7
      ],
-     "To": "office"
+     "To": "office",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -191,10 +194,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -232,9 +236,10 @@
      "Name": "거리로",
      "At": [
       11,
-      7
+      5
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -262,10 +267,11 @@
     {
      "Name": "거리로",
      "At": [
-      5,
+      7,
       11
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {

@@ -20,50 +20,41 @@
     {
      "Name": "현청",
      "At": [
-      11,
-      6
+      33,
+      10
      ],
      "Object": [
-      11,
-      4
+      31,
+      10
      ],
-     "To": "office"
+     "To": "office",
+     "Face": "NW"
     },
     {
      "Name": "주점",
      "At": [
-      5,
-      14
+      9,
+      25
      ],
      "Object": [
-      5,
-      12
+      9,
+      23
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
       18,
-      13
+      25
      ],
      "Object": [
       18,
-      11
+      23
      ],
-     "To": "tools"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      31,
-      13
-     ],
-     "Object": [
-      31,
-      11
-     ],
-     "To": "weapons"
+     "To": "tools",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -269,6 +260,31 @@
       ]
      ],
      "Notice": "shop:tools_cure"
+    },
+    "대장장이": {
+     "At": [
+      13,
+      15
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      11,
+      15
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "변수에서 여포를 물리치고 그 갑옷을 얻으셨다고요? 당예개갑이오. 중갑 특성이 있어서 입은 장수는 제 차례마다 방어가 2할씩 더 단단해지지."
+      ]
+     ]
     }
    }
   },
@@ -286,7 +302,8 @@
       13,
       9
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -320,51 +337,6 @@
     }
    }
   },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "pingyuan"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "변수에서 여포를 물리치고 그 갑옷을 얻으셨다고요? 당예개갑이오. 중갑 특성이 있어서 입은 장수는 제 차례마다 방어가 2할씩 더 단단해지지."
-      ]
-     ]
-    }
-   }
-  },
   "tools": {
    "Map": "S_tool_shop",
    "Name": "도구점",
@@ -376,10 +348,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -421,10 +394,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "Face": "SW"
     }
    ],
    "People": {

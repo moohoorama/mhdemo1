@@ -23,6 +23,7 @@ type Step struct {
 	Via     [][]float64 // corners [u, v] the walk to Move passes first, in order, each reached along u first
 	Enter   []float64   // appear at [u, v] first (an actor that starts off the stage), then walk to Move
 	Exit    bool        // leave the stage when the walk ends
+	Out     string      // with Exit: the map exit to leave by (the map's "exits"); the nearest one when empty
 	Back    bool        // the walk keeps the way the actor faces: giving ground to a blow, backing away
 	Strike  string      // the actor strikes this cast member: its motion, then the target's React, sparks, a flash and a shake as the blow lands
 	Motion  string      // the striker's motion for a Strike ("attack" when empty or not on the sheet)

@@ -18,8 +18,8 @@ tools/towngen/scene_compare.sh               # 스토리 장면을 옛/새 맵�
 | build_root.py | 미리보기 루트(ver5/assets 복사) + 그림을 extra 시트·scene.json에 |
 | towngen.py | 한 맵 생성 + 탐험 파일 출구 고치기 + roles 기록 |
 | stage.py | 장면 무대: 선 자리·걷는 길, 사람을 가리는 물건, 장면이 기대던 옛 집, 광장 |
-| smithy_yard.py | 지역별 대장간 마당 맵, 탐험 대장간 지역·2장 장면을 마당으로 |
+| apply.py | 게임에 반영: 그림 → assets_candidate·build_extra, scene.json, 맵(_mapfmt), 탐험 병합, 2장 대장간 장면 |
 | scene_compare.sh | 장면을 옛/새 맵에 그려 비교 (코드 사본 둘, scenespots) |
 | batch.sh, page_all.py, check_cells.py | 전체 실행, 페이지, 점검 |
 
-생성물은 `work/`(git 밖, `TOWNGEN_WORK`로 바꿀 수 있음). 게임 데이터에는 아직 반영하지 않았다.
+생성물은 `work/`(git 밖, `TOWNGEN_WORK`로 바꿀 수 있음). 생성의 출발점은 towngen 이전 커밋 f96ad23의 맵·탐험·장면(`work/base`, `TOWNGEN_BASE`). 2026-11-28 게임에 반영(`apply.py`).

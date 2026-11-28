@@ -37,6 +37,9 @@ type scene struct {
 	paths     map[string][][2]float64
 	speed     map[string]float64
 	exits     map[string]bool
+	exitOut   map[string]string // the map exit an actor leaves by (Step.Out), "" for the nearest
+	exiting   map[string]bool   // its way to a map exit has been sought
+	exitVia   map[string]bool   // and found: it walks that way, not to the front edge
 	ground    *exitGround // where an actor leaving the stage can walk to the front edge
 	plays     map[string]string
 	emotes    map[string]*emote
@@ -346,7 +349,20 @@ func (g *Game) updateScene(dt float64) {
 				v.play(v.rest())
 			}
 			route := [][2]float64(nil)
-			if s.exits[key] { // walks to the front edge, on past it and fades out, like a unit leaving a battle
+			if s.exits[key] && !s.exiting[key] { // by a map exit: straight through it at the end (docs/plan-scene-exits.md)
+				if s.exiting == nil {
+					s.exiting = map[string]bool{}
+				}
+				s.exiting[key] = true
+				if r, _, ok := s.ground.throughExit([2]float64{v.u, v.v}, s.exitOut[key], s.crowded(key)); ok {
+					route = r
+					if s.exitVia == nil {
+						s.exitVia = map[string]bool{}
+					}
+					s.exitVia[key] = true
+				}
+			}
+			if s.exits[key] && route == nil && !s.exitVia[key] { // walks to the front edge, on past it and fades out, like a unit leaving a battle
 				route, _ = s.ground.route([2]float64{v.u, v.v}, v.dir, s.crowded(key))
 			}
 			if len(route) > 0 {
@@ -355,9 +371,13 @@ func (g *Game) updateScene(dt float64) {
 			} else {
 				if s.exits[key] {
 					s.exits[key] = false
+					delete(s.exiting, key)
+					delete(s.exitVia, key)
 					d := sceneStep[v.dir]
 					v.play("walk")
-					v.leave = &walkState{fu: v.u, fv: v.v, tu: v.u + d[0]*leaveCells, tv: v.v + d[1]*leaveCells}
+					// on at the walk's own pace, Speed and all, fading as it goes
+					v.leave = &walkState{fu: v.u, fv: v.v, tu: v.u + d[0]*leaveCells, tv: v.v + d[1]*leaveCells,
+						dur: leaveCells * stepTime / math.Max(.1, s.walkSpeed(key))}
 				}
 				delete(s.speed, key)
 				delete(s.stride, key)
@@ -782,6 +802,14 @@ func (s *scene) crowded(key string) func(u, v float64) bool {
 	}
 }
 
+// walkSpeed is the actor's walking speed in the scene, 1 when no Speed was given.
+func (s *scene) walkSpeed(key string) float64 {
+	if k := s.speed[key]; k > 0 {
+		return k
+	}
+	return 1
+}
+
 // sceneStep is the map step of a facing, for an actor walking on past the end of its path.
 var sceneStep = map[string][2]float64{"SE": {1, 0}, "SW": {0, 1}, "NW": {-1, 0}, "NE": {0, -1},
 	"E": {.7, -.7}, "S": {.7, .7}, "W": {-.7, .7}, "N": {-.7, -.7}}
@@ -831,6 +859,10 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 		s.speed[v.id] = st.Speed
 	}
 	s.exits[v.id] = st.Exit
+	if s.exitOut == nil {
+		s.exitOut = map[string]string{}
+	}
+	s.exitOut[v.id] = st.Out
 	if st.Back && len(st.Move) == 2 {
 		v.dir = facing
 		s.back[v.id] = facing

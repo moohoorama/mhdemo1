@@ -213,10 +213,11 @@ func (u *unitVis) update(dt float64) {
 	}
 	u.arriving = math.Max(0, u.arriving-dt)
 	if l := u.leave; l != nil && !u.gone {
-		l.t = math.Min(leaveTime, l.t+dt)
-		k := l.t / leaveTime
+		end := l.leaveDur()
+		l.t = math.Min(end, l.t+dt)
+		k := l.t / end
 		u.u, u.v = l.fu+(l.tu-l.fu)*k, l.fv+(l.tv-l.fv)*k
-		u.gone = l.t >= leaveTime
+		u.gone = l.t >= end
 	}
 }
 
@@ -226,7 +227,15 @@ func (u *unitVis) leaving() float64 {
 	if u.leave == nil {
 		return u.arriving / leaveTime
 	}
-	return u.leave.t / leaveTime
+	return u.leave.t / u.leave.leaveDur()
+}
+
+// leaveDur is how long a walk off takes: its own dur (a scene actor walks off at its walking pace), else leaveTime.
+func (w *walkState) leaveDur() float64 {
+	if w.dur > 0 {
+		return w.dur
+	}
+	return leaveTime
 }
 
 // popup is floating text over a unit (damage, healing, names of skills).

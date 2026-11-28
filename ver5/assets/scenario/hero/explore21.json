@@ -20,56 +20,60 @@
     {
      "Name": "관청",
      "At": [
-      21,
-      23
+      2,
+      21
      ],
      "Object": [
-      21,
-      20
+      -4,
+      22
      ],
      "Node": "c21-runan",
      "If": [
       "flag:c21-arrival-pending"
-     ]
+     ],
+     "Face": "NW"
     },
     {
      "Name": "관청",
      "At": [
-      21,
-      23
+      2,
+      21
      ],
      "Object": [
-      21,
-      20
+      -4,
+      22
      ],
      "To": "office",
      "If": [
       "!flag:c21-arrival-pending"
-     ]
+     ],
+     "Face": "NW"
     },
     {
      "Name": "도구점",
      "At": [
-      9,
-      17
+      1,
+      13
      ],
      "Object": [
-      9,
-      15
+      1,
+      11
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "주점",
      "At": [
-      25,
-      17
+      8,
+      13
      ],
      "Object": [
-      25,
-      15
+      8,
+      11
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -228,9 +232,10 @@
      "Name": "거리로",
      "At": [
       13,
-      9
+      3
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -265,10 +270,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -295,10 +301,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {

@@ -17,6 +17,10 @@ for e in os.listdir(os.path.join(VER5, 'assets')):
         shutil.copytree(src, os.path.join(root, 'assets', e), symlinks=True)
 g = os.path.join(root, 'assets', 'graphics')
 shutil.copytree(os.path.join(VER5, 'assets', 'graphics'), g, symlinks=True)
+base = os.environ.get('TOWNGEN_BASE')        # towngen 이전의 맵·탐험·장면을 덮어 놓는다 (게임 반영 뒤에도 같은 출발점)
+if base:
+    for sub in ('graphics/maps', 'scenario', 'scenes'):
+        shutil.copytree(os.path.join(base, sub), os.path.join(root, 'assets', sub), dirs_exist_ok=True)
 idx = json.load(open(os.path.join(g, 'index.json')))
 sheet_path = os.path.join(g, idx['extra']['image'])
 sheet = Image.open(sheet_path).convert('RGBA')
@@ -52,6 +56,10 @@ def mud(im, rise=15):
 for name, im, m in list(items):                     # 회남 건물은 흙탕물 자국 진 판도 (하비 성안)
     if name.startswith('huainan_') and '_field_' not in name:
         items.append((name + '_mud', mud(im), dict(m)))
+props_dir = os.path.join(os.path.dirname(os.path.abspath(reg)), 'props')   # 문 햇빛·이정표 (light_props.py)
+if os.path.exists(os.path.join(props_dir, 'meta.json')):
+    for n, m in json.load(open(os.path.join(props_dir, 'meta.json'))).items():
+        items.append((n, Image.open(os.path.join(props_dir, n + '.png')), dict(m, src='', prop=True)))
 if lines_dir:
     for region in sorted(os.listdir(lines_dir)):
         lp = os.path.join(lines_dir, region, 'lines.json')
@@ -88,6 +96,8 @@ for name, im, m, x, y in placed:
     if 'mask_of' in m:
         continue
     e = {'rect': [x, y, im.width, im.height], 'pivot': list(m['pivot']), 'layer': 'object'}
+    if m.get('prop'):
+        e['layer'], e['shadow'] = m['layer'], False
     if '_field_' in name or m.get('terrain') == 'ground':
         e['layer'] = 'ground'
         e['shadow'] = False
@@ -101,6 +111,8 @@ for name, im, m, x, y in placed:
         e['shadow_mask'] = {'rect': [mx, my, mim.width, mim.height], 'pivot': list(m['shadow_pivot'])}
         e.pop('shadow', None)
     idx['extra']['sprites'][name] = e
+    if m.get('prop'):
+        continue
     fu, fv = m['footprint']
     if '_field_' not in name and not is_piece and not m.get('terrain'):
         scene['footprints'][name] = [-fu / 2, -fv / 2, fu, fv]

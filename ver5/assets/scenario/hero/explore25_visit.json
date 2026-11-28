@@ -28,51 +28,55 @@
     {
      "Name": "주점",
      "At": [
-      11,
-      8
+      17,
+      20
      ],
      "Object": [
-      11,
-      6
+      15,
+      20
      ],
-     "To": "xinye_tavern"
+     "To": "xinye_tavern",
+     "Face": "NW"
     },
     {
      "Name": "도구점",
      "At": [
-      24,
-      9
+      10,
+      10
      ],
      "Object": [
-      24,
-      7
+      10,
+      8
      ],
-     "To": "xinye_tools"
+     "To": "xinye_tools",
+     "Face": "NE"
     },
     {
      "Name": "관청",
      "At": [
-      5,
-      11
+      6,
+      7
      ],
      "Object": [
-      2,
-      11
+      4,
+      7
      ],
-     "To": "office"
+     "To": "office",
+     "Face": "NW"
     },
     {
      "Name": "유비의 거처",
      "At": [
-      7,
-      5
+      6,
+      19
      ],
      "Object": [
-      7,
-      3
+      5,
+      19
      ],
      "To": "home",
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     }
    ],
    "People": {
@@ -154,9 +158,10 @@
      "Name": "거리로",
      "At": [
       13,
-      9
+      5
      ],
-     "To": "xiangyang"
+     "To": "xiangyang",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -194,9 +199,10 @@
      "Name": "거리로",
      "At": [
       11,
-      7
+      5
      ],
-     "To": "xiangyang"
+     "To": "xiangyang",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -224,10 +230,11 @@
     {
      "Name": "거리로",
      "At": [
-      5,
-      11
+      15,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -262,51 +269,55 @@
     {
      "Name": "주점",
      "At": [
-      32,
-      28
+      12,
+      17
      ],
      "Object": [
-      32,
-      26
+      10,
+      17
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NW"
     },
     {
      "Name": "도구점",
      "At": [
-      41,
-      27
-     ],
-     "Object": [
-      41,
+      33,
       25
      ],
-     "To": "tools"
+     "Object": [
+      31,
+      25
+     ],
+     "To": "tools",
+     "Face": "NW"
     },
     {
      "Name": "유표의 저택",
      "At": [
-      35,
-      15
+      8,
+      10
      ],
      "Object": [
-      35,
-      13
+      9,
+      7
      ],
      "Node": "c25-visit-out",
-     "Residence": "large"
+     "Residence": "large",
+     "Face": "NE"
     },
     {
      "Name": "관청",
      "At": [
-      24,
-      15
+      19,
+      10
      ],
      "Object": [
-      24,
-      13
+      19,
+      8
      ],
-     "To": "hall"
+     "To": "hall",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -563,10 +574,11 @@
     {
      "Name": "거리로",
      "At": [
-      5,
+      9,
       11
      ],
-     "To": "xiangyang"
+     "To": "xiangyang",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -594,9 +606,10 @@
      "Name": "거리로",
      "At": [
       13,
-      9
+      5
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -633,10 +646,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -665,9 +679,10 @@
      "Name": "거리로",
      "At": [
       15,
-      9
+      7
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {

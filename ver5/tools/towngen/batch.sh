@@ -7,6 +7,14 @@ TOOLS=${0:A:h}
 VER5=${TOOLS:h:h}
 WORK=${TOWNGEN_WORK:-$TOOLS/work}
 PY=${PYTHON:-python3}
+# 출발점: towngen을 게임에 반영하기 전 커밋(f96ad23)의 맵·탐험·장면
+BASE_COMMIT=${TOWNGEN_BASE_COMMIT:-f96ad23}
+if [[ -z $TOWNGEN_BASE ]]; then
+  export TOWNGEN_BASE=$WORK/base/ver5/assets
+  if [[ ! -d $TOWNGEN_BASE ]]; then
+    mkdir -p $WORK/base && (cd ${VER5:h} && git archive $BASE_COMMIT ver5/assets/graphics/maps ver5/assets/scenario ver5/assets/scenes | tar -x -C $WORK/base)
+  fi
+fi
 mkdir -p $WORK/bin $WORK/render/gen $WORK/render/gencur
 cd $WORK
 ART=0; MAPS=()
@@ -16,6 +24,7 @@ for a in "$@"; do [[ $a == --art ]] && ART=1 || MAPS+=$a; done
 if (( ART )) || [[ ! -d $WORK/reg ]]; then
   $PY $TOOLS/town_dot2.py $WORK/reg > /dev/null && $PY $TOOLS/town_lines.py $WORK/lines > /dev/null || { echo ARTFAIL; exit 1; }
 fi
+$PY $TOOLS/light_props.py $WORK/props > /dev/null || { echo PROPSFAIL; exit 1; }
 $PY $TOOLS/build_root.py $WORK/reg $WORK/root $WORK/lines > /dev/null || { echo ROOTFAIL; exit 1; }
 for mr in $MAPS; do
   m=${mr%%:*}; r=${mr##*:}
@@ -24,8 +33,6 @@ for mr in $MAPS; do
   (cd $WORK/root && $WORK/bin/maplight $m $WORK/render/gen/$m.png) || echo "RENDERFAIL $m"
   [ -f $WORK/render/gencur/$m.png ] || (cd $VER5 && $WORK/bin/maplight $m $WORK/render/gencur/$m.png)
 done
-$PY $TOOLS/smithy_yard.py $WORK/root huabei zhongyuan huainan > $WORK/smithy_yard.log || echo YARDFAIL
-for r in huabei zhongyuan huainan; do (cd $WORK/root && $WORK/bin/maplight S_smithy_yard_$r $WORK/render/gen/S_smithy_yard_$r.png) || echo "RENDERFAIL yard $r"; done
-$WORK/bin/walkcheck $WORK/root ${MAPS[@]%%:*} S_smithy_yard_huabei S_smithy_yard_zhongyuan S_smithy_yard_huainan > $WORK/walk_gen.txt; tail -1 $WORK/walk_gen.txt
+$WORK/bin/walkcheck $WORK/root ${MAPS[@]%%:*} S_tool_shop S_tavern S_zhuo_office S_xiaopei_office S_council S_liu_house S_mansion > $WORK/walk_gen.txt; tail -1 $WORK/walk_gen.txt
 echo "미리보기 어드민: (cd $WORK/root && $WORK/bin/scenario-admin -root . -addr 127.0.0.1:18766)"
 echo BATCHDONE

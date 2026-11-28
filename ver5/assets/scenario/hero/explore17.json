@@ -52,12 +52,12 @@
     {
      "Name": "유비의 저택",
      "At": [
-      11,
-      40
+      14,
+      16
      ],
      "Object": [
       11,
-      36
+      17
      ],
      "Node": "c17-dong1",
      "If": [
@@ -70,17 +70,18 @@
        "……지금은 궁에 먼저 들어야 한다."
       ]
      ],
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     },
     {
      "Name": "유비의 저택",
      "At": [
-      11,
-      40
+      14,
+      16
      ],
      "Object": [
       11,
-      36
+      17
      ],
      "Node": "c17-xuchu",
      "If": [
@@ -93,17 +94,18 @@
        "……지금은 궁에 먼저 들어야 한다."
       ]
      ],
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     },
     {
      "Name": "유비의 저택",
      "At": [
-      11,
-      40
+      14,
+      16
      ],
      "Object": [
       11,
-      36
+      17
      ],
      "Node": "c17-dong2",
      "If": [
@@ -116,17 +118,18 @@
        "……지금은 궁에 먼저 들어야 한다."
       ]
      ],
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     },
     {
      "Name": "유비의 저택",
      "At": [
-      11,
-      40
+      14,
+      16
      ],
      "Object": [
       11,
-      36
+      17
      ],
      "To": "home",
      "If": [
@@ -139,17 +142,18 @@
        "……지금은 궁에 먼저 들어야 한다."
       ]
      ],
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     },
     {
      "Name": "유비의 저택",
      "At": [
-      11,
-      40
+      14,
+      16
      ],
      "Object": [
       11,
-      36
+      17
      ],
      "To": "home",
      "If": [
@@ -162,17 +166,18 @@
        "……지금은 궁에 먼저 들어야 한다."
       ]
      ],
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     },
     {
      "Name": "유비의 저택",
      "At": [
-      11,
-      40
+      14,
+      16
      ],
      "Object": [
       11,
-      36
+      17
      ],
      "To": "home",
      "If": [
@@ -184,17 +189,18 @@
        "……지금은 궁에 먼저 들어야 한다."
       ]
      ],
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     },
     {
      "Name": "조조의 저택",
      "At": [
-      11,
-      20
+      35,
+      38
      ],
      "Object": [
-      11,
-      15
+      36,
+      34
      ],
      "Node": "c17-ask",
      "If": [
@@ -207,17 +213,18 @@
        "승상께서는 지금 손님을 받지 않으십니다."
       ]
      ],
-     "Residence": "large"
+     "Residence": "large",
+     "Face": "NE"
     },
     {
      "Name": "관청",
      "At": [
-      42,
-      16
+      8,
+      37
      ],
      "Object": [
-      44,
-      16
+      9,
+      31
      ],
      "Node": "c17-office",
      "If": [
@@ -229,43 +236,34 @@
        "관청 문지기",
        "볼일이 없으시면 돌아가십시오."
       ]
-     ]
+     ],
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
-      37,
-      24
+      5,
+      23
      ],
      "Object": [
-      37,
-      22
+      5,
+      21
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "주점",
      "At": [
-      52,
-      14
+      36,
+      23
      ],
      "Object": [
-      52,
-      12
+      36,
+      21
      ],
-     "To": "tavern"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      40,
-      47
-     ],
-     "Object": [
-      40,
-      45
-     ],
-     "To": "weapons"
+     "To": "tavern",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -655,6 +653,31 @@
        "그걸 든 장수는 한 놈을 쓰러뜨리면 그 기세로 곁의 놈을 또 치고, 그놈도 쓰러지면 또 친다오. 창을 다루는 장수라야 제대로 쓸 거요."
       ]
      ]
+    },
+    "대장장이": {
+     "At": [
+      23,
+      23
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      25,
+      23
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "무기를 고를 땐 공격 수치만 보지 마시오. 이름난 병기엔 특성이 붙어 있어서, 같은 창이라도 특성 하나가 싸움을 바꾼다오."
+      ]
+     ]
     }
    },
    "Court": true,
@@ -683,9 +706,10 @@
      "Name": "거리로",
      "At": [
       15,
-      9
+      3
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -767,10 +791,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -813,10 +838,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -882,52 +908,6 @@
       [
        "손님",
        "……이건 술김에 한 소리요. 어디 가서 내 이름은 대지 마시오."
-      ]
-     ]
-    }
-   }
-  },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "Zoom": 3,
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "street"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "무기를 고를 땐 공격 수치만 보지 마시오. 이름난 병기엔 특성이 붙어 있어서, 같은 창이라도 특성 하나가 싸움을 바꾼다오."
       ]
      ]
     }

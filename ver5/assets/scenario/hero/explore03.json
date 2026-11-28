@@ -29,13 +29,14 @@
     {
      "Name": "거리로",
      "At": [
-      15,
-      9
+      7,
+      11
      ],
      "To": "street",
      "If": [
       "flag:c03-in"
-     ]
+     ],
+     "Face": "SW"
     }
    ],
    "People": {
@@ -163,38 +164,41 @@
     {
      "Name": "저택",
      "At": [
-      14,
-      16
+      5,
+      35
      ],
      "Object": [
-      14,
-      14
+      6,
+      32
      ],
-     "To": "mansion"
+     "To": "mansion",
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
-      37,
-      24
+      24,
+      35
      ],
      "Object": [
-      37,
-      22
+      24,
+      33
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "술집",
      "At": [
-      21,
-      24
+      24,
+      23
      ],
      "Object": [
-      21,
-      22
+      24,
+      21
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -583,10 +587,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -644,10 +649,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      11,
+      11
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SW"
     }
    ],
    "People": {

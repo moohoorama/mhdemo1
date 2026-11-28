@@ -150,11 +150,49 @@
        "공융 공 곳간 인심 한번 좋구먼. 우리 군량 장부도 좀 넉넉해지면 좋으련만."
       ]
      ]
+    },
+    "대장장이": {
+     "At": [
+      13,
+      23
+     ],
+     "Face": "SE",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      13,
+      21
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "황건이 성을 에워싼 뒤로 창 주문만 밀렸소. 창은 손이 길어 말 탄 놈을 막기에 좋으니까."
+      ]
+     ]
     }
    },
    "Exits": [
     {
      "Name": "도구점",
+     "At": [
+      24,
+      7
+     ],
+     "Object": [
+      22,
+      7
+     ],
+     "To": "tools",
+     "Face": "NW"
+    },
+    {
+     "Name": "주점",
      "At": [
       22,
       14
@@ -163,31 +201,8 @@
       22,
       12
      ],
-     "To": "tools"
-    },
-    {
-     "Name": "주점",
-     "At": [
-      5,
-      19
-     ],
-     "Object": [
-      5,
-      17
-     ],
-     "To": "tavern"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      30,
-      18
-     ],
-     "Object": [
-      28,
-      18
-     ],
-     "To": "weapons"
+     "To": "tavern",
+     "Face": "NE"
     }
    ]
   },
@@ -204,9 +219,10 @@
      "Name": "거리로",
      "At": [
       11,
-      7
+      5
      ],
-     "To": "city"
+     "To": "city",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -249,10 +265,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "city"
+     "To": "city",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -279,52 +296,6 @@
       [
        "손님",
        "황건 놈들이 성 밖을 에워쌌어도 공융 공께서 계시니 술은 떨어지지 않는다오."
-      ]
-     ]
-    }
-   }
-  },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "북해성 · 대장간",
-   "Zoom": 3,
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "city"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "황건이 성을 에워싼 뒤로 창 주문만 밀렸소. 창은 손이 길어 말 탄 놈을 막기에 좋으니까."
       ]
      ]
     }

@@ -20,38 +20,28 @@
     {
      "Name": "도구점",
      "At": [
-      29,
-      15
+      35,
+      12
      ],
      "Object": [
-      29,
-      13
+      33,
+      12
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NW"
     },
     {
      "Name": "주점",
      "At": [
-      35,
-      15
+      46,
+      14
      ],
      "Object": [
-      35,
-      13
+      44,
+      14
      ],
-     "To": "tavern"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      42,
-      6
-     ],
-     "Object": [
-      40,
-      6
-     ],
-     "To": "weapons"
+     "To": "tavern",
+     "Face": "NW"
     }
    ],
    "People": {
@@ -386,6 +376,31 @@
       ]
      ],
      "Notice": "shop:xuzhou_tavern"
+    },
+    "대장장이": {
+     "At": [
+      15,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      17,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "승급해서 병종이 바뀌면 들던 무기를 못 드는 수가 있소. 장창병이 되면 칼 대신 창을 쥐어야 하지."
+      ]
+     ]
     }
    }
   },
@@ -401,9 +416,10 @@
      "Name": "거리로",
      "At": [
       11,
-      7
+      5
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -446,9 +462,10 @@
      "Name": "거리로",
      "At": [
       13,
-      9
+      5
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -527,51 +544,6 @@
       [
        "술꾼",
        "서주엔 빼갈이 들어왔소. 병법치를 120이나 채우니, 큰 책략을 쓰기 전에 딱이지."
-      ]
-     ]
-    }
-   }
-  },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "town"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "승급해서 병종이 바뀌면 들던 무기를 못 드는 수가 있소. 장창병이 되면 칼 대신 창을 쥐어야 하지."
       ]
      ]
     }

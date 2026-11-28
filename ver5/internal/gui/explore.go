@@ -102,6 +102,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	g.explore = w
 	g.openScene(def)
 	g.scene.fade = fade
+	g.doorLight(a)
 	w.grid = walkGrid{walk: &scenemap.Walk{}}
 	if art := g.mapArt(a.Map); art != nil && art.SceneMap != nil {
 		w.grid.walk = scenemap.Walkable(art.SceneMap, g.assets.SceneRules)

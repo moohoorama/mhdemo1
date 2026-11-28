@@ -358,7 +358,7 @@
    }
   },
   "c02-e-smith": {
-   "Map": "S_weapon_shop",
+   "Map": "S_zhuo",
    "Nodes": ["c02-e-smith", "c02-k1", "c02-k2", "c02-k4", "c02-k6", "c02-k7", "c02-k8"],
    "Cast": {
     "유비": {"Stay": true},
@@ -367,7 +367,7 @@
    "Beats": {
     "c02-k1": [
      [
-      [{"Actor": "유비", "Move": [4, 3]}],
+      [{"Actor": "유비", "Move": [13, 5]}],
       [{"Actor": "유비", "Face": "NE"}, {"Actor": "대장장이", "Face": "SW"}],
       [{"Actor": "대장장이", "Play": "action"}]
      ]

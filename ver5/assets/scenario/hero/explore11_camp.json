@@ -209,50 +209,41 @@
     {
      "Name": "현청",
      "At": [
-      11,
-      6
+      33,
+      10
      ],
      "Object": [
-      11,
-      4
+      31,
+      10
      ],
-     "To": "office"
+     "To": "office",
+     "Face": "NW"
     },
     {
      "Name": "주점",
      "At": [
-      5,
-      14
+      9,
+      25
      ],
      "Object": [
-      5,
-      12
+      9,
+      23
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
       18,
-      13
+      25
      ],
      "Object": [
       18,
-      11
+      23
      ],
-     "To": "tools"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      31,
-      13
-     ],
-     "Object": [
-      31,
-      11
-     ],
-     "To": "weapons"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "북평으로",
@@ -440,6 +431,31 @@
        "동탁이 죽었다고 천하가 조용해질 것 같나. 고기 한 덩이에 이리가 여럿 달려들겠지."
       ]
      ]
+    },
+    "대장장이": {
+     "At": [
+      19,
+      15
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      21,
+      15
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "장갑은 맨주먹으로 싸우는 무도가 몫이오. 천을 감은 주먹은 가볍고, 쇠를 감은 주먹은 한 방이 두 방 몫이지."
+      ]
+     ]
     }
    }
   },
@@ -457,7 +473,8 @@
       13,
       9
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -531,10 +548,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -577,10 +595,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -606,51 +625,6 @@
       [
        "군리",
        "공손 장군께 인수를 받으셨다고요? 관인과 인끈, 그게 중급 인수요. 레벨 20을 넘긴 장수에게 쓰면 한 단계 높은 병종으로 오르지요. 갈래가 여럿이면 쓸 때 고르시고, 싸움터에선 못 쓰니 진중에 있을 때 쓰십시오."
-      ]
-     ]
-    }
-   }
-  },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "pingyuan"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
-    "견습공": {
-     "At": [
-      5,
-      7
-     ],
-     "Face": "NW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Talk": [
-      [
-       "견습공",
-       "장갑은 맨주먹으로 싸우는 무도가 몫이오. 천을 감은 주먹은 가볍고, 쇠를 감은 주먹은 한 방이 두 방 몫이지."
       ]
      ]
     }

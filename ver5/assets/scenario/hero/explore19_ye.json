@@ -28,12 +28,12 @@
     {
      "Name": "관청",
      "At": [
-      32,
-      8
+      18,
+      46
      ],
      "Object": [
-      32,
-      5
+      12,
+      47
      ],
      "Node": "c19-yan",
      "If": [
@@ -45,106 +45,101 @@
        "관청 문지기",
        "주공께서 부르실 때 드시지요."
       ]
-     ]
+     ],
+     "Face": "NW"
     },
     {
      "Name": "유비의 거처",
      "At": [
-      13,
-      42
+      5,
+      14
      ],
      "Object": [
-      13,
-      38
+      6,
+      11
      ],
      "Node": "c19-home1",
      "If": [
       "flag:c19-step>=1",
       "!flag:c19-step>=2"
-     ]
+     ],
+     "Face": "NE"
     },
     {
      "Name": "유비의 거처",
      "At": [
-      13,
-      42
+      5,
+      14
      ],
      "Object": [
-      13,
-      38
+      6,
+      11
      ],
      "Node": "c19-mizhu",
      "If": [
       "flag:c19-step>=3",
       "!flag:c19-step>=4"
-     ]
+     ],
+     "Face": "NE"
     },
     {
      "Name": "유비의 거처",
      "At": [
-      13,
-      42
+      5,
+      14
      ],
      "Object": [
-      13,
-      38
+      6,
+      11
      ],
      "Node": "c19-night",
      "If": [
       "flag:c19-step>=5"
-     ]
+     ],
+     "Face": "NE"
     },
     {
      "Name": "유비의 거처",
      "At": [
-      13,
-      42
+      5,
+      14
      ],
      "Object": [
-      13,
-      38
+      6,
+      11
      ],
      "To": "home",
      "If": [
       "flag:c19-step>=2",
       "!flag:c19-step>=3"
-     ]
+     ],
+     "Face": "NE"
     },
     {
      "Name": "도구점",
      "At": [
-      41,
-      27
+      30,
+      18
      ],
      "Object": [
-      41,
-      25
+      28,
+      18
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NW"
     },
     {
      "Name": "주점",
      "At": [
-      23,
-      27
+      39,
+      26
      ],
      "Object": [
-      23,
-      25
+      39,
+      24
      ],
-     "To": "tavern"
-    },
-    {
-     "Name": "대장간",
-     "At": [
-      43,
-      50
-     ],
-     "Object": [
-      43,
-      48
-     ],
-     "To": "weapons"
+     "To": "tavern",
+     "Face": "NE"
     }
    ],
    "People": {
@@ -596,6 +591,16 @@
       ]
      ],
      "Notice": "shop:weapons_iron"
+    },
+    "대장장이": {
+     "At": [
+      29,
+      27
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons_iron"
     }
    }
   },
@@ -611,10 +616,11 @@
     {
      "Name": "거리로",
      "At": [
-      15,
-      9
+      5,
+      11
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -724,9 +730,10 @@
      "Name": "거리로",
      "At": [
       11,
-      7
+      5
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -754,10 +761,11 @@
     {
      "Name": "거리로",
      "At": [
-      13,
-      9
+      9,
+      11
      ],
-     "To": "street"
+     "To": "street",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -812,37 +820,6 @@
        "쉿, 이런 말 하다 끌려가오."
       ]
      ]
-    }
-   }
-  },
-  "weapons": {
-   "Map": "S_weapon_shop",
-   "Name": "대장간",
-   "Zoom": 3,
-   "At": [
-    6,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      11,
-      7
-     ],
-     "To": "street"
-    }
-   ],
-   "People": {
-    "대장장이": {
-     "At": [
-      9,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons_iron"
     }
    }
   }

@@ -30,7 +30,7 @@ func TestCheck(t *testing.T) {
 		m, c := load(t, "S_xiangyang")
 		assert.Empty(t, Check(m, c), "the map as it is")
 		m.Objects = append(m.Objects, Object{Name: "house_tile_x", U: 44, V: 39}, Object{Name: "house_tile", U: 44, V: 37},
-			Object{Name: "house_tile", U: 20, V: 36}, Object{Name: "stree_plum_0", U: 30, V: 39})
+			Object{Name: "house_tile", U: 25, V: 36}, Object{Name: "stree_plum_0", U: 30, V: 39})
 		assert.Equal(t, []Problem{
 			{44, 39, "house_tile_x가 앞쪽 성벽과 2칸 이내"},
 			{44, 37, "house_tile가 앞쪽 성벽과 2칸 이내"},

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"srpg/internal/scenemap"
 	"srpg/internal/scenes"
 )
 
@@ -110,6 +111,13 @@ func sceneExitProblems(def *scenes.Scene, gr *exitGround) (exits, fixed int, out
 			out = append(out, fmt.Sprintf("%s: %s walks to (%g, %g) beyond the back of the map before it leaves: drop the Move, the Exit walks to the front edge", where, st.Actor, st.Move[0], st.Move[1]))
 			return
 		}
+		if len(gr.mapExits()) > 0 || st.Out != "" { // by a named exit of the map (docs/plan-scene-exits.md)
+			if p := exitWalkProblem(gr, s.at, st.Out); p != "" {
+				out = append(out, fmt.Sprintf("%s: %s at (%g, %g) %s", where, st.Actor, s.at[0], s.at[1], p))
+			}
+			*s = stand{dir: s.dir}
+			return
+		}
 		route, ok := gr.route(s.at, s.dir, nil)
 		if !ok && slices.ContainsFunc(exitsWithoutFrontWay, func(n string) bool { return strings.HasPrefix(where, n+" ") }) {
 			if s.dir != "SE" && s.dir != "SW" {
@@ -154,4 +162,52 @@ func sceneExitProblems(def *scenes.Scene, gr *exitGround) (exits, fixed int, out
 		}
 	}
 	return exits, fixed, out
+}
+
+// exitWalkProblem is what is wrong with the walk from at out by the map exit named out (the nearest when ""): no
+// such exit, no way to it, a step over closed ground, or a last stretch not straight along the exit's way into its
+// cell; "" when it is right.
+func exitWalkProblem(gr *exitGround, at [2]float64, out string) string {
+	if out != "" && !slices.ContainsFunc(gr.mapExits(), func(e scenemap.Exit) bool { return e.ID == out }) {
+		return fmt.Sprintf("leaves by %q, which the map has no exit of", out)
+	}
+	path, dir, ok := gr.throughExit(at, out, nil)
+	if !ok {
+		return fmt.Sprintf("finds no way to exit %q", out)
+	}
+	home := smallTileAt(at[0], at[1])
+	prev := at
+	for _, p := range path {
+		if !gr.stepOpen(prev, p, home) {
+			return fmt.Sprintf("walks over closed ground at (%g, %g)", p[0], p[1])
+		}
+		prev = p
+	}
+	st := scenemap.ExitStep[dir]
+	n := len(path)
+	through := -1
+	for i, p := range path {
+		for _, e := range gr.mapExits() {
+			if e.Dir == dir && exitCell(e) == p {
+				through = i
+			}
+		}
+	}
+	if through < 0 {
+		return "does not pass through an exit's cell"
+	}
+	for k := max(0, through-exitApproach+1); k < n; k++ { // straight from two cells before the exit on to the edge
+		from := at
+		if k > 0 {
+			from = path[k-1]
+		}
+		if d := [2]float64{path[k][0] - from[0], path[k][1] - from[1]}; d != [2]float64{float64(st[0]), float64(st[1])} {
+			return fmt.Sprintf("turns at (%g, %g) in its last %d cells before the exit or past it", path[k][0], path[k][1], exitApproach)
+		}
+	}
+	end := path[n-1]
+	if t := smallTileAt(end[0]+float64(st[0]), end[1]+float64(st[1])); gr.m.Inside(t[0], t[1]) {
+		return fmt.Sprintf("stops at (%g, %g) inside the board and fades out there, not at its edge", end[0], end[1])
+	}
+	return ""
 }

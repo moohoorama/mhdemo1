@@ -20,14 +20,15 @@
     {
      "Name": "관청",
      "At": [
-      5,
-      11
+      6,
+      7
      ],
      "Object": [
-      2,
-      11
+      4,
+      7
      ],
-     "Node": "c24-office-arrive"
+     "Node": "c24-office-arrive",
+     "Face": "NW"
     },
     {
      "Name": "융중 가는 길",
@@ -40,39 +41,42 @@
     {
      "Name": "주점",
      "At": [
-      11,
-      8
+      17,
+      20
      ],
      "Object": [
-      11,
-      6
+      15,
+      20
      ],
-     "To": "tavern"
+     "To": "tavern",
+     "Face": "NW"
     },
     {
      "Name": "도구점",
      "At": [
-      24,
-      9
+      10,
+      10
      ],
      "Object": [
-      24,
-      7
+      10,
+      8
      ],
-     "To": "tools"
+     "To": "tools",
+     "Face": "NE"
     },
     {
      "Name": "유비의 거처",
      "At": [
-      7,
-      5
+      6,
+      19
      ],
      "Object": [
-      7,
-      3
+      5,
+      19
      ],
      "To": "home",
-     "Residence": "small"
+     "Residence": "small",
+     "Face": "NW"
     }
    ],
    "People": {
@@ -262,9 +266,10 @@
      "Name": "거리로",
      "At": [
       13,
-      9
+      5
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {
@@ -301,10 +306,11 @@
     {
      "Name": "거리로",
      "At": [
-      11,
-      7
+      7,
+      9
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SW"
     }
    ],
    "People": {
@@ -333,9 +339,10 @@
      "Name": "거리로",
      "At": [
       15,
-      9
+      7
      ],
-     "To": "town"
+     "To": "town",
+     "Face": "SE"
     }
    ],
    "People": {

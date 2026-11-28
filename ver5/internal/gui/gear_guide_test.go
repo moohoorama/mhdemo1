@@ -5,11 +5,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
 
-// smithyGame stands in chapter 2's smithy with the smith's weapons still to come, at the c02-walk waypoint.
+// smithyGame stands by chapter 2's smith in the street (the smithy is an open shed) with the smith's weapons still
+// to come, at the c02-walk waypoint.
 func smithyGame(t *testing.T) *Game {
 	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
 	require.NoError(t, err)
@@ -18,7 +20,11 @@ func smithyGame(t *testing.T) *Game {
 	st := g.S.Engine.Snapshot()
 	st.Learning = nil
 	st.Flags["c02-gift"] = 1
-	st.Spot = g.S.Engine.ExploreFile().Arrival("weapons", "")
+	for area, a := range g.S.Engine.ExploreFile().Areas {
+		if p := a.People["대장장이"]; p != nil {
+			st.Spot = content.Spot{Area: area, At: [2]int{p.At[0], p.At[1] + 2}, Face: "NE"}
+		}
+	}
 	st.Warehouse["qinglong_blade"], st.Warehouse["serpent_spear"] = 0, 0
 	g.S.Engine, err = core.Restore(g.S.Data, st)
 	require.NoError(t, err)

@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"container/heap"
 	"math"
 	"strconv"
 
@@ -119,4 +120,156 @@ func (gr *exitGround) route(from [2]float64, dir string, busy func(u, v float64)
 		path = append([][2]float64{at(n)}, path...)
 	}
 	return append(path, at(goal)), true
+}
+
+// exitTurn is what a turn costs a walk to a map exit, in cells: walks with fewer corners win.
+const exitTurn = 3
+
+// exitApproach is how many cells before its exit a walk runs straight in the exit's way, so that whoever leaves by it
+// goes out along the same line.
+const exitApproach = 2
+
+// mapExits are the map's named exits in cells: the exit's cell and the cell step of its way out.
+func (gr *exitGround) mapExits() []scenemap.Exit {
+	if gr.m == nil {
+		return nil
+	}
+	return gr.m.Exits
+}
+
+// exitCell is an exit's small tile as a scene position (an odd tile is a whole cell).
+func exitCell(e scenemap.Exit) [2]float64 {
+	return [2]float64{float64(e.At[0]-1) / 2, float64(e.At[1]-1) / 2}
+}
+
+// throughExit is the cells an actor at from walks to leave by the map exit named name (by the nearest one when
+// name is ""): over open ground to the cell exitApproach cells inside the exit, turning as little as it can, then
+// straight on in the exit's way through the exit's cell and on to the edge of the board, where it fades out. dir is the way out, for the walk on past it. ok is false when the
+// map has no such exit or no way leads to it.
+func (gr *exitGround) throughExit(from [2]float64, name string, busy func(u, v float64) bool) (path [][2]float64, dir string, ok bool) {
+	var exits []scenemap.Exit
+	for _, e := range gr.mapExits() {
+		if name == "" || e.ID == name {
+			exits = append(exits, e)
+		}
+	}
+	if len(exits) == 0 {
+		return nil, "", false
+	}
+	start := [2]float64{math.Round(from[0]), math.Round(from[1])}
+	home := smallTileAt(from[0], from[1])
+	type cell struct{ i, j int }
+	at := func(c cell) [2]float64 { return [2]float64{start[0] + float64(c.i), start[1] + float64(c.j)} }
+	steps := [4]cell{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
+	type state struct {
+		c   cell
+		dir int // the step it came by, 4 at the start
+	}
+	goals := map[cell]int{} // approach cell → exit index
+	for i, e := range exits {
+		ec, st := exitCell(e), scenemap.ExitStep[e.Dir]
+		a := [2]float64{ec[0] - float64(st[0]*exitApproach), ec[1] - float64(st[1]*exitApproach)}
+		if a[0]-start[0] != math.Trunc(a[0]-start[0]) || a[1]-start[1] != math.Trunc(a[1]-start[1]) {
+			continue // not on this walker's grid of whole cells
+		}
+		goals[cell{int(a[0] - start[0]), int(a[1] - start[1])}] = i
+	}
+	if len(goals) == 0 {
+		return nil, "", false
+	}
+	pad := 2.0
+	lo := [2]float64{-pad, -pad}
+	hi := [2]float64{float64(gr.w) + pad, float64(gr.h) + pad}
+	if gr.m != nil {
+		lo = [2]float64{float64(gr.m.Origin[0])/2 - pad, float64(gr.m.Origin[1])/2 - pad}
+		hi = [2]float64{float64(gr.m.Origin[0]+len(gr.m.Ground[0]))/2 + pad, float64(gr.m.Origin[1]+len(gr.m.Ground))/2 + pad}
+	}
+	dist := map[state]int{{cell{}, 4}: 0}
+	prev := map[state]state{}
+	h := &exitHeap{{state: [3]int{0, 0, 4}}}
+	var goal state
+	found := false
+	for h.Len() > 0 {
+		top := heap.Pop(h).(exitItem)
+		cur := state{cell{top.state[0], top.state[1]}, top.state[2]}
+		if top.cost > dist[cur] {
+			continue
+		}
+		if _, ok := goals[cur.c]; ok {
+			goal, found = cur, true
+			break
+		}
+		for d, s := range steps {
+			next := cell{cur.c.i + s.i, cur.c.j + s.j}
+			p, q := at(cur.c), at(next)
+			if q[0] < lo[0] || q[1] < lo[1] || q[0] > hi[0] || q[1] > hi[1] || !gr.stepOpen(p, q, home) {
+				continue
+			}
+			cost := top.cost + 1
+			if cur.dir != 4 && cur.dir != d {
+				cost += exitTurn
+			}
+			if busy != nil && busy(q[0], q[1]) {
+				cost += 3
+			}
+			ns := state{next, d}
+			if old, seen := dist[ns]; !seen || cost < old {
+				dist[ns], prev[ns] = cost, cur
+				heap.Push(h, exitItem{state: [3]int{next.i, next.j, d}, cost: cost})
+			}
+		}
+	}
+	if !found {
+		return nil, "", false
+	}
+	e := exits[goals[goal.c]]
+	st := scenemap.ExitStep[e.Dir]
+	var cells []cell
+	for s := goal; s.dir != 4; s = prev[s] {
+		cells = append([]cell{s.c}, cells...)
+	}
+	if start != from {
+		path = append(path, start)
+	}
+	for _, c := range cells {
+		path = append(path, at(c))
+	}
+	last := at(goal.c)
+	for k := 1; k <= exitApproach; k++ {
+		q := [2]float64{last[0] + float64(st[0]), last[1] + float64(st[1])}
+		if !gr.stepOpen(last, q, home) {
+			return nil, "", false
+		}
+		last = q
+		path = append(path, q)
+	}
+	// on past the exit along its way to the board's edge, fading only once off it; a closed tile stops the walk there
+	for gr.m != nil {
+		q := [2]float64{last[0] + float64(st[0]), last[1] + float64(st[1])}
+		t := smallTileAt(q[0], q[1])
+		if !gr.m.Inside(t[0], t[1]) || !gr.stepOpen(last, q, home) {
+			break
+		}
+		path = append(path, q)
+		last = q
+	}
+	return path, e.Dir, true
+}
+
+type exitItem struct {
+	state [3]int
+	cost  int
+}
+
+type exitHeap []exitItem
+
+func (h exitHeap) Len() int           { return len(h) }
+func (h exitHeap) Less(i, j int) bool { return h[i].cost < h[j].cost }
+func (h exitHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *exitHeap) Push(x any)        { *h = append(*h, x.(exitItem)) }
+func (h *exitHeap) Pop() any {
+	old := *h
+	x := old[len(old)-1]
+	*h = old[:len(old)-1]
+	return x
 }

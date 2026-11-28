@@ -12499,6 +12499,8760 @@
    "scale": "scene",
    "made": "battle cliff block as it is (tall_cliff.py)",
    "shadow": false
+  },
+  "bashu_cottage_1": {
+   "file": "tiles/bashu_cottage_1.png",
+   "size": [
+    83,
+    109
+   ],
+   "pivot": [
+    44,
+    91
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_1_shadow.png",
+    "pivot": [
+     36,
+     17
+    ]
+   }
+  },
+  "bashu_cottage_1_r": {
+   "file": "tiles/bashu_cottage_1_r.png",
+   "size": [
+    83,
+    109
+   ],
+   "pivot": [
+    39,
+    91
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_1_r_shadow.png",
+    "pivot": [
+     31,
+     17
+    ]
+   }
+  },
+  "bashu_cottage_2": {
+   "file": "tiles/bashu_cottage_2.png",
+   "size": [
+    88,
+    120
+   ],
+   "pivot": [
+    31,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_2_shadow.png",
+    "pivot": [
+     23,
+     24
+    ]
+   }
+  },
+  "bashu_cottage_2_r": {
+   "file": "tiles/bashu_cottage_2_r.png",
+   "size": [
+    88,
+    120
+   ],
+   "pivot": [
+    57,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_2_r_shadow.png",
+    "pivot": [
+     48,
+     24
+    ]
+   }
+  },
+  "bashu_cottage_3": {
+   "file": "tiles/bashu_cottage_3.png",
+   "size": [
+    87,
+    89
+   ],
+   "pivot": [
+    45,
+    69
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_3_shadow.png",
+    "pivot": [
+     37,
+     19
+    ]
+   }
+  },
+  "bashu_cottage_3_r": {
+   "file": "tiles/bashu_cottage_3_r.png",
+   "size": [
+    87,
+    89
+   ],
+   "pivot": [
+    42,
+    69
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_3_r_shadow.png",
+    "pivot": [
+     38,
+     19
+    ]
+   }
+  },
+  "bashu_cottage_4": {
+   "file": "tiles/bashu_cottage_4.png",
+   "size": [
+    69,
+    83
+   ],
+   "pivot": [
+    39,
+    68
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_4_shadow.png",
+    "pivot": [
+     30,
+     13
+    ]
+   }
+  },
+  "bashu_cottage_4_r": {
+   "file": "tiles/bashu_cottage_4_r.png",
+   "size": [
+    69,
+    83
+   ],
+   "pivot": [
+    30,
+    68
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_cottage_4_r_shadow.png",
+    "pivot": [
+     22,
+     13
+    ]
+   }
+  },
+  "bashu_smithy": {
+   "file": "tiles/bashu_smithy.png",
+   "size": [
+    111,
+    102
+   ],
+   "pivot": [
+    57,
+    78
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_smithy_shadow.png",
+    "pivot": [
+     49,
+     24
+    ]
+   }
+  },
+  "bashu_smithy_r": {
+   "file": "tiles/bashu_smithy_r.png",
+   "size": [
+    111,
+    102
+   ],
+   "pivot": [
+    54,
+    78
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_smithy_r_shadow.png",
+    "pivot": [
+     52,
+     24
+    ]
+   }
+  },
+  "bashu_tavern": {
+   "file": "tiles/bashu_tavern.png",
+   "size": [
+    118,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_tavern_shadow.png",
+    "pivot": [
+     51,
+     28
+    ]
+   }
+  },
+  "bashu_tavern_r": {
+   "file": "tiles/bashu_tavern_r.png",
+   "size": [
+    118,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_tavern_r_shadow.png",
+    "pivot": [
+     56,
+     28
+    ]
+   }
+  },
+  "bashu_shop": {
+   "file": "tiles/bashu_shop.png",
+   "size": [
+    103,
+    96
+   ],
+   "pivot": [
+    46,
+    71
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_shop_shadow.png",
+    "pivot": [
+     41,
+     25
+    ]
+   }
+  },
+  "bashu_shop_r": {
+   "file": "tiles/bashu_shop_r.png",
+   "size": [
+    103,
+    96
+   ],
+   "pivot": [
+    57,
+    71
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_shop_r_shadow.png",
+    "pivot": [
+     50,
+     25
+    ]
+   }
+  },
+  "bashu_yamen": {
+   "file": "tiles/bashu_yamen.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    77,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_yamen_shadow.png",
+    "pivot": [
+     76,
+     41
+    ]
+   }
+  },
+  "bashu_yamen_r": {
+   "file": "tiles/bashu_yamen_r.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    83,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_yamen_r_shadow.png",
+    "pivot": [
+     81,
+     41
+    ]
+   }
+  },
+  "bashu_mansion_1": {
+   "file": "tiles/bashu_mansion_1.png",
+   "size": [
+    92,
+    83
+   ],
+   "pivot": [
+    49,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_1_shadow.png",
+    "pivot": [
+     46,
+     20
+    ]
+   }
+  },
+  "bashu_mansion_1_r": {
+   "file": "tiles/bashu_mansion_1_r.png",
+   "size": [
+    92,
+    83
+   ],
+   "pivot": [
+    43,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_1_r_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "bashu_mansion_2": {
+   "file": "tiles/bashu_mansion_2.png",
+   "size": [
+    108,
+    104
+   ],
+   "pivot": [
+    41,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_2_shadow.png",
+    "pivot": [
+     37,
+     33
+    ]
+   }
+  },
+  "bashu_mansion_2_r": {
+   "file": "tiles/bashu_mansion_2_r.png",
+   "size": [
+    108,
+    104
+   ],
+   "pivot": [
+    67,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_2_r_shadow.png",
+    "pivot": [
+     65,
+     33
+    ]
+   }
+  },
+  "bashu_mansion_3": {
+   "file": "tiles/bashu_mansion_3.png",
+   "size": [
+    147,
+    120
+   ],
+   "pivot": [
+    71,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_3_shadow.png",
+    "pivot": [
+     66,
+     34
+    ]
+   }
+  },
+  "bashu_mansion_3_r": {
+   "file": "tiles/bashu_mansion_3_r.png",
+   "size": [
+    147,
+    120
+   ],
+   "pivot": [
+    76,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_3_r_shadow.png",
+    "pivot": [
+     69,
+     34
+    ]
+   }
+  },
+  "bashu_mansion_4": {
+   "file": "tiles/bashu_mansion_4.png",
+   "size": [
+    82,
+    76
+   ],
+   "pivot": [
+    45,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_4_shadow.png",
+    "pivot": [
+     39,
+     16
+    ]
+   }
+  },
+  "bashu_mansion_4_r": {
+   "file": "tiles/bashu_mansion_4_r.png",
+   "size": [
+    82,
+    76
+   ],
+   "pivot": [
+    37,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_mansion_4_r_shadow.png",
+    "pivot": [
+     33,
+     16
+    ]
+   }
+  },
+  "bashu_field_paddy": {
+   "file": "tiles/bashu_field_paddy.png",
+   "size": [
+    118,
+    63
+   ],
+   "pivot": [
+    59,
+    33
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "huabei_cottage_1": {
+   "file": "tiles/huabei_cottage_1.png",
+   "size": [
+    83,
+    93
+   ],
+   "pivot": [
+    44,
+    75
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_1_shadow.png",
+    "pivot": [
+     36,
+     17
+    ]
+   }
+  },
+  "huabei_cottage_1_r": {
+   "file": "tiles/huabei_cottage_1_r.png",
+   "size": [
+    83,
+    93
+   ],
+   "pivot": [
+    39,
+    75
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_1_r_shadow.png",
+    "pivot": [
+     31,
+     17
+    ]
+   }
+  },
+  "huabei_cottage_2": {
+   "file": "tiles/huabei_cottage_2.png",
+   "size": [
+    87,
+    104
+   ],
+   "pivot": [
+    31,
+    81
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_2_shadow.png",
+    "pivot": [
+     23,
+     24
+    ]
+   }
+  },
+  "huabei_cottage_2_r": {
+   "file": "tiles/huabei_cottage_2_r.png",
+   "size": [
+    87,
+    104
+   ],
+   "pivot": [
+    56,
+    81
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_2_r_shadow.png",
+    "pivot": [
+     48,
+     24
+    ]
+   }
+  },
+  "huabei_cottage_3": {
+   "file": "tiles/huabei_cottage_3.png",
+   "size": [
+    86,
+    84
+   ],
+   "pivot": [
+    44,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_3_shadow.png",
+    "pivot": [
+     37,
+     19
+    ]
+   }
+  },
+  "huabei_cottage_3_r": {
+   "file": "tiles/huabei_cottage_3_r.png",
+   "size": [
+    86,
+    84
+   ],
+   "pivot": [
+    42,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_3_r_shadow.png",
+    "pivot": [
+     38,
+     19
+    ]
+   }
+  },
+  "huabei_cottage_4": {
+   "file": "tiles/huabei_cottage_4.png",
+   "size": [
+    67,
+    67
+   ],
+   "pivot": [
+    38,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_4_shadow.png",
+    "pivot": [
+     30,
+     13
+    ]
+   }
+  },
+  "huabei_cottage_4_r": {
+   "file": "tiles/huabei_cottage_4_r.png",
+   "size": [
+    67,
+    67
+   ],
+   "pivot": [
+    29,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_cottage_4_r_shadow.png",
+    "pivot": [
+     22,
+     13
+    ]
+   }
+  },
+  "huabei_smithy": {
+   "file": "tiles/huabei_smithy.png",
+   "size": [
+    110,
+    89
+   ],
+   "pivot": [
+    56,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_smithy_shadow.png",
+    "pivot": [
+     49,
+     24
+    ]
+   }
+  },
+  "huabei_smithy_r": {
+   "file": "tiles/huabei_smithy_r.png",
+   "size": [
+    110,
+    89
+   ],
+   "pivot": [
+    54,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_smithy_r_shadow.png",
+    "pivot": [
+     52,
+     24
+    ]
+   }
+  },
+  "huabei_tavern": {
+   "file": "tiles/huabei_tavern.png",
+   "size": [
+    118,
+    100
+   ],
+   "pivot": [
+    59,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_tavern_shadow.png",
+    "pivot": [
+     51,
+     28
+    ]
+   }
+  },
+  "huabei_tavern_r": {
+   "file": "tiles/huabei_tavern_r.png",
+   "size": [
+    118,
+    100
+   ],
+   "pivot": [
+    59,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_tavern_r_shadow.png",
+    "pivot": [
+     56,
+     28
+    ]
+   }
+  },
+  "huabei_shop": {
+   "file": "tiles/huabei_shop.png",
+   "size": [
+    102,
+    94
+   ],
+   "pivot": [
+    45,
+    69
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_shop_shadow.png",
+    "pivot": [
+     41,
+     25
+    ]
+   }
+  },
+  "huabei_shop_r": {
+   "file": "tiles/huabei_shop_r.png",
+   "size": [
+    102,
+    94
+   ],
+   "pivot": [
+    57,
+    69
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_shop_r_shadow.png",
+    "pivot": [
+     50,
+     25
+    ]
+   }
+  },
+  "huabei_yamen": {
+   "file": "tiles/huabei_yamen.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    77,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_yamen_shadow.png",
+    "pivot": [
+     76,
+     41
+    ]
+   }
+  },
+  "huabei_yamen_r": {
+   "file": "tiles/huabei_yamen_r.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    83,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_yamen_r_shadow.png",
+    "pivot": [
+     81,
+     41
+    ]
+   }
+  },
+  "huabei_mansion_1": {
+   "file": "tiles/huabei_mansion_1.png",
+   "size": [
+    91,
+    81
+   ],
+   "pivot": [
+    48,
+    57
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_1_shadow.png",
+    "pivot": [
+     46,
+     20
+    ]
+   }
+  },
+  "huabei_mansion_1_r": {
+   "file": "tiles/huabei_mansion_1_r.png",
+   "size": [
+    91,
+    81
+   ],
+   "pivot": [
+    43,
+    57
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_1_r_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "huabei_mansion_2": {
+   "file": "tiles/huabei_mansion_2.png",
+   "size": [
+    108,
+    102
+   ],
+   "pivot": [
+    41,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_2_shadow.png",
+    "pivot": [
+     37,
+     33
+    ]
+   }
+  },
+  "huabei_mansion_2_r": {
+   "file": "tiles/huabei_mansion_2_r.png",
+   "size": [
+    108,
+    102
+   ],
+   "pivot": [
+    67,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_2_r_shadow.png",
+    "pivot": [
+     65,
+     33
+    ]
+   }
+  },
+  "huabei_mansion_3": {
+   "file": "tiles/huabei_mansion_3.png",
+   "size": [
+    146,
+    118
+   ],
+   "pivot": [
+    71,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_3_shadow.png",
+    "pivot": [
+     66,
+     34
+    ]
+   }
+  },
+  "huabei_mansion_3_r": {
+   "file": "tiles/huabei_mansion_3_r.png",
+   "size": [
+    146,
+    118
+   ],
+   "pivot": [
+    75,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_3_r_shadow.png",
+    "pivot": [
+     69,
+     34
+    ]
+   }
+  },
+  "huabei_mansion_4": {
+   "file": "tiles/huabei_mansion_4.png",
+   "size": [
+    80,
+    73
+   ],
+   "pivot": [
+    44,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_4_shadow.png",
+    "pivot": [
+     39,
+     16
+    ]
+   }
+  },
+  "huabei_mansion_4_r": {
+   "file": "tiles/huabei_mansion_4_r.png",
+   "size": [
+    80,
+    73
+   ],
+   "pivot": [
+    36,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_mansion_4_r_shadow.png",
+    "pivot": [
+     33,
+     16
+    ]
+   }
+  },
+  "huabei_field_dry": {
+   "file": "tiles/huabei_field_dry.png",
+   "size": [
+    118,
+    62
+   ],
+   "pivot": [
+    59,
+    32
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "huainan_cottage_1": {
+   "file": "tiles/huainan_cottage_1.png",
+   "size": [
+    83,
+    104
+   ],
+   "pivot": [
+    44,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_1_shadow.png",
+    "pivot": [
+     36,
+     17
+    ]
+   }
+  },
+  "huainan_cottage_1_mud": {
+   "file": "tiles/huainan_cottage_1_mud.png",
+   "size": [
+    83,
+    104
+   ],
+   "pivot": [
+    44,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_1_mud_shadow.png",
+    "pivot": [
+     36,
+     17
+    ]
+   }
+  },
+  "huainan_cottage_1_r": {
+   "file": "tiles/huainan_cottage_1_r.png",
+   "size": [
+    83,
+    104
+   ],
+   "pivot": [
+    39,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_1_r_shadow.png",
+    "pivot": [
+     31,
+     17
+    ]
+   }
+  },
+  "huainan_cottage_1_r_mud": {
+   "file": "tiles/huainan_cottage_1_r_mud.png",
+   "size": [
+    83,
+    104
+   ],
+   "pivot": [
+    39,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_1_r_mud_shadow.png",
+    "pivot": [
+     31,
+     17
+    ]
+   }
+  },
+  "huainan_cottage_2": {
+   "file": "tiles/huainan_cottage_2.png",
+   "size": [
+    87,
+    115
+   ],
+   "pivot": [
+    31,
+    92
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_2_shadow.png",
+    "pivot": [
+     23,
+     24
+    ]
+   }
+  },
+  "huainan_cottage_2_mud": {
+   "file": "tiles/huainan_cottage_2_mud.png",
+   "size": [
+    87,
+    115
+   ],
+   "pivot": [
+    31,
+    92
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_2_mud_shadow.png",
+    "pivot": [
+     23,
+     24
+    ]
+   }
+  },
+  "huainan_cottage_2_r": {
+   "file": "tiles/huainan_cottage_2_r.png",
+   "size": [
+    87,
+    115
+   ],
+   "pivot": [
+    56,
+    92
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_2_r_shadow.png",
+    "pivot": [
+     48,
+     24
+    ]
+   }
+  },
+  "huainan_cottage_2_r_mud": {
+   "file": "tiles/huainan_cottage_2_r_mud.png",
+   "size": [
+    87,
+    115
+   ],
+   "pivot": [
+    56,
+    92
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_2_r_mud_shadow.png",
+    "pivot": [
+     48,
+     24
+    ]
+   }
+  },
+  "huainan_cottage_3": {
+   "file": "tiles/huainan_cottage_3.png",
+   "size": [
+    86,
+    87
+   ],
+   "pivot": [
+    44,
+    67
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_3_shadow.png",
+    "pivot": [
+     37,
+     19
+    ]
+   }
+  },
+  "huainan_cottage_3_mud": {
+   "file": "tiles/huainan_cottage_3_mud.png",
+   "size": [
+    86,
+    87
+   ],
+   "pivot": [
+    44,
+    67
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_3_mud_shadow.png",
+    "pivot": [
+     37,
+     19
+    ]
+   }
+  },
+  "huainan_cottage_3_r": {
+   "file": "tiles/huainan_cottage_3_r.png",
+   "size": [
+    86,
+    87
+   ],
+   "pivot": [
+    42,
+    67
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_3_r_shadow.png",
+    "pivot": [
+     38,
+     19
+    ]
+   }
+  },
+  "huainan_cottage_3_r_mud": {
+   "file": "tiles/huainan_cottage_3_r_mud.png",
+   "size": [
+    86,
+    87
+   ],
+   "pivot": [
+    42,
+    67
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_3_r_mud_shadow.png",
+    "pivot": [
+     38,
+     19
+    ]
+   }
+  },
+  "huainan_cottage_4": {
+   "file": "tiles/huainan_cottage_4.png",
+   "size": [
+    67,
+    78
+   ],
+   "pivot": [
+    38,
+    63
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_4_shadow.png",
+    "pivot": [
+     30,
+     13
+    ]
+   }
+  },
+  "huainan_cottage_4_mud": {
+   "file": "tiles/huainan_cottage_4_mud.png",
+   "size": [
+    67,
+    78
+   ],
+   "pivot": [
+    38,
+    63
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_4_mud_shadow.png",
+    "pivot": [
+     30,
+     13
+    ]
+   }
+  },
+  "huainan_cottage_4_r": {
+   "file": "tiles/huainan_cottage_4_r.png",
+   "size": [
+    67,
+    78
+   ],
+   "pivot": [
+    29,
+    63
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_4_r_shadow.png",
+    "pivot": [
+     22,
+     13
+    ]
+   }
+  },
+  "huainan_cottage_4_r_mud": {
+   "file": "tiles/huainan_cottage_4_r_mud.png",
+   "size": [
+    67,
+    78
+   ],
+   "pivot": [
+    29,
+    63
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_cottage_4_r_mud_shadow.png",
+    "pivot": [
+     22,
+     13
+    ]
+   }
+  },
+  "huainan_smithy": {
+   "file": "tiles/huainan_smithy.png",
+   "size": [
+    110,
+    89
+   ],
+   "pivot": [
+    56,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_smithy_shadow.png",
+    "pivot": [
+     49,
+     24
+    ]
+   }
+  },
+  "huainan_smithy_mud": {
+   "file": "tiles/huainan_smithy_mud.png",
+   "size": [
+    110,
+    89
+   ],
+   "pivot": [
+    56,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_smithy_mud_shadow.png",
+    "pivot": [
+     49,
+     24
+    ]
+   }
+  },
+  "huainan_smithy_r": {
+   "file": "tiles/huainan_smithy_r.png",
+   "size": [
+    110,
+    89
+   ],
+   "pivot": [
+    54,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_smithy_r_shadow.png",
+    "pivot": [
+     52,
+     24
+    ]
+   }
+  },
+  "huainan_smithy_r_mud": {
+   "file": "tiles/huainan_smithy_r_mud.png",
+   "size": [
+    110,
+    89
+   ],
+   "pivot": [
+    54,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_smithy_r_mud_shadow.png",
+    "pivot": [
+     52,
+     24
+    ]
+   }
+  },
+  "huainan_tavern": {
+   "file": "tiles/huainan_tavern.png",
+   "size": [
+    118,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_tavern_shadow.png",
+    "pivot": [
+     51,
+     28
+    ]
+   }
+  },
+  "huainan_tavern_mud": {
+   "file": "tiles/huainan_tavern_mud.png",
+   "size": [
+    118,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_tavern_mud_shadow.png",
+    "pivot": [
+     51,
+     28
+    ]
+   }
+  },
+  "huainan_tavern_r": {
+   "file": "tiles/huainan_tavern_r.png",
+   "size": [
+    118,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_tavern_r_shadow.png",
+    "pivot": [
+     56,
+     28
+    ]
+   }
+  },
+  "huainan_tavern_r_mud": {
+   "file": "tiles/huainan_tavern_r_mud.png",
+   "size": [
+    118,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_tavern_r_mud_shadow.png",
+    "pivot": [
+     56,
+     28
+    ]
+   }
+  },
+  "huainan_shop": {
+   "file": "tiles/huainan_shop.png",
+   "size": [
+    102,
+    95
+   ],
+   "pivot": [
+    45,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_shop_shadow.png",
+    "pivot": [
+     41,
+     25
+    ]
+   }
+  },
+  "huainan_shop_mud": {
+   "file": "tiles/huainan_shop_mud.png",
+   "size": [
+    102,
+    95
+   ],
+   "pivot": [
+    45,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_shop_mud_shadow.png",
+    "pivot": [
+     41,
+     25
+    ]
+   }
+  },
+  "huainan_shop_r": {
+   "file": "tiles/huainan_shop_r.png",
+   "size": [
+    102,
+    95
+   ],
+   "pivot": [
+    57,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_shop_r_shadow.png",
+    "pivot": [
+     50,
+     25
+    ]
+   }
+  },
+  "huainan_shop_r_mud": {
+   "file": "tiles/huainan_shop_r_mud.png",
+   "size": [
+    102,
+    95
+   ],
+   "pivot": [
+    57,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_shop_r_mud_shadow.png",
+    "pivot": [
+     50,
+     25
+    ]
+   }
+  },
+  "huainan_yamen": {
+   "file": "tiles/huainan_yamen.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    77,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_yamen_shadow.png",
+    "pivot": [
+     76,
+     41
+    ]
+   }
+  },
+  "huainan_yamen_mud": {
+   "file": "tiles/huainan_yamen_mud.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    77,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_yamen_mud_shadow.png",
+    "pivot": [
+     76,
+     41
+    ]
+   }
+  },
+  "huainan_yamen_r": {
+   "file": "tiles/huainan_yamen_r.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    83,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_yamen_r_shadow.png",
+    "pivot": [
+     81,
+     41
+    ]
+   }
+  },
+  "huainan_yamen_r_mud": {
+   "file": "tiles/huainan_yamen_r_mud.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    83,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_yamen_r_mud_shadow.png",
+    "pivot": [
+     81,
+     41
+    ]
+   }
+  },
+  "huainan_mansion_1": {
+   "file": "tiles/huainan_mansion_1.png",
+   "size": [
+    91,
+    83
+   ],
+   "pivot": [
+    48,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_1_shadow.png",
+    "pivot": [
+     46,
+     20
+    ]
+   }
+  },
+  "huainan_mansion_1_mud": {
+   "file": "tiles/huainan_mansion_1_mud.png",
+   "size": [
+    91,
+    83
+   ],
+   "pivot": [
+    48,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_1_mud_shadow.png",
+    "pivot": [
+     46,
+     20
+    ]
+   }
+  },
+  "huainan_mansion_1_r": {
+   "file": "tiles/huainan_mansion_1_r.png",
+   "size": [
+    91,
+    83
+   ],
+   "pivot": [
+    43,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_1_r_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "huainan_mansion_1_r_mud": {
+   "file": "tiles/huainan_mansion_1_r_mud.png",
+   "size": [
+    91,
+    83
+   ],
+   "pivot": [
+    43,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_1_r_mud_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "huainan_mansion_2": {
+   "file": "tiles/huainan_mansion_2.png",
+   "size": [
+    108,
+    104
+   ],
+   "pivot": [
+    41,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_2_shadow.png",
+    "pivot": [
+     37,
+     33
+    ]
+   }
+  },
+  "huainan_mansion_2_mud": {
+   "file": "tiles/huainan_mansion_2_mud.png",
+   "size": [
+    108,
+    104
+   ],
+   "pivot": [
+    41,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_2_mud_shadow.png",
+    "pivot": [
+     37,
+     33
+    ]
+   }
+  },
+  "huainan_mansion_2_r": {
+   "file": "tiles/huainan_mansion_2_r.png",
+   "size": [
+    108,
+    104
+   ],
+   "pivot": [
+    67,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_2_r_shadow.png",
+    "pivot": [
+     65,
+     33
+    ]
+   }
+  },
+  "huainan_mansion_2_r_mud": {
+   "file": "tiles/huainan_mansion_2_r_mud.png",
+   "size": [
+    108,
+    104
+   ],
+   "pivot": [
+    67,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_2_r_mud_shadow.png",
+    "pivot": [
+     65,
+     33
+    ]
+   }
+  },
+  "huainan_mansion_3": {
+   "file": "tiles/huainan_mansion_3.png",
+   "size": [
+    146,
+    119
+   ],
+   "pivot": [
+    71,
+    81
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_3_shadow.png",
+    "pivot": [
+     66,
+     34
+    ]
+   }
+  },
+  "huainan_mansion_3_mud": {
+   "file": "tiles/huainan_mansion_3_mud.png",
+   "size": [
+    146,
+    119
+   ],
+   "pivot": [
+    71,
+    81
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_3_mud_shadow.png",
+    "pivot": [
+     66,
+     34
+    ]
+   }
+  },
+  "huainan_mansion_3_r": {
+   "file": "tiles/huainan_mansion_3_r.png",
+   "size": [
+    146,
+    119
+   ],
+   "pivot": [
+    75,
+    81
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_3_r_shadow.png",
+    "pivot": [
+     69,
+     34
+    ]
+   }
+  },
+  "huainan_mansion_3_r_mud": {
+   "file": "tiles/huainan_mansion_3_r_mud.png",
+   "size": [
+    146,
+    119
+   ],
+   "pivot": [
+    75,
+    81
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_3_r_mud_shadow.png",
+    "pivot": [
+     69,
+     34
+    ]
+   }
+  },
+  "huainan_mansion_4": {
+   "file": "tiles/huainan_mansion_4.png",
+   "size": [
+    80,
+    75
+   ],
+   "pivot": [
+    44,
+    54
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_4_shadow.png",
+    "pivot": [
+     39,
+     16
+    ]
+   }
+  },
+  "huainan_mansion_4_mud": {
+   "file": "tiles/huainan_mansion_4_mud.png",
+   "size": [
+    80,
+    75
+   ],
+   "pivot": [
+    44,
+    54
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_4_mud_shadow.png",
+    "pivot": [
+     39,
+     16
+    ]
+   }
+  },
+  "huainan_mansion_4_r": {
+   "file": "tiles/huainan_mansion_4_r.png",
+   "size": [
+    80,
+    75
+   ],
+   "pivot": [
+    36,
+    54
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_4_r_shadow.png",
+    "pivot": [
+     33,
+     16
+    ]
+   }
+  },
+  "huainan_mansion_4_r_mud": {
+   "file": "tiles/huainan_mansion_4_r_mud.png",
+   "size": [
+    80,
+    75
+   ],
+   "pivot": [
+    36,
+    54
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_mansion_4_r_mud_shadow.png",
+    "pivot": [
+     33,
+     16
+    ]
+   }
+  },
+  "huainan_field_dry": {
+   "file": "tiles/huainan_field_dry.png",
+   "size": [
+    118,
+    62
+   ],
+   "pivot": [
+    59,
+    32
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "huainan_field_paddy": {
+   "file": "tiles/huainan_field_paddy.png",
+   "size": [
+    118,
+    63
+   ],
+   "pivot": [
+    59,
+    33
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "jiangnan_cottage_1": {
+   "file": "tiles/jiangnan_cottage_1.png",
+   "size": [
+    91,
+    92
+   ],
+   "pivot": [
+    48,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_1_shadow.png",
+    "pivot": [
+     39,
+     19
+    ]
+   }
+  },
+  "jiangnan_cottage_1_r": {
+   "file": "tiles/jiangnan_cottage_1_r.png",
+   "size": [
+    91,
+    92
+   ],
+   "pivot": [
+    43,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_1_r_shadow.png",
+    "pivot": [
+     34,
+     19
+    ]
+   }
+  },
+  "jiangnan_cottage_2": {
+   "file": "tiles/jiangnan_cottage_2.png",
+   "size": [
+    96,
+    93
+   ],
+   "pivot": [
+    35,
+    79
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_2_shadow.png",
+    "pivot": [
+     26,
+     26
+    ]
+   }
+  },
+  "jiangnan_cottage_2_r": {
+   "file": "tiles/jiangnan_cottage_2_r.png",
+   "size": [
+    96,
+    93
+   ],
+   "pivot": [
+    61,
+    79
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_2_r_shadow.png",
+    "pivot": [
+     51,
+     26
+    ]
+   }
+  },
+  "jiangnan_cottage_3": {
+   "file": "tiles/jiangnan_cottage_3.png",
+   "size": [
+    90,
+    93
+   ],
+   "pivot": [
+    48,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_3_shadow.png",
+    "pivot": [
+     39,
+     20
+    ]
+   }
+  },
+  "jiangnan_cottage_3_r": {
+   "file": "tiles/jiangnan_cottage_3_r.png",
+   "size": [
+    90,
+    93
+   ],
+   "pivot": [
+    42,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_3_r_shadow.png",
+    "pivot": [
+     38,
+     20
+    ]
+   }
+  },
+  "jiangnan_cottage_4": {
+   "file": "tiles/jiangnan_cottage_4.png",
+   "size": [
+    77,
+    83
+   ],
+   "pivot": [
+    35,
+    71
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_4_shadow.png",
+    "pivot": [
+     25,
+     18
+    ]
+   }
+  },
+  "jiangnan_cottage_4_r": {
+   "file": "tiles/jiangnan_cottage_4_r.png",
+   "size": [
+    77,
+    83
+   ],
+   "pivot": [
+    42,
+    71
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_cottage_4_r_shadow.png",
+    "pivot": [
+     33,
+     18
+    ]
+   }
+  },
+  "jiangnan_smithy": {
+   "file": "tiles/jiangnan_smithy.png",
+   "size": [
+    119,
+    96
+   ],
+   "pivot": [
+    61,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_smithy_shadow.png",
+    "pivot": [
+     49,
+     24
+    ]
+   }
+  },
+  "jiangnan_smithy_r": {
+   "file": "tiles/jiangnan_smithy_r.png",
+   "size": [
+    119,
+    96
+   ],
+   "pivot": [
+    58,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_smithy_r_shadow.png",
+    "pivot": [
+     52,
+     24
+    ]
+   }
+  },
+  "jiangnan_tavern": {
+   "file": "tiles/jiangnan_tavern.png",
+   "size": [
+    121,
+    102
+   ],
+   "pivot": [
+    62,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_tavern_shadow.png",
+    "pivot": [
+     51,
+     28
+    ]
+   }
+  },
+  "jiangnan_tavern_r": {
+   "file": "tiles/jiangnan_tavern_r.png",
+   "size": [
+    121,
+    102
+   ],
+   "pivot": [
+    59,
+    74
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_tavern_r_shadow.png",
+    "pivot": [
+     56,
+     28
+    ]
+   }
+  },
+  "jiangnan_shop": {
+   "file": "tiles/jiangnan_shop.png",
+   "size": [
+    109,
+    95
+   ],
+   "pivot": [
+    49,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_shop_shadow.png",
+    "pivot": [
+     41,
+     25
+    ]
+   }
+  },
+  "jiangnan_shop_r": {
+   "file": "tiles/jiangnan_shop_r.png",
+   "size": [
+    109,
+    95
+   ],
+   "pivot": [
+    60,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_shop_r_shadow.png",
+    "pivot": [
+     50,
+     25
+    ]
+   }
+  },
+  "jiangnan_yamen": {
+   "file": "tiles/jiangnan_yamen.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    77,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_yamen_shadow.png",
+    "pivot": [
+     76,
+     41
+    ]
+   }
+  },
+  "jiangnan_yamen_r": {
+   "file": "tiles/jiangnan_yamen_r.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    83,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_yamen_r_shadow.png",
+    "pivot": [
+     81,
+     41
+    ]
+   }
+  },
+  "jiangnan_mansion_1": {
+   "file": "tiles/jiangnan_mansion_1.png",
+   "size": [
+    98,
+    83
+   ],
+   "pivot": [
+    51,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_1_shadow.png",
+    "pivot": [
+     46,
+     20
+    ]
+   }
+  },
+  "jiangnan_mansion_1_r": {
+   "file": "tiles/jiangnan_mansion_1_r.png",
+   "size": [
+    98,
+    83
+   ],
+   "pivot": [
+    47,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_1_r_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "jiangnan_mansion_2": {
+   "file": "tiles/jiangnan_mansion_2.png",
+   "size": [
+    113,
+    104
+   ],
+   "pivot": [
+    44,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_2_shadow.png",
+    "pivot": [
+     37,
+     33
+    ]
+   }
+  },
+  "jiangnan_mansion_2_r": {
+   "file": "tiles/jiangnan_mansion_2_r.png",
+   "size": [
+    113,
+    104
+   ],
+   "pivot": [
+    69,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_2_r_shadow.png",
+    "pivot": [
+     65,
+     33
+    ]
+   }
+  },
+  "jiangnan_mansion_3": {
+   "file": "tiles/jiangnan_mansion_3.png",
+   "size": [
+    155,
+    120
+   ],
+   "pivot": [
+    75,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_3_shadow.png",
+    "pivot": [
+     66,
+     34
+    ]
+   }
+  },
+  "jiangnan_mansion_3_r": {
+   "file": "tiles/jiangnan_mansion_3_r.png",
+   "size": [
+    155,
+    120
+   ],
+   "pivot": [
+    80,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_3_r_shadow.png",
+    "pivot": [
+     69,
+     34
+    ]
+   }
+  },
+  "jiangnan_mansion_4": {
+   "file": "tiles/jiangnan_mansion_4.png",
+   "size": [
+    89,
+    75
+   ],
+   "pivot": [
+    40,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_4_shadow.png",
+    "pivot": [
+     31,
+     20
+    ]
+   }
+  },
+  "jiangnan_mansion_4_r": {
+   "file": "tiles/jiangnan_mansion_4_r.png",
+   "size": [
+    89,
+    75
+   ],
+   "pivot": [
+    49,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_mansion_4_r_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "jiangnan_field_paddy": {
+   "file": "tiles/jiangnan_field_paddy.png",
+   "size": [
+    118,
+    63
+   ],
+   "pivot": [
+    59,
+    33
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "zhongyuan_cottage_1": {
+   "file": "tiles/zhongyuan_cottage_1.png",
+   "size": [
+    83,
+    96
+   ],
+   "pivot": [
+    44,
+    78
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_1_shadow.png",
+    "pivot": [
+     36,
+     17
+    ]
+   }
+  },
+  "zhongyuan_cottage_1_r": {
+   "file": "tiles/zhongyuan_cottage_1_r.png",
+   "size": [
+    83,
+    96
+   ],
+   "pivot": [
+    39,
+    78
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_1_r_shadow.png",
+    "pivot": [
+     31,
+     17
+    ]
+   }
+  },
+  "zhongyuan_cottage_2": {
+   "file": "tiles/zhongyuan_cottage_2.png",
+   "size": [
+    87,
+    107
+   ],
+   "pivot": [
+    31,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_2_shadow.png",
+    "pivot": [
+     23,
+     24
+    ]
+   }
+  },
+  "zhongyuan_cottage_2_r": {
+   "file": "tiles/zhongyuan_cottage_2_r.png",
+   "size": [
+    87,
+    107
+   ],
+   "pivot": [
+    56,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_2_r_shadow.png",
+    "pivot": [
+     48,
+     24
+    ]
+   }
+  },
+  "zhongyuan_cottage_3": {
+   "file": "tiles/zhongyuan_cottage_3.png",
+   "size": [
+    86,
+    85
+   ],
+   "pivot": [
+    44,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_3_shadow.png",
+    "pivot": [
+     37,
+     19
+    ]
+   }
+  },
+  "zhongyuan_cottage_3_r": {
+   "file": "tiles/zhongyuan_cottage_3_r.png",
+   "size": [
+    86,
+    85
+   ],
+   "pivot": [
+    42,
+    65
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_3_r_shadow.png",
+    "pivot": [
+     38,
+     19
+    ]
+   }
+  },
+  "zhongyuan_cottage_4": {
+   "file": "tiles/zhongyuan_cottage_4.png",
+   "size": [
+    67,
+    74
+   ],
+   "pivot": [
+    38,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_4_shadow.png",
+    "pivot": [
+     30,
+     13
+    ]
+   }
+  },
+  "zhongyuan_cottage_4_r": {
+   "file": "tiles/zhongyuan_cottage_4_r.png",
+   "size": [
+    67,
+    74
+   ],
+   "pivot": [
+    29,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_cottage_4_r_shadow.png",
+    "pivot": [
+     22,
+     13
+    ]
+   }
+  },
+  "zhongyuan_smithy": {
+   "file": "tiles/zhongyuan_smithy.png",
+   "size": [
+    110,
+    97
+   ],
+   "pivot": [
+    56,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_smithy_shadow.png",
+    "pivot": [
+     49,
+     24
+    ]
+   }
+  },
+  "zhongyuan_smithy_r": {
+   "file": "tiles/zhongyuan_smithy_r.png",
+   "size": [
+    110,
+    97
+   ],
+   "pivot": [
+    54,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_smithy_r_shadow.png",
+    "pivot": [
+     52,
+     24
+    ]
+   }
+  },
+  "zhongyuan_tavern": {
+   "file": "tiles/zhongyuan_tavern.png",
+   "size": [
+    118,
+    101
+   ],
+   "pivot": [
+    59,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_tavern_shadow.png",
+    "pivot": [
+     51,
+     28
+    ]
+   }
+  },
+  "zhongyuan_tavern_r": {
+   "file": "tiles/zhongyuan_tavern_r.png",
+   "size": [
+    118,
+    101
+   ],
+   "pivot": [
+    59,
+    73
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_tavern_r_shadow.png",
+    "pivot": [
+     56,
+     28
+    ]
+   }
+  },
+  "zhongyuan_shop": {
+   "file": "tiles/zhongyuan_shop.png",
+   "size": [
+    102,
+    94
+   ],
+   "pivot": [
+    45,
+    69
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_shop_shadow.png",
+    "pivot": [
+     41,
+     25
+    ]
+   }
+  },
+  "zhongyuan_shop_r": {
+   "file": "tiles/zhongyuan_shop_r.png",
+   "size": [
+    102,
+    94
+   ],
+   "pivot": [
+    57,
+    69
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_shop_r_shadow.png",
+    "pivot": [
+     50,
+     25
+    ]
+   }
+  },
+  "zhongyuan_yamen": {
+   "file": "tiles/zhongyuan_yamen.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    77,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_yamen_shadow.png",
+    "pivot": [
+     76,
+     41
+    ]
+   }
+  },
+  "zhongyuan_yamen_r": {
+   "file": "tiles/zhongyuan_yamen_r.png",
+   "size": [
+    160,
+    125
+   ],
+   "pivot": [
+    83,
+    86
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_yamen_r_shadow.png",
+    "pivot": [
+     81,
+     41
+    ]
+   }
+  },
+  "zhongyuan_mansion_1": {
+   "file": "tiles/zhongyuan_mansion_1.png",
+   "size": [
+    91,
+    82
+   ],
+   "pivot": [
+    48,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_1_shadow.png",
+    "pivot": [
+     46,
+     20
+    ]
+   }
+  },
+  "zhongyuan_mansion_1_r": {
+   "file": "tiles/zhongyuan_mansion_1_r.png",
+   "size": [
+    91,
+    82
+   ],
+   "pivot": [
+    43,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_1_r_shadow.png",
+    "pivot": [
+     41,
+     20
+    ]
+   }
+  },
+  "zhongyuan_mansion_2": {
+   "file": "tiles/zhongyuan_mansion_2.png",
+   "size": [
+    108,
+    103
+   ],
+   "pivot": [
+    41,
+    71
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_2_shadow.png",
+    "pivot": [
+     37,
+     33
+    ]
+   }
+  },
+  "zhongyuan_mansion_2_r": {
+   "file": "tiles/zhongyuan_mansion_2_r.png",
+   "size": [
+    108,
+    103
+   ],
+   "pivot": [
+    67,
+    71
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_2_r_shadow.png",
+    "pivot": [
+     65,
+     33
+    ]
+   }
+  },
+  "zhongyuan_mansion_3": {
+   "file": "tiles/zhongyuan_mansion_3.png",
+   "size": [
+    146,
+    118
+   ],
+   "pivot": [
+    71,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_3_shadow.png",
+    "pivot": [
+     66,
+     34
+    ]
+   }
+  },
+  "zhongyuan_mansion_3_r": {
+   "file": "tiles/zhongyuan_mansion_3_r.png",
+   "size": [
+    146,
+    118
+   ],
+   "pivot": [
+    75,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_3_r_shadow.png",
+    "pivot": [
+     69,
+     34
+    ]
+   }
+  },
+  "zhongyuan_mansion_4": {
+   "file": "tiles/zhongyuan_mansion_4.png",
+   "size": [
+    80,
+    74
+   ],
+   "pivot": [
+    44,
+    53
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_4_shadow.png",
+    "pivot": [
+     39,
+     16
+    ]
+   }
+  },
+  "zhongyuan_mansion_4_r": {
+   "file": "tiles/zhongyuan_mansion_4_r.png",
+   "size": [
+    80,
+    74
+   ],
+   "pivot": [
+    36,
+    53
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_mansion_4_r_shadow.png",
+    "pivot": [
+     33,
+     16
+    ]
+   }
+  },
+  "zhongyuan_field_dry": {
+   "file": "tiles/zhongyuan_field_dry.png",
+   "size": [
+    118,
+    62
+   ],
+   "pivot": [
+    59,
+    32
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "bashu_twall_00": {
+   "file": "tiles/bashu_twall_00.png",
+   "size": [
+    16,
+    26
+   ],
+   "pivot": [
+    8,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "bashu_twall_01": {
+   "file": "tiles/bashu_twall_01.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_02": {
+   "file": "tiles/bashu_twall_02.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_twall_03": {
+   "file": "tiles/bashu_twall_03.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_04": {
+   "file": "tiles/bashu_twall_04.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    13,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_05": {
+   "file": "tiles/bashu_twall_05.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_06": {
+   "file": "tiles/bashu_twall_06.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    10,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "bashu_twall_07": {
+   "file": "tiles/bashu_twall_07.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_08": {
+   "file": "tiles/bashu_twall_08.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    9,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_twall_09": {
+   "file": "tiles/bashu_twall_09.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_10": {
+   "file": "tiles/bashu_twall_10.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_twall_11": {
+   "file": "tiles/bashu_twall_11.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_12": {
+   "file": "tiles/bashu_twall_12.png",
+   "size": [
+    18,
+    30
+   ],
+   "pivot": [
+    9,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "bashu_twall_13": {
+   "file": "tiles/bashu_twall_13.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_twall_14": {
+   "file": "tiles/bashu_twall_14.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_twall_15": {
+   "file": "tiles/bashu_twall_15.png",
+   "size": [
+    24,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_twall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_00": {
+   "file": "tiles/bashu_ewall_00.png",
+   "size": [
+    18,
+    26
+   ],
+   "pivot": [
+    9,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "bashu_ewall_01": {
+   "file": "tiles/bashu_ewall_01.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_02": {
+   "file": "tiles/bashu_ewall_02.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_03": {
+   "file": "tiles/bashu_ewall_03.png",
+   "size": [
+    26,
+    32
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_04": {
+   "file": "tiles/bashu_ewall_04.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_05": {
+   "file": "tiles/bashu_ewall_05.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_06": {
+   "file": "tiles/bashu_ewall_06.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    10,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_07": {
+   "file": "tiles/bashu_ewall_07.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_08": {
+   "file": "tiles/bashu_ewall_08.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    9,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_09": {
+   "file": "tiles/bashu_ewall_09.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_10": {
+   "file": "tiles/bashu_ewall_10.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_11": {
+   "file": "tiles/bashu_ewall_11.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_12": {
+   "file": "tiles/bashu_ewall_12.png",
+   "size": [
+    18,
+    29
+   ],
+   "pivot": [
+    9,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "bashu_ewall_13": {
+   "file": "tiles/bashu_ewall_13.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_14": {
+   "file": "tiles/bashu_ewall_14.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "bashu_ewall_15": {
+   "file": "tiles/bashu_ewall_15.png",
+   "size": [
+    24,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_ewall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "bashu_fence_00": {
+   "file": "tiles/bashu_fence_00.png",
+   "size": [
+    4,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_00_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "bashu_fence_01": {
+   "file": "tiles/bashu_fence_01.png",
+   "size": [
+    11,
+    21
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_01_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_02": {
+   "file": "tiles/bashu_fence_02.png",
+   "size": [
+    11,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_02_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "bashu_fence_03": {
+   "file": "tiles/bashu_fence_03.png",
+   "size": [
+    18,
+    21
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_03_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_04": {
+   "file": "tiles/bashu_fence_04.png",
+   "size": [
+    9,
+    21
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_04_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "bashu_fence_05": {
+   "file": "tiles/bashu_fence_05.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_05_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_06": {
+   "file": "tiles/bashu_fence_06.png",
+   "size": [
+    11,
+    25
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_06_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "bashu_fence_07": {
+   "file": "tiles/bashu_fence_07.png",
+   "size": [
+    18,
+    25
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_07_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_08": {
+   "file": "tiles/bashu_fence_08.png",
+   "size": [
+    9,
+    21
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_08_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "bashu_fence_09": {
+   "file": "tiles/bashu_fence_09.png",
+   "size": [
+    11,
+    25
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_09_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_10": {
+   "file": "tiles/bashu_fence_10.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_10_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "bashu_fence_11": {
+   "file": "tiles/bashu_fence_11.png",
+   "size": [
+    18,
+    25
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_11_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_12": {
+   "file": "tiles/bashu_fence_12.png",
+   "size": [
+    14,
+    21
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_12_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "bashu_fence_13": {
+   "file": "tiles/bashu_fence_13.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_13_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_fence_14": {
+   "file": "tiles/bashu_fence_14.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_14_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "bashu_fence_15": {
+   "file": "tiles/bashu_fence_15.png",
+   "size": [
+    18,
+    25
+   ],
+   "pivot": [
+    9,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_fence_15_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "bashu_tgate_u": {
+   "file": "tiles/bashu_tgate_u.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_tgate_u_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "bashu_tgate_v": {
+   "file": "tiles/bashu_tgate_v.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_tgate_v_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "bashu_egate_u": {
+   "file": "tiles/bashu_egate_u.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_egate_u_shadow.png",
+    "pivot": [
+     15,
+     8
+    ]
+   }
+  },
+  "bashu_egate_v": {
+   "file": "tiles/bashu_egate_v.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/bashu_egate_v_shadow.png",
+    "pivot": [
+     16,
+     8
+    ]
+   }
+  },
+  "huabei_twall_00": {
+   "file": "tiles/huabei_twall_00.png",
+   "size": [
+    16,
+    26
+   ],
+   "pivot": [
+    8,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "huabei_twall_01": {
+   "file": "tiles/huabei_twall_01.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_02": {
+   "file": "tiles/huabei_twall_02.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_twall_03": {
+   "file": "tiles/huabei_twall_03.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_04": {
+   "file": "tiles/huabei_twall_04.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    13,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_05": {
+   "file": "tiles/huabei_twall_05.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_06": {
+   "file": "tiles/huabei_twall_06.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    10,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "huabei_twall_07": {
+   "file": "tiles/huabei_twall_07.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_08": {
+   "file": "tiles/huabei_twall_08.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    9,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_twall_09": {
+   "file": "tiles/huabei_twall_09.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_10": {
+   "file": "tiles/huabei_twall_10.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_twall_11": {
+   "file": "tiles/huabei_twall_11.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_12": {
+   "file": "tiles/huabei_twall_12.png",
+   "size": [
+    18,
+    30
+   ],
+   "pivot": [
+    9,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "huabei_twall_13": {
+   "file": "tiles/huabei_twall_13.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_twall_14": {
+   "file": "tiles/huabei_twall_14.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_twall_15": {
+   "file": "tiles/huabei_twall_15.png",
+   "size": [
+    24,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_twall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_00": {
+   "file": "tiles/huabei_ewall_00.png",
+   "size": [
+    18,
+    26
+   ],
+   "pivot": [
+    9,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "huabei_ewall_01": {
+   "file": "tiles/huabei_ewall_01.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_02": {
+   "file": "tiles/huabei_ewall_02.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_03": {
+   "file": "tiles/huabei_ewall_03.png",
+   "size": [
+    26,
+    32
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_04": {
+   "file": "tiles/huabei_ewall_04.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_05": {
+   "file": "tiles/huabei_ewall_05.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_06": {
+   "file": "tiles/huabei_ewall_06.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    10,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_07": {
+   "file": "tiles/huabei_ewall_07.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_08": {
+   "file": "tiles/huabei_ewall_08.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    9,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_09": {
+   "file": "tiles/huabei_ewall_09.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_10": {
+   "file": "tiles/huabei_ewall_10.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_11": {
+   "file": "tiles/huabei_ewall_11.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_12": {
+   "file": "tiles/huabei_ewall_12.png",
+   "size": [
+    18,
+    29
+   ],
+   "pivot": [
+    9,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "huabei_ewall_13": {
+   "file": "tiles/huabei_ewall_13.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_14": {
+   "file": "tiles/huabei_ewall_14.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huabei_ewall_15": {
+   "file": "tiles/huabei_ewall_15.png",
+   "size": [
+    24,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_ewall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huabei_fence_00": {
+   "file": "tiles/huabei_fence_00.png",
+   "size": [
+    4,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_00_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "huabei_fence_01": {
+   "file": "tiles/huabei_fence_01.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_01_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_02": {
+   "file": "tiles/huabei_fence_02.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_02_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "huabei_fence_03": {
+   "file": "tiles/huabei_fence_03.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_03_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_04": {
+   "file": "tiles/huabei_fence_04.png",
+   "size": [
+    9,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_04_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "huabei_fence_05": {
+   "file": "tiles/huabei_fence_05.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_05_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_06": {
+   "file": "tiles/huabei_fence_06.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_06_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "huabei_fence_07": {
+   "file": "tiles/huabei_fence_07.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_07_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_08": {
+   "file": "tiles/huabei_fence_08.png",
+   "size": [
+    9,
+    17
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_08_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "huabei_fence_09": {
+   "file": "tiles/huabei_fence_09.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_09_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_10": {
+   "file": "tiles/huabei_fence_10.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_10_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "huabei_fence_11": {
+   "file": "tiles/huabei_fence_11.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_11_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_12": {
+   "file": "tiles/huabei_fence_12.png",
+   "size": [
+    14,
+    17
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_12_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "huabei_fence_13": {
+   "file": "tiles/huabei_fence_13.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_13_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_fence_14": {
+   "file": "tiles/huabei_fence_14.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_14_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "huabei_fence_15": {
+   "file": "tiles/huabei_fence_15.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_fence_15_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huabei_tgate_u": {
+   "file": "tiles/huabei_tgate_u.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_tgate_u_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "huabei_tgate_v": {
+   "file": "tiles/huabei_tgate_v.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_tgate_v_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "huabei_egate_u": {
+   "file": "tiles/huabei_egate_u.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_egate_u_shadow.png",
+    "pivot": [
+     15,
+     8
+    ]
+   }
+  },
+  "huabei_egate_v": {
+   "file": "tiles/huabei_egate_v.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huabei_egate_v_shadow.png",
+    "pivot": [
+     16,
+     8
+    ]
+   }
+  },
+  "huainan_twall_00": {
+   "file": "tiles/huainan_twall_00.png",
+   "size": [
+    16,
+    26
+   ],
+   "pivot": [
+    8,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "huainan_twall_01": {
+   "file": "tiles/huainan_twall_01.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_02": {
+   "file": "tiles/huainan_twall_02.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_twall_03": {
+   "file": "tiles/huainan_twall_03.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_04": {
+   "file": "tiles/huainan_twall_04.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    13,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_05": {
+   "file": "tiles/huainan_twall_05.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_06": {
+   "file": "tiles/huainan_twall_06.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    10,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "huainan_twall_07": {
+   "file": "tiles/huainan_twall_07.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_08": {
+   "file": "tiles/huainan_twall_08.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    9,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_twall_09": {
+   "file": "tiles/huainan_twall_09.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_10": {
+   "file": "tiles/huainan_twall_10.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_twall_11": {
+   "file": "tiles/huainan_twall_11.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_12": {
+   "file": "tiles/huainan_twall_12.png",
+   "size": [
+    18,
+    30
+   ],
+   "pivot": [
+    9,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "huainan_twall_13": {
+   "file": "tiles/huainan_twall_13.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_twall_14": {
+   "file": "tiles/huainan_twall_14.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_twall_15": {
+   "file": "tiles/huainan_twall_15.png",
+   "size": [
+    24,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_twall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_00": {
+   "file": "tiles/huainan_ewall_00.png",
+   "size": [
+    18,
+    26
+   ],
+   "pivot": [
+    9,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "huainan_ewall_01": {
+   "file": "tiles/huainan_ewall_01.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_02": {
+   "file": "tiles/huainan_ewall_02.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_03": {
+   "file": "tiles/huainan_ewall_03.png",
+   "size": [
+    26,
+    32
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_04": {
+   "file": "tiles/huainan_ewall_04.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_05": {
+   "file": "tiles/huainan_ewall_05.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_06": {
+   "file": "tiles/huainan_ewall_06.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    10,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_07": {
+   "file": "tiles/huainan_ewall_07.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_08": {
+   "file": "tiles/huainan_ewall_08.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    9,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_09": {
+   "file": "tiles/huainan_ewall_09.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_10": {
+   "file": "tiles/huainan_ewall_10.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_11": {
+   "file": "tiles/huainan_ewall_11.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_12": {
+   "file": "tiles/huainan_ewall_12.png",
+   "size": [
+    18,
+    29
+   ],
+   "pivot": [
+    9,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "huainan_ewall_13": {
+   "file": "tiles/huainan_ewall_13.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_14": {
+   "file": "tiles/huainan_ewall_14.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "huainan_ewall_15": {
+   "file": "tiles/huainan_ewall_15.png",
+   "size": [
+    24,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_ewall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "huainan_fence_00": {
+   "file": "tiles/huainan_fence_00.png",
+   "size": [
+    4,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_00_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "huainan_fence_01": {
+   "file": "tiles/huainan_fence_01.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_01_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_02": {
+   "file": "tiles/huainan_fence_02.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_02_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "huainan_fence_03": {
+   "file": "tiles/huainan_fence_03.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_03_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_04": {
+   "file": "tiles/huainan_fence_04.png",
+   "size": [
+    9,
+    19
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_04_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "huainan_fence_05": {
+   "file": "tiles/huainan_fence_05.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_05_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_06": {
+   "file": "tiles/huainan_fence_06.png",
+   "size": [
+    12,
+    23
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_06_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "huainan_fence_07": {
+   "file": "tiles/huainan_fence_07.png",
+   "size": [
+    20,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_07_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_08": {
+   "file": "tiles/huainan_fence_08.png",
+   "size": [
+    9,
+    19
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_08_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "huainan_fence_09": {
+   "file": "tiles/huainan_fence_09.png",
+   "size": [
+    12,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_09_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_10": {
+   "file": "tiles/huainan_fence_10.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_10_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "huainan_fence_11": {
+   "file": "tiles/huainan_fence_11.png",
+   "size": [
+    20,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_11_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_12": {
+   "file": "tiles/huainan_fence_12.png",
+   "size": [
+    14,
+    19
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_12_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "huainan_fence_13": {
+   "file": "tiles/huainan_fence_13.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_13_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_fence_14": {
+   "file": "tiles/huainan_fence_14.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_14_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "huainan_fence_15": {
+   "file": "tiles/huainan_fence_15.png",
+   "size": [
+    20,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_fence_15_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "huainan_tgate_u": {
+   "file": "tiles/huainan_tgate_u.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_tgate_u_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "huainan_tgate_v": {
+   "file": "tiles/huainan_tgate_v.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_tgate_v_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "huainan_egate_u": {
+   "file": "tiles/huainan_egate_u.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_egate_u_shadow.png",
+    "pivot": [
+     15,
+     8
+    ]
+   }
+  },
+  "huainan_egate_v": {
+   "file": "tiles/huainan_egate_v.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/huainan_egate_v_shadow.png",
+    "pivot": [
+     16,
+     8
+    ]
+   }
+  },
+  "jiangnan_twall_00": {
+   "file": "tiles/jiangnan_twall_00.png",
+   "size": [
+    16,
+    26
+   ],
+   "pivot": [
+    8,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "jiangnan_twall_01": {
+   "file": "tiles/jiangnan_twall_01.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_02": {
+   "file": "tiles/jiangnan_twall_02.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_03": {
+   "file": "tiles/jiangnan_twall_03.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_04": {
+   "file": "tiles/jiangnan_twall_04.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    13,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_05": {
+   "file": "tiles/jiangnan_twall_05.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_06": {
+   "file": "tiles/jiangnan_twall_06.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    10,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_07": {
+   "file": "tiles/jiangnan_twall_07.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_08": {
+   "file": "tiles/jiangnan_twall_08.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    9,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_09": {
+   "file": "tiles/jiangnan_twall_09.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_10": {
+   "file": "tiles/jiangnan_twall_10.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_11": {
+   "file": "tiles/jiangnan_twall_11.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_12": {
+   "file": "tiles/jiangnan_twall_12.png",
+   "size": [
+    18,
+    30
+   ],
+   "pivot": [
+    9,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "jiangnan_twall_13": {
+   "file": "tiles/jiangnan_twall_13.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_14": {
+   "file": "tiles/jiangnan_twall_14.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_twall_15": {
+   "file": "tiles/jiangnan_twall_15.png",
+   "size": [
+    24,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_twall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_00": {
+   "file": "tiles/jiangnan_ewall_00.png",
+   "size": [
+    16,
+    23
+   ],
+   "pivot": [
+    8,
+    19
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "jiangnan_ewall_01": {
+   "file": "tiles/jiangnan_ewall_01.png",
+   "size": [
+    26,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_02": {
+   "file": "tiles/jiangnan_ewall_02.png",
+   "size": [
+    26,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_03": {
+   "file": "tiles/jiangnan_ewall_03.png",
+   "size": [
+    26,
+    30
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_04": {
+   "file": "tiles/jiangnan_ewall_04.png",
+   "size": [
+    22,
+    29
+   ],
+   "pivot": [
+    13,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_05": {
+   "file": "tiles/jiangnan_ewall_05.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_06": {
+   "file": "tiles/jiangnan_ewall_06.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    10,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_07": {
+   "file": "tiles/jiangnan_ewall_07.png",
+   "size": [
+    25,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_08": {
+   "file": "tiles/jiangnan_ewall_08.png",
+   "size": [
+    22,
+    29
+   ],
+   "pivot": [
+    9,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_09": {
+   "file": "tiles/jiangnan_ewall_09.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    12,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_10": {
+   "file": "tiles/jiangnan_ewall_10.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    9,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_11": {
+   "file": "tiles/jiangnan_ewall_11.png",
+   "size": [
+    25,
+    31
+   ],
+   "pivot": [
+    12,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_12": {
+   "file": "tiles/jiangnan_ewall_12.png",
+   "size": [
+    18,
+    27
+   ],
+   "pivot": [
+    9,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "jiangnan_ewall_13": {
+   "file": "tiles/jiangnan_ewall_13.png",
+   "size": [
+    21,
+    31
+   ],
+   "pivot": [
+    12,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_14": {
+   "file": "tiles/jiangnan_ewall_14.png",
+   "size": [
+    21,
+    31
+   ],
+   "pivot": [
+    9,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "jiangnan_ewall_15": {
+   "file": "tiles/jiangnan_ewall_15.png",
+   "size": [
+    24,
+    31
+   ],
+   "pivot": [
+    12,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_ewall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "jiangnan_fence_00": {
+   "file": "tiles/jiangnan_fence_00.png",
+   "size": [
+    4,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_00_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "jiangnan_fence_01": {
+   "file": "tiles/jiangnan_fence_01.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_01_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_02": {
+   "file": "tiles/jiangnan_fence_02.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_02_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_03": {
+   "file": "tiles/jiangnan_fence_03.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_03_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_04": {
+   "file": "tiles/jiangnan_fence_04.png",
+   "size": [
+    9,
+    19
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_04_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "jiangnan_fence_05": {
+   "file": "tiles/jiangnan_fence_05.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_05_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_06": {
+   "file": "tiles/jiangnan_fence_06.png",
+   "size": [
+    12,
+    23
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_06_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_07": {
+   "file": "tiles/jiangnan_fence_07.png",
+   "size": [
+    20,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_07_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_08": {
+   "file": "tiles/jiangnan_fence_08.png",
+   "size": [
+    9,
+    19
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_08_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "jiangnan_fence_09": {
+   "file": "tiles/jiangnan_fence_09.png",
+   "size": [
+    12,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_09_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_10": {
+   "file": "tiles/jiangnan_fence_10.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_10_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_11": {
+   "file": "tiles/jiangnan_fence_11.png",
+   "size": [
+    20,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_11_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_12": {
+   "file": "tiles/jiangnan_fence_12.png",
+   "size": [
+    14,
+    19
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_12_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "jiangnan_fence_13": {
+   "file": "tiles/jiangnan_fence_13.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_13_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_14": {
+   "file": "tiles/jiangnan_fence_14.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_14_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "jiangnan_fence_15": {
+   "file": "tiles/jiangnan_fence_15.png",
+   "size": [
+    20,
+    23
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_fence_15_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "jiangnan_tgate_u": {
+   "file": "tiles/jiangnan_tgate_u.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_tgate_u_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "jiangnan_tgate_v": {
+   "file": "tiles/jiangnan_tgate_v.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_tgate_v_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "jiangnan_egate_u": {
+   "file": "tiles/jiangnan_egate_u.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_egate_u_shadow.png",
+    "pivot": [
+     15,
+     8
+    ]
+   }
+  },
+  "jiangnan_egate_v": {
+   "file": "tiles/jiangnan_egate_v.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/jiangnan_egate_v_shadow.png",
+    "pivot": [
+     16,
+     8
+    ]
+   }
+  },
+  "zhongyuan_twall_00": {
+   "file": "tiles/zhongyuan_twall_00.png",
+   "size": [
+    16,
+    26
+   ],
+   "pivot": [
+    8,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "zhongyuan_twall_01": {
+   "file": "tiles/zhongyuan_twall_01.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_02": {
+   "file": "tiles/zhongyuan_twall_02.png",
+   "size": [
+    26,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_03": {
+   "file": "tiles/zhongyuan_twall_03.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_04": {
+   "file": "tiles/zhongyuan_twall_04.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    13,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_05": {
+   "file": "tiles/zhongyuan_twall_05.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_06": {
+   "file": "tiles/zhongyuan_twall_06.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    10,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_07": {
+   "file": "tiles/zhongyuan_twall_07.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    13,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_08": {
+   "file": "tiles/zhongyuan_twall_08.png",
+   "size": [
+    22,
+    32
+   ],
+   "pivot": [
+    9,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_09": {
+   "file": "tiles/zhongyuan_twall_09.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_10": {
+   "file": "tiles/zhongyuan_twall_10.png",
+   "size": [
+    22,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_11": {
+   "file": "tiles/zhongyuan_twall_11.png",
+   "size": [
+    25,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_12": {
+   "file": "tiles/zhongyuan_twall_12.png",
+   "size": [
+    18,
+    30
+   ],
+   "pivot": [
+    9,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "zhongyuan_twall_13": {
+   "file": "tiles/zhongyuan_twall_13.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_14": {
+   "file": "tiles/zhongyuan_twall_14.png",
+   "size": [
+    21,
+    34
+   ],
+   "pivot": [
+    9,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_twall_15": {
+   "file": "tiles/zhongyuan_twall_15.png",
+   "size": [
+    24,
+    34
+   ],
+   "pivot": [
+    12,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_twall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_00": {
+   "file": "tiles/zhongyuan_ewall_00.png",
+   "size": [
+    18,
+    26
+   ],
+   "pivot": [
+    9,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_00_shadow.png",
+    "pivot": [
+     5,
+     3
+    ]
+   }
+  },
+  "zhongyuan_ewall_01": {
+   "file": "tiles/zhongyuan_ewall_01.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_01_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_02": {
+   "file": "tiles/zhongyuan_ewall_02.png",
+   "size": [
+    26,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_02_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_03": {
+   "file": "tiles/zhongyuan_ewall_03.png",
+   "size": [
+    26,
+    32
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_03_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_04": {
+   "file": "tiles/zhongyuan_ewall_04.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    13,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_04_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_05": {
+   "file": "tiles/zhongyuan_ewall_05.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_05_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_06": {
+   "file": "tiles/zhongyuan_ewall_06.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    10,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_06_shadow.png",
+    "pivot": [
+     7,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_07": {
+   "file": "tiles/zhongyuan_ewall_07.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    13,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_07_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_08": {
+   "file": "tiles/zhongyuan_ewall_08.png",
+   "size": [
+    22,
+    31
+   ],
+   "pivot": [
+    9,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_08_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_09": {
+   "file": "tiles/zhongyuan_ewall_09.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_09_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_10": {
+   "file": "tiles/zhongyuan_ewall_10.png",
+   "size": [
+    22,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_10_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_11": {
+   "file": "tiles/zhongyuan_ewall_11.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_11_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_12": {
+   "file": "tiles/zhongyuan_ewall_12.png",
+   "size": [
+    18,
+    29
+   ],
+   "pivot": [
+    9,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_12_shadow.png",
+    "pivot": [
+     9,
+     3
+    ]
+   }
+  },
+  "zhongyuan_ewall_13": {
+   "file": "tiles/zhongyuan_ewall_13.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_13_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_14": {
+   "file": "tiles/zhongyuan_ewall_14.png",
+   "size": [
+    21,
+    33
+   ],
+   "pivot": [
+    9,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_14_shadow.png",
+    "pivot": [
+     9,
+     5
+    ]
+   }
+  },
+  "zhongyuan_ewall_15": {
+   "file": "tiles/zhongyuan_ewall_15.png",
+   "size": [
+    24,
+    33
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_ewall_15_shadow.png",
+    "pivot": [
+     10,
+     5
+    ]
+   }
+  },
+  "zhongyuan_fence_00": {
+   "file": "tiles/zhongyuan_fence_00.png",
+   "size": [
+    4,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_00_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "zhongyuan_fence_01": {
+   "file": "tiles/zhongyuan_fence_01.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_01_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_02": {
+   "file": "tiles/zhongyuan_fence_02.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_02_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_03": {
+   "file": "tiles/zhongyuan_fence_03.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_03_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_04": {
+   "file": "tiles/zhongyuan_fence_04.png",
+   "size": [
+    9,
+    17
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_04_shadow.png",
+    "pivot": [
+     0,
+     0
+    ]
+   }
+  },
+  "zhongyuan_fence_05": {
+   "file": "tiles/zhongyuan_fence_05.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_05_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_06": {
+   "file": "tiles/zhongyuan_fence_06.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    2,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_06_shadow.png",
+    "pivot": [
+     0,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_07": {
+   "file": "tiles/zhongyuan_fence_07.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_07_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_08": {
+   "file": "tiles/zhongyuan_fence_08.png",
+   "size": [
+    9,
+    17
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_08_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "zhongyuan_fence_09": {
+   "file": "tiles/zhongyuan_fence_09.png",
+   "size": [
+    12,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_09_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_10": {
+   "file": "tiles/zhongyuan_fence_10.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_10_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_11": {
+   "file": "tiles/zhongyuan_fence_11.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_11_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_12": {
+   "file": "tiles/zhongyuan_fence_12.png",
+   "size": [
+    14,
+    17
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_12_shadow.png",
+    "pivot": [
+     7,
+     0
+    ]
+   }
+  },
+  "zhongyuan_fence_13": {
+   "file": "tiles/zhongyuan_fence_13.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_13_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_14": {
+   "file": "tiles/zhongyuan_fence_14.png",
+   "size": [
+    17,
+    21
+   ],
+   "pivot": [
+    7,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_14_shadow.png",
+    "pivot": [
+     7,
+     4
+    ]
+   }
+  },
+  "zhongyuan_fence_15": {
+   "file": "tiles/zhongyuan_fence_15.png",
+   "size": [
+    20,
+    21
+   ],
+   "pivot": [
+    10,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_fence_15_shadow.png",
+    "pivot": [
+     8,
+     4
+    ]
+   }
+  },
+  "zhongyuan_tgate_u": {
+   "file": "tiles/zhongyuan_tgate_u.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_tgate_u_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "zhongyuan_tgate_v": {
+   "file": "tiles/zhongyuan_tgate_v.png",
+   "size": [
+    46,
+    58
+   ],
+   "pivot": [
+    23,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_tgate_v_shadow.png",
+    "pivot": [
+     19,
+     10
+    ]
+   }
+  },
+  "zhongyuan_egate_u": {
+   "file": "tiles/zhongyuan_egate_u.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_egate_u_shadow.png",
+    "pivot": [
+     15,
+     8
+    ]
+   }
+  },
+  "zhongyuan_egate_v": {
+   "file": "tiles/zhongyuan_egate_v.png",
+   "size": [
+    44,
+    51
+   ],
+   "pivot": [
+    22,
+    43
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow_mask": {
+    "file": "tiles/zhongyuan_egate_v_shadow.png",
+    "pivot": [
+     16,
+     8
+    ]
+   }
+  },
+  "door_light_sw_day": {
+   "file": "tiles/door_light_sw_day.png",
+   "size": [
+    260,
+    150
+   ],
+   "pivot": [
+    130,
+    126
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_beam_sw_day": {
+   "file": "tiles/door_beam_sw_day.png",
+   "size": [
+    140,
+    130
+   ],
+   "pivot": [
+    70,
+    116
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_light_sw_dusk": {
+   "file": "tiles/door_light_sw_dusk.png",
+   "size": [
+    260,
+    150
+   ],
+   "pivot": [
+    130,
+    126
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_beam_sw_dusk": {
+   "file": "tiles/door_beam_sw_dusk.png",
+   "size": [
+    140,
+    130
+   ],
+   "pivot": [
+    70,
+    116
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_light_se_day": {
+   "file": "tiles/door_light_se_day.png",
+   "size": [
+    260,
+    150
+   ],
+   "pivot": [
+    130,
+    126
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_beam_se_day": {
+   "file": "tiles/door_beam_se_day.png",
+   "size": [
+    140,
+    130
+   ],
+   "pivot": [
+    70,
+    116
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_light_se_dusk": {
+   "file": "tiles/door_light_se_dusk.png",
+   "size": [
+    260,
+    150
+   ],
+   "pivot": [
+    130,
+    126
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "door_beam_se_dusk": {
+   "file": "tiles/door_beam_se_dusk.png",
+   "size": [
+    140,
+    130
+   ],
+   "pivot": [
+    70,
+    116
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "signpost_arrow_se": {
+   "file": "tiles/signpost_arrow_se.png",
+   "size": [
+    56,
+    70
+   ],
+   "pivot": [
+    28,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "signpost_arrow_sw": {
+   "file": "tiles/signpost_arrow_sw.png",
+   "size": [
+    56,
+    70
+   ],
+   "pivot": [
+    28,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "signpost_arrow_ne": {
+   "file": "tiles/signpost_arrow_ne.png",
+   "size": [
+    56,
+    70
+   ],
+   "pivot": [
+    28,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
+  },
+  "signpost_arrow_nw": {
+   "file": "tiles/signpost_arrow_nw.png",
+   "size": [
+    56,
+    70
+   ],
+   "pivot": [
+    28,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "regional town building / wall line, pixel art on the small-tile grid (tools/towngen)",
+   "shadow": false
   }
  }
 }

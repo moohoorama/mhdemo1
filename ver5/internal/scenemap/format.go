@@ -32,6 +32,8 @@ type Map struct {
 	Height  []string `json:"height,omitempty"`
 	Objects []Object `json:"objects"`
 	Walls   []Wall   `json:"walls,omitempty"`
+	// Exits are the named ways off the map a scene's actors leave by (docs/plan-scene-exits.md).
+	Exits []Exit `json:"exits,omitempty"`
 	// Grass turns the map's grass toward its climate (content.GrassTint); nil keeps the tileset's.
 	Grass *content.GrassTint `json:"grass,omitempty"`
 }
@@ -47,6 +49,17 @@ type Object struct {
 
 // Wall is a wall line laid one piece per small tile from From to To, along u or v; in the map file [family, from,
 // to] or [family, from, to, tint]. A gate on the line takes its own object's tint.
+// Exit is a way off the map: its small tile (an odd one stands on a whole game cell) and the way one walks out
+// through it, SE (+u), SW (+v), NW (-u) or NE (-v).
+type Exit struct {
+	ID  string `json:"id"`
+	At  [2]int `json:"at"`
+	Dir string `json:"dir"`
+}
+
+// ExitStep is the small-tile step of an exit direction.
+var ExitStep = map[string][2]int{"SE": {1, 0}, "SW": {0, 1}, "NW": {-1, 0}, "NE": {0, -1}}
+
 type Wall struct {
 	Family   string
 	From, To [2]int
@@ -121,6 +134,13 @@ func Parse(data []byte) (m *Map, ok bool, err error) {
 	if len(m.Height) > 0 && (len(m.Height) != len(m.Ground) || len(m.Height[0]) != len(m.Ground[0])) {
 		return nil, true, fmt.Errorf("%s: height grid does not match the ground", m.ID)
 	}
+	ids := map[string]bool{}
+	for _, e := range m.Exits {
+		if _, ok := ExitStep[e.Dir]; !ok || e.ID == "" || ids[e.ID] {
+			return nil, true, fmt.Errorf("%s: exit %q: want a unique id and a dir of SE, SW, NW or NE, not %q", m.ID, e.ID, e.Dir)
+		}
+		ids[e.ID] = true
+	}
 	return m, true, nil
 }
 
@@ -186,11 +206,16 @@ func (m *Map) Encode() ([]byte, error) {
 			return nil, err
 		}
 	}
-	if err := list("objects", len(m.Objects), func(i int) any { return m.Objects[i] }, len(m.Walls) == 0); err != nil {
+	if err := list("objects", len(m.Objects), func(i int) any { return m.Objects[i] }, len(m.Walls) == 0 && len(m.Exits) == 0); err != nil {
 		return nil, err
 	}
 	if len(m.Walls) > 0 {
-		if err := list("walls", len(m.Walls), func(i int) any { return m.Walls[i] }, true); err != nil {
+		if err := list("walls", len(m.Walls), func(i int) any { return m.Walls[i] }, len(m.Exits) == 0); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.Exits) > 0 {
+		if err := list("exits", len(m.Exits), func(i int) any { return m.Exits[i] }, true); err != nil {
 			return nil, err
 		}
 	}
