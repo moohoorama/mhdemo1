@@ -116,6 +116,9 @@ type Rules struct {
 	// Attachments are what an object carries wherever it stands: the flames of a campfire, the light of a lantern.
 	Attachments map[string][]Attachment `json:"attachments"`
 	Flood       Flood                   `json:"flood"`
+	// Ford lists the glyphs of a ford: shallow river (surface water) with the battle maps' stones on its bed
+	// (ford_bed_0..7, as field_floors.go lays them), where people wade.
+	Ford string `json:"ford"`
 }
 
 // Flood is ground under flood water: its glyphs draw the ground Surfaces gives them with a sheet of muddy water over
@@ -130,15 +133,6 @@ type Flood struct {
 	Sink        map[string]int `json:"sink"`
 	SinkDefault int            `json:"sink_default"`
 	Ring        map[string]int `json:"ring"`
-	// Kinds give a glyph its own water in place of Color and Alpha: a clear shallow river over sand (a ford)
-	// instead of muddy flood. Such a tile counts open water ('~') beside it as wet, so no foam rims it there.
-	Kinds map[string]FloodKind `json:"kinds"`
-}
-
-// FloodKind is the water of a Flood glyph that differs from the muddy default.
-type FloodKind struct {
-	Color string  `json:"color"`
-	Alpha float64 `json:"alpha"`
 }
 
 // flooded reports whether glyph g is flooded ground.

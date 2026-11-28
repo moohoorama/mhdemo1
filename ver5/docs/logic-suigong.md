@@ -16,7 +16,7 @@
 | 쇼 | `internal/gui/field_surge_show.go`, `uidemo_suigong.go`(상수·행군) | 카메라·암전·하양·병사 행군·외침·소리 큐를 시간으로 몰고 간다 |
 | 장면 연결 | `internal/gui/field_surge_scene.go`, `scene.go`, `internal/scenes` `Step.Surge` | 이야기 장면의 비트 `Surge`가 쇼를 장면의 필드·배역 위에서 돌린다 |
 | 데이터 | `assets/scenes/ch25.json`(장면 `c25-flood`), `assets/scenario/hero/story25.json`(노드 `c25-flood`·`c25-e05`) | 어디서 무엇이 나오는지 |
-| 지도 | `tools/scene_maps/baihe_dike.py` → `assets/graphics/maps/S_baihe_dike.json` | 장면 지도(48×44): 협곡·둑·강·여울(여울은 얕은 물 글자 `S`) |
+| 지도 | `tools/scene_maps/baihe_dike.py` → `assets/graphics/maps/S_baihe_dike.json` | 장면 지도(48×44): 협곡·둑(위에 아무것도 없음)·강·여울(글자 `S`) |
 | 소리 | `tools/sfx/flood.py` → `assets/sounds/flood-{surge,crash,spray}.ogg` | 받아 둔 물 소리를 이어 붙여 만든 세 소리 |
 
 ## 2. 지도 배치 (모든 층이 같은 칸을 쓴다)
@@ -26,8 +26,8 @@
 
 - 강: 열 u 12~17(폭 6칸, `RIVER`·`WIDTH`).
 - 둑: 행 v 8 한 줄(`DAM`). 둑 위쪽(v ≤ 10)이 협곡이고 강 양옆 u 9~11과 u 18~22가 바위 언덕(높이 26px, `CLIFF`/`HILL`).
-- 여울: v 30 이하(`suigongFord`, 굽기의 `FORD`도 30, `GAP = 0`). 장면 지도에서는 강이 얕은 물(`S`: `scene.json` `flood.kinds`의
-  맑은 강물 색, 모래 위)로 남서쪽(하류)으로 이어지고, 그 위를 병사가 건넌다. 시뮬레이션에서는 강바닥보다 높은 모래톱이다.
+- 여울: v 30 이하(`suigongFord`, 굽기의 `FORD`도 30, `GAP = 0`). 장면 지도에서는 강이 여울(`S`: `scene.json` `ford` — 강물 타일에
+  전투 맵 여울의 돌바닥 `ford_bed_*`, 깊은 강과의 경계에 거품 없음)로 남서쪽(하류)으로 이어지고, 그 위를 걷는 사람은 전투 맵처럼 다리가 잠긴다(`field_wade.go`). 시뮬레이션에서는 강바닥보다 높은 모래톱이다.
 - 둑과 여울은 22칸 떨어져 있다. 2026-11-28 전에는 시뮬레이션이 그 사이를 8칸으로 줄여 계산하고 여울 샷만 14칸(`GAP`) 밀어 그렸는데,
   2배율 화면에서는 여울 샷의 우상단(북동, 상류)에서 물이 직선으로 끊겨 보였다. 지금은 **둑부터 여울 아래(v 50)까지 실제 거리로**
   시뮬레이션하고, 저수지는 v −20까지 둔다(길어진 하류에서도 물머리가 벽으로 서 있게).

@@ -14,7 +14,8 @@ earth and sacks across the river at v 8; 관우 and 미축 stand on the right cl
 the cells the show puts them on. The ground round the gorge is the battle map's (tools/mapgen/layouts/hero/
 map25flood.py): the hills' tops are bare earth all over, grass beyond, and the pine groves (the battle's own
 forest_N pictures) stand on the same cells as there.
-The work is a few sacks and carts at the dam and its road and two braziers on the cliff; nothing stands on the
+The work is a few sacks and carts on the road to the dam and two braziers on the cliff (nothing on the dam, whose
+boards the flood show draws); nothing stands on the
 ground that the battle's map leaves bare.
 """
 import json
@@ -58,9 +59,6 @@ def put(name, u, v, *shift):
     obj.append([name, int(round(2 * u)) + 1, int(round(2 * v)) + 1, *shift])
 
 
-# the dam: a row of sacks along the top of its earth
-for i in range(12):
-    put('grain_sack', RIVER + .25 + i * .5, DAM + .75)
 for u, v in ((RIVER - 2.5, DAM - 1.0), (RIVER + WIDTH + 1.5, DAM + 2.4), (RIVER + WIDTH + 3, DAM + 1.2)):
     put('straw_mat', u, v)
 

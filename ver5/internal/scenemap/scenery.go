@@ -222,7 +222,7 @@ func (s *Scenery) water(seed Seed, glyph func(x, y int) byte, x, y int, cx, cy f
 	mids := [4][2]float64{{8, 4}, {-8, -4}, {-8, 4}, {8, -4}} // where the edge to each neighbour lies from the centre
 	var land []int
 	for i, g := range nb {
-		if g == '~' {
+		if g == '~' || g == 'S' { // a scene map's ford (scene.json "ford") is the same river, only shallow
 			continue
 		}
 		land = append(land, i)

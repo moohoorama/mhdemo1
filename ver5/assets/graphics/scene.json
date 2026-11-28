@@ -1,7 +1,8 @@
 {
  "note": "Rules of the scene maps (docs/presentation-scene.md, internal/scenemap): what a ground glyph, a height step, a wall line and a gate are drawn with, and the footprint of the objects that cover more than one small tile. Footprints are [du, dv, w, d] in small tiles from the object's anchor (its pivot's ground point); objects not listed cover the one small tile round their anchor. Attachments are what an object carries wherever it stands: a looping strip (index.json \"anims\") with its pivot at \"at\" canvas pixels from the object's anchor, and/or a light of radius \"light\" (world pixels at zoom 1) cast at night there, \"glow\" adding a fire's warm glow.",
  "walkable": ".diTWPCMQbS",
- "surfaces": {".": 1, "d": 2, "~": 0, "F": 1, "R": 2, "S": 2, "c": 1, "h": 2, "i": 2, "b": 0, "v": 2, "k": 2, "f": 1, "o": 1, "g": 1},
+ "ford": "S",
+ "surfaces": {".": 1, "d": 2, "~": 0, "F": 1, "R": 2, "S": 0, "c": 1, "h": 2, "i": 2, "b": 0, "v": 2, "k": 2, "f": 1, "o": 1, "g": 1},
  "floors": {
   "i": {"sprite": "floor", "sheet": "structures", "tile": true},
   "T": {"sprite": "floor_tent", "edge": "#6c583c"},
@@ -36,7 +37,7 @@
  "gates": {"sgate_open": "sgate2_open", "sgate_closed": "sgate2_closed", "cgate_open": "cgate_open", "cgate_closed": "cgate_closed"},
  "layers": ["wood", "roof"],
  "gate_passage": [-1, 0],
- "flood": {"glyphs": "FRS", "color": "#727563", "alpha": 0.82, "foam": "#dcdccc", "kinds": {"S": {"color": "#2f7f8c", "alpha": 0.74}}, "sink_default": 8,
+ "flood": {"glyphs": "FR", "color": "#727563", "alpha": 0.82, "foam": "#dcdccc", "sink_default": 8,
   "sink": {"house_thatch": 26, "house_thatch_x": 26, "house_tile": 22, "house_tile_x": 22, "hall_v": 12, "hut": 12, "market_stall": 14, "market_stall_cloth": 14, "market_stall_jar": 14,
    "grain_cart": 12, "stree_willow": 6, "stree_broad_0": 12, "stree_broad_1": 12, "stree_bush_0": 8, "stree_bush_1": 8,
    "milestone": 10},

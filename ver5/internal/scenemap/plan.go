@@ -38,8 +38,7 @@ const (
 	DrawFill   = "fill"   // a game cell's diamond filled with Color, 64 x 32 (DiamondRow)
 	DrawAnim   = "anim"   // frame 0 of a looping strip (Catalog.Anims); the game plays it
 	// DrawFlood is the flood water over one small tile (Rules.Flood), X, Y its diamond's top vertex, 32 x 16; Tile
-	// holds the sides that meet dry ground (FloodSides), from bit 4 up which of FloodVariants it takes and from bit 8
-	// up its glyph (FloodGlyph), which picks its water from Flood.Kinds.
+	// holds the sides that meet dry ground (FloodSides) and, from bit 4 up, which of FloodVariants it takes.
 	DrawFlood = "flood"
 	// DrawWaterline is the foam along where the flood meets what stands in it: a line through the Line points.
 	DrawWaterline = "waterline"
@@ -53,7 +52,6 @@ const (
 	FloodSW
 	FloodNW
 	FloodVariants = 4
-	FloodGlyph    = 8 // the shift of a DrawFlood Tile's glyph
 )
 
 // Piece is one item of the standing layer: a raised block's faces, a wall piece, an object. Its draws go out
@@ -325,43 +323,49 @@ func (w *view) quarters(u, v, lift int, out []Draw) []Draw {
 }
 
 // ground is the flat ground: every small tile at height 0 that is not a floor, in screen order.
+// A ford's tiles take the battle maps' bed stones over their water, after all the ground so no neighbour hides them.
 func (w *view) ground() []Draw {
-	var out []Draw
+	var out, beds []Draw
 	for v := w.v0; v < w.v1; v++ {
 		for u := w.u0; u < w.u1; u++ {
-			if w.step(u, v) == 0 && !w.isFloor(w.glyph(u, v)) {
-				out = w.quarters(u, v, 0, out)
+			g := w.glyph(u, v)
+			if w.step(u, v) != 0 || w.isFloor(g) {
+				continue
+			}
+			out = w.quarters(u, v, 0, out)
+			if g != 0 && strings.IndexByte(w.c.Rules.Ford, g) >= 0 {
+				ou, ov := w.orig(u, v)
+				name := fmt.Sprint("ford_bed_", (ou*7+ov*13)&7)
+				if s, ok := w.c.Sprites[name]; ok {
+					x, y := center(u, v)
+					beds = append(beds, Draw{Kind: DrawSprite, Name: name, X: x - s.Pivot[0], Y: y - s.Pivot[1]})
+				}
 			}
 		}
 	}
 	sort.SliceStable(out, func(a, b int) bool { return out[a].Y < out[b].Y })
-	return out
+	return append(out, beds...)
 }
 
 // flood is the water over each flooded small tile at height 0, in screen order.
 func (w *view) flood() []Draw {
 	var out []Draw
-	wet := func(u, v int, river bool) bool {
-		g := w.glyph(u, v)
-		return !w.inside(u, v) || w.c.flooded(g) && w.step(u, v) == 0 || river && g == '~'
-	}
+	wet := func(u, v int) bool { return !w.inside(u, v) || w.c.flooded(w.glyph(u, v)) && w.step(u, v) == 0 }
 	for v := w.v0; v < w.v1; v++ {
 		for u := w.u0; u < w.u1; u++ {
-			g := w.glyph(u, v)
-			if !w.c.flooded(g) || w.step(u, v) > 0 {
+			if !w.c.flooded(w.glyph(u, v)) || w.step(u, v) > 0 {
 				continue
 			}
-			_, river := w.c.Rules.Flood.Kinds[string(g)]
 			sides := 0
 			for bit, d := range [][2]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}} {
-				if !wet(u+d[0], v+d[1], river) {
+				if !wet(u+d[0], v+d[1]) {
 					sides |= 1 << bit
 				}
 			}
 			mu, mv := w.orig(u, v)
 			variant := int(hashTile(mu, mv) % FloodVariants)
 			x, y := center(u, v)
-			out = append(out, Draw{Kind: DrawFlood, Tile: sides | variant<<4 | int(g)<<FloodGlyph, X: x, Y: y - 8})
+			out = append(out, Draw{Kind: DrawFlood, Tile: sides | variant<<4, X: x, Y: y - 8})
 		}
 	}
 	return out
