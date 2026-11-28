@@ -27,53 +27,31 @@ func (f *Field) updateWade(u *unitVis) {
 	u.wade += math.Max(-.08, math.Min(.08, target-u.wade))
 }
 
-// drawWading draws u standing in the ford, or as deep as a flood has risen round it (u.flood): the back half of the ripples round its legs, the sprite put together on a
-// scratch layer with the part under the water line tinted with the water and half let through to the ground, then the
-// front half of the ripples.
+// drawWading draws u standing in the ford, or as deep as a flood has risen round it (u.flood): the back half of the
+// ripples round its legs, the sprite cut at the water line — above it as it is, below it tinted with the water and
+// half let through to the ground — then the front half of the ripples. Both halves go straight onto the canvas (no
+// scratch layer per unit), so a host of hundreds wading a ford stays cheap to draw.
 func (f *Field) drawWading(u *unitVis, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
-	cb := f.Canvas.Bounds()
-	if f.wading == nil || f.wading.Bounds() != cb {
-		if f.wading != nil {
-			f.wading.Deallocate()
-		}
-		f.wading = newLayer(cb.Dx(), cb.Dy())
-	}
-	b := s.Image.Bounds()
-	x0, y0 := f.renderPoint(x-s.PivotX, y-s.PivotY)
-	x1, y1 := f.renderPoint(x-s.PivotX+float64(b.Dx()), y-s.PivotY+float64(b.Dy()))
-	area := image.Rect(int(x0)-2, int(y0)-2, int(x1)+2, int(y1)+2).Intersect(cb)
-	if area.Empty() {
-		return
-	}
 	d := math.Max(wadeDepth(u)*u.wade, u.flood)
 	f.drawRipples(u, x, y-d, false)
-	layer := f.wading.SubImage(area).(*ebiten.Image)
-	layer.Clear()
-	f.blit(f.wading, s, x, y, op)
-	_, wy := f.renderPoint(x, y-d)
-	band := func(top float64, c color.NRGBA, blend ebiten.Blend) {
-		var p vector.Path
-		p.MoveTo(float32(area.Min.X), float32(top))
-		p.LineTo(float32(area.Max.X), float32(top))
-		p.LineTo(float32(area.Max.X), float32(area.Max.Y))
-		p.LineTo(float32(area.Min.X), float32(area.Max.Y))
-		p.Close()
-		var cs ebiten.ColorScale
-		cs.ScaleWithColor(c)
-		vector.FillPath(layer, &p, nil, &vector.DrawPathOptions{ColorScale: cs, Blend: blend})
+	b := s.Image.Bounds()
+	cut := min(max(int(math.Round(s.PivotY-d)), 0), b.Dy()) // the water line, in rows from the sprite's top
+	if cut > 0 {
+		top := *op
+		f.blit(f.Canvas, Sprite{s.Image.SubImage(image.Rect(b.Min.X, b.Min.Y, b.Max.X, b.Min.Y+cut)).(*ebiten.Image), s.PivotX, s.PivotY}, x, y, &top)
 	}
-	wy = math.Round(wy)
-	band(wy, color.NRGBA{108, 138, 150, 110}, ebiten.BlendSourceAtop)
-	band(wy+1, color.NRGBA{96, 128, 140, 90}, ebiten.BlendSourceAtop)
-	band(wy+1, color.NRGBA{255, 255, 255, 120}, ebiten.BlendDestinationOut)
-	cop := &ebiten.DrawImageOptions{}
-	cop.GeoM.Translate(float64(area.Min.X), float64(area.Min.Y))
-	f.Canvas.DrawImage(layer, cop)
+	if cut < b.Dy() {
+		under := *op
+		under.ColorScale.Scale(.72, .84, .9, 1) // the water's blue-grey over what it covers
+		under.ColorScale.ScaleAlpha(.55)
+		f.blit(f.Canvas, Sprite{s.Image.SubImage(image.Rect(b.Min.X, b.Min.Y+cut, b.Max.X, b.Max.Y)).(*ebiten.Image), s.PivotX, s.PivotY - float64(cut)}, x, y, &under)
+	}
 	f.drawRipples(u, x, y-d, true)
 }
 
-// drawRipples strokes the back or the front half of two rings spreading from u's legs at the water line (x, y) and
-// of a steady one where the water meets them; walking spreads them faster.
+// drawRipples draws the back or the front half of two rings spreading from u's legs at the water line (x, y) and
+// of a steady one where the water meets them; walking spreads them faster. The rings are pictures made once per
+// size (rippleRing), so hundreds of wading soldiers cost a few hundred plain draws.
 func (f *Field) drawRipples(u *unitVis, x, y float64, front bool) {
 	rx := 6.0
 	if u.mounted {
@@ -83,26 +61,14 @@ func (f *Field) drawRipples(u *unitVis, x, y float64, front bool) {
 	if u.anim == "walk" {
 		period = 700
 	}
+	px, py := f.renderPoint(x, y)
 	ring := func(r float64, a float32) {
-		var p vector.Path
-		t0 := math.Pi // the back half lies above the centre on screen
-		if front {
-			t0 = 0
-		}
-		for i := 0; i <= 12; i++ {
-			t := t0 + float64(i)/12*math.Pi
-			px, py := f.renderPoint(x+r*math.Cos(t), y+r*.5*math.Sin(t))
-			if i == 0 {
-				p.MoveTo(float32(px), float32(py))
-			} else {
-				p.LineTo(float32(px), float32(py))
-			}
-		}
-		var cs ebiten.ColorScale
-		cs.ScaleWithColor(color.NRGBA{200, 222, 230, 255})
-		cs.ScaleAlpha(a * float32(u.wade))
-		z := float32(math.Max(1, f.renderZoom))
-		vector.StrokePath(f.Canvas, &p, &vector.StrokeOptions{Width: z}, &vector.DrawPathOptions{ColorScale: cs, AntiAlias: false})
+		img, cx, cy := f.rippleRing(r, front)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(math.Round(px-cx), math.Round(py-cy))
+		op.ColorScale.ScaleWithColor(color.NRGBA{200, 222, 230, 255})
+		op.ColorScale.ScaleAlpha(a * float32(u.wade))
+		f.Canvas.DrawImage(img, op)
 	}
 	ring(rx*.8, .45)
 	phase := f.clockMS/period + (u.u*7+u.v*3)*.13
@@ -110,4 +76,45 @@ func (f *Field) drawRipples(u *unitVis, x, y float64, front bool) {
 		p := math.Mod(phase+float64(i)*.5, 1)
 		ring(rx*(.8+.7*p), float32(.4*(1-p)))
 	}
+}
+
+// rippleRing is the back (upper) or front (lower) half of a ring r canvas pixels across its half width and half
+// that tall, stroked one render pixel wide in white at the render zoom, and where its centre lies in the picture.
+// r is kept to half pixels so a few dozen pictures serve every ring.
+func (f *Field) rippleRing(r float64, front bool) (*ebiten.Image, float64, float64) {
+	z := math.Max(1, f.renderZoom)
+	key := [3]int{int(math.Round(r * 2)), 0, int(math.Round(z * 100))}
+	if front {
+		key[1] = 1
+	}
+	r = float64(key[0]) / 2
+	w, h := int(math.Ceil(2*r*z))+4, int(math.Ceil(r*.5*z))+4
+	cx, cy := float64(w)/2, 2.0
+	if !front {
+		cy = float64(h) - 2
+	}
+	if img, ok := f.ripples[key]; ok {
+		return img, cx, cy
+	}
+	if f.ripples == nil {
+		f.ripples = map[[3]int]*ebiten.Image{}
+	}
+	img := ebiten.NewImage(w, h)
+	var p vector.Path
+	t0 := math.Pi // the back half lies above the centre on screen
+	if front {
+		t0 = 0
+	}
+	for i := 0; i <= 12; i++ {
+		t := t0 + float64(i)/12*math.Pi
+		qx, qy := float32(cx+r*z*math.Cos(t)), float32(cy+r*.5*z*math.Sin(t))
+		if i == 0 {
+			p.MoveTo(qx, qy)
+		} else {
+			p.LineTo(qx, qy)
+		}
+	}
+	vector.StrokePath(img, &p, &vector.StrokeOptions{Width: float32(z)}, &vector.DrawPathOptions{AntiAlias: false})
+	f.ripples[key] = img
+	return img, cx, cy
 }

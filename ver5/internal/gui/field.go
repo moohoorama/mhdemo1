@@ -61,14 +61,14 @@ type Field struct {
 	cliffTopsAt                  map[image.Rectangle][]placed
 	batch                        batch // vertices of the decoration drawn in one call per sheet
 	waterFX                      []scenemap.Ripple
-	floorTiles                   []floorTile     // a battle map's small tiles far to near, see makeFloors
-	bridges                      []drawItem      // bridge decks, over the walls under their ends
-	Layers                       map[string]bool // debug: when set, only these layers of a native map are drawn, see shows
-	afloat                       *ebiten.Image   // viewport scratch where a boat and its crew are put together
-	wading                       *ebiten.Image   // viewport scratch where a unit standing in a ford is put together
-	scenePieces                  []scenePiece    // a format 2 scene map's standing layer, see makeScenePlan
-	sceneFlat                    []sceneFlat     // a format 2 scene map's flat layer, see drawSceneFlat
-	groundSheet                  *ebiten.Image   // its ground's pictures, see makeSceneGround
+	floorTiles                   []floorTile              // a battle map's small tiles far to near, see makeFloors
+	bridges                      []drawItem               // bridge decks, over the walls under their ends
+	Layers                       map[string]bool          // debug: when set, only these layers of a native map are drawn, see shows
+	afloat                       *ebiten.Image            // viewport scratch where a boat and its crew are put together
+	ripples                      map[[3]int]*ebiten.Image // the half rings round wading legs by size, side and zoom (rippleRing)
+	scenePieces                  []scenePiece             // a format 2 scene map's standing layer, see makeScenePlan
+	sceneFlat                    []sceneFlat              // a format 2 scene map's flat layer, see drawSceneFlat
+	groundSheet                  *ebiten.Image            // its ground's pictures, see makeSceneGround
 	clockMS                      float64
 
 	// Surge is a baked flood playing over the map and SurgeT the seconds into it (field_surge.go); nil: none

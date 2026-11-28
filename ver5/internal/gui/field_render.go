@@ -24,7 +24,7 @@ func (f *Field) prepareRender(z, x, y float64, w, h int) {
 	}
 }
 func (f *Field) renderOp(dst *ebiten.Image, op *ebiten.DrawImageOptions) {
-	if f.renderZoom > 0 && (dst == f.Canvas || dst == f.shadows || dst == f.afloat || dst == f.wading || f.levelShadows(dst)) {
+	if f.renderZoom > 0 && (dst == f.Canvas || dst == f.shadows || dst == f.afloat || f.levelShadows(dst)) {
 		op.GeoM.Translate(-f.renderX, -f.renderY)
 		op.GeoM.Scale(f.renderZoom, f.renderZoom)
 	}

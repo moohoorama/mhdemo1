@@ -121,6 +121,9 @@ func (f *Field) dispose() {
 		l.top.Deallocate()
 		l.shadows.Deallocate()
 	}
+	for _, im := range f.ripples {
+		im.Deallocate()
+	}
 	for _, t := range f.floorTiles {
 		for _, im := range t.floor {
 			if im != nil && !seen[im] {
@@ -129,7 +132,7 @@ func (f *Field) dispose() {
 			}
 		}
 	}
-	for _, im := range append(f.ground[:], f.Canvas, f.shadows, f.groundSheet, f.night.dark, f.night.light, f.afloat, f.wading, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
+	for _, im := range append(f.ground[:], f.Canvas, f.shadows, f.groundSheet, f.night.dark, f.night.light, f.afloat, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true
