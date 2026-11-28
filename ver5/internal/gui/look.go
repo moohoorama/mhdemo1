@@ -189,8 +189,12 @@ func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 // character's scene sprite, the scene sprite of its class (an officer on foot instead of a horseman), battle sprite
 // or class sprite, with the colours of the horse it rides (mount, an equipment id) when it rides one.
 func (g *Game) sceneArt(def, pick, faction, mount string) *sprite.Art {
+	return g.sceneArtIn(def, pick, g.officerColor(def, faction, ""), mount)
+}
+
+// sceneArtIn is sceneArt in the colour given as it is (no officer shades added).
+func (g *Game) sceneArtIn(def, pick, faction, mount string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	faction = g.officerColor(def, faction, "")
 	c.Look = g.mountLook(g.laterLook(c.Look), mount)
 	first := g.S.Data.ClassLine(c.Class)[0]
 	class := g.S.Data.Classes[first]

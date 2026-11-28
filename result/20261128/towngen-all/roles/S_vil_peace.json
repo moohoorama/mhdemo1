@@ -1,0 +1,32 @@
+{
+ "map": "S_vil_peace",
+ "region": "huainan",
+ "uses": [
+  "explore23.json/longzhong",
+  "explore23b.json/longzhong",
+  "explore24.json/longzhong",
+  "explore24_return.json/longzhong",
+  "ch23.json/c23-visit1",
+  "ch23.json/c23-visit2",
+  "ch24.json/c24-cottage3"
+ ],
+ "roles": {},
+ "placed": {},
+ "zones": [],
+ "ok": true,
+ "missing": [],
+ "covered": [],
+ "fenced_cottages": 1,
+ "main_avenue": null,
+ "cross_avenue": null,
+ "bounds": [
+  -2,
+  10,
+  -8,
+  2
+ ],
+ "notes": [
+  "융중: 원래 길·밭 그대로, 숲 속 울타리 안 초가·작은 밭·우물, 길 둘레와 울타리 앞은 나무를 비움"
+ ],
+ "grow": 0
+}

@@ -70,3 +70,25 @@ def helmet(dome, plume):
 
 
 DARK_TOPKNOT = {d: Hd.recolor(rows, {'k': 'h', 'l': 'g', 'm': 'f'}) for d, rows in Hd.TOPKNOT.items()}  # band in hair
+
+
+# hair let down, no topknot (the 황건 brothers, 2026-11-28): a ragged mass over the crown with stray hairs above it,
+# the cloth band (k l m) across the brow and the hair falling behind the ears; keys f dark, g mid
+LOOSE_TOPS = {'SW': ['.............', '....0..0.0...', '...0f00f0f0..', '..0fgffgffg0.'],
+              'NW': ['.............', '....0.0..0...', '...0f0f00f0..', '..0fgfgffgf0.'],
+              'S': ['.............', '...0..0..0...', '..0f00f00f0..', '.0fgffgffgf0.'],
+              'W': ['.............', '......0.0.0..', '.....0f0f0f0.', '...0fgffgfgf0'],
+              'N': ['.............', '...0..0..0...', '..0f00f00f0..', '.0fgffgffgf0.']}
+
+
+def loose():
+    """Hd.TOPKNOT with the bun let down, its three-row band narrowed to one row of cloth across the brow (the hair
+    showing above and below it) with its tails still flying behind."""
+    out = {}
+    for d in LOOSE_TOPS:
+        rows = Hd.TOPKNOT[d]
+        above = Hd.recolor([rows[4]], {'m': 'g', 'l': 'g', 'k': 'f'})[0]
+        below = Hd.recolor([rows[6][:11]], {'m': 'f', 'l': 'f', 'k': 'f'})[0] + rows[6][11:]
+        out[d] = LOOSE_TOPS[d] + [above, rows[5], below] + rows[7:]
+    return out
+

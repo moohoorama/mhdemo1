@@ -453,10 +453,10 @@ def grain():
     order = [9, 10, 9, 10, 9, 10]
     exits = [(-8, 30), (-6, 31), (-10, 29), (-4, 30), (-9, 31), (-7, 29)]
     for turn, row in enumerate(order):
-        giver, sack = givers[row], f'grain_sack#g{turn}'
+        giver = givers[row]
         taker = rows[row].pop(0)
-        s.group(dict(Prop=[sack, 2.4, row]), dict(Prop=[sack, giver]), s.move(giver, (4, row), end='SE'))
-        s.group(dict(Prop=[sack, taker]), dict(Actor=taker, Emote='…', After=.2), dict(Actor=giver, Emote='…', After=.5),
+        s.group(s.move(giver, (4, row), end='SE'))  # the sacks stay piled where they are: nothing pops up in a hand
+        s.group(dict(Actor=taker, Emote='…', After=.2), dict(Actor=giver, Emote='…', After=.5),
                 dict(Wait=.5))
         steps = [s.move(taker, exits[turn], leave=True, Speed=.9)]
         s.away.add(taker)
@@ -471,35 +471,42 @@ def grain():
 # --- 2. 장각이 외치고 황건병이 환호한다 -----------------------------------------------------------------------
 
 def rally():
+    """장각 before his camp cries the 황건 watchword to the host: 창천이사, then 황천당립; his brothers take it up, and
+    the host after them, the front ranks first and the cry running back through the crowd. The words are shouts
+    (Step.Shout), not balloons."""
     rnd = random.Random(2)
-    s = Shot('rally', 'S_title_long_field', (4, 10), radius=.46, time='dusk', hold=.4)
+    s = Shot('rally', 'S_title_turban_camp', (4, 10), radius=.46, time='dusk', hold=.4)
     s.actor('장각', (0, 10), 'SE', Hold=True)
-    s.actor('황건#a', (0, 8), 'SE', 'bandit', 'turban', Hold=True)
-    s.actor('황건#b', (0, 12), 'SE', 'bandit', 'turban', Hold=True)
+    s.actor('장량', (0, 8), 'SE', Hold=True)  # his brothers at his sides, Taoists in yellow like him
+    s.actor('장보', (0, 12), 'SE', Hold=True)
     crowd = []
     for u in range(3, 11):
         for v in range(3, 18):
             if (u + v) % 2 and u > 3 or not s.open(u, v):
                 continue
-            key = s.actor(f'황건#{len(crowd)}', (u, v), 'NW', rnd.choice(['bandit', 'bandit', 'ruffian', 'light_infantry']),
-                          'turban', Hold=True)
+            key = s.actor(f'황건#{len(crowd)}', (u, v), 'NW', rnd.choice(['bandit', 'bandit', 'ruffian']), 'turban', Hold=True)
             crowd.append(key)
     s.ambient += [dict(Actor=k, Chatter=rnd.choice(['…|…||…', '…?||…|', '…||…!|']), Lag=r2(rnd.uniform(0, 2.6))) for k in crowd]
     hush = [dict(Actor=k, Chatter='-') for k in crowd]
+    criers = sorted(rnd.sample(crowd, 10), key=lambda k: s.pos[k][0])  # a few of them cry it out loud, front ranks first
 
-    def roar(t0=0.0):
+    def roar(t0=0.0, cry=False):
         g = []
         for k in crowd:
-            g += cheer(k, rnd, t0)
+            g += cheer(k, rnd, t0, emote=0)
+        if cry:
+            g += [dict(Actor=k, Shout='황천당립!', ShoutSize=15, After=r2(t0 + .15 * (s.pos[k][0] - 3) + rnd.uniform(0, .25)))
+                  for k in criers]
         return g + [dict(Shake=.3, After=r2(t0 + .4)), dict(Wait=r2(t0 + 1.9))]
 
-    s.group(dict(Wait=2.2))
-    s.group(dict(Actor='장각', Say='……!'))
-    s.group(dict(Actor='장각', Play='attack'), dict(Actor='장각', Say='……!!!!……'))
-    s.group(hush, dict(Actor='장각', Say='!!!!'), dict(Actor='장각', Hop=1))
-    s.group(roar())
-    s.group(dict(Actor='장각', Play='attack', Hop=1), roar(.2))
-    s.group(roar(), dict(Actor='황건#a', Play='attack', Hop=2), dict(Actor='황건#b', Play='attack', Hop=2, After=.3))
+    s.group([dict(st, After=2.2) for st in hush], dict(Wait=2.5))  # the host falls silent before he cries out
+    s.group(dict(Actor='장각', Play='action'), dict(Actor='장각', Shout='창천이사!', ShoutSize=34), dict(Wait=1.6))
+    s.group(dict(Actor='장각', Play='action', Hop=1), dict(Actor='장각', Shout='황천당립!', ShoutSize=34), dict(Wait=1.3))
+    s.group(dict(Actor='장량', Play='action', Hop=1), dict(Actor='장량', Shout='황천당립!', ShoutSize=24),
+            dict(Actor='장보', Play='action', Hop=1, After=.2), dict(Actor='장보', Shout='황천당립!', ShoutSize=24, After=.2),
+            roar(.8, cry=True))
+    s.group(dict(Actor='장각', Play='action', Hop=1), dict(Actor='장각', Shout='황천당립!', ShoutSize=34), roar(.4, cry=True))
+    s.group(roar(), dict(Actor='장량', Play='action', Hop=2), dict(Actor='장보', Play='action', Hop=2, After=.3))
     return s
 
 
@@ -849,13 +856,13 @@ def hulao():
         if n % 2 == 0:
             st = dict(Actor='여포', Strike=k, React=rnd.choice(['block', 'hit']), Tempo=DUEL_TEMPO, After=r2(t))
             if n % 4 == 0:
-                st.update(Gather=.3, Crit=True)
-                t += .3
+                st['Crit'] = True
             g.append(st)
         else:
             g.append(dict(Actor=k, Strike='여포', React='block', Tempo=DUEL_TEMPO, After=r2(t)))
-        t += rnd.uniform(.3, .42)
+        t += DUEL_IMPACT + .04  # the next comes in as this one lands
     g.append(dict(Wait=r2(t + .8)))
+    s.extra['End'] = r2(t - 1.2)  # it darkens in the thick of it
     s.group(g)
     return s
 
@@ -918,58 +925,71 @@ def luoyang():
 # --- 8. 계교: 공손찬을 쫓는 문추를 조운이 옆구리에서 받아 내고, 둘이 겨룬다 ------------------------------------
 
 def duel(s, a, b, t0, rnd, n=10, favor=None):
-    """Two champions at it like a duel: blows parried, blows dodged with a step back still facing the foe, a heavy
-    blow gathered and driven home, a blow taken that drives one back and the other following up. favor, if given, is
-    the stronger of the two: he attacks two blows in three, and the other's blows never go home. Returns the steps and
-    the end."""
-    steps, t = [], t0
+    """Two champions at it like a duel, with no breath between: the man who parries cuts back the moment the blow
+    lands on his blade, a blow dodged with a step back still facing the foe has the other coming straight on, a blow
+    that goes home drives its man back a cell with the striker going in with him, and now and then one gives ground and
+    the other presses after. favor, if given, is the stronger: he attacks two blows in three, and the other's blows never
+    go home. Returns the steps and the end."""
+    land = DUEL_IMPACT  # seconds from a blow's start to it landing, at the duel's tempo
+    whole = DUEL_SWING  # seconds of the whole swing
+    order = []
     for i in range(n):
         if favor:
             weak = b if favor == a else a
-            by, at = (favor, weak) if i % 3 != 2 else (weak, favor)
+            order.append((favor, weak) if i % 3 != 2 else (weak, favor))
         else:
-            by, at = (a, b) if (i + (i // 3)) % 2 == 0 else (b, a)
+            order.append((a, b) if (i + (i // 3)) % 2 == 0 else (b, a))
+    steps, t = [], t0
+
+    def back_cell(frm, of):
+        n_ = math.hypot(of[0] - frm[0], of[1] - frm[1]) or 1
+        return (round(of[0] + (of[0] - frm[0]) / n_), round(of[1] + (of[1] - frm[1]) / n_))
+
+    for i, (by, at) in enumerate(order):
         (bu, bv), (tu, tv) = s.pos[by], s.pos[at]
-        n_ = math.hypot(tu - bu, tv - bv) or 1
-        back_of = lambda: (round(tu + (tu - bu) / n_), round(tv + (tv - bv) / n_))  # a cell on along the blow, as the engine pushes
         if favor and by != favor:
             kind = rnd.choices(['block', 'dodge'], [3, 1])[0]
         elif favor:
             kind = rnd.choices(['block', 'dodge', 'heavy', 'hit'], [2, 1, 2.5, 2.5])[0]
         else:
             kind = rnd.choices(['block', 'dodge', 'heavy', 'hit'], [4, 2, 1.5, 1.5])[0]
-        if kind == 'dodge':  # the blow cuts air: he springs back a step, still facing the man, who comes on after him
-            back = back_of()
-            if s.open(*back) and back not in s.taken(at):
-                steps += [dict(Actor=by, Face=facing(tu - bu, tv - bv), After=r2(t)), dict(Actor=by, Play='attack', Tempo=DUEL_TEMPO, After=r2(t)),
-                          dict(Actor=at, Face=facing(bu - tu, bv - tv), After=r2(t)),
-                          dict(Actor=at, Move=list(back), Ease='out', Speed=3.4, Back=True, After=r2(t + .03)),
-                          dict(Actor=by, Move=[tu, tv], Ease='out', Speed=2.4, After=r2(t + .25), End=facing(tu - bu, tv - bv))]
-                s.pos[at], s.pos[by] = back, (tu, tv)
-                t += .3
-            else:
-                kind = 'block'
-        if kind in ('heavy', 'hit'):
-            back = back_of()
-            if not s.open(*back) or back in s.taken(at):
-                kind = 'block'
-        if kind == 'block':
+        back = back_cell((bu, bv), (tu, tv))
+        if kind != 'block' and (not s.open(*back) or back in s.taken(at)):
+            kind = 'block'
+        nxt = order[i + 1][0] if i + 1 < len(order) else None
+        if kind == 'dodge':  # the blow cuts air: he springs back still facing the man, who comes straight on after him
+            steps += [dict(Actor=by, Face=facing(tu - bu, tv - bv), After=r2(t)), dict(Actor=by, Play='attack', Tempo=DUEL_TEMPO, After=r2(t)),
+                      dict(Actor=at, Face=facing(bu - tu, bv - tv), After=r2(t)),
+                      dict(Actor=at, Move=list(back), Ease='out', Speed=3.4, Back=True, After=r2(t + .03)),
+                      dict(Actor=by, Move=[tu, tv], Ease='out', Speed=2.6, After=r2(t + land), End=facing(tu - bu, tv - bv))]
+            s.pos[at], s.pos[by] = back, (tu, tv)
+            t += land + .12
+        elif kind == 'block':  # parried: the other cuts back as it lands, or the same man swings again when his is done
             steps.append(dict(Actor=by, Strike=at, React='block', Tempo=DUEL_TEMPO, After=r2(t)))
-        elif kind in ('heavy', 'hit'):  # driven back a cell; the striker comes on after him
+            t += land if nxt == at else whole
+        else:  # it goes home, or a mighty blow is parried and still drives him back: in he goes with it
             st = dict(Actor=by, Strike=at, React='hit' if kind == 'hit' else 'block', Push=1, Tempo=DUEL_TEMPO, After=r2(t))
             if kind == 'heavy':
-                st.update(Gather=.3, Crit=True)
-                t += .3
-            steps.append(st)
-            s.pos[at] = back
-            t += IMPACT / DUEL_TEMPO + slide_time(1)
-            steps.append(dict(Actor=by, Move=[tu, tv], Ease='out', Speed=2.4, After=r2(t)))
-            s.pos[by] = (tu, tv)
-        t += rnd.uniform(.3, .42)  # the next blow comes as soon as this one is done
+                st['Crit'] = True
+            steps += [st, dict(Actor=by, Move=[tu, tv], Ease='out', Speed=.95, After=r2(t + land))]
+            s.pos[at], s.pos[by] = back, (tu, tv)
+            t += land + slide_time(1) + .02
+        if i % 4 == 3 and nxt:  # footwork: the next man to be struck gives ground a step, the other presses after him
+            fb, fa = nxt, (order[i + 1][1])
+            (pu, pv), (qu, qv) = s.pos[fb], s.pos[fa]
+            give = back_cell((pu, pv), (qu, qv))
+            if s.open(*give) and give not in s.taken(fa):
+                steps += [dict(Actor=fa, Face=facing(pu - qu, pv - qv), After=r2(t)),
+                          dict(Actor=fa, Move=list(give), Ease='out', Speed=2, Back=True, After=r2(t)),
+                          dict(Actor=fb, Move=[qu, qv], Ease='out', Speed=2, After=r2(t + .05), End=facing(qu - pu, qv - pv))]
+                s.pos[fa], s.pos[fb] = give, (qu, qv)
+                t += .2
     return steps, t
 
 
 DUEL_TEMPO = 2  # a duel's blows and the answers to them play at twice their speed
+DUEL_IMPACT = .23  # seconds from a duel's blow to its landing, at that tempo (a 0.9 s swing, its first half the wind-up)
+DUEL_SWING = .45  # seconds of a whole duel swing
 
 
 def slide_time(n):
@@ -1006,6 +1026,7 @@ def gyeqiao():
          dict(Actor='공손찬', Look='SW', After=.5)]
     more, t = duel(s, '조운', '문추', .9, rnd, n=11)
     g += more + [dict(Actor='공손찬', Emote='…', After=r2(t * .6)), dict(Wait=r2(t + .6))]
+    s.extra['End'] = r2(t - 1.2)  # it darkens with the two still at it
     s.group(g)
     return s
 
@@ -1191,11 +1212,11 @@ def xuzhou():
     gu, gv = s.pos['관우']
     for k in pool:  # each runs on after the folk, and on seeing 관우 closes round him, three cells off
         u0k, vk, t0k = plan[k]
-        ring = sorted((c for c in s.free((gu, gv), n=40) if max(abs(c[0] - gu), abs(c[1] - gv)) == 3),
+        ring = sorted((c for c in s.free((gu, gv), n=40) if max(abs(c[0] - gu), abs(c[1] - gv)) == 2),
                       key=lambda c: abs(c[0] - u0k) + abs(c[1] - vk))
         if ring:
             try:
-                g.append(s.move(k, ring[0], end=facing(gu - ring[0][0], gv - ring[0][1]), Speed=.9, After=r2(max(t0k, T - 1.2))))
+                g.append(s.move(k, ring[0], end=facing(gu - ring[0][0], gv - ring[0][1]), Speed=1.9, After=r2(t0k)))
             except ValueError:
                 pass
         g.append(dict(Actor=k, Emote='!', After=r2(T + rnd.uniform(.1, .6))))
@@ -1265,7 +1286,9 @@ def xuzhou():
         dst = s.free((meet + 6 + 2 * i, v - 6), n=1)[0]
         g.append(s.move(k, dst, Enter=list(s.cast[k]['At']), Speed=1.8, After=r2(t_close - 1.6 + .3 * i)))
     g.append(dict(Wait=r2(t_close + .4)))
-    g = [st for st in g if st.get('After', 0) <= t_close + .4]
+    joined = max(min((st['After'] for st in g if st.get('Actor') == h and st.get('Strike')), default=t_close) for h in ('유비', '장비'))
+    s.extra['End'] = r2(joined + 1.3)  # it darkens with 유비 and 장비 a blow or two into it, everyone still at it
+    s.extra['Lead'] = 1.5  # it opens on the folk already running
     s.group(g)
     return s
 
@@ -1397,7 +1420,7 @@ def guandu():
     # the camp mouth, the palisade near the circle's rim and the two braziers before the files are the map's own
     # (guandu_camp.py), so the night darkens them; nobody stands or rides where a brazier burns
     BRAZIER_U = (12, 24)
-    s.ambient += [dict(Effect='blaze', At=[u, F - 1.2]) for u in BRAZIER_U]  # the braziers blaze high: the brightest light here
+    s.ambient += [dict(Effect='bonfire', At=[u, F - 1.2]) for u in BRAZIER_U]  # the braziers blaze high: the brightest light here
     archers = {u: s.actor(f'궁병#{u}', (u, F - 2), 'NE', 'archer', 'wei') for u in range(4, 35)}
     front_rows = {k: {u: s.actor(f'창병#{k}a{u}', (u, F + 4 * k), 'NE', 'pikeman', 'wei') for u in even} for k in range(4)}
     back_rows = {k: {u: s.actor(f'창병#{k}b{u}', (u, F + 4 * k + 2), 'NE', 'pikeman', 'wei') for u in even[:-1]} for k in range(4)}
@@ -1500,7 +1523,7 @@ def guandu():
     # the shot closes as the first few riders through are at the second line: nothing starts after that
     arrivals = sorted(r['arrive'] for r in riders if 'down' not in r and 'riderless' not in r)
     cut = arrivals[len(arrivals) // 2] + 2.2  # while the riders and the pikes are hard at it at the front line
-    g = [st for st in g if st.get('After', 0) <= cut or st.get('Actor') == 'cam#1']
+    s.extra['End'] = r2(cut)  # it darkens while they fight on
     g.append(dict(Wait=r2(cut)))
     s.group(g)
     return s
@@ -1606,13 +1629,15 @@ def shore():
     the first caught, run down from behind or turning to fight and soon taken two, three, five to one, while the rest
     run on; more of 손권's come in from the south-west and the north-east. The circle runs north-west with the rout."""
     rnd = random.Random(20)
-    V, U0, CS, T0 = -20, 18, .56, 3.6  # the rout's middle row, the circle's start, its speed and when it sets off
-    U1 = -26
+    V, U0, CS, T0 = -20, -2, .56, 3.6  # the rout's middle row, the circle's start (on the landing stages), its speed and when it sets off
+    U1 = -42
     SHORE = -6  # the last row of land; the river and its landing stages lie south-west of it
     s = Shot('shore', 'S_title_chibi_shore', (U0, V + 10), radius=.48, time='night', hold=.4)
     per = STEP / CS
-    cam_u = lambda t: U0 - max(0, t - T0) / per if t < T0 + (U0 - U1) * per else U1
-    cam_at = lambda t: (cam_u(t), V + 10 * (1 - min(1, max(0, t - T0) / 5)))
+    run = math.hypot(U0 - U1, 10)  # the circle runs straight from (U0, V + 10) to (U1, V)
+    along = lambda t: min(1, max(0, t - T0) * CS / STEP / run)
+    cam_u = lambda t: U0 + (U1 - U0) * along(t)
+    cam_at = lambda t: (cam_u(t), V + 10 * (1 - along(t)))
     s.cams += [(u, V) for u in range(U0 - 6, U1 - 1, -6)] + [(U1, V)]
     s.actor('cam#1', (U0, V + 10), 'NW', 'light_infantry', 'wu', Off=True)
     s.ambient.append(dict(Follow='cam#1'))
@@ -1748,7 +1773,11 @@ def shore():
         g.append(run_off(k, t + rnd.uniform(.2, .6), rnd.uniform(.55, .58)))
     # first the boats: they come in over the river from the south-west, run up on the shore and stay there, and the
     # men leap off and make for the men holding out, or after the rest
-    shore_u = [u for u in range(U0 - 6, U0 + 16) if s.cell(u, SHORE + 1) == '~' and s.open(u, SHORE) and (u, SHORE) not in s.taken()]
+    # boats already moored and the landing stages stand in the water: nobody rows in through them
+    objs = json.loads((ROOT / 'assets/graphics/maps/S_title_chibi_shore.json').read_text())['objects']
+    moored = {o[1] // 2 + d for o in objs if o[0].startswith(('boat', 'sbridge')) and o[2] // 2 > SHORE for d in (-1, 0, 1)}
+    shore_u = [u for u in range(U0 - 6, U0 + 16) if s.cell(u, SHORE + 1) == '~' and s.open(u, SHORE) and (u, SHORE) not in s.taken()
+               and u not in moored]
     for i, u in enumerate(shore_u[::2]):
         k = wu((u, 10), 'NE')
         t0 = r2(i % 3 * .5 + rnd.uniform(0, .4))
@@ -1806,7 +1835,8 @@ def shore():
                     break
                 if done:
                     break
-    g.append(dict(Wait=r2((U0 - U1) * per + T0)))
+    g.append(dict(Wait=r2(run * per + T0)))
+    s.extra['End'] = r2(run * per + T0 - .5)  # it darkens with the rout running on
     s.group(g)
     # anyone whose way takes him through a man of the other side stays out of it
     for _ in range(8):
@@ -1814,8 +1844,9 @@ def shore():
         bad = {k for k in bad if k.startswith('오군') and any(st.get('Actor') == k and 'Enter' in st for st in s.groups[-1])}
         if not bad:
             break
-        s.groups[-1] = [st for st in s.groups[-1] if st.get('Actor') not in bad and st.get('Strike') not in bad]
-        for k in bad:
+        tied = lambda st: any(isinstance(x, str) and any(x == k or x.endswith('#' + k) for k in bad) for x in st.get('Prop') or [])
+        s.groups[-1] = [st for st in s.groups[-1] if st.get('Actor') not in bad and st.get('Strike') not in bad and not tied(st)]
+        for k in bad:  # and the boat he came in, with him
             s.cast.pop(k, None)
             s.pos.pop(k, None)
     return s

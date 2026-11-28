@@ -20,6 +20,7 @@ type titleReel struct {
 	i     int
 	scene *scene  // the shot on the stage; nil until the title opens one
 	hold  float64 // seconds the finished shot has lingered
+	t     float64 // seconds since the shot's last group began
 	out   float64 // 0 → 1: the finished shot darkening before the next
 	round int     // shots opened so far: picks each circle's place
 	// the remembered circle, in world px of the battle viewport
@@ -75,10 +76,15 @@ func (g *Game) updateTitleReel(dt float64) {
 		g.openShot(r.i)
 		return
 	}
-	if g.sceneBusy() {
+	if s := g.scene; s.gi >= len(s.groups)-1 {
+		r.t += dt
+	}
+	shot := r.reel.Shots[r.i]
+	ending := shot.End > 0 && r.t >= shot.End // the people play on while it darkens
+	if !ending && g.sceneBusy() {
 		return
 	}
-	if shot := r.reel.Shots[r.i]; r.hold < shot.Hold {
+	if !ending && r.hold < shot.Hold {
 		r.hold += dt
 		return
 	}
@@ -103,7 +109,15 @@ func (g *Game) openShot(i int) {
 	g.setZoomImmediate(max(1, shot.Zoom))
 	g.scene.node, g.scene.held = def.Nodes[0], map[string]bool{}
 	g.startLine(0)
-	r.i, r.scene, r.hold, r.out = i, g.scene, 0, 0
+	r.i, r.scene, r.hold, r.out, r.t = i, g.scene, 0, 0, 0
+	const step = 1.0 / 30
+	for t := 0.0; t < shot.Lead; t += step { // played in the dark: it opens with them already on the move
+		g.updateScene(step)
+		g.scene.fade = 1
+		if s := g.scene; s.gi >= len(s.groups)-1 {
+			r.t += step
+		}
+	}
 	g.camX, g.camY = g.sceneCam()
 }
 

@@ -49,6 +49,33 @@ func (g *Game) foldButton(dst *ebiten.Image, x, y int, folded *bool) {
 	g.sortMark(dst, float32(r.Min.X+r.Dx()/2), float32(r.Min.Y+r.Dy()/2), !*folded, gold)
 }
 
+// foldAnim eases a corner panel's button row open and shut: k is how far open it is, 1 open and 0 folded.
+type foldAnim struct {
+	k, at float64
+	set   bool
+}
+
+// foldK eases a toward its folded state and returns how open the panel is.
+func (g *Game) foldK(a *foldAnim, folded bool) float64 {
+	target := 1.0
+	if folded {
+		target = 0
+	}
+	if !a.set {
+		a.k, a.set = target, true
+	} else if a.k += (target - a.k) * min(1, (g.uiSeconds-a.at)*16); math.Abs(a.k-target) < .01 {
+		a.k = target
+	}
+	a.at = g.uiSeconds
+	return a.k
+}
+
+// clipTo is dst cut to r, so a panel's buttons are covered while it is part way open.
+func clipTo(dst *ebiten.Image, r image.Rectangle) *ebiten.Image {
+	c := image.Rect(int(float64(r.Min.X)*drawPx+drawOX), int(float64(r.Min.Y)*drawPx+drawOY), int(math.Ceil(float64(r.Max.X)*drawPx+drawOX)), int(math.Ceil(float64(r.Max.Y)*drawPx+drawOY)))
+	return dst.SubImage(c.Intersect(dst.Bounds())).(*ebiten.Image)
+}
+
 // leftPanel is the panel in the upper left: on its head the fold switch, the place, the chapter and the money;
 // below it the buttons the screen has, in the order given — speed, zoom, auto text, skip scene, battle objective, end
 // of phase — a nil slot left out. The panel is as wide as its buttons and head need; a window too narrow wraps the buttons.
@@ -78,9 +105,10 @@ func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, all ...*co
 	w := min(max(need, int(head)), uiW-12-12-8-infoW)
 	cols := max(1, min(len(slots), (w-2*cornerPad+cornerGap)/(cornerSlotW+cornerGap)))
 	rows := max(1, (len(slots)+cols-1)/cols)
+	k := g.foldK(&g.leftFold, g.leftFolded)
 	h := cornerHeadH
-	if !g.leftFolded && len(slots) > 0 {
-		h += cornerRowH + (rows-1)*(cornerBtnH+cornerGap)
+	if len(slots) > 0 {
+		h += int(float64(cornerRowH+(rows-1)*(cornerBtnH+cornerGap))*k + .5)
 	}
 	r := image.Rect(12, hudTop(), 12+w, hudTop()+h)
 	g.window(dst, r)
@@ -95,9 +123,10 @@ func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, all ...*co
 	if money != "" {
 		g.moneyLabel(dst, float64(r.Max.X-12), float64(r.Min.Y+8), 15)
 	}
-	if g.leftFolded || len(slots) == 0 {
+	if k == 0 || len(slots) == 0 {
 		return
 	}
+	dst = clipTo(dst, r)
 	rect(dst, float32(r.Min.X+8), float32(r.Min.Y+cornerHeadH), float32(w-16), 1, goldDim)
 	sw := (w - 2*cornerPad - (cols-1)*cornerGap) / cols
 	for i, s := range slots {
@@ -127,17 +156,14 @@ func (g *Game) cornerButtons(dst *ebiten.Image, x, y int, party func()) {
 // rightPanel is the panel in the upper right of the screens without the battle's HUD panel: a summary of the
 // party on its head and the fold switch at its end, the party and the menu below. It gives its bottom.
 func (g *Game) rightPanel(dst *ebiten.Image, summary string, party func()) int {
-	h := cornerHeadH
-	if !g.hudFolded {
-		h += cornerRowH
-	}
-	r := image.Rect(uiW-12-infoW, hudTop(), uiW-12, hudTop()+h)
+	k := g.foldK(&g.hudFold, g.hudFolded)
+	r := image.Rect(uiW-12-infoW, hudTop(), uiW-12, hudTop()+cornerHeadH+int(cornerRowH*k+.5))
 	g.window(dst, r)
 	g.block(r)
 	g.label(dst, summary, float64(r.Min.X+12), float64(r.Min.Y+10), 13, muted)
 	g.foldButton(dst, r.Max.X-32, r.Min.Y, &g.hudFolded)
-	if !g.hudFolded {
-		g.cornerButtons(dst, r.Min.X, r.Min.Y+cornerHeadH, party)
+	if k > 0 {
+		g.cornerButtons(clipTo(dst, r), r.Min.X, r.Min.Y+cornerHeadH, party)
 	}
 	return r.Max.Y
 }

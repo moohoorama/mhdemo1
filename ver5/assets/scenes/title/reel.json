@@ -248,13 +248,6 @@
     ],
     [
      {
-      "Prop": [
-       "grain_sack#g0",
-       2.4,
-       9
-      ]
-     },
-     {
       "Actor": "황건#1",
       "Move": [
        4,
@@ -355,13 +348,6 @@
     ],
     [
      {
-      "Prop": [
-       "grain_sack#g1",
-       2.4,
-       10
-      ]
-     },
-     {
       "Actor": "황건#2",
       "Move": [
        4,
@@ -448,13 +434,6 @@
      }
     ],
     [
-     {
-      "Prop": [
-       "grain_sack#g2",
-       2.4,
-       9
-      ]
-     },
      {
       "Actor": "황건#1",
       "Move": [
@@ -547,13 +526,6 @@
     ],
     [
      {
-      "Prop": [
-       "grain_sack#g3",
-       2.4,
-       10
-      ]
-     },
-     {
       "Actor": "황건#2",
       "Move": [
        4,
@@ -631,13 +603,6 @@
      }
     ],
     [
-     {
-      "Prop": [
-       "grain_sack#g4",
-       2.4,
-       9
-      ]
-     },
      {
       "Actor": "황건#1",
       "Move": [
@@ -721,13 +686,6 @@
     ],
     [
      {
-      "Prop": [
-       "grain_sack#g5",
-       2.4,
-       10
-      ]
-     },
-     {
       "Actor": "황건#2",
       "Move": [
        4,
@@ -805,7 +763,7 @@
   },
   {
    "ID": "rally",
-   "Map": "S_title_long_field",
+   "Map": "S_title_turban_camp",
    "Time": "dusk",
    "Radius": 0.46,
    "Cast": {
@@ -817,25 +775,21 @@
      "Face": "SE",
      "Hold": true
     },
-    "황건#a": {
+    "장량": {
      "At": [
       0,
       8
      ],
      "Face": "SE",
-     "Hold": true,
-     "Sprite": "bandit",
-     "Faction": "turban"
+     "Hold": true
     },
-    "황건#b": {
+    "장보": {
      "At": [
       0,
       12
      ],
      "Face": "SE",
-     "Hold": true,
-     "Sprite": "bandit",
-     "Faction": "turban"
+     "Hold": true
     },
     "황건#0": {
      "At": [
@@ -874,7 +828,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#4": {
@@ -934,7 +888,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "bandit",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#10": {
@@ -944,7 +898,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#11": {
@@ -954,7 +908,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#12": {
@@ -964,7 +918,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#13": {
@@ -974,7 +928,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#14": {
@@ -1024,7 +978,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#19": {
@@ -1044,7 +998,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#21": {
@@ -1054,7 +1008,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#22": {
@@ -1064,7 +1018,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "bandit",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#23": {
@@ -1084,7 +1038,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "bandit",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#25": {
@@ -1124,7 +1078,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#29": {
@@ -1154,7 +1108,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#32": {
@@ -1174,7 +1128,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#34": {
@@ -1184,7 +1138,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#35": {
@@ -1204,7 +1158,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#37": {
@@ -1214,7 +1168,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#38": {
@@ -1224,7 +1178,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#39": {
@@ -1244,7 +1198,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#41": {
@@ -1254,7 +1208,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#42": {
@@ -1274,7 +1228,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#44": {
@@ -1294,7 +1248,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#46": {
@@ -1304,7 +1258,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#47": {
@@ -1314,7 +1268,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#48": {
@@ -1324,7 +1278,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#49": {
@@ -1344,7 +1298,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#51": {
@@ -1354,7 +1308,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#52": {
@@ -1384,7 +1338,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "bandit",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#55": {
@@ -1394,7 +1348,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#56": {
@@ -1404,7 +1358,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#57": {
@@ -1414,7 +1368,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#58": {
@@ -1424,7 +1378,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#59": {
@@ -1434,7 +1388,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#60": {
@@ -1444,7 +1398,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "ruffian",
+     "Sprite": "bandit",
      "Faction": "turban"
     },
     "황건#61": {
@@ -1464,7 +1418,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "light_infantry",
+     "Sprite": "ruffian",
      "Faction": "turban"
     },
     "황건#63": {
@@ -1504,7 +1458,7 @@
      ],
      "Face": "NW",
      "Hold": true,
-     "Sprite": "bandit",
+     "Sprite": "ruffian",
      "Faction": "turban"
     }
    },
@@ -1518,1950 +1472,862 @@
     {
      "Actor": "황건#0",
      "Chatter": "…|…||…",
-     "Lag": 2.59
+     "Lag": 1.27
     },
     {
      "Actor": "황건#1",
-     "Chatter": "…|…||…",
-     "Lag": 0.15
+     "Chatter": "…?||…|",
+     "Lag": 1.3
     },
     {
      "Actor": "황건#2",
-     "Chatter": "…||…!|",
-     "Lag": 0.13
+     "Chatter": "…?||…|",
+     "Lag": 1.72
     },
     {
      "Actor": "황건#3",
-     "Chatter": "…||…!|",
-     "Lag": 0.59
+     "Chatter": "…?||…|",
+     "Lag": 2.34
     },
     {
      "Actor": "황건#4",
-     "Chatter": "…|…||…",
-     "Lag": 1.96
+     "Chatter": "…?||…|",
+     "Lag": 0.91
     },
     {
      "Actor": "황건#5",
-     "Chatter": "…|…||…",
-     "Lag": 2.22
-    },
-    {
-     "Actor": "황건#6",
-     "Chatter": "…|…||…",
-     "Lag": 2.14
-    },
-    {
-     "Actor": "황건#7",
-     "Chatter": "…|…||…",
-     "Lag": 1.1
-    },
-    {
-     "Actor": "황건#8",
-     "Chatter": "…||…!|",
-     "Lag": 1.97
-    },
-    {
-     "Actor": "황건#9",
-     "Chatter": "…|…||…",
-     "Lag": 0.94
-    },
-    {
-     "Actor": "황건#10",
-     "Chatter": "…|…||…",
-     "Lag": 0.65
-    },
-    {
-     "Actor": "황건#11",
-     "Chatter": "…|…||…",
-     "Lag": 0.22
-    },
-    {
-     "Actor": "황건#12",
-     "Chatter": "…|…||…",
-     "Lag": 0.07
-    },
-    {
-     "Actor": "황건#13",
      "Chatter": "…||…!|",
      "Lag": 2.39
     },
     {
-     "Actor": "황건#14",
+     "Actor": "황건#6",
+     "Chatter": "…||…!|",
+     "Lag": 1.19
+    },
+    {
+     "Actor": "황건#7",
+     "Chatter": "…||…!|",
+     "Lag": 0.58
+    },
+    {
+     "Actor": "황건#8",
      "Chatter": "…?||…|",
-     "Lag": 0.66
+     "Lag": 2.12
+    },
+    {
+     "Actor": "황건#9",
+     "Chatter": "…|…||…",
+     "Lag": 2.28
+    },
+    {
+     "Actor": "황건#10",
+     "Chatter": "…||…!|",
+     "Lag": 0.7
+    },
+    {
+     "Actor": "황건#11",
+     "Chatter": "…?||…|",
+     "Lag": 0.8
+    },
+    {
+     "Actor": "황건#12",
+     "Chatter": "…||…!|",
+     "Lag": 2.16
+    },
+    {
+     "Actor": "황건#13",
+     "Chatter": "…||…!|",
+     "Lag": 1.35
+    },
+    {
+     "Actor": "황건#14",
+     "Chatter": "…||…!|",
+     "Lag": 1.6
     },
     {
      "Actor": "황건#15",
-     "Chatter": "…|…||…",
-     "Lag": 1.91
+     "Chatter": "…?||…|",
+     "Lag": 0.81
     },
     {
      "Actor": "황건#16",
-     "Chatter": "…||…!|",
-     "Lag": 1.8
+     "Chatter": "…|…||…",
+     "Lag": 1.27
     },
     {
      "Actor": "황건#17",
      "Chatter": "…?||…|",
-     "Lag": 1.53
+     "Lag": 2.43
     },
     {
      "Actor": "황건#18",
-     "Chatter": "…|…||…",
-     "Lag": 0.39
+     "Chatter": "…||…!|",
+     "Lag": 2.29
     },
     {
      "Actor": "황건#19",
-     "Chatter": "…|…||…",
-     "Lag": 0.01
+     "Chatter": "…?||…|",
+     "Lag": 1.89
     },
     {
      "Actor": "황건#20",
-     "Chatter": "…||…!|",
-     "Lag": 1.63
+     "Chatter": "…|…||…",
+     "Lag": 2.59
     },
     {
      "Actor": "황건#21",
-     "Chatter": "…||…!|",
-     "Lag": 0.29
+     "Chatter": "…|…||…",
+     "Lag": 0.15
     },
     {
      "Actor": "황건#22",
-     "Chatter": "…?||…|",
-     "Lag": 1.27
+     "Chatter": "…||…!|",
+     "Lag": 0.13
     },
     {
      "Actor": "황건#23",
-     "Chatter": "…?||…|",
-     "Lag": 1.17
+     "Chatter": "…||…!|",
+     "Lag": 0.59
     },
     {
      "Actor": "황건#24",
-     "Chatter": "…||…!|",
-     "Lag": 1.92
-    },
-    {
-     "Actor": "황건#25",
-     "Chatter": "…?||…|",
+     "Chatter": "…|…||…",
      "Lag": 1.96
     },
     {
+     "Actor": "황건#25",
+     "Chatter": "…|…||…",
+     "Lag": 2.22
+    },
+    {
      "Actor": "황건#26",
-     "Chatter": "…||…!|",
-     "Lag": 1.83
+     "Chatter": "…|…||…",
+     "Lag": 2.14
     },
     {
      "Actor": "황건#27",
-     "Chatter": "…?||…|",
-     "Lag": 2.49
+     "Chatter": "…|…||…",
+     "Lag": 1.1
     },
     {
      "Actor": "황건#28",
-     "Chatter": "…|…||…",
-     "Lag": 1.72
+     "Chatter": "…||…!|",
+     "Lag": 1.97
     },
     {
      "Actor": "황건#29",
-     "Chatter": "…?||…|",
-     "Lag": 2.18
+     "Chatter": "…|…||…",
+     "Lag": 0.94
     },
     {
      "Actor": "황건#30",
      "Chatter": "…|…||…",
-     "Lag": 1.16
+     "Lag": 0.65
     },
     {
      "Actor": "황건#31",
      "Chatter": "…|…||…",
-     "Lag": 1.35
+     "Lag": 0.22
     },
     {
      "Actor": "황건#32",
-     "Chatter": "…?||…|",
-     "Lag": 1.27
+     "Chatter": "…|…||…",
+     "Lag": 0.07
     },
     {
      "Actor": "황건#33",
-     "Chatter": "…?||…|",
-     "Lag": 0.37
+     "Chatter": "…||…!|",
+     "Lag": 2.39
     },
     {
      "Actor": "황건#34",
      "Chatter": "…?||…|",
-     "Lag": 0.67
+     "Lag": 0.66
     },
     {
      "Actor": "황건#35",
-     "Chatter": "…||…!|",
-     "Lag": 2.52
+     "Chatter": "…|…||…",
+     "Lag": 1.91
     },
     {
      "Actor": "황건#36",
      "Chatter": "…||…!|",
-     "Lag": 0.05
+     "Lag": 1.8
     },
     {
      "Actor": "황건#37",
-     "Chatter": "…||…!|",
-     "Lag": 2.49
+     "Chatter": "…?||…|",
+     "Lag": 1.53
     },
     {
      "Actor": "황건#38",
-     "Chatter": "…||…!|",
-     "Lag": 0.15
-    },
-    {
-     "Actor": "황건#39",
-     "Chatter": "…|…||…",
-     "Lag": 0.34
-    },
-    {
-     "Actor": "황건#40",
-     "Chatter": "…|…||…",
-     "Lag": 0.25
-    },
-    {
-     "Actor": "황건#41",
-     "Chatter": "…||…!|",
-     "Lag": 0.6
-    },
-    {
-     "Actor": "황건#42",
-     "Chatter": "…||…!|",
-     "Lag": 2.43
-    },
-    {
-     "Actor": "황건#43",
-     "Chatter": "…|…||…",
-     "Lag": 0.6
-    },
-    {
-     "Actor": "황건#44",
-     "Chatter": "…?||…|",
-     "Lag": 0.19
-    },
-    {
-     "Actor": "황건#45",
-     "Chatter": "…|…||…",
-     "Lag": 1.54
-    },
-    {
-     "Actor": "황건#46",
-     "Chatter": "…||…!|",
-     "Lag": 2.06
-    },
-    {
-     "Actor": "황건#47",
-     "Chatter": "…||…!|",
-     "Lag": 1.84
-    },
-    {
-     "Actor": "황건#48",
-     "Chatter": "…?||…|",
-     "Lag": 1.78
-    },
-    {
-     "Actor": "황건#49",
-     "Chatter": "…?||…|",
-     "Lag": 1.37
-    },
-    {
-     "Actor": "황건#50",
      "Chatter": "…|…||…",
      "Lag": 0.39
     },
     {
-     "Actor": "황건#51",
-     "Chatter": "…?||…|",
-     "Lag": 1.06
-    },
-    {
-     "Actor": "황건#52",
+     "Actor": "황건#39",
      "Chatter": "…|…||…",
-     "Lag": 1.33
+     "Lag": 0.01
     },
     {
-     "Actor": "황건#53",
-     "Chatter": "…|…||…",
-     "Lag": 0.63
-    },
-    {
-     "Actor": "황건#54",
-     "Chatter": "…|…||…",
-     "Lag": 0.05
-    },
-    {
-     "Actor": "황건#55",
-     "Chatter": "…|…||…",
-     "Lag": 0.27
-    },
-    {
-     "Actor": "황건#56",
-     "Chatter": "…|…||…",
-     "Lag": 1.35
-    },
-    {
-     "Actor": "황건#57",
-     "Chatter": "…?||…|",
-     "Lag": 1.18
-    },
-    {
-     "Actor": "황건#58",
+     "Actor": "황건#40",
      "Chatter": "…||…!|",
-     "Lag": 1.67
+     "Lag": 1.63
     },
     {
-     "Actor": "황건#59",
-     "Chatter": "…|…||…",
-     "Lag": 1.78
-    },
-    {
-     "Actor": "황건#60",
-     "Chatter": "…|…||…",
-     "Lag": 1.9
-    },
-    {
-     "Actor": "황건#61",
-     "Chatter": "…?||…|",
-     "Lag": 1.11
-    },
-    {
-     "Actor": "황건#62",
-     "Chatter": "…|…||…",
-     "Lag": 1.51
-    },
-    {
-     "Actor": "황건#63",
-     "Chatter": "…|…||…",
-     "Lag": 2.29
-    },
-    {
-     "Actor": "황건#64",
+     "Actor": "황건#41",
      "Chatter": "…||…!|",
-     "Lag": 1.51
+     "Lag": 0.29
     },
     {
-     "Actor": "황건#65",
+     "Actor": "황건#42",
+     "Chatter": "…?||…|",
+     "Lag": 1.27
+    },
+    {
+     "Actor": "황건#43",
+     "Chatter": "…?||…|",
+     "Lag": 1.17
+    },
+    {
+     "Actor": "황건#44",
+     "Chatter": "…||…!|",
+     "Lag": 1.92
+    },
+    {
+     "Actor": "황건#45",
+     "Chatter": "…?||…|",
+     "Lag": 1.96
+    },
+    {
+     "Actor": "황건#46",
+     "Chatter": "…||…!|",
+     "Lag": 1.83
+    },
+    {
+     "Actor": "황건#47",
+     "Chatter": "…?||…|",
+     "Lag": 2.49
+    },
+    {
+     "Actor": "황건#48",
      "Chatter": "…|…||…",
      "Lag": 1.72
     },
     {
-     "Actor": "황건#66",
+     "Actor": "황건#49",
      "Chatter": "…?||…|",
-     "Lag": 0.95
+     "Lag": 2.18
+    },
+    {
+     "Actor": "황건#50",
+     "Chatter": "…|…||…",
+     "Lag": 1.16
+    },
+    {
+     "Actor": "황건#51",
+     "Chatter": "…|…||…",
+     "Lag": 1.35
+    },
+    {
+     "Actor": "황건#52",
+     "Chatter": "…?||…|",
+     "Lag": 1.27
+    },
+    {
+     "Actor": "황건#53",
+     "Chatter": "…?||…|",
+     "Lag": 0.37
+    },
+    {
+     "Actor": "황건#54",
+     "Chatter": "…?||…|",
+     "Lag": 0.67
+    },
+    {
+     "Actor": "황건#55",
+     "Chatter": "…||…!|",
+     "Lag": 2.52
+    },
+    {
+     "Actor": "황건#56",
+     "Chatter": "…||…!|",
+     "Lag": 0.05
+    },
+    {
+     "Actor": "황건#57",
+     "Chatter": "…||…!|",
+     "Lag": 2.49
+    },
+    {
+     "Actor": "황건#58",
+     "Chatter": "…||…!|",
+     "Lag": 0.15
+    },
+    {
+     "Actor": "황건#59",
+     "Chatter": "…|…||…",
+     "Lag": 0.34
+    },
+    {
+     "Actor": "황건#60",
+     "Chatter": "…|…||…",
+     "Lag": 0.25
+    },
+    {
+     "Actor": "황건#61",
+     "Chatter": "…||…!|",
+     "Lag": 0.6
+    },
+    {
+     "Actor": "황건#62",
+     "Chatter": "…||…!|",
+     "Lag": 2.43
+    },
+    {
+     "Actor": "황건#63",
+     "Chatter": "…|…||…",
+     "Lag": 0.6
+    },
+    {
+     "Actor": "황건#64",
+     "Chatter": "…?||…|",
+     "Lag": 0.19
+    },
+    {
+     "Actor": "황건#65",
+     "Chatter": "…|…||…",
+     "Lag": 1.54
+    },
+    {
+     "Actor": "황건#66",
+     "Chatter": "…||…!|",
+     "Lag": 2.06
     }
    ],
    "Groups": [
     [
      {
-      "Wait": 2.2
-     }
-    ],
-    [
-     {
-      "Actor": "장각",
-      "Say": "……!"
-     }
-    ],
-    [
-     {
-      "Actor": "장각",
-      "Play": "attack"
-     },
-     {
-      "Actor": "장각",
-      "Say": "……!!!!……"
-     }
-    ],
-    [
-     {
       "Actor": "황건#0",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#1",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#2",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#3",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#4",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#5",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#6",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#7",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#8",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#9",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#10",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#11",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#12",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#13",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#14",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#15",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#16",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#17",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#18",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#19",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#20",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#21",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#22",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#23",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#24",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#25",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#26",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#27",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#28",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#29",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#30",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#31",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#32",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#33",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#34",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#35",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#36",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#37",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#38",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#39",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#40",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#41",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#42",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#43",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#44",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#45",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#46",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#47",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#48",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#49",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#50",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#51",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#52",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#53",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#54",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#55",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#56",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#57",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#58",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#59",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#60",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#61",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#62",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#63",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#64",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#65",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
       "Actor": "황건#66",
-      "Chatter": "-"
+      "Chatter": "-",
+      "After": 2.2
      },
      {
-      "Actor": "장각",
-      "Say": "!!!!"
-     },
-     {
-      "Actor": "장각",
-      "Hop": 1
-     }
-    ],
-    [
-     {
-      "Actor": "황건#0",
-      "Play": "attack",
-      "After": 0.62
-     },
-     {
-      "Actor": "황건#0",
-      "Play": "attack",
-      "After": 1.07
-     },
-     {
-      "Actor": "황건#1",
-      "Play": "attack",
-      "After": 0.35
-     },
-     {
-      "Actor": "황건#1",
-      "Play": "attack",
-      "After": 0.8
-     },
-     {
-      "Actor": "황건#1",
-      "Emote": "!",
-      "After": 0.61
-     },
-     {
-      "Actor": "황건#2",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.49
-     },
-     {
-      "Actor": "황건#2",
-      "Emote": "!!!",
-      "After": 0.74
-     },
-     {
-      "Actor": "황건#3",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.97
-     },
-     {
-      "Actor": "황건#4",
-      "Play": "attack",
-      "After": 0.56
-     },
-     {
-      "Actor": "황건#4",
-      "Play": "attack",
-      "After": 1.01
-     },
-     {
-      "Actor": "황건#5",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.01
-     },
-     {
-      "Actor": "황건#5",
-      "Emote": "!!!",
-      "After": 0.03
-     },
-     {
-      "Actor": "황건#6",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.91
-     },
-     {
-      "Actor": "황건#7",
-      "Hop": 3,
-      "After": 0.47
-     },
-     {
-      "Actor": "황건#8",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.47
-     },
-     {
-      "Actor": "황건#8",
-      "Emote": "!",
-      "After": 0.65
-     },
-     {
-      "Actor": "황건#9",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.4
-     },
-     {
-      "Actor": "황건#9",
-      "Emote": "!",
-      "After": 0.41
-     },
-     {
-      "Actor": "황건#10",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.79
-     },
-     {
-      "Actor": "황건#11",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.6
-     },
-     {
-      "Actor": "황건#12",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.96
-     },
-     {
-      "Actor": "황건#13",
-      "Play": "attack",
-      "After": 0.57
-     },
-     {
-      "Actor": "황건#13",
-      "Play": "attack",
-      "After": 1.02
-     },
-     {
-      "Actor": "황건#14",
-      "Play": "block",
-      "Hop": 1,
-      "After": 1.12
-     },
-     {
-      "Actor": "황건#14",
-      "Emote": "!",
-      "After": 1.17
-     },
-     {
-      "Actor": "황건#15",
-      "Hop": 3,
-      "After": 0.72
-     },
-     {
-      "Actor": "황건#16",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.84
-     },
-     {
-      "Actor": "황건#17",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.69
-     },
-     {
-      "Actor": "황건#17",
-      "Emote": "!!!",
-      "After": 0.73
-     },
-     {
-      "Actor": "황건#18",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.5
-     },
-     {
-      "Actor": "황건#18",
-      "Emote": "!!!",
-      "After": 0.8
-     },
-     {
-      "Actor": "황건#19",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.78
-     },
-     {
-      "Actor": "황건#19",
-      "Emote": "!",
-      "After": 0.99
-     },
-     {
-      "Actor": "황건#20",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.06
-     },
-     {
-      "Actor": "황건#20",
-      "Emote": "!!",
-      "After": 1.09
-     },
-     {
-      "Actor": "황건#21",
-      "Play": "attack",
-      "After": 0.65
-     },
-     {
-      "Actor": "황건#21",
-      "Play": "attack",
-      "After": 1.1
-     },
-     {
-      "Actor": "황건#22",
-      "Hop": 3,
-      "After": 0.12
-     },
-     {
-      "Actor": "황건#23",
-      "Play": "attack",
-      "After": 0.31
-     },
-     {
-      "Actor": "황건#23",
-      "Play": "attack",
-      "After": 0.76
-     },
-     {
-      "Actor": "황건#24",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.84
-     },
-     {
-      "Actor": "황건#25",
-      "Hop": 3,
-      "After": 0.94
-     },
-     {
-      "Actor": "황건#25",
-      "Emote": "!!",
-      "After": 1.16
-     },
-     {
-      "Actor": "황건#26",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.97
-     },
-     {
-      "Actor": "황건#27",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.47
-     },
-     {
-      "Actor": "황건#27",
-      "Emote": "!!",
-      "After": 0.68
-     },
-     {
-      "Actor": "황건#28",
-      "Play": "block",
-      "Hop": 1,
-      "After": 1.12
-     },
-     {
-      "Actor": "황건#29",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.15
-     },
-     {
-      "Actor": "황건#30",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.79
-     },
-     {
-      "Actor": "황건#31",
-      "Hop": 3,
-      "After": 0.27
-     },
-     {
-      "Actor": "황건#32",
-      "Play": "attack",
-      "After": 0.8
-     },
-     {
-      "Actor": "황건#32",
-      "Play": "attack",
-      "After": 1.25
-     },
-     {
-      "Actor": "황건#33",
-      "Hop": 3,
-      "After": 0.01
-     },
-     {
-      "Actor": "황건#34",
-      "Hop": 3,
-      "After": 1.06
-     },
-     {
-      "Actor": "황건#35",
-      "Play": "attack",
-      "After": 0.02
-     },
-     {
-      "Actor": "황건#35",
-      "Play": "attack",
-      "After": 0.47
-     },
-     {
-      "Actor": "황건#36",
-      "Play": "attack",
-      "After": 0.73
-     },
-     {
-      "Actor": "황건#36",
-      "Play": "attack",
-      "After": 1.18
-     },
-     {
-      "Actor": "황건#37",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.12
-     },
-     {
-      "Actor": "황건#38",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.24
-     },
-     {
-      "Actor": "황건#39",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.23
-     },
-     {
-      "Actor": "황건#39",
-      "Emote": "!!!",
-      "After": 0.43
-     },
-     {
-      "Actor": "황건#40",
-      "Hop": 3,
-      "After": 0.58
-     },
-     {
-      "Actor": "황건#40",
-      "Emote": "!!!",
-      "After": 0.64
-     },
-     {
-      "Actor": "황건#41",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.16
-     },
-     {
-      "Actor": "황건#41",
-      "Emote": "!!",
-      "After": 1.32
-     },
-     {
-      "Actor": "황건#42",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.8
-     },
-     {
-      "Actor": "황건#43",
-      "Play": "attack",
-      "After": 1.11
-     },
-     {
-      "Actor": "황건#43",
-      "Play": "attack",
-      "After": 1.56
-     },
-     {
-      "Actor": "황건#44",
-      "Hop": 3,
-      "After": 1.05
-     },
-     {
-      "Actor": "황건#45",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.74
-     },
-     {
-      "Actor": "황건#46",
-      "Play": "attack",
-      "After": 1.13
-     },
-     {
-      "Actor": "황건#46",
-      "Play": "attack",
-      "After": 1.58
-     },
-     {
-      "Actor": "황건#46",
-      "Emote": "!!!",
-      "After": 1.37
-     },
-     {
-      "Actor": "황건#47",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.04
-     },
-     {
-      "Actor": "황건#47",
-      "Emote": "!!",
-      "After": 1.34
-     },
-     {
-      "Actor": "황건#48",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.81
-     },
-     {
-      "Actor": "황건#48",
-      "Emote": "!!",
-      "After": 1.1
-     },
-     {
-      "Actor": "황건#49",
-      "Hop": 3,
-      "After": 0.44
-     },
-     {
-      "Actor": "황건#49",
-      "Emote": "!!",
-      "After": 0.5
-     },
-     {
-      "Actor": "황건#50",
-      "Hop": 3,
-      "After": 0.81
-     },
-     {
-      "Actor": "황건#50",
-      "Emote": "!!!",
-      "After": 0.97
-     },
-     {
-      "Actor": "황건#51",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.1
-     },
-     {
-      "Actor": "황건#52",
-      "Hop": 3,
-      "After": 0.37
-     },
-     {
-      "Actor": "황건#53",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.78
-     },
-     {
-      "Actor": "황건#54",
-      "Hop": 3,
-      "After": 0.11
-     },
-     {
-      "Actor": "황건#54",
-      "Emote": "!!!",
-      "After": 0.36
-     },
-     {
-      "Actor": "황건#55",
-      "Hop": 3,
-      "After": 0.18
-     },
-     {
-      "Actor": "황건#55",
-      "Emote": "!",
-      "After": 0.25
-     },
-     {
-      "Actor": "황건#56",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.55
-     },
-     {
-      "Actor": "황건#56",
-      "Emote": "!",
-      "After": 0.58
-     },
-     {
-      "Actor": "황건#57",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.98
-     },
-     {
-      "Actor": "황건#57",
-      "Emote": "!!",
-      "After": 1.09
-     },
-     {
-      "Actor": "황건#58",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.4
-     },
-     {
-      "Actor": "황건#59",
-      "Hop": 3,
-      "After": 1.04
-     },
-     {
-      "Actor": "황건#59",
-      "Emote": "!!!",
-      "After": 1.17
-     },
-     {
-      "Actor": "황건#60",
-      "Play": "attack",
-      "After": 0.77
-     },
-     {
-      "Actor": "황건#60",
-      "Play": "attack",
-      "After": 1.22
-     },
-     {
-      "Actor": "황건#60",
-      "Emote": "!",
-      "After": 1.04
-     },
-     {
-      "Actor": "황건#61",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.56
-     },
-     {
-      "Actor": "황건#62",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.22
-     },
-     {
-      "Actor": "황건#62",
-      "Emote": "!!",
-      "After": 0.46
-     },
-     {
-      "Actor": "황건#63",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.76
-     },
-     {
-      "Actor": "황건#64",
-      "Play": "attack",
-      "After": 0.41
-     },
-     {
-      "Actor": "황건#64",
-      "Play": "attack",
-      "After": 0.86
-     },
-     {
-      "Actor": "황건#65",
-      "Hop": 3,
-      "After": 0.6
-     },
-     {
-      "Actor": "황건#66",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.89
-     },
-     {
-      "Shake": 0.3,
-      "After": 0.4
-     },
-     {
-      "Wait": 1.9
+      "Wait": 2.5
      }
     ],
     [
      {
       "Actor": "장각",
-      "Play": "attack",
+      "Play": "action"
+     },
+     {
+      "Actor": "장각",
+      "Shout": "창천이사!",
+      "ShoutSize": 34
+     },
+     {
+      "Wait": 1.6
+     }
+    ],
+    [
+     {
+      "Actor": "장각",
+      "Play": "action",
       "Hop": 1
      },
      {
+      "Actor": "장각",
+      "Shout": "황천당립!",
+      "ShoutSize": 34
+     },
+     {
+      "Wait": 1.3
+     }
+    ],
+    [
+     {
+      "Actor": "장량",
+      "Play": "action",
+      "Hop": 1
+     },
+     {
+      "Actor": "장량",
+      "Shout": "황천당립!",
+      "ShoutSize": 24
+     },
+     {
+      "Actor": "장보",
+      "Play": "action",
+      "Hop": 1,
+      "After": 0.2
+     },
+     {
+      "Actor": "장보",
+      "Shout": "황천당립!",
+      "ShoutSize": 24,
+      "After": 0.2
+     },
+     {
       "Actor": "황건#0",
-      "Play": "block",
-      "Hop": 1,
-      "After": 1.32
-     },
-     {
-      "Actor": "황건#1",
-      "Hop": 3,
-      "After": 0.55
-     },
-     {
-      "Actor": "황건#2",
       "Play": "attack",
       "Hop": 2,
-      "After": 0.64
-     },
-     {
-      "Actor": "황건#2",
-      "Emote": "!!",
-      "After": 0.77
-     },
-     {
-      "Actor": "황건#3",
-      "Play": "attack",
-      "After": 0.31
-     },
-     {
-      "Actor": "황건#3",
-      "Play": "attack",
-      "After": 0.76
-     },
-     {
-      "Actor": "황건#3",
-      "Emote": "!!",
-      "After": 0.35
-     },
-     {
-      "Actor": "황건#4",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.23
-     },
-     {
-      "Actor": "황건#4",
-      "Emote": "!!!",
-      "After": 0.46
-     },
-     {
-      "Actor": "황건#5",
-      "Hop": 3,
-      "After": 0.72
-     },
-     {
-      "Actor": "황건#5",
-      "Emote": "!!!",
-      "After": 0.84
-     },
-     {
-      "Actor": "황건#6",
-      "Hop": 3,
-      "After": 0.54
-     },
-     {
-      "Actor": "황건#6",
-      "Emote": "!!",
-      "After": 0.6
-     },
-     {
-      "Actor": "황건#7",
-      "Play": "attack",
-      "After": 0.8
-     },
-     {
-      "Actor": "황건#7",
-      "Play": "attack",
-      "After": 1.25
-     },
-     {
-      "Actor": "황건#8",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.6
-     },
-     {
-      "Actor": "황건#8",
-      "Emote": "!",
-      "After": 0.7
-     },
-     {
-      "Actor": "황건#9",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.5
-     },
-     {
-      "Actor": "황건#10",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.6
-     },
-     {
-      "Actor": "황건#11",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.27
-     },
-     {
-      "Actor": "황건#12",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.72
-     },
-     {
-      "Actor": "황건#12",
-      "Emote": "!!!",
-      "After": 0.89
-     },
-     {
-      "Actor": "황건#13",
-      "Hop": 3,
-      "After": 0.34
-     },
-     {
-      "Actor": "황건#14",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.35
-     },
-     {
-      "Actor": "황건#14",
-      "Emote": "!!",
-      "After": 1.5
-     },
-     {
-      "Actor": "황건#15",
-      "Hop": 3,
-      "After": 1.25
-     },
-     {
-      "Actor": "황건#16",
-      "Hop": 3,
-      "After": 0.31
-     },
-     {
-      "Actor": "황건#17",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.79
-     },
-     {
-      "Actor": "황건#18",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.4
-     },
-     {
-      "Actor": "황건#19",
-      "Hop": 3,
-      "After": 1.25
-     },
-     {
-      "Actor": "황건#20",
-      "Play": "attack",
-      "After": 0.34
-     },
-     {
-      "Actor": "황건#20",
-      "Play": "attack",
-      "After": 0.79
-     },
-     {
-      "Actor": "황건#21",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.41
-     },
-     {
-      "Actor": "황건#22",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.05
-     },
-     {
-      "Actor": "황건#23",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.46
-     },
-     {
-      "Actor": "황건#24",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.38
-     },
-     {
-      "Actor": "황건#25",
-      "Play": "attack",
-      "After": 0.76
-     },
-     {
-      "Actor": "황건#25",
-      "Play": "attack",
-      "After": 1.21
-     },
-     {
-      "Actor": "황건#26",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.28
-     },
-     {
-      "Actor": "황건#26",
-      "Emote": "!!!",
-      "After": 0.43
-     },
-     {
-      "Actor": "황건#27",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.27
-     },
-     {
-      "Actor": "황건#28",
-      "Hop": 3,
-      "After": 1.19
-     },
-     {
-      "Actor": "황건#29",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.25
-     },
-     {
-      "Actor": "황건#30",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.36
-     },
-     {
-      "Actor": "황건#30",
-      "Emote": "!",
-      "After": 0.6
-     },
-     {
-      "Actor": "황건#31",
-      "Hop": 3,
-      "After": 0.94
-     },
-     {
-      "Actor": "황건#31",
-      "Emote": "!!!",
-      "After": 1.2
-     },
-     {
-      "Actor": "황건#32",
-      "Play": "block",
-      "Hop": 1,
       "After": 1.29
      },
      {
-      "Actor": "황건#33",
+      "Actor": "황건#1",
       "Play": "attack",
       "Hop": 2,
-      "After": 1.3
-     },
-     {
-      "Actor": "황건#33",
-      "Emote": "!",
-      "After": 1.49
-     },
-     {
-      "Actor": "황건#34",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.45
-     },
-     {
-      "Actor": "황건#34",
-      "Emote": "!!",
-      "After": 0.49
-     },
-     {
-      "Actor": "황건#35",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.36
-     },
-     {
-      "Actor": "황건#35",
-      "Emote": "!",
-      "After": 0.53
-     },
-     {
-      "Actor": "황건#36",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.77
-     },
-     {
-      "Actor": "황건#37",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.38
-     },
-     {
-      "Actor": "황건#38",
-      "Hop": 3,
-      "After": 1.04
-     },
-     {
-      "Actor": "황건#38",
-      "Emote": "!!!",
-      "After": 1.27
-     },
-     {
-      "Actor": "황건#39",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.45
-     },
-     {
-      "Actor": "황건#39",
-      "Emote": "!",
-      "After": 0.64
-     },
-     {
-      "Actor": "황건#40",
-      "Play": "block",
-      "Hop": 1,
       "After": 1.09
      },
      {
-      "Actor": "황건#41",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.26
+      "Actor": "황건#2",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.08
      },
      {
-      "Actor": "황건#42",
-      "Hop": 3,
-      "After": 1.2
+      "Actor": "황건#3",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.36
      },
      {
-      "Actor": "황건#42",
-      "Emote": "!",
+      "Actor": "황건#4",
+      "Play": "attack",
+      "After": 1.05
+     },
+     {
+      "Actor": "황건#4",
+      "Play": "attack",
       "After": 1.5
      },
      {
-      "Actor": "황건#43",
+      "Actor": "황건#5",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.67
+     },
+     {
+      "Actor": "황건#6",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.5
+     },
+     {
+      "Actor": "황건#7",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.43
+     },
+     {
+      "Actor": "황건#8",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.76
+     },
+     {
+      "Actor": "황건#9",
       "Hop": 3,
-      "After": 0.37
+      "After": 1.91
      },
      {
-      "Actor": "황건#44",
+      "Actor": "황건#10",
       "Play": "attack",
       "Hop": 2,
-      "After": 1.12
+      "After": 1.98
      },
      {
-      "Actor": "황건#45",
+      "Actor": "황건#11",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.62
+     },
+     {
+      "Actor": "황건#12",
       "Hop": 3,
-      "After": 1.24
+      "After": 1.81
      },
      {
-      "Actor": "황건#46",
+      "Actor": "황건#13",
       "Play": "attack",
       "Hop": 2,
-      "After": 0.39
+      "After": 1.34
      },
      {
-      "Actor": "황건#47",
+      "Actor": "황건#14",
       "Hop": 3,
-      "After": 1.22
+      "After": 1.05
      },
      {
-      "Actor": "황건#47",
-      "Emote": "!!",
-      "After": 1.42
-     },
-     {
-      "Actor": "황건#48",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.24
-     },
-     {
-      "Actor": "황건#49",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.96
-     },
-     {
-      "Actor": "황건#50",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.22
-     },
-     {
-      "Actor": "황건#50",
-      "Emote": "!!!",
-      "After": 0.34
-     },
-     {
-      "Actor": "황건#51",
-      "Play": "attack",
-      "After": 0.83
-     },
-     {
-      "Actor": "황건#51",
-      "Play": "attack",
-      "After": 1.28
-     },
-     {
-      "Actor": "황건#51",
-      "Emote": "!",
-      "After": 1.04
-     },
-     {
-      "Actor": "황건#52",
+      "Actor": "황건#15",
       "Play": "attack",
       "Hop": 2,
       "After": 1.14
      },
      {
-      "Actor": "황건#53",
-      "Hop": 3,
-      "After": 0.62
-     },
-     {
-      "Actor": "황건#53",
-      "Emote": "!",
-      "After": 0.79
-     },
-     {
-      "Actor": "황건#54",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.73
-     },
-     {
-      "Actor": "황건#55",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.61
-     },
-     {
-      "Actor": "황건#55",
-      "Emote": "!!!",
-      "After": 0.87
-     },
-     {
-      "Actor": "황건#56",
-      "Hop": 3,
-      "After": 0.47
-     },
-     {
-      "Actor": "황건#57",
-      "Hop": 3,
-      "After": 1.26
-     },
-     {
-      "Actor": "황건#57",
-      "Emote": "!",
-      "After": 1.42
-     },
-     {
-      "Actor": "황건#58",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.19
-     },
-     {
-      "Actor": "황건#59",
-      "Play": "attack",
-      "After": 0.23
-     },
-     {
-      "Actor": "황건#59",
-      "Play": "attack",
-      "After": 0.68
-     },
-     {
-      "Actor": "황건#59",
-      "Emote": "!!!",
-      "After": 0.31
-     },
-     {
-      "Actor": "황건#60",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.07
-     },
-     {
-      "Actor": "황건#61",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.7
-     },
-     {
-      "Actor": "황건#61",
-      "Emote": "!!!",
-      "After": 0.87
-     },
-     {
-      "Actor": "황건#62",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.45
-     },
-     {
-      "Actor": "황건#63",
-      "Hop": 3,
-      "After": 1.07
-     },
-     {
-      "Actor": "황건#64",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.54
-     },
-     {
-      "Actor": "황건#65",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 1.15
-     },
-     {
-      "Actor": "황건#66",
-      "Play": "attack",
-      "After": 1.22
-     },
-     {
-      "Actor": "황건#66",
-      "Play": "attack",
-      "After": 1.67
-     },
-     {
-      "Actor": "황건#66",
-      "Emote": "!!!",
-      "After": 1.43
-     },
-     {
-      "Shake": 0.3,
-      "After": 0.6
-     },
-     {
-      "Wait": 2.1
-     }
-    ],
-    [
-     {
-      "Actor": "황건#0",
-      "Hop": 3,
-      "After": 1.05
-     },
-     {
-      "Actor": "황건#1",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.63
-     },
-     {
-      "Actor": "황건#1",
-      "Emote": "!",
-      "After": 0.71
-     },
-     {
-      "Actor": "황건#2",
-      "Play": "attack",
-      "After": 0.3
-     },
-     {
-      "Actor": "황건#2",
-      "Play": "attack",
-      "After": 0.75
-     },
-     {
-      "Actor": "황건#3",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.99
-     },
-     {
-      "Actor": "황건#4",
-      "Play": "attack",
-      "After": 0.47
-     },
-     {
-      "Actor": "황건#4",
-      "Play": "attack",
-      "After": 0.92
-     },
-     {
-      "Actor": "황건#4",
-      "Emote": "!",
-      "After": 0.54
-     },
-     {
-      "Actor": "황건#5",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.64
-     },
-     {
-      "Actor": "황건#5",
-      "Emote": "!!!",
-      "After": 0.84
-     },
-     {
-      "Actor": "황건#6",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.06
-     },
-     {
-      "Actor": "황건#7",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.62
-     },
-     {
-      "Actor": "황건#8",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.62
-     },
-     {
-      "Actor": "황건#9",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.85
-     },
-     {
-      "Actor": "황건#9",
-      "Emote": "!",
-      "After": 0.86
-     },
-     {
-      "Actor": "황건#10",
-      "Hop": 3,
-      "After": 0.05
-     },
-     {
-      "Actor": "황건#10",
-      "Emote": "!",
-      "After": 0.21
-     },
-     {
-      "Actor": "황건#11",
-      "Hop": 3,
-      "After": 0.74
-     },
-     {
-      "Actor": "황건#12",
-      "Hop": 3,
-      "After": 0.12
-     },
-     {
-      "Actor": "황건#12",
-      "Emote": "!!!",
-      "After": 0.16
-     },
-     {
-      "Actor": "황건#13",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.85
-     },
-     {
-      "Actor": "황건#14",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.32
-     },
-     {
-      "Actor": "황건#15",
-      "Hop": 3,
-      "After": 0.92
-     },
-     {
-      "Actor": "황건#15",
-      "Emote": "!!",
-      "After": 0.95
-     },
-     {
       "Actor": "황건#16",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.94
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.89
      },
      {
       "Actor": "황건#17",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.76
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.49
      },
      {
       "Actor": "황건#18",
       "Play": "attack",
-      "After": 0.61
-     },
-     {
-      "Actor": "황건#18",
-      "Play": "attack",
-      "After": 1.06
-     },
-     {
-      "Actor": "황건#18",
-      "Emote": "!!",
-      "After": 0.74
+      "Hop": 2,
+      "After": 1.7
      },
      {
       "Actor": "황건#19",
       "Play": "attack",
       "Hop": 2,
-      "After": 0.76
+      "After": 0.95
      },
      {
       "Actor": "황건#20",
       "Play": "attack",
-      "Hop": 2,
-      "After": 0.64
+      "After": 1.57
+     },
+     {
+      "Actor": "황건#20",
+      "Play": "attack",
+      "After": 2.02
      },
      {
       "Actor": "황건#21",
@@ -3470,326 +2336,1272 @@
      },
      {
       "Actor": "황건#22",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.51
-     },
-     {
-      "Actor": "황건#22",
-      "Emote": "!!!",
-      "After": 0.52
+      "Hop": 3,
+      "After": 1.67
      },
      {
       "Actor": "황건#23",
-      "Play": "attack",
-      "After": 0.71
-     },
-     {
-      "Actor": "황건#23",
-      "Play": "attack",
-      "After": 1.16
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.35
      },
      {
       "Actor": "황건#24",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.81
+      "Hop": 3,
+      "After": 1.43
      },
      {
       "Actor": "황건#25",
       "Play": "attack",
-      "Hop": 2,
-      "After": 0.05
+      "After": 1.77
+     },
+     {
+      "Actor": "황건#25",
+      "Play": "attack",
+      "After": 2.22
      },
      {
       "Actor": "황건#26",
       "Play": "attack",
       "Hop": 2,
-      "After": 1.07
+      "After": 1.16
      },
      {
       "Actor": "황건#27",
-      "Hop": 3,
-      "After": 0.13
-     },
-     {
-      "Actor": "황건#27",
-      "Emote": "!",
-      "After": 0.3
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.11
      },
      {
       "Actor": "황건#28",
       "Hop": 3,
-      "After": 0.12
-     },
-     {
-      "Actor": "황건#28",
-      "Emote": "!!",
-      "After": 0.29
+      "After": 1.9
      },
      {
       "Actor": "황건#29",
-      "Hop": 3,
-      "After": 0.27
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.92
      },
      {
       "Actor": "황건#30",
       "Play": "attack",
       "Hop": 2,
-      "After": 1.11
+      "After": 0.98
      },
      {
       "Actor": "황건#31",
       "Play": "attack",
+      "After": 0.9
+     },
+     {
+      "Actor": "황건#31",
+      "Play": "attack",
+      "After": 1.35
+     },
+     {
+      "Actor": "황건#32",
+      "Play": "attack",
       "Hop": 2,
-      "After": 0.19
-     },
-     {
-      "Actor": "황건#32",
-      "Play": "attack",
-      "After": 0.06
-     },
-     {
-      "Actor": "황건#32",
-      "Play": "attack",
-      "After": 0.51
-     },
-     {
-      "Actor": "황건#32",
-      "Emote": "!!",
-      "After": 0.34
+      "After": 1.58
      },
      {
       "Actor": "황건#33",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.72
+      "Hop": 3,
+      "After": 1.08
      },
      {
       "Actor": "황건#34",
       "Hop": 3,
-      "After": 0.54
+      "After": 1.33
      },
      {
       "Actor": "황건#35",
       "Play": "attack",
-      "Hop": 2,
-      "After": 1.02
+      "After": 1.45
      },
      {
       "Actor": "황건#35",
-      "Emote": "!",
-      "After": 1.31
+      "Play": "attack",
+      "After": 1.9
      },
      {
       "Actor": "황건#36",
       "Hop": 3,
-      "After": 0.77
-     },
-     {
-      "Actor": "황건#36",
-      "Emote": "!!",
-      "After": 0.91
+      "After": 0.92
      },
      {
       "Actor": "황건#37",
       "Play": "attack",
+      "After": 1.11
+     },
+     {
+      "Actor": "황건#37",
+      "Play": "attack",
+      "After": 1.56
+     },
+     {
+      "Actor": "황건#38",
+      "Play": "attack",
       "Hop": 2,
-      "After": 0.23
-     },
-     {
-      "Actor": "황건#38",
-      "Hop": 3,
-      "After": 0.42
-     },
-     {
-      "Actor": "황건#38",
-      "Emote": "!!",
-      "After": 0.61
+      "After": 1.64
      },
      {
       "Actor": "황건#39",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.03
+      "Hop": 3,
+      "After": 1.74
      },
      {
       "Actor": "황건#40",
-      "Hop": 3,
-      "After": 1.17
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.33
      },
      {
       "Actor": "황건#41",
       "Play": "attack",
       "Hop": 2,
-      "After": 0.82
+      "After": 1.86
      },
      {
       "Actor": "황건#42",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.44
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.38
      },
      {
       "Actor": "황건#43",
-      "Hop": 3,
-      "After": 0.8
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.92
      },
      {
       "Actor": "황건#44",
       "Play": "attack",
-      "After": 0.55
-     },
-     {
-      "Actor": "황건#44",
-      "Play": "attack",
-      "After": 1.0
+      "Hop": 2,
+      "After": 1.95
      },
      {
       "Actor": "황건#45",
-      "Hop": 3,
-      "After": 0.5
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.59
      },
      {
       "Actor": "황건#46",
       "Hop": 3,
-      "After": 0.9
+      "After": 1.07
      },
      {
       "Actor": "황건#47",
+      "Play": "attack",
+      "After": 1.6
+     },
+     {
+      "Actor": "황건#47",
+      "Play": "attack",
+      "After": 2.05
+     },
+     {
+      "Actor": "황건#48",
       "Hop": 3,
-      "After": 0.14
-     },
-     {
-      "Actor": "황건#48",
-      "Play": "attack",
-      "After": 0.55
-     },
-     {
-      "Actor": "황건#48",
-      "Play": "attack",
-      "After": 1.0
+      "After": 0.81
      },
      {
       "Actor": "황건#49",
       "Hop": 3,
-      "After": 0.47
+      "After": 1.86
      },
      {
       "Actor": "황건#50",
       "Play": "attack",
-      "Hop": 2,
-      "After": 0.84
+      "After": 0.82
+     },
+     {
+      "Actor": "황건#50",
+      "Play": "attack",
+      "After": 1.27
      },
      {
       "Actor": "황건#51",
       "Play": "attack",
-      "Hop": 2,
-      "After": 0.42
+      "After": 1.53
+     },
+     {
+      "Actor": "황건#51",
+      "Play": "attack",
+      "After": 1.98
      },
      {
       "Actor": "황건#52",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.78
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.92
      },
      {
       "Actor": "황건#53",
       "Play": "block",
       "Hop": 1,
-      "After": 1.19
+      "After": 1.04
      },
      {
       "Actor": "황건#54",
-      "Hop": 3,
-      "After": 1.09
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.03
      },
      {
       "Actor": "황건#55",
-      "Play": "block",
-      "Hop": 1,
-      "After": 0.78
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.53
      },
      {
       "Actor": "황건#56",
       "Hop": 3,
-      "After": 0.8
+      "After": 1.48
      },
      {
       "Actor": "황건#57",
-      "Hop": 3,
-      "After": 0.05
-     },
-     {
-      "Actor": "황건#57",
-      "Emote": "!!",
-      "After": 0.15
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.96
      },
      {
       "Actor": "황건#58",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.38
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.38
      },
      {
       "Actor": "황건#59",
-      "Play": "block",
-      "Hop": 1,
-      "After": 1.11
-     },
-     {
-      "Actor": "황건#60",
       "Hop": 3,
-      "After": 0.58
+      "After": 1.71
      },
      {
       "Actor": "황건#60",
-      "Emote": "!",
-      "After": 0.76
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.2
      },
      {
       "Actor": "황건#61",
       "Play": "attack",
       "Hop": 2,
-      "After": 0.41
-     },
-     {
-      "Actor": "황건#61",
-      "Emote": "!!!",
-      "After": 0.43
+      "After": 0.83
      },
      {
       "Actor": "황건#62",
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.01
+     },
+     {
+      "Actor": "황건#63",
       "Hop": 3,
-      "After": 0.4
-     },
-     {
-      "Actor": "황건#63",
-      "Play": "attack",
-      "After": 1.16
-     },
-     {
-      "Actor": "황건#63",
-      "Play": "attack",
-      "After": 1.61
+      "After": 1.29
      },
      {
       "Actor": "황건#64",
       "Play": "attack",
       "Hop": 2,
-      "After": 0.69
+      "After": 1.84
      },
      {
       "Actor": "황건#65",
-      "Play": "attack",
-      "Hop": 2,
-      "After": 0.2
+      "Hop": 3,
+      "After": 1.26
      },
      {
       "Actor": "황건#66",
+      "Hop": 3,
+      "After": 0.81
+     },
+     {
+      "Actor": "황건#0",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.89
+     },
+     {
+      "Actor": "황건#9",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.93
+     },
+     {
+      "Actor": "황건#2",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.9
+     },
+     {
+      "Actor": "황건#24",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.21
+     },
+     {
+      "Actor": "황건#32",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.47
+     },
+     {
+      "Actor": "황건#35",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.33
+     },
+     {
+      "Actor": "황건#33",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.41
+     },
+     {
+      "Actor": "황건#46",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.67
+     },
+     {
+      "Actor": "황건#48",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.68
+     },
+     {
+      "Actor": "황건#54",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.93
+     },
+     {
+      "Shake": 0.3,
+      "After": 1.2
+     },
+     {
+      "Wait": 2.7
+     }
+    ],
+    [
+     {
+      "Actor": "장각",
+      "Play": "action",
+      "Hop": 1
+     },
+     {
+      "Actor": "장각",
+      "Shout": "황천당립!",
+      "ShoutSize": 34
+     },
+     {
+      "Actor": "황건#0",
       "Play": "block",
       "Hop": 1,
+      "After": 0.49
+     },
+     {
+      "Actor": "황건#1",
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.18
+     },
+     {
+      "Actor": "황건#2",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.87
+     },
+     {
+      "Actor": "황건#3",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.16
+     },
+     {
+      "Actor": "황건#4",
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.42
+     },
+     {
+      "Actor": "황건#5",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.77
+     },
+     {
+      "Actor": "황건#6",
+      "Play": "attack",
+      "Hop": 2,
       "After": 0.68
+     },
+     {
+      "Actor": "황건#7",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.53
+     },
+     {
+      "Actor": "황건#8",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.84
+     },
+     {
+      "Actor": "황건#9",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.95
+     },
+     {
+      "Actor": "황건#10",
+      "Play": "attack",
+      "After": 0.75
+     },
+     {
+      "Actor": "황건#10",
+      "Play": "attack",
+      "After": 1.2
+     },
+     {
+      "Actor": "황건#11",
+      "Hop": 3,
+      "After": 0.93
+     },
+     {
+      "Actor": "황건#12",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.79
+     },
+     {
+      "Actor": "황건#13",
+      "Hop": 3,
+      "After": 0.63
+     },
+     {
+      "Actor": "황건#14",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.83
+     },
+     {
+      "Actor": "황건#15",
+      "Hop": 3,
+      "After": 1.37
+     },
+     {
+      "Actor": "황건#16",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.39
+     },
+     {
+      "Actor": "황건#17",
+      "Hop": 3,
+      "After": 1.51
+     },
+     {
+      "Actor": "황건#18",
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.54
+     },
+     {
+      "Actor": "황건#19",
+      "Play": "attack",
+      "After": 1.44
+     },
+     {
+      "Actor": "황건#19",
+      "Play": "attack",
+      "After": 1.89
+     },
+     {
+      "Actor": "황건#20",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.57
+     },
+     {
+      "Actor": "황건#21",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.2
+     },
+     {
+      "Actor": "황건#22",
+      "Play": "attack",
+      "After": 0.61
+     },
+     {
+      "Actor": "황건#22",
+      "Play": "attack",
+      "After": 1.06
+     },
+     {
+      "Actor": "황건#23",
+      "Play": "attack",
+      "After": 0.97
+     },
+     {
+      "Actor": "황건#23",
+      "Play": "attack",
+      "After": 1.42
+     },
+     {
+      "Actor": "황건#24",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.55
+     },
+     {
+      "Actor": "황건#25",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.82
+     },
+     {
+      "Actor": "황건#26",
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.46
+     },
+     {
+      "Actor": "황건#27",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.05
+     },
+     {
+      "Actor": "황건#28",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.87
+     },
+     {
+      "Actor": "황건#29",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.58
+     },
+     {
+      "Actor": "황건#30",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.51
+     },
+     {
+      "Actor": "황건#31",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.7
+     },
+     {
+      "Actor": "황건#32",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.81
+     },
+     {
+      "Actor": "황건#33",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.13
+     },
+     {
+      "Actor": "황건#34",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.32
+     },
+     {
+      "Actor": "황건#35",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.42
+     },
+     {
+      "Actor": "황건#36",
+      "Hop": 3,
+      "After": 0.56
+     },
+     {
+      "Actor": "황건#37",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.81
+     },
+     {
+      "Actor": "황건#38",
+      "Play": "attack",
+      "After": 0.87
+     },
+     {
+      "Actor": "황건#38",
+      "Play": "attack",
+      "After": 1.32
+     },
+     {
+      "Actor": "황건#39",
+      "Hop": 3,
+      "After": 0.97
+     },
+     {
+      "Actor": "황건#40",
+      "Hop": 3,
+      "After": 1.41
+     },
+     {
+      "Actor": "황건#41",
+      "Play": "attack",
+      "After": 1.05
+     },
+     {
+      "Actor": "황건#41",
+      "Play": "attack",
+      "After": 1.5
+     },
+     {
+      "Actor": "황건#42",
+      "Hop": 3,
+      "After": 1.41
+     },
+     {
+      "Actor": "황건#43",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.03
+     },
+     {
+      "Actor": "황건#44",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.59
+     },
+     {
+      "Actor": "황건#45",
+      "Play": "attack",
+      "After": 1.22
+     },
+     {
+      "Actor": "황건#45",
+      "Play": "attack",
+      "After": 1.67
+     },
+     {
+      "Actor": "황건#46",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.77
+     },
+     {
+      "Actor": "황건#47",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.53
+     },
+     {
+      "Actor": "황건#48",
+      "Hop": 3,
+      "After": 0.58
+     },
+     {
+      "Actor": "황건#49",
+      "Hop": 3,
+      "After": 1.57
+     },
+     {
+      "Actor": "황건#50",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.48
+     },
+     {
+      "Actor": "황건#51",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.07
+     },
+     {
+      "Actor": "황건#52",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.47
+     },
+     {
+      "Actor": "황건#53",
+      "Hop": 3,
+      "After": 1.39
+     },
+     {
+      "Actor": "황건#54",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.45
+     },
+     {
+      "Actor": "황건#55",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.56
+     },
+     {
+      "Actor": "황건#56",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.65
+     },
+     {
+      "Actor": "황건#57",
+      "Hop": 3,
+      "After": 0.85
+     },
+     {
+      "Actor": "황건#58",
+      "Play": "block",
+      "Hop": 1,
+      "After": 1.49
+     },
+     {
+      "Actor": "황건#59",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.5
+     },
+     {
+      "Actor": "황건#60",
+      "Hop": 3,
+      "After": 1.38
+     },
+     {
+      "Actor": "황건#61",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.85
+     },
+     {
+      "Actor": "황건#62",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.91
+     },
+     {
+      "Actor": "황건#63",
+      "Hop": 3,
+      "After": 1.37
+     },
+     {
+      "Actor": "황건#64",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.74
+     },
+     {
+      "Actor": "황건#65",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.67
+     },
+     {
+      "Actor": "황건#66",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.19
+     },
+     {
+      "Actor": "황건#0",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.45
+     },
+     {
+      "Actor": "황건#9",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.45
+     },
+     {
+      "Actor": "황건#2",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.54
+     },
+     {
+      "Actor": "황건#24",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 0.86
+     },
+     {
+      "Actor": "황건#32",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.01
+     },
+     {
+      "Actor": "황건#35",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.04
+     },
+     {
+      "Actor": "황건#33",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.03
+     },
+     {
+      "Actor": "황건#46",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.27
+     },
+     {
+      "Actor": "황건#48",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.16
+     },
+     {
+      "Actor": "황건#54",
+      "Shout": "황천당립!",
+      "ShoutSize": 15,
+      "After": 1.49
+     },
+     {
+      "Shake": 0.3,
+      "After": 0.8
+     },
+     {
+      "Wait": 2.3
+     }
+    ],
+    [
+     {
+      "Actor": "황건#0",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.99
+     },
+     {
+      "Actor": "황건#1",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.05
+     },
+     {
+      "Actor": "황건#2",
+      "Hop": 3,
+      "After": 0.76
+     },
+     {
+      "Actor": "황건#3",
+      "Play": "attack",
+      "After": 1.15
+     },
+     {
+      "Actor": "황건#3",
+      "Play": "attack",
+      "After": 1.6
+     },
+     {
+      "Actor": "황건#4",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.56
+     },
+     {
+      "Actor": "황건#5",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.99
+     },
+     {
+      "Actor": "황건#6",
+      "Hop": 3,
+      "After": 1.08
+     },
+     {
+      "Actor": "황건#7",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.5
+     },
+     {
+      "Actor": "황건#8",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.79
+     },
+     {
+      "Actor": "황건#9",
+      "Play": "attack",
+      "After": 0.33
+     },
+     {
+      "Actor": "황건#9",
+      "Play": "attack",
+      "After": 0.78
+     },
+     {
+      "Actor": "황건#10",
+      "Hop": 3,
+      "After": 0.4
+     },
+     {
+      "Actor": "황건#11",
+      "Play": "attack",
+      "After": 0.63
+     },
+     {
+      "Actor": "황건#11",
+      "Play": "attack",
+      "After": 1.08
+     },
+     {
+      "Actor": "황건#12",
+      "Hop": 3,
+      "After": 0.93
+     },
+     {
+      "Actor": "황건#13",
+      "Hop": 3,
+      "After": 0.54
+     },
+     {
+      "Actor": "황건#14",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.57
+     },
+     {
+      "Actor": "황건#15",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.57
+     },
+     {
+      "Actor": "황건#16",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.69
+     },
+     {
+      "Actor": "황건#17",
+      "Play": "attack",
+      "After": 0.73
+     },
+     {
+      "Actor": "황건#17",
+      "Play": "attack",
+      "After": 1.18
+     },
+     {
+      "Actor": "황건#18",
+      "Hop": 3,
+      "After": 0.74
+     },
+     {
+      "Actor": "황건#19",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.82
+     },
+     {
+      "Actor": "황건#20",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.0
+     },
+     {
+      "Actor": "황건#21",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.04
+     },
+     {
+      "Actor": "황건#22",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.38
+     },
+     {
+      "Actor": "황건#23",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.41
+     },
+     {
+      "Actor": "황건#24",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.0
+     },
+     {
+      "Actor": "황건#25",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.16
+     },
+     {
+      "Actor": "황건#26",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.45
+     },
+     {
+      "Actor": "황건#27",
+      "Hop": 3,
+      "After": 1.1
+     },
+     {
+      "Actor": "황건#28",
+      "Play": "attack",
+      "After": 0.96
+     },
+     {
+      "Actor": "황건#28",
+      "Play": "attack",
+      "After": 1.41
+     },
+     {
+      "Actor": "황건#29",
+      "Play": "attack",
+      "After": 0.36
+     },
+     {
+      "Actor": "황건#29",
+      "Play": "attack",
+      "After": 0.81
+     },
+     {
+      "Actor": "황건#30",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.24
+     },
+     {
+      "Actor": "황건#31",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.71
+     },
+     {
+      "Actor": "황건#32",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.28
+     },
+     {
+      "Actor": "황건#33",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.8
+     },
+     {
+      "Actor": "황건#34",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.47
+     },
+     {
+      "Actor": "황건#35",
+      "Hop": 3,
+      "After": 0.47
+     },
+     {
+      "Actor": "황건#36",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.26
+     },
+     {
+      "Actor": "황건#37",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.98
+     },
+     {
+      "Actor": "황건#38",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.81
+     },
+     {
+      "Actor": "황건#39",
+      "Hop": 3,
+      "After": 0.48
+     },
+     {
+      "Actor": "황건#40",
+      "Hop": 3,
+      "After": 0.61
+     },
+     {
+      "Actor": "황건#41",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.7
+     },
+     {
+      "Actor": "황건#42",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.27
+     },
+     {
+      "Actor": "황건#43",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.16
+     },
+     {
+      "Actor": "황건#44",
+      "Hop": 3,
+      "After": 0.65
+     },
+     {
+      "Actor": "황건#45",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.13
+     },
+     {
+      "Actor": "황건#46",
+      "Hop": 3,
+      "After": 0.1
+     },
+     {
+      "Actor": "황건#47",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.17
+     },
+     {
+      "Actor": "황건#48",
+      "Play": "attack",
+      "After": 0.57
+     },
+     {
+      "Actor": "황건#48",
+      "Play": "attack",
+      "After": 1.02
+     },
+     {
+      "Actor": "황건#49",
+      "Play": "attack",
+      "After": 0.41
+     },
+     {
+      "Actor": "황건#49",
+      "Play": "attack",
+      "After": 0.86
+     },
+     {
+      "Actor": "황건#50",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.13
+     },
+     {
+      "Actor": "황건#51",
+      "Hop": 3,
+      "After": 1.14
+     },
+     {
+      "Actor": "황건#52",
+      "Hop": 3,
+      "After": 1.08
+     },
+     {
+      "Actor": "황건#53",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.03
+     },
+     {
+      "Actor": "황건#54",
+      "Hop": 3,
+      "After": 0.01
+     },
+     {
+      "Actor": "황건#55",
+      "Play": "attack",
+      "After": 0.86
+     },
+     {
+      "Actor": "황건#55",
+      "Play": "attack",
+      "After": 1.31
+     },
+     {
+      "Actor": "황건#56",
+      "Hop": 3,
+      "After": 0.65
+     },
+     {
+      "Actor": "황건#57",
+      "Play": "block",
+      "Hop": 1,
+      "After": 0.5
+     },
+     {
+      "Actor": "황건#58",
+      "Hop": 3,
+      "After": 0.05
+     },
+     {
+      "Actor": "황건#59",
+      "Hop": 3,
+      "After": 0.99
+     },
+     {
+      "Actor": "황건#60",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.09
+     },
+     {
+      "Actor": "황건#61",
+      "Play": "attack",
+      "After": 0.95
+     },
+     {
+      "Actor": "황건#61",
+      "Play": "attack",
+      "After": 1.4
+     },
+     {
+      "Actor": "황건#62",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 1.09
+     },
+     {
+      "Actor": "황건#63",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.08
+     },
+     {
+      "Actor": "황건#64",
+      "Play": "attack",
+      "Hop": 2,
+      "After": 0.01
+     },
+     {
+      "Actor": "황건#65",
+      "Hop": 3,
+      "After": 0.34
+     },
+     {
+      "Actor": "황건#66",
+      "Hop": 3,
+      "After": 0.62
      },
      {
       "Shake": 0.3,
@@ -3799,13 +3611,13 @@
       "Wait": 1.9
      },
      {
-      "Actor": "황건#a",
-      "Play": "attack",
+      "Actor": "장량",
+      "Play": "action",
       "Hop": 2
      },
      {
-      "Actor": "황건#b",
-      "Play": "attack",
+      "Actor": "장보",
+      "Play": "action",
       "Hop": 2,
       "After": 0.3
      }
@@ -13641,8 +13453,8 @@
     },
     "관우": {
      "At": [
-      3,
-      69
+      2,
+      68
      ],
      "Face": "NE",
      "Off": true,
@@ -13886,17 +13698,89 @@
        63
       ],
       "Ease": "out",
-      "Speed": 2.4,
-      "After": 0.85,
+      "Speed": 2.6,
+      "After": 0.83,
       "End": "SW"
      },
      {
       "Actor": "여포",
       "Strike": "장비",
-      "React": "hit",
+      "React": "block",
+      "Tempo": 2,
+      "After": 0.95
+     },
+     {
+      "Actor": "장비",
+      "Face": "NE",
+      "After": 1.18
+     },
+     {
+      "Actor": "장비",
+      "Play": "attack",
+      "Tempo": 2,
+      "After": 1.18
+     },
+     {
+      "Actor": "여포",
+      "Face": "SW",
+      "After": 1.18
+     },
+     {
+      "Actor": "여포",
+      "Move": [
+       12,
+       62
+      ],
+      "Ease": "out",
+      "Speed": 3.4,
+      "Back": true,
+      "After": 1.21
+     },
+     {
+      "Actor": "장비",
+      "Move": [
+       12,
+       63
+      ],
+      "Ease": "out",
+      "Speed": 2.6,
+      "After": 1.41,
+      "End": "NE"
+     },
+     {
+      "Actor": "여포",
+      "Strike": "장비",
+      "React": "block",
       "Push": 1,
       "Tempo": 2,
-      "After": 1.22
+      "After": 1.53,
+      "Crit": true
+     },
+     {
+      "Actor": "여포",
+      "Move": [
+       12,
+       63
+      ],
+      "Ease": "out",
+      "Speed": 0.95,
+      "After": 1.76
+     },
+     {
+      "Actor": "장비",
+      "Face": "NE",
+      "After": 2.1
+     },
+     {
+      "Actor": "장비",
+      "Move": [
+       12,
+       65
+      ],
+      "Ease": "out",
+      "Speed": 2,
+      "Back": true,
+      "After": 2.1
      },
      {
       "Actor": "여포",
@@ -13905,15 +13789,54 @@
        64
       ],
       "Ease": "out",
-      "Speed": 2.4,
-      "After": 1.64
+      "Speed": 2,
+      "After": 2.15,
+      "End": "SW"
+     },
+     {
+      "Actor": "여포",
+      "Face": "SW",
+      "After": 2.3
+     },
+     {
+      "Actor": "여포",
+      "Play": "attack",
+      "Tempo": 2,
+      "After": 2.3
+     },
+     {
+      "Actor": "장비",
+      "Face": "NE",
+      "After": 2.3
+     },
+     {
+      "Actor": "장비",
+      "Move": [
+       12,
+       66
+      ],
+      "Ease": "out",
+      "Speed": 3.4,
+      "Back": true,
+      "After": 2.33
+     },
+     {
+      "Actor": "여포",
+      "Move": [
+       12,
+       65
+      ],
+      "Ease": "out",
+      "Speed": 2.6,
+      "After": 2.53,
+      "End": "SW"
      },
      {
       "Actor": "장비",
       "Strike": "여포",
       "React": "block",
       "Tempo": 2,
-      "After": 2.0
+      "After": 2.65
      },
      {
       "Actor": "여포",
@@ -13921,152 +13844,63 @@
       "React": "hit",
       "Push": 1,
       "Tempo": 2,
-      "After": 2.37
+      "After": 2.88
      },
      {
       "Actor": "여포",
       "Move": [
        12,
-       65
+       66
       ],
       "Ease": "out",
-      "Speed": 2.4,
-      "After": 2.79
+      "Speed": 0.95,
+      "After": 3.11
      },
      {
       "Actor": "여포",
       "Strike": "장비",
       "React": "block",
-      "Push": 1,
       "Tempo": 2,
-      "After": 3.1,
-      "Gather": 0.3,
-      "Crit": true
-     },
-     {
-      "Actor": "여포",
-      "Move": [
-       12,
-       66
-      ],
-      "Ease": "out",
-      "Speed": 2.4,
-      "After": 3.82
-     },
-     {
-      "Actor": "장비",
-      "Face": "NE",
-      "After": 4.14
-     },
-     {
-      "Actor": "장비",
-      "Play": "attack",
-      "Tempo": 2,
-      "After": 4.14
-     },
-     {
-      "Actor": "여포",
-      "Face": "SW",
-      "After": 4.14
-     },
-     {
-      "Actor": "여포",
-      "Move": [
-       12,
-       65
-      ],
-      "Ease": "out",
-      "Speed": 3.4,
-      "Back": true,
-      "After": 4.17
-     },
-     {
-      "Actor": "장비",
-      "Move": [
-       12,
-       66
-      ],
-      "Ease": "out",
-      "Speed": 2.4,
-      "After": 4.39,
-      "End": "NE"
-     },
-     {
-      "Actor": "여포",
-      "Strike": "장비",
-      "React": "hit",
-      "Push": 1,
-      "Tempo": 2,
-      "After": 4.74
-     },
-     {
-      "Actor": "여포",
-      "Move": [
-       12,
-       66
-      ],
-      "Ease": "out",
-      "Speed": 2.4,
-      "After": 5.16
-     },
-     {
-      "Actor": "여포",
-      "Strike": "장비",
-      "React": "block",
-      "Push": 1,
-      "Tempo": 2,
-      "After": 5.53,
-      "Gather": 0.3,
-      "Crit": true
-     },
-     {
-      "Actor": "여포",
-      "Move": [
-       12,
-       67
-      ],
-      "Ease": "out",
-      "Speed": 2.4,
-      "After": 6.25
+      "After": 3.45
      },
      {
       "Actor": "장비",
       "Emote": "!",
-      "After": 5.12
+      "After": 2.4
      },
      {
       "Actor": "관우",
       "Speed": 2.3,
-      "After": 6.82,
+      "After": 4.1,
       "Move": [
        11,
-       68
+       67
       ],
       "Via": [
        [
         11,
-        69
+        68
        ]
       ],
       "End": "SE",
       "Enter": [
-       3,
-       69
+       2,
+       68
       ]
      },
      {
       "Actor": "관우",
       "Strike": "여포",
       "React": "hit",
-      "After": 7.71
+      "After": 5.12
      },
      {
       "Actor": "유비",
       "Speed": 2.3,
-      "After": 8.22,
+      "After": 5.5,
       "Move": [
        13,
-       68
+       67
       ],
       "Via": [
        [
@@ -14084,15 +13918,14 @@
       "Actor": "유비",
       "Strike": "여포",
       "React": "block",
-      "After": 9.36
+      "After": 6.76
      },
      {
       "Actor": "여포",
       "Strike": "장비",
-      "React": "hit",
+      "React": "block",
       "Tempo": 2,
-      "After": 10.06,
-      "Gather": 0.3,
+      "After": 7.46,
       "Crit": true
      },
      {
@@ -14100,29 +13933,28 @@
       "Strike": "여포",
       "React": "block",
       "Tempo": 2,
-      "After": 10.69
+      "After": 7.73
      },
      {
       "Actor": "여포",
       "Strike": "유비",
-      "React": "hit",
+      "React": "block",
       "Tempo": 2,
-      "After": 10.99
+      "After": 8.0
      },
      {
       "Actor": "장비",
       "Strike": "여포",
       "React": "block",
       "Tempo": 2,
-      "After": 11.32
+      "After": 8.27
      },
      {
       "Actor": "여포",
       "Strike": "관우",
-      "React": "hit",
+      "React": "block",
       "Tempo": 2,
-      "After": 11.68,
-      "Gather": 0.3,
+      "After": 8.54,
       "Crit": true
      },
      {
@@ -14130,29 +13962,28 @@
       "Strike": "여포",
       "React": "block",
       "Tempo": 2,
-      "After": 12.37
+      "After": 8.81
      },
      {
       "Actor": "여포",
       "Strike": "장비",
-      "React": "hit",
+      "React": "block",
       "Tempo": 2,
-      "After": 12.67
+      "After": 9.08
      },
      {
       "Actor": "관우",
       "Strike": "여포",
       "React": "block",
       "Tempo": 2,
-      "After": 12.99
+      "After": 9.35
      },
      {
       "Actor": "여포",
       "Strike": "유비",
       "React": "hit",
       "Tempo": 2,
-      "After": 13.39,
-      "Gather": 0.3,
+      "After": 9.62,
       "Crit": true
      },
      {
@@ -14160,14 +13991,15 @@
       "Strike": "여포",
       "React": "block",
       "Tempo": 2,
-      "After": 14.04
+      "After": 9.89
      },
      {
-      "Wait": 15.22
+      "Wait": 10.96
      }
     ]
    ],
-   "Hold": 0.8
+   "Hold": 0.8,
+   "End": 8.96
   },
   {
    "ID": "luoyang",
@@ -15363,9 +15195,20 @@
      {
       "Actor": "문추",
       "Strike": "조운",
-      "React": "block",
+      "React": "hit",
+      "Push": 1,
       "Tempo": 2,
-      "After": 1.32
+      "After": 1.13
+     },
+     {
+      "Actor": "문추",
+      "Move": [
+       -15,
+       32
+      ],
+      "Ease": "out",
+      "Speed": 0.95,
+      "After": 1.36
      },
      {
       "Actor": "조운",
@@ -15377,36 +15220,11 @@
      {
       "Actor": "조운",
       "Strike": "문추",
-      "React": "hit",
+      "React": "block",
       "Push": 1,
       "Tempo": 2,
-      "After": 2.03
-     },
-     {
-      "Actor": "조운",
-      "Move": [
-       -15,
-       33
-      ],
-      "Ease": "out",
-      "Speed": 2.4,
-      "After": 2.45
-     },
-     {
-      "Actor": "문추",
-      "Face": "NE",
-      "After": 2.77
-     },
-     {
-      "Actor": "문추",
-      "Play": "attack",
-      "Tempo": 2,
-      "After": 2.77
-     },
-     {
-      "Actor": "조운",
-      "Face": "SW",
-      "After": 2.77
+      "After": 2.15,
+      "Crit": true
      },
      {
       "Actor": "조운",
@@ -15415,36 +15233,79 @@
        32
       ],
       "Ease": "out",
-      "Speed": 3.4,
+      "Speed": 0.95,
+      "After": 2.38
+     },
+     {
+      "Actor": "조운",
+      "Face": "SW",
+      "After": 2.72
+     },
+     {
+      "Actor": "조운",
+      "Move": [
+       -15,
+       31
+      ],
+      "Ease": "out",
+      "Speed": 2,
       "Back": true,
-      "After": 2.8
+      "After": 2.72
      },
      {
       "Actor": "문추",
       "Move": [
        -15,
-       33
+       32
       ],
       "Ease": "out",
-      "Speed": 2.4,
-      "After": 3.02,
+      "Speed": 2,
+      "After": 2.77,
       "End": "NE"
      },
      {
-      "Actor": "조운",
-      "Face": "SW",
-      "After": 3.43
+      "Actor": "문추",
+      "Strike": "조운",
+      "React": "block",
+      "Tempo": 2,
+      "After": 2.92
      },
      {
       "Actor": "조운",
-      "Play": "attack",
+      "Strike": "문추",
+      "React": "block",
       "Tempo": 2,
-      "After": 3.43
+      "After": 3.15
+     },
+     {
+      "Actor": "조운",
+      "Strike": "문추",
+      "React": "hit",
+      "Push": 1,
+      "Tempo": 2,
+      "After": 3.6
+     },
+     {
+      "Actor": "조운",
+      "Move": [
+       -15,
+       32
+      ],
+      "Ease": "out",
+      "Speed": 0.95,
+      "After": 3.83
+     },
+     {
+      "Actor": "문추",
+      "Strike": "조운",
+      "React": "block",
+      "Tempo": 2,
+      "After": 4.17
      },
      {
       "Actor": "문추",
       "Face": "NE",
-      "After": 3.43
+      "After": 4.4
      },
      {
       "Actor": "문추",
@@ -15453,9 +15314,9 @@
        34
       ],
       "Ease": "out",
-      "Speed": 3.4,
+      "Speed": 2,
       "Back": true,
-      "After": 3.46
+      "After": 4.4
      },
      {
       "Actor": "조운",
@@ -15464,56 +15325,136 @@
        33
       ],
       "Ease": "out",
-      "Speed": 2.4,
-      "After": 3.68,
+      "Speed": 2,
+      "After": 4.45,
       "End": "SW"
      },
      {
       "Actor": "조운",
-      "Strike": "문추",
-      "React": "block",
-      "Tempo": 2,
-      "After": 4.09
-     },
-     {
-      "Actor": "문추",
-      "Strike": "조운",
-      "React": "block",
-      "Tempo": 2,
-      "After": 4.49
+      "Face": "SW",
+      "After": 4.6
      },
      {
       "Actor": "조운",
-      "Strike": "문추",
-      "React": "block",
+      "Play": "attack",
       "Tempo": 2,
-      "After": 4.82
-     },
-     {
-      "Actor": "조운",
-      "Strike": "문추",
-      "React": "block",
-      "Tempo": 2,
-      "After": 5.15
+      "After": 4.6
      },
      {
       "Actor": "문추",
-      "Strike": "조운",
-      "React": "block",
+      "Face": "NE",
+      "After": 4.6
+     },
+     {
+      "Actor": "문추",
+      "Move": [
+       -15,
+       35
+      ],
+      "Ease": "out",
+      "Speed": 3.4,
+      "Back": true,
+      "After": 4.63
+     },
+     {
+      "Actor": "조운",
+      "Move": [
+       -15,
+       34
+      ],
+      "Ease": "out",
+      "Speed": 2.6,
+      "After": 4.83,
+      "End": "SW"
+     },
+     {
+      "Actor": "조운",
+      "Face": "SW",
+      "After": 4.95
+     },
+     {
+      "Actor": "조운",
+      "Play": "attack",
       "Tempo": 2,
-      "After": 5.56
+      "After": 4.95
+     },
+     {
+      "Actor": "문추",
+      "Face": "NE",
+      "After": 4.95
+     },
+     {
+      "Actor": "문추",
+      "Move": [
+       -15,
+       36
+      ],
+      "Ease": "out",
+      "Speed": 3.4,
+      "Back": true,
+      "After": 4.98
+     },
+     {
+      "Actor": "조운",
+      "Move": [
+       -15,
+       35
+      ],
+      "Ease": "out",
+      "Speed": 2.6,
+      "After": 5.18,
+      "End": "SW"
+     },
+     {
+      "Actor": "문추",
+      "Face": "NE",
+      "After": 5.3
+     },
+     {
+      "Actor": "문추",
+      "Play": "attack",
+      "Tempo": 2,
+      "After": 5.3
+     },
+     {
+      "Actor": "조운",
+      "Face": "SW",
+      "After": 5.3
+     },
+     {
+      "Actor": "조운",
+      "Move": [
+       -15,
+       34
+      ],
+      "Ease": "out",
+      "Speed": 3.4,
+      "Back": true,
+      "After": 5.33
+     },
+     {
+      "Actor": "문추",
+      "Move": [
+       -15,
+       35
+      ],
+      "Ease": "out",
+      "Speed": 2.6,
+      "After": 5.53,
+      "End": "NE"
      },
      {
       "Actor": "공손찬",
       "Emote": "…",
-      "After": 3.52
+      "After": 3.39
      },
      {
-      "Wait": 6.47
+      "Wait": 6.25
      }
     ]
    ],
-   "Hold": 0.8
+   "Hold": 0.8,
+   "End": 4.45
   },
   {
    "ID": "xuzhou",
@@ -15940,8 +15881,8 @@
     },
     "장비": {
      "At": [
-      25,
-      4
+      24,
+      -1
      ],
      "Face": "SW",
      "Off": true,
@@ -15950,8 +15891,8 @@
     },
     "유비": {
      "At": [
-      17,
-      -3
+      24,
+      2
      ],
      "Face": "SW",
      "Off": true,
@@ -15985,7 +15926,7 @@
      ],
      "Face": "SW",
      "Off": true,
-     "Sprite": "pikeman",
+     "Sprite": "light_infantry",
      "Faction": "shu"
     }
    },
@@ -16512,10 +16453,10 @@
      },
      {
       "Actor": "조조군#c1",
-      "Speed": 0.9,
-      "After": 5.09,
+      "Speed": 1.9,
+      "After": 3.99,
       "Move": [
-       5,
+       6,
        13
       ],
       "End": "SE"
@@ -16527,16 +16468,16 @@
      },
      {
       "Actor": "조조군#c2",
-      "Speed": 0.9,
-      "After": 5.09,
+      "Speed": 1.9,
+      "After": 4.14,
       "Move": [
-       5,
-       14
+       6,
+       12
       ],
       "Via": [
        [
-        5,
-        15
+        -2,
+        12
        ]
       ],
       "End": "SE"
@@ -16548,15 +16489,15 @@
      },
      {
       "Actor": "조조군#c3",
-      "Speed": 0.9,
-      "After": 5.09,
+      "Speed": 1.9,
+      "After": 4.29,
       "Move": [
-       6,
-       14
+       7,
+       13
       ],
       "Via": [
        [
-        6,
+        7,
         17
        ]
       ],
@@ -16569,16 +16510,16 @@
      },
      {
       "Actor": "조조군#c4",
-      "Speed": 0.9,
-      "After": 5.09,
+      "Speed": 1.9,
+      "After": 4.44,
       "Move": [
-       5,
-       12
+       6,
+       11
       ],
       "Via": [
        [
         -3,
-        12
+        11
        ]
       ],
       "End": "SE"
@@ -16590,15 +16531,15 @@
      },
      {
       "Actor": "조조군#c5",
-      "Speed": 0.9,
-      "After": 5.09,
+      "Speed": 1.9,
+      "After": 4.59,
       "Move": [
-       7,
-       14
+       8,
+       13
       ],
       "Via": [
        [
-        7,
+        8,
         21
        ]
       ],
@@ -16612,10 +16553,16 @@
      {
       "Actor": "관우",
       "Speed": 2.2,
-      "After": 9.79,
+      "After": 6.79,
       "Move": [
-       6,
-       11
+       7,
+       10
+      ],
+      "Via": [
+       [
+        7,
+        11
+       ]
       ],
       "End": "NW"
      },
@@ -16623,26 +16570,28 @@
       "Actor": "관우",
       "Strike": "조조군#c4",
       "React": "block",
-      "After": 9.85
+      "After": 6.85
      },
      {
       "Actor": "관우",
       "Strike": "조조군#c4",
-      "After": 10.4,
+      "After": 7.4,
+      "React": "hit"
+     },
+     {
+      "Actor": "조조군#c4",
+      "Strike": "관우",
+      "After": 7.98,
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
      },
      {
-      "Actor": "조조군#c4",
-      "Strike": "관우",
-      "After": 11.31,
-      "React": "hit"
-     },
-     {
       "Actor": "관우",
       "Strike": "조조군#c4",
-      "After": 11.94,
+      "After": 8.91,
+      "Gather": 0.35,
+      "Crit": true,
       "React": "block"
      },
      {
@@ -16650,46 +16599,44 @@
       "Strike": "조조군#c4",
       "React": "hit",
       "Kill": true,
-      "After": 12.68
+      "After": 9.9
      },
      {
       "Actor": "장비",
       "Speed": 2.4,
-      "After": 7.29,
+      "After": 7.89,
       "Move": [
-       8,
-       13
+       9,
+       12
       ],
       "Via": [
        [
-        25,
-        13
+        24,
+        12
        ]
       ],
       "End": "NW",
       "Enter": [
-       25,
-       4
+       24,
+       -1
       ]
      },
      {
       "Actor": "장비",
       "Strike": "조조군#c5",
-      "React": "hit",
-      "After": 10.13
+      "React": "block",
+      "After": 10.96
      },
      {
       "Actor": "장비",
       "Strike": "조조군#c5",
-      "After": 10.68,
-      "Gather": 0.35,
-      "Crit": true,
+      "After": 11.51,
       "React": "block"
      },
      {
       "Actor": "조조군#c5",
       "Strike": "장비",
-      "After": 11.69,
+      "After": 12.09,
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
@@ -16697,15 +16644,13 @@
      {
       "Actor": "장비",
       "Strike": "조조군#c5",
-      "After": 12.61,
+      "After": 13.1,
       "React": "block"
      },
      {
       "Actor": "조조군#c5",
       "Strike": "장비",
-      "After": 13.29,
-      "Gather": 0.35,
-      "Crit": true,
+      "After": 13.66,
       "React": "block"
      },
      {
@@ -16713,97 +16658,89 @@
       "Strike": "조조군#c5",
       "React": "hit",
       "Kill": true,
-      "After": 14.28
+      "After": 14.35
      },
      {
       "Actor": "유비",
       "Speed": 2.4,
       "After": 8.29,
       "Move": [
-       6,
+       7,
        12
       ],
       "Via": [
        [
-        17,
-        12
-       ]
-      ],
-      "End": "NW",
-      "Enter": [
-       17,
-       -3
-      ]
-     },
-     {
-      "Actor": "유비",
-      "Strike": "조조군#c1",
-      "React": "hit",
-      "After": 11.13
-     },
-     {
-      "Actor": "유비",
-      "Strike": "조조군#c1",
-      "After": 11.68,
-      "React": "hit"
-     },
-     {
-      "Actor": "조조군#c1",
-      "Strike": "유비",
-      "After": 12.41,
-      "React": "hit"
-     },
-     {
-      "Actor": "유비",
-      "Strike": "조조군#c1",
-      "After": 12.99,
-      "React": "block"
-     },
-     {
-      "Actor": "조조군#c1",
-      "Strike": "유비",
-      "After": 13.7,
-      "Gather": 0.35,
-      "Crit": true,
-      "React": "block"
-     },
-     {
-      "Actor": "유비",
-      "Strike": "조조군#c1",
-      "React": "hit",
-      "Kill": true,
-      "After": 14.76
-     },
-     {
-      "Actor": "관우",
-      "Speed": 2.2,
-      "After": 13.28,
-      "Move": [
-       6,
-       13
-      ],
-      "Via": [
-       [
-        7,
+        24,
         11
        ],
        [
         7,
-        13
+        11
        ]
       ],
-      "End": "SW"
+      "End": "NW",
+      "Enter": [
+       24,
+       2
+      ]
+     },
+     {
+      "Actor": "유비",
+      "Strike": "조조군#c2",
+      "React": "hit",
+      "After": 11.24
+     },
+     {
+      "Actor": "유비",
+      "Strike": "조조군#c2",
+      "After": 11.79,
+      "React": "block"
+     },
+     {
+      "Actor": "조조군#c2",
+      "Strike": "유비",
+      "After": 12.4,
+      "React": "block"
+     },
+     {
+      "Actor": "유비",
+      "Strike": "조조군#c2",
+      "After": 13.07,
+      "React": "hit"
+     },
+     {
+      "Actor": "유비",
+      "Strike": "조조군#c2",
+      "React": "hit",
+      "Kill": true,
+      "After": 13.8
+     },
+     {
+      "Actor": "관우",
+      "Speed": 2.2,
+      "After": 10.5,
+      "Move": [
+       8,
+       12
+      ],
+      "Via": [
+       [
+        8,
+        10
+       ]
+      ],
+      "End": "NW"
      },
      {
       "Actor": "관우",
       "Strike": "조조군#c3",
-      "React": "block",
-      "After": 13.59
+      "React": "hit",
+      "After": 10.68
      },
      {
       "Actor": "관우",
       "Strike": "조조군#c3",
-      "After": 14.14,
+      "After": 11.23,
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
@@ -16811,13 +16748,7 @@
      {
       "Actor": "조조군#c3",
       "Strike": "관우",
-      "After": 15.13,
-      "React": "block"
-     },
-     {
-      "Actor": "관우",
-      "Strike": "조조군#c3",
-      "After": 15.76,
+      "After": 12.26,
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
@@ -16825,70 +16756,92 @@
      {
       "Actor": "관우",
       "Strike": "조조군#c3",
+      "After": 13.31,
+      "React": "hit"
+     },
+     {
+      "Actor": "관우",
+      "Strike": "조조군#c3",
       "React": "hit",
       "Kill": true,
-      "After": 16.75
+      "After": 13.87
      },
      {
       "Actor": "장비",
       "Speed": 2.2,
-      "After": 14.88,
+      "After": 14.95,
       "Move": [
-       4,
-       13
+       5,
+       12
       ],
       "Via": [
        [
-        8,
-        15
+        9,
+        11
        ],
        [
-        4,
-        15
+        5,
+        11
        ]
       ],
       "End": "SE"
      },
      {
       "Actor": "장비",
-      "Strike": "조조군#c2",
-      "React": "hit",
-      "After": 15.7
+      "Strike": "조조군#c1",
+      "React": "block",
+      "After": 15.51
      },
      {
       "Actor": "장비",
-      "Strike": "조조군#c2",
-      "After": 16.25,
+      "Strike": "조조군#c1",
+      "After": 16.06,
       "React": "block"
      },
      {
-      "Actor": "조조군#c2",
+      "Actor": "조조군#c1",
       "Strike": "장비",
-      "After": 16.81,
+      "After": 16.73,
+      "React": "hit"
+     },
+     {
+      "Actor": "장비",
+      "Strike": "조조군#c1",
+      "After": 17.31,
+      "React": "block"
+     },
+     {
+      "Actor": "조조군#c1",
+      "Strike": "장비",
+      "After": 18.05,
       "React": "block"
      },
      {
       "Actor": "장비",
-      "Strike": "조조군#c2",
-      "After": 17.54,
-      "React": "block"
-     },
-     {
-      "Actor": "장비",
-      "Strike": "조조군#c2",
+      "Strike": "조조군#c1",
       "React": "hit",
       "Kill": true,
-      "After": 18.19
+      "After": 18.79
      },
      {
       "Actor": "조조군#w2",
       "Speed": 1.7,
-      "After": 12.06,
+      "After": 12.62,
       "Move": [
-       5,
+       8,
        11
       ],
-      "End": "SE",
+      "Via": [
+       [
+        6,
+        31
+       ],
+       [
+        6,
+        11
+       ]
+      ],
+      "End": "NW",
       "Enter": [
        5,
        31
@@ -16898,32 +16851,32 @@
       "Actor": "조조군#w2",
       "Strike": "유비",
       "React": "block",
-      "After": 15.15
+      "After": 16.21
      },
      {
       "Actor": "유비",
       "Strike": "조조군#w2",
-      "After": 15.71,
+      "After": 16.75,
       "React": "block"
      },
      {
       "Actor": "조조군#w2",
       "Strike": "유비",
-      "After": 16.37,
-      "React": "block"
+      "After": 17.42,
+      "React": "hit"
      },
      {
       "Actor": "유비",
       "Strike": "조조군#w2",
-      "After": 16.94,
-      "React": "hit"
+      "After": 18.03,
+      "React": "block"
      },
      {
       "Actor": "유비",
       "Strike": "조조군#w2",
       "React": "hit",
       "Kill": true,
-      "After": 17.51
+      "After": 18.71
      },
      {
       "Actor": "유비군#0",
@@ -16932,7 +16885,7 @@
        -5
       ],
       "Speed": 1.8,
-      "After": 17.39,
+      "After": 17.99,
       "Move": [
        12,
        4
@@ -16951,7 +16904,7 @@
        -6
       ],
       "Speed": 1.8,
-      "After": 17.69,
+      "After": 18.29,
       "Move": [
        15,
        5
@@ -16970,7 +16923,7 @@
        -7
       ],
       "Speed": 1.8,
-      "After": 17.99,
+      "After": 18.59,
       "Move": [
        17,
        5
@@ -16983,11 +16936,13 @@
       ]
      },
      {
-      "Wait": 19.39
+      "Wait": 19.99
      }
     ]
    ],
-   "Hold": 0.3
+   "Hold": 0.3,
+   "End": 12.54,
+   "Lead": 1.5
   },
   {
    "ID": "alarm",
@@ -20238,14 +20193,14 @@
      ]
     },
     {
-     "Effect": "blaze",
+     "Effect": "bonfire",
      "At": [
       12,
       22.8
      ]
     },
     {
-     "Effect": "blaze",
+     "Effect": "bonfire",
      "At": [
       24,
       22.8
@@ -23869,6 +23824,48 @@
       "React": "block"
      },
      {
+      "Actor": "원소기병#0",
+      "Strike": "창병#0a4",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.46
+     },
+     {
+      "Actor": "원소기병#0",
+      "Move": [
+       4,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.06,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#0",
+      "Strike": "창병#1a4",
+      "After": 16.96,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1a4",
+      "Strike": "원소기병#0",
+      "After": 17.59,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#0",
+      "Strike": "창병#1a4",
+      "After": 18.24,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a4",
+      "Strike": "원소기병#0",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.06
+     },
+     {
       "Actor": "원소기병#1",
       "Strike": "창병#0b4",
       "After": 13.94,
@@ -23879,6 +23876,42 @@
       "Strike": "원소기병#1",
       "After": 14.67,
       "React": "block"
+     },
+     {
+      "Actor": "원소기병#1",
+      "Strike": "창병#0b4",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.5
+     },
+     {
+      "Actor": "원소기병#1",
+      "Move": [
+       5,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.1,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#1",
+      "Strike": "창병#1b4",
+      "After": 17.0,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b4",
+      "Strike": "원소기병#1",
+      "After": 17.77,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#1",
+      "Strike": "창병#1b4",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.42
      },
      {
       "Actor": "원소기병#2",
@@ -23910,6 +23943,25 @@
       "End": "SW"
      },
      {
+      "Actor": "원소기병#2",
+      "Strike": "창병#1a6",
+      "After": 15.59,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a6",
+      "Strike": "원소기병#2",
+      "After": 16.32,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#2",
+      "Strike": "창병#1a6",
+      "React": "hit",
+      "Kill": true,
+      "After": 16.97
+     },
+     {
       "Actor": "원소기병#3",
       "Strike": "창병#0b6",
       "After": 13.61,
@@ -23929,6 +23981,37 @@
       "React": "hit",
       "Kill": true,
       "After": 15.45
+     },
+     {
+      "Actor": "원소기병#3",
+      "Move": [
+       7,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.05,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#3",
+      "Strike": "창병#1b6",
+      "After": 16.95,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b6",
+      "Strike": "원소기병#3",
+      "After": 17.68,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#3",
+      "Strike": "창병#1b6",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.84
      },
      {
       "Actor": "원소기병#5",
@@ -23956,6 +24039,41 @@
       "After": 15.03
      },
      {
+      "Actor": "원소기병#5",
+      "Move": [
+       9,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.63,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#5",
+      "Strike": "창병#1b8",
+      "After": 16.53,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b8",
+      "Strike": "원소기병#5",
+      "After": 17.3,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#5",
+      "Strike": "창병#1b8",
+      "After": 18.18,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#5",
+      "Strike": "창병#1b8",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.93
+     },
+     {
       "Actor": "원소기병#7",
       "Strike": "창병#0b10",
       "After": 13.69,
@@ -23968,6 +24086,42 @@
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
+     },
+     {
+      "Actor": "원소기병#7",
+      "Strike": "창병#0b10",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.6
+     },
+     {
+      "Actor": "원소기병#7",
+      "Move": [
+       11,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.2,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#7",
+      "Strike": "창병#1b10",
+      "After": 17.1,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b10",
+      "Strike": "원소기병#7",
+      "After": 17.71,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b10",
+      "Strike": "원소기병#7",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.37
      },
      {
       "Actor": "원소기병#8",
@@ -23990,6 +24144,42 @@
       "React": "block"
      },
      {
+      "Actor": "원소기병#8",
+      "Strike": "창병#0b12",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.54
+     },
+     {
+      "Actor": "원소기병#8",
+      "Move": [
+       13,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.14,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#8",
+      "Strike": "창병#1b12",
+      "After": 17.04,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b12",
+      "Strike": "원소기병#8",
+      "After": 17.93,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b12",
+      "Strike": "원소기병#8",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.67
+     },
+     {
       "Actor": "원소기병#9",
       "Strike": "창병#0a14",
       "After": 13.84,
@@ -24004,6 +24194,42 @@
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
+     },
+     {
+      "Actor": "원소기병#9",
+      "Strike": "창병#0a14",
+      "React": "hit",
+      "Kill": true,
+      "After": 16.16
+     },
+     {
+      "Actor": "원소기병#9",
+      "Move": [
+       14,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.76,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#9",
+      "Strike": "창병#1a14",
+      "After": 17.66,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1a14",
+      "Strike": "원소기병#9",
+      "After": 18.53,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a14",
+      "Strike": "원소기병#9",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.25
      },
      {
       "Actor": "원소기병#10",
@@ -24035,6 +24261,25 @@
       "End": "SW"
      },
      {
+      "Actor": "원소기병#10",
+      "Strike": "창병#1b14",
+      "After": 15.9,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b14",
+      "Strike": "원소기병#10",
+      "After": 16.75,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b14",
+      "Strike": "원소기병#10",
+      "React": "hit",
+      "Kill": true,
+      "After": 17.63
+     },
+     {
       "Actor": "원소기병#11",
       "Strike": "창병#0a16",
       "After": 13.89,
@@ -24054,6 +24299,43 @@
       "After": 15.34
      },
      {
+      "Actor": "원소기병#11",
+      "Move": [
+       16,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.94,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#11",
+      "Strike": "창병#1a16",
+      "After": 16.84,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1a16",
+      "Strike": "원소기병#11",
+      "After": 17.67,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#11",
+      "Strike": "창병#1a16",
+      "After": 18.85,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#11",
+      "Strike": "창병#1a16",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.67
+     },
+     {
       "Actor": "원소기병#12",
       "Strike": "창병#0b16",
       "After": 14.22,
@@ -24064,6 +24346,44 @@
       "Strike": "원소기병#12",
       "After": 15.03,
       "React": "block"
+     },
+     {
+      "Actor": "원소기병#12",
+      "Strike": "창병#0b16",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.7
+     },
+     {
+      "Actor": "원소기병#12",
+      "Move": [
+       17,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.3,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#12",
+      "Strike": "창병#1b16",
+      "After": 17.2,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b16",
+      "Strike": "원소기병#12",
+      "After": 18.07,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b16",
+      "Strike": "원소기병#12",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.12
      },
      {
       "Actor": "원소기병#13",
@@ -24080,6 +24400,50 @@
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
+     },
+     {
+      "Actor": "원소기병#13",
+      "Strike": "창병#0a18",
+      "After": 15.98,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#13",
+      "Strike": "창병#0a18",
+      "React": "hit",
+      "Kill": true,
+      "After": 16.59
+     },
+     {
+      "Actor": "원소기병#13",
+      "Move": [
+       18,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 17.19,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#13",
+      "Strike": "창병#1a18",
+      "After": 18.09,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a18",
+      "Strike": "원소기병#13",
+      "After": 19.15,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#13",
+      "Strike": "창병#1a18",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.95
      },
      {
       "Actor": "안량",
@@ -24099,6 +24463,35 @@
       "React": "hit",
       "Kill": true,
       "After": 14.87
+     },
+     {
+      "Actor": "안량",
+      "Move": [
+       19,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.47,
+      "End": "SW"
+     },
+     {
+      "Actor": "안량",
+      "Strike": "창병#1b18",
+      "After": 16.37,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b18",
+      "Strike": "안량",
+      "After": 17.07,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b18",
+      "Strike": "안량",
+      "React": "hit",
+      "Kill": true,
+      "After": 17.78
      },
      {
       "Actor": "원소기병#15",
@@ -24124,6 +24517,35 @@
       "React": "hit",
       "Kill": true,
       "After": 15.1
+     },
+     {
+      "Actor": "원소기병#15",
+      "Move": [
+       20,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.7,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#15",
+      "Strike": "창병#1a20",
+      "After": 16.6,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1a20",
+      "Strike": "원소기병#15",
+      "After": 17.29,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#15",
+      "Strike": "창병#1a20",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.11
      },
      {
       "Actor": "원소기병#16",
@@ -24153,6 +24575,35 @@
       "After": 15.36
      },
      {
+      "Actor": "원소기병#16",
+      "Move": [
+       21,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.96,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#16",
+      "Strike": "창병#1b20",
+      "After": 16.86,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b20",
+      "Strike": "원소기병#16",
+      "After": 17.67,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#16",
+      "Strike": "창병#1b20",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.29
+     },
+     {
       "Actor": "원소기병#19",
       "Strike": "창병#0b24",
       "After": 13.32,
@@ -24171,6 +24622,42 @@
       "Gather": 0.35,
       "Crit": true,
       "React": "block"
+     },
+     {
+      "Actor": "원소기병#19",
+      "Strike": "창병#0b24",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.99
+     },
+     {
+      "Actor": "원소기병#19",
+      "Move": [
+       25,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.59,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#19",
+      "Strike": "창병#1b24",
+      "After": 17.49,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b24",
+      "Strike": "원소기병#19",
+      "After": 18.1,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1b24",
+      "Strike": "원소기병#19",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.94
      },
      {
       "Actor": "원소기병#20",
@@ -24193,6 +24680,50 @@
       "React": "hit"
      },
      {
+      "Actor": "원소기병#20",
+      "Strike": "창병#0a26",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.75
+     },
+     {
+      "Actor": "원소기병#20",
+      "Move": [
+       26,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.35,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#20",
+      "Strike": "창병#1a26",
+      "After": 17.25,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1a26",
+      "Strike": "원소기병#20",
+      "After": 18.11,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#20",
+      "Strike": "창병#1a26",
+      "After": 18.77,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a26",
+      "Strike": "원소기병#20",
+      "React": "hit",
+      "Kill": true,
+      "After": 20.02
+     },
+     {
       "Actor": "원소기병#21",
       "Strike": "창병#0b26",
       "After": 13.6,
@@ -24212,6 +24743,43 @@
       "After": 15.06
      },
      {
+      "Actor": "원소기병#21",
+      "Move": [
+       27,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.66,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#21",
+      "Strike": "창병#1b26",
+      "After": 16.56,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b26",
+      "Strike": "원소기병#21",
+      "After": 17.73,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#21",
+      "Strike": "창병#1b26",
+      "After": 18.62,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b26",
+      "Strike": "원소기병#21",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.24
+     },
+     {
       "Actor": "원소기병#24",
       "Strike": "창병#0a30",
       "After": 13.76,
@@ -24224,6 +24792,52 @@
       "Strike": "원소기병#24",
       "After": 14.84,
       "React": "hit"
+     },
+     {
+      "Actor": "원소기병#24",
+      "Strike": "창병#0a30",
+      "React": "hit",
+      "Kill": true,
+      "After": 15.68
+     },
+     {
+      "Actor": "원소기병#24",
+      "Move": [
+       30,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.28,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#24",
+      "Strike": "창병#1a30",
+      "After": 17.18,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a30",
+      "Strike": "원소기병#24",
+      "After": 18.26,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#24",
+      "Strike": "창병#1a30",
+      "After": 19.12,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a30",
+      "Strike": "원소기병#24",
+      "React": "hit",
+      "Kill": true,
+      "After": 20.34
      },
      {
       "Actor": "원소기병#25",
@@ -24245,6 +24859,41 @@
       "React": "hit",
       "Kill": true,
       "After": 15.42
+     },
+     {
+      "Actor": "원소기병#25",
+      "Move": [
+       31,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 16.02,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#25",
+      "Strike": "창병#1b30",
+      "After": 16.92,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1b30",
+      "Strike": "원소기병#25",
+      "After": 17.58,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#25",
+      "Strike": "창병#1b30",
+      "After": 18.22,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#25",
+      "Strike": "창병#1b30",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.11
      },
      {
       "Actor": "원소기병#26",
@@ -24274,6 +24923,43 @@
       "After": 15.16
      },
      {
+      "Actor": "원소기병#26",
+      "Move": [
+       32,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.76,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#26",
+      "Strike": "창병#1a32",
+      "After": 16.66,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1a32",
+      "Strike": "원소기병#26",
+      "After": 17.28,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#26",
+      "Strike": "창병#1a32",
+      "After": 18.48,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#26",
+      "Strike": "창병#1a32",
+      "React": "hit",
+      "Kill": true,
+      "After": 19.33
+     },
+     {
       "Actor": "원소기병#27",
       "Strike": "창병#0b32",
       "After": 13.76,
@@ -24291,6 +24977,37 @@
       "React": "hit",
       "Kill": true,
       "After": 15.19
+     },
+     {
+      "Actor": "원소기병#27",
+      "Move": [
+       33,
+       27
+      ],
+      "Speed": 1.4,
+      "After": 15.79,
+      "End": "SW"
+     },
+     {
+      "Actor": "원소기병#27",
+      "Strike": "창병#1b32",
+      "After": 16.69,
+      "Gather": 0.35,
+      "Crit": true,
+      "React": "block"
+     },
+     {
+      "Actor": "창병#1b32",
+      "Strike": "원소기병#27",
+      "After": 17.71,
+      "React": "block"
+     },
+     {
+      "Actor": "원소기병#27",
+      "Strike": "창병#1b32",
+      "React": "hit",
+      "Kill": true,
+      "After": 18.59
      },
      {
       "Actor": "원소기병#28",
@@ -24322,11 +25039,31 @@
       "End": "SW"
      },
      {
+      "Actor": "원소기병#28",
+      "Strike": "창병#1a34",
+      "After": 15.52,
+      "React": "hit"
+     },
+     {
+      "Actor": "창병#1a34",
+      "Strike": "원소기병#28",
+      "After": 16.14,
+      "React": "hit"
+     },
+     {
+      "Actor": "원소기병#28",
+      "Strike": "창병#1a34",
+      "React": "hit",
+      "Kill": true,
+      "After": 16.95
+     },
+     {
       "Wait": 15.45
      }
     ]
    ],
-   "Hold": 0.6
+   "Hold": 0.6,
+   "End": 15.45
   },
   {
    "ID": "visit1",
@@ -25378,7 +26115,7 @@
    "Cast": {
     "cam#1": {
      "At": [
-      18,
+      -2,
       -10
      ],
      "Face": "NW",
@@ -25388,16 +26125,16 @@
     },
     "조조군#1": {
      "At": [
-      10,
+      -14,
       -29
      ],
      "Face": "NW",
-     "Sprite": "light_infantry",
+     "Sprite": "pikeman",
      "Faction": "wei"
     },
     "조조군#2": {
      "At": [
-      15,
+      -11,
       -29
      ],
      "Face": "NW",
@@ -25406,16 +26143,16 @@
     },
     "조조군#3": {
      "At": [
-      19,
+      -8,
       -29
      ],
      "Face": "NW",
-     "Sprite": "pikeman",
+     "Sprite": "light_infantry",
      "Faction": "wei"
     },
     "조조군#4": {
      "At": [
-      27,
+      3,
       -29
      ],
      "Face": "NW",
@@ -25424,7 +26161,7 @@
     },
     "오군#1": {
      "At": [
-      44,
+      27,
       -29
      ],
      "Face": "NW",
@@ -25434,17 +26171,27 @@
     },
     "오군#2": {
      "At": [
-      45,
+      28,
       -30
      ],
      "Face": "NW",
      "Off": true,
-     "Sprite": "light_infantry",
+     "Sprite": "pikeman",
+     "Faction": "wu"
+    },
+    "오군#3": {
+     "At": [
+      30,
+      -30
+     ],
+     "Face": "NW",
+     "Off": true,
+     "Sprite": "pikeman",
      "Faction": "wu"
     },
     "조조군#5": {
      "At": [
-      8,
+      -13,
       -26
      ],
      "Face": "NW",
@@ -25453,7 +26200,7 @@
     },
     "조조군#6": {
      "At": [
-      11,
+      -9,
       -26
      ],
      "Face": "NW",
@@ -25462,17 +26209,27 @@
     },
     "조조군#7": {
      "At": [
-      31,
+      2,
       -26
      ],
      "Face": "NW",
      "Sprite": "pikeman",
      "Faction": "wei"
     },
-    "오군#3": {
+    "오군#4": {
      "At": [
-      50,
+      30,
       -26
+     ],
+     "Face": "NW",
+     "Off": true,
+     "Sprite": "guards",
+     "Faction": "wu"
+    },
+    "오군#5": {
+     "At": [
+      31,
+      -27
      ],
      "Face": "NW",
      "Off": true,
@@ -25481,7 +26238,7 @@
     },
     "조조군#8": {
      "At": [
-      10,
+      -13,
       -23
      ],
      "Face": "NW",
@@ -25490,7 +26247,7 @@
     },
     "조조군#9": {
      "At": [
-      15,
+      -9,
       -23
      ],
      "Face": "NW",
@@ -25499,35 +26256,35 @@
     },
     "조조군#10": {
      "At": [
-      20,
+      4,
       -23
      ],
      "Face": "NW",
-     "Sprite": "light_infantry",
+     "Sprite": "pikeman",
      "Faction": "wei"
     },
-    "조조군#11": {
+    "오군#6": {
      "At": [
-      24,
-      -23
-     ],
-     "Face": "NW",
-     "Sprite": "light_infantry",
-     "Faction": "wei"
-    },
-    "오군#4": {
-     "At": [
-      43,
+      22,
       -23
      ],
      "Face": "NW",
      "Off": true,
-     "Sprite": "pikeman",
+     "Sprite": "light_infantry",
      "Faction": "wu"
+    },
+    "조조군#11": {
+     "At": [
+      -15,
+      -20
+     ],
+     "Face": "NW",
+     "Sprite": "pikeman",
+     "Faction": "wei"
     },
     "조조군#12": {
      "At": [
-      6,
+      -12,
       -20
      ],
      "Face": "NW",
@@ -25536,64 +26293,44 @@
     },
     "조조군#13": {
      "At": [
-      10,
-      -20
-     ],
-     "Face": "NW",
-     "Sprite": "light_infantry",
-     "Faction": "wei"
-    },
-    "조조군#14": {
-     "At": [
-      14,
+      12,
       -20
      ],
      "Face": "NW",
      "Sprite": "pikeman",
+     "Faction": "wei"
+    },
+    "오군#7": {
+     "At": [
+      26,
+      -20
+     ],
+     "Face": "NW",
+     "Off": true,
+     "Sprite": "guards",
+     "Faction": "wu"
+    },
+    "조조군#14": {
+     "At": [
+      -12,
+      -17
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
      "Faction": "wei"
     },
     "조조군#15": {
      "At": [
-      20,
-      -20
+      -7,
+      -17
      ],
      "Face": "NW",
-     "Sprite": "pikeman",
+     "Sprite": "light_infantry",
      "Faction": "wei"
-    },
-    "오군#5": {
-     "At": [
-      48,
-      -20
-     ],
-     "Face": "NW",
-     "Off": true,
-     "Sprite": "light_infantry",
-     "Faction": "wu"
-    },
-    "오군#6": {
-     "At": [
-      49,
-      -21
-     ],
-     "Face": "NW",
-     "Off": true,
-     "Sprite": "light_infantry",
-     "Faction": "wu"
-    },
-    "오군#7": {
-     "At": [
-      51,
-      -21
-     ],
-     "Face": "NW",
-     "Off": true,
-     "Sprite": "pikeman",
-     "Faction": "wu"
     },
     "조조군#16": {
      "At": [
-      6,
+      -3,
       -17
      ],
      "Face": "NW",
@@ -25602,7 +26339,7 @@
     },
     "조조군#17": {
      "At": [
-      9,
+      0,
       -17
      ],
      "Face": "NW",
@@ -25611,25 +26348,16 @@
     },
     "조조군#18": {
      "At": [
-      14,
+      5,
       -17
      ],
      "Face": "NW",
-     "Sprite": "light_infantry",
-     "Faction": "wei"
-    },
-    "조조군#19": {
-     "At": [
-      26,
-      -17
-     ],
-     "Face": "NW",
-     "Sprite": "light_infantry",
+     "Sprite": "pikeman",
      "Faction": "wei"
     },
     "오군#8": {
      "At": [
-      50,
+      30,
       -17
      ],
      "Face": "NW",
@@ -25637,36 +26365,36 @@
      "Sprite": "light_infantry",
      "Faction": "wu"
     },
-    "조조군#20": {
+    "조조군#19": {
      "At": [
-      6,
+      -14,
       -14
      ],
      "Face": "NW",
      "Sprite": "light_infantry",
      "Faction": "wei"
     },
-    "조조군#21": {
+    "조조군#20": {
      "At": [
-      9,
+      -11,
       -14
      ],
      "Face": "NW",
      "Sprite": "pikeman",
      "Faction": "wei"
     },
-    "조조군#22": {
+    "조조군#21": {
      "At": [
-      14,
+      -6,
       -14
      ],
      "Face": "NW",
      "Sprite": "light_infantry",
      "Faction": "wei"
     },
-    "조조군#23": {
+    "조조군#22": {
      "At": [
-      21,
+      1,
       -14
      ],
      "Face": "NW",
@@ -25675,7 +26403,7 @@
     },
     "오군#9": {
      "At": [
-      47,
+      27,
       -14
      ],
      "Face": "NW",
@@ -25685,7 +26413,7 @@
     },
     "오군#10": {
      "At": [
-      48,
+      28,
       -15
      ],
      "Face": "NW",
@@ -25695,7 +26423,7 @@
     },
     "오군#11": {
      "At": [
-      50,
+      30,
       -15
      ],
      "Face": "NW",
@@ -25703,49 +26431,9 @@
      "Sprite": "light_infantry",
      "Faction": "wu"
     },
-    "오군#14": {
+    "오군#12": {
      "At": [
-      16,
-      10
-     ],
-     "Face": "NE",
-     "Off": true,
-     "Sprite": "light_infantry",
-     "Faction": "wu"
-    },
-    "오군#17": {
-     "At": [
-      22,
-      10
-     ],
-     "Face": "NE",
-     "Off": true,
-     "Sprite": "light_infantry",
-     "Faction": "wu"
-    },
-    "오군#18": {
-     "At": [
-      24,
-      10
-     ],
-     "Face": "NE",
-     "Off": true,
-     "Sprite": "pikeman",
-     "Faction": "wu"
-    },
-    "오군#19": {
-     "At": [
-      26,
-      10
-     ],
-     "Face": "NE",
-     "Off": true,
-     "Sprite": "light_infantry",
-     "Faction": "wu"
-    },
-    "오군#20": {
-     "At": [
-      28,
+      5,
       10
      ],
      "Face": "NE",
@@ -25753,9 +26441,9 @@
      "Sprite": "guards",
      "Faction": "wu"
     },
-    "오군#21": {
+    "오군#13": {
      "At": [
-      30,
+      7,
       10
      ],
      "Face": "NE",
@@ -25763,19 +26451,69 @@
      "Sprite": "pikeman",
      "Faction": "wu"
     },
-    "오군#22": {
+    "오군#14": {
      "At": [
-      32,
+      9,
       10
      ],
      "Face": "NE",
      "Off": true,
-     "Sprite": "pikeman",
+     "Sprite": "light_infantry",
      "Faction": "wu"
     },
-    "오군#23": {
+    "오군#15": {
      "At": [
-      21,
+      11,
+      10
+     ],
+     "Face": "NE",
+     "Off": true,
+     "Sprite": "guards",
+     "Faction": "wu"
+    },
+    "오군#16": {
+     "At": [
+      13,
+      10
+     ],
+     "Face": "NE",
+     "Off": true,
+     "Sprite": "guards",
+     "Faction": "wu"
+    },
+    "오군#17": {
+     "At": [
+      7,
+      -24
+     ],
+     "Face": "NW",
+     "Off": true,
+     "Sprite": "light_infantry",
+     "Faction": "wu"
+    },
+    "오군#18": {
+     "At": [
+      -1,
+      -32
+     ],
+     "Face": "SW",
+     "Off": true,
+     "Sprite": "light_infantry",
+     "Faction": "wu"
+    },
+    "오군#19": {
+     "At": [
+      -7,
+      -26
+     ],
+     "Face": "SW",
+     "Off": true,
+     "Sprite": "light_infantry",
+     "Faction": "wu"
+    },
+    "오군#20": {
+     "At": [
+      1,
       -18
      ],
      "Face": "NW",
@@ -25783,51 +26521,41 @@
      "Sprite": "pikeman",
      "Faction": "wu"
     },
-    "오군#24": {
+    "오군#21": {
      "At": [
-      6,
-      -33
+      4,
+      -13
      ],
-     "Face": "SW",
-     "Off": true,
-     "Sprite": "pikeman",
-     "Faction": "wu"
-    },
-    "오군#25": {
-     "At": [
-      6,
-      -32
-     ],
-     "Face": "SW",
-     "Off": true,
-     "Sprite": "guards",
-     "Faction": "wu"
-    },
-    "오군#26": {
-     "At": [
-      14,
-      -27
-     ],
-     "Face": "NW",
+     "Face": "NE",
      "Off": true,
      "Sprite": "light_infantry",
      "Faction": "wu"
     },
-    "오군#27": {
+    "오군#22": {
      "At": [
-      6,
-      -35
+      2,
+      -29
      ],
      "Face": "SW",
      "Off": true,
-     "Sprite": "pikeman",
+     "Sprite": "light_infantry",
+     "Faction": "wu"
+    },
+    "오군#23": {
+     "At": [
+      2,
+      -29
+     ],
+     "Face": "SW",
+     "Off": true,
+     "Sprite": "light_infantry",
      "Faction": "wu"
     }
    },
    "Ambient": [
     {
      "CamAt": [
-      18,
+      -2,
       -10
      ]
     },
@@ -25837,252 +26565,210 @@
     {
      "Effect": "fire",
      "At": [
-      23.62,
+      3.62,
       -28
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      7.75,
+      -12.25,
       -28
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -6.93,
+      -26.93,
       -28
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -21.38,
+      -41.38,
       -28
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -38.96,
+      -58.96,
       -28
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -52.46,
-      -28
-     ]
-    },
-    {
-     "Effect": "fire",
-     "At": [
-      23.62,
+      2.54,
       -25
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      8.49,
+      -11.38,
       -25
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -7.71,
+      -26.51,
       -25
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -24.32,
+      -42.71,
       -25
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -38.35,
+      -59.32,
       -25
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -51.02,
-      -25
-     ]
-    },
-    {
-     "Effect": "fire",
-     "At": [
-      20.41,
+      1.65,
       -22
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      6.28,
+      -11.02,
       -22
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -6.2,
+      -29.59,
       -22
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -23.2,
+      -43.72,
       -22
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -39.17,
+      -56.2,
       -22
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -53.73,
-      -22
-     ]
-    },
-    {
-     "Effect": "fire",
-     "At": [
-      23.63,
+      1.8,
       -19
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      6.34,
+      -14.17,
       -19
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -8.29,
+      -28.73,
       -19
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -22.49,
+      -41.37,
       -19
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -36.78,
+      -58.66,
       -19
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -53.03,
-      -19
-     ]
-    },
-    {
-     "Effect": "fire",
-     "At": [
-      20.33,
+      1.71,
       -16
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      7.29,
+      -12.49,
       -16
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -9.86,
+      -26.78,
       -16
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -24.62,
+      -43.03,
       -16
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -39.24,
+      -59.67,
       -16
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -52.23,
-      -16
-     ]
-    },
-    {
-     "Effect": "fire",
-     "At": [
-      21.13,
+      2.29,
       -13
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      7.76,
+      -14.86,
       -13
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -9.35,
+      -29.62,
       -13
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -24.53,
+      -44.24,
       -13
      ]
     },
     {
      "Effect": "fire",
      "At": [
-      -39.91,
-      -13
-     ]
-    },
-    {
-     "Effect": "fire",
-     "At": [
-      -52.18,
+      -57.23,
       -13
      ]
     },
@@ -26155,7 +26841,7 @@
      {
       "Actor": "cam#1",
       "Move": [
-       -26,
+       -42,
        -20
       ],
       "Ease": "line",
@@ -26166,7 +26852,29 @@
      {
       "Actor": "조조군#1",
       "Move": [
-       -68,
+       -84,
+       -29
+      ],
+      "Ease": "line",
+      "Speed": 0.6,
+      "After": 1.36,
+      "Free": true
+     },
+     {
+      "Actor": "조조군#2",
+      "Move": [
+       -84,
+       -29
+      ],
+      "Ease": "line",
+      "Speed": 0.65,
+      "After": 1.91,
+      "Free": true
+     },
+     {
+      "Actor": "조조군#3",
+      "Move": [
+       -84,
        -29
       ],
       "Ease": "line",
@@ -26175,48 +26883,26 @@
       "Free": true
      },
      {
-      "Actor": "조조군#2",
-      "Move": [
-       -68,
-       -29
-      ],
-      "Ease": "line",
-      "Speed": 0.64,
-      "After": 1.48,
-      "Free": true
-     },
-     {
-      "Actor": "조조군#3",
-      "Move": [
-       -68,
-       -29
-      ],
-      "Ease": "line",
-      "Speed": 0.65,
-      "After": 2.11,
-      "Free": true
-     },
-     {
       "Actor": "조조군#4",
       "Move": [
-       -68,
+       -84,
        -29
       ],
       "Speed": 0.58,
-      "After": 2.17,
+      "After": 2.51,
       "Free": true
      },
      {
       "Actor": "오군#1",
       "Move": [
-       7,
+       -10,
        -29
       ],
       "Ease": "line",
-      "Speed": 1.5,
-      "After": 5.22,
+      "Speed": 1.48,
+      "After": 2.46,
       "Enter": [
-       44,
+       27,
        -29
       ]
      },
@@ -26225,396 +26911,407 @@
       "Strike": "조조군#4",
       "React": "hit",
       "Kill": true,
-      "After": 11.93
+      "After": 9.24
      },
      {
       "Actor": "오군#2",
       "Enter": [
-       45,
+       28,
        -30
       ],
       "Move": [
-       8,
+       -9,
        -30
       ],
       "Ease": "line",
-      "Speed": 1.5,
-      "After": 5.22
+      "Speed": 1.48,
+      "After": 2.46
+     },
+     {
+      "Actor": "오군#3",
+      "Enter": [
+       30,
+       -30
+      ],
+      "Move": [
+       -7,
+       -30
+      ],
+      "Ease": "line",
+      "Speed": 1.48,
+      "After": 2.46
      },
      {
       "Actor": "조조군#5",
       "Move": [
-       -68,
+       -84,
        -26
       ],
       "Ease": "line",
-      "Speed": 0.66,
-      "After": 1.64,
+      "Speed": 0.63,
+      "After": 2.2,
       "Free": true
      },
      {
       "Actor": "조조군#6",
       "Move": [
-       -68,
+       -84,
        -26
       ],
       "Ease": "line",
-      "Speed": 0.61,
-      "After": 1.98,
+      "Speed": 0.63,
+      "After": 1.32,
       "Free": true
      },
      {
       "Actor": "조조군#7",
       "Move": [
-       7,
+       -84,
        -26
       ],
-      "Ease": "line",
-      "Speed": 0.57,
-      "After": 2.16,
-      "End": "SE"
+      "Speed": 0.54,
+      "After": 1.84,
+      "Free": true
      },
      {
-      "Actor": "오군#3",
-      "Enter": [
-       50,
-       -26
-      ],
+      "Actor": "오군#4",
       "Move": [
-       8,
+       -30,
        -26
       ],
       "Ease": "line",
-      "Speed": 1.35,
-      "After": 5.6,
-      "End": "NW"
+      "Speed": 1.3,
+      "After": 5.86,
+      "Enter": [
+       30,
+       -26
+      ]
      },
      {
-      "Actor": "조조군#7",
-      "Emote": "!",
-      "After": 13.81
-     },
-     {
-      "Actor": "오군#3",
-      "Strike": "조조군#7",
-      "After": 14.46,
-      "React": "block"
-     },
-     {
-      "Actor": "조조군#7",
-      "Strike": "오군#3",
-      "After": 15.19,
-      "Gather": 0.35,
-      "Crit": true,
-      "React": "block"
-     },
-     {
-      "Actor": "오군#3",
-      "Strike": "조조군#7",
-      "After": 16.29,
-      "Gather": 0.35,
-      "Crit": true,
-      "React": "block"
-     },
-     {
-      "Actor": "조조군#7",
-      "Strike": "오군#3",
-      "After": 17.32,
-      "React": "block"
-     },
-     {
-      "Actor": "오군#3",
+      "Actor": "오군#4",
       "Strike": "조조군#7",
       "React": "hit",
       "Kill": true,
-      "After": 18.16
+      "After": 18.58
+     },
+     {
+      "Actor": "오군#5",
+      "Enter": [
+       31,
+       -27
+      ],
+      "Move": [
+       -29,
+       -27
+      ],
+      "Ease": "line",
+      "Speed": 1.3,
+      "After": 5.86
      },
      {
       "Actor": "조조군#8",
       "Move": [
-       -68,
+       -84,
        -23
       ],
       "Ease": "line",
-      "Speed": 0.6,
-      "After": 1.99,
+      "Speed": 0.62,
+      "After": 1.32,
       "Free": true
      },
      {
       "Actor": "조조군#9",
       "Move": [
-       -68,
+       -84,
        -23
       ],
       "Ease": "line",
-      "Speed": 0.65,
-      "After": 1.36,
+      "Speed": 0.64,
+      "After": 1.27,
       "Free": true
      },
      {
       "Actor": "조조군#10",
       "Move": [
-       -68,
+       0,
        -23
       ],
       "Ease": "line",
-      "Speed": 0.65,
-      "After": 2.09,
-      "Free": true
-     },
-     {
-      "Actor": "조조군#11",
-      "Move": [
-       18,
-       -23
-      ],
-      "Ease": "line",
-      "Speed": 0.55,
-      "After": 1.91,
+      "Speed": 0.59,
+      "After": 2.94,
       "End": "SE"
      },
      {
-      "Actor": "오군#4",
+      "Actor": "오군#6",
       "Enter": [
-       43,
+       22,
        -23
       ],
       "Move": [
-       19,
+       1,
        -23
       ],
       "Ease": "line",
-      "Speed": 1.27,
+      "Speed": 1.16,
       "After": 0,
       "End": "NW"
      },
      {
-      "Actor": "조조군#11",
+      "Actor": "조조군#10",
       "Emote": "!",
-      "After": 4.75
+      "After": 4.65
      },
      {
-      "Actor": "오군#4",
-      "Strike": "조조군#11",
-      "After": 5.4,
-      "React": "hit"
-     },
-     {
-      "Actor": "조조군#11",
-      "Strike": "오군#4",
-      "After": 6.0,
-      "React": "hit"
-     },
-     {
-      "Actor": "오군#4",
-      "Strike": "조조군#11",
-      "After": 6.76,
-      "React": "hit"
-     },
-     {
-      "Actor": "조조군#11",
-      "Strike": "오군#4",
-      "After": 7.57,
+      "Actor": "오군#6",
+      "Strike": "조조군#10",
+      "After": 5.3,
+      "Gather": 0.35,
+      "Crit": true,
       "React": "block"
      },
      {
-      "Actor": "오군#4",
-      "Strike": "조조군#11",
+      "Actor": "조조군#10",
+      "Strike": "오군#6",
+      "After": 6.41,
+      "React": "block"
+     },
+     {
+      "Actor": "오군#6",
+      "Strike": "조조군#10",
+      "After": 7.05,
+      "React": "hit"
+     },
+     {
+      "Actor": "조조군#10",
+      "Strike": "오군#6",
+      "After": 7.68,
+      "React": "hit"
+     },
+     {
+      "Actor": "오군#6",
+      "Strike": "조조군#10",
+      "After": 8.38,
+      "React": "hit"
+     },
+     {
+      "Actor": "오군#6",
+      "Strike": "조조군#10",
       "React": "hit",
       "Kill": true,
-      "After": 8.24
+      "After": 9.03
+     },
+     {
+      "Actor": "조조군#11",
+      "Move": [
+       -84,
+       -20
+      ],
+      "Ease": "line",
+      "Speed": 0.62,
+      "After": 1.33,
+      "Free": true
      },
      {
       "Actor": "조조군#12",
       "Move": [
-       -68,
+       -84,
        -20
       ],
       "Ease": "line",
-      "Speed": 0.6,
-      "After": 1.88,
+      "Speed": 0.59,
+      "After": 1.65,
       "Free": true
      },
      {
       "Actor": "조조군#13",
       "Move": [
-       -68,
+       3,
        -20
       ],
       "Ease": "line",
-      "Speed": 0.62,
-      "After": 2.08,
-      "Free": true
+      "Speed": 0.59,
+      "After": 2.79,
+      "End": "SE"
+     },
+     {
+      "Actor": "오군#7",
+      "Enter": [
+       26,
+       -20
+      ],
+      "Move": [
+       4,
+       -20
+      ],
+      "Ease": "line",
+      "Speed": 1.14,
+      "After": 1.94,
+      "End": "NW"
+     },
+     {
+      "Actor": "조조군#13",
+      "Emote": "!",
+      "After": 6.82
+     },
+     {
+      "Actor": "오군#7",
+      "Strike": "조조군#13",
+      "After": 7.47,
+      "React": "hit"
+     },
+     {
+      "Actor": "조조군#13",
+      "Strike": "오군#7",
+      "After": 8.29,
+      "React": "hit"
+     },
+     {
+      "Actor": "오군#7",
+      "Strike": "조조군#13",
+      "After": 9.14,
+      "React": "hit"
+     },
+     {
+      "Actor": "조조군#13",
+      "Strike": "오군#7",
+      "After": 9.95,
+      "React": "block"
+     },
+     {
+      "Actor": "오군#7",
+      "Strike": "조조군#13",
+      "React": "hit",
+      "Kill": true,
+      "After": 10.57
      },
      {
       "Actor": "조조군#14",
       "Move": [
-       -68,
-       -20
+       -84,
+       -17
       ],
       "Ease": "line",
-      "Speed": 0.65,
-      "After": 2.18,
+      "Speed": 0.59,
+      "After": 2.16,
       "Free": true
      },
      {
       "Actor": "조조군#15",
       "Move": [
-       -68,
-       -20
+       -84,
+       -17
       ],
-      "Speed": 0.58,
-      "After": 2.89,
+      "Ease": "line",
+      "Speed": 0.63,
+      "After": 2.12,
       "Free": true
-     },
-     {
-      "Actor": "오군#5",
-      "Move": [
-       -3,
-       -20
-      ],
-      "Ease": "line",
-      "Speed": 1.48,
-      "After": 4.92,
-      "Enter": [
-       48,
-       -20
-      ]
-     },
-     {
-      "Actor": "오군#5",
-      "Strike": "조조군#15",
-      "React": "hit",
-      "Kill": true,
-      "After": 14.34
-     },
-     {
-      "Actor": "오군#6",
-      "Enter": [
-       49,
-       -21
-      ],
-      "Move": [
-       -2,
-       -21
-      ],
-      "Ease": "line",
-      "Speed": 1.48,
-      "After": 4.92
-     },
-     {
-      "Actor": "오군#7",
-      "Enter": [
-       51,
-       -21
-      ],
-      "Move": [
-       0,
-       -21
-      ],
-      "Ease": "line",
-      "Speed": 1.48,
-      "After": 4.92
      },
      {
       "Actor": "조조군#16",
       "Move": [
-       -68,
+       -84,
        -17
       ],
       "Ease": "line",
-      "Speed": 0.66,
-      "After": 1.2,
+      "Speed": 0.61,
+      "After": 1.38,
       "Free": true
      },
      {
       "Actor": "조조군#17",
       "Move": [
-       -68,
+       -84,
        -17
       ],
       "Ease": "line",
-      "Speed": 0.62,
-      "After": 1.82,
+      "Speed": 0.59,
+      "After": 2.18,
       "Free": true
      },
      {
       "Actor": "조조군#18",
       "Move": [
-       -68,
+       -6,
        -17
       ],
       "Ease": "line",
-      "Speed": 0.62,
-      "After": 1.78,
-      "Free": true
-     },
-     {
-      "Actor": "조조군#19",
-      "Move": [
-       7,
-       -17
-      ],
-      "Ease": "line",
-      "Speed": 0.58,
-      "After": 1.79,
+      "Speed": 0.59,
+      "After": 1.71,
       "End": "SE"
      },
      {
       "Actor": "오군#8",
       "Enter": [
-       50,
+       30,
        -17
       ],
       "Move": [
-       8,
+       -5,
        -17
       ],
       "Ease": "line",
-      "Speed": 1.18,
-      "After": 1.31,
+      "Speed": 1.34,
+      "After": 0,
       "End": "NW"
      },
      {
-      "Actor": "조조군#19",
-      "Emote": "!!",
-      "After": 10.81
+      "Actor": "조조군#18",
+      "Emote": "!",
+      "After": 6.72
      },
      {
       "Actor": "오군#8",
-      "Strike": "조조군#19",
-      "After": 11.46,
+      "Strike": "조조군#18",
+      "After": 7.37,
       "React": "block"
      },
      {
-      "Actor": "조조군#19",
+      "Actor": "조조군#18",
       "Strike": "오군#8",
-      "After": 12.18,
+      "After": 8.11,
       "React": "hit"
      },
      {
       "Actor": "오군#8",
-      "Strike": "조조군#19",
-      "After": 12.83,
+      "Strike": "조조군#18",
+      "After": 8.71,
       "React": "block"
      },
      {
-      "Actor": "조조군#19",
+      "Actor": "조조군#18",
       "Strike": "오군#8",
-      "After": 13.65,
+      "After": 9.43,
+      "React": "block"
+     },
+     {
+      "Actor": "오군#8",
+      "Strike": "조조군#18",
+      "After": 10.15,
+      "React": "hit"
+     },
+     {
+      "Actor": "조조군#18",
+      "Strike": "오군#8",
+      "After": 10.8,
+      "React": "block"
+     },
+     {
+      "Actor": "오군#8",
+      "Strike": "조조군#18",
+      "After": 11.62,
       "React": "hit"
      },
      {
       "Actor": "오군#8",
-      "Strike": "조조군#19",
+      "Strike": "조조군#18",
       "React": "hit",
       "Kill": true,
-      "After": 14.41
+      "After": 12.38
      },
      {
-      "Actor": "조조군#20",
+      "Actor": "조조군#19",
       "Move": [
-       -68,
+       -84,
        -14
       ],
       "Ease": "line",
@@ -26623,9 +27320,9 @@
       "Free": true
      },
      {
-      "Actor": "조조군#21",
+      "Actor": "조조군#20",
       "Move": [
-       -68,
+       -84,
        -14
       ],
       "Ease": "line",
@@ -26634,9 +27331,9 @@
       "Free": true
      },
      {
-      "Actor": "조조군#22",
+      "Actor": "조조군#21",
       "Move": [
-       -68,
+       -84,
        -14
       ],
       "Ease": "line",
@@ -26645,9 +27342,9 @@
       "Free": true
      },
      {
-      "Actor": "조조군#23",
+      "Actor": "조조군#22",
       "Move": [
-       -68,
+       -84,
        -14
       ],
       "Speed": 0.55,
@@ -26657,20 +27354,20 @@
      {
       "Actor": "오군#9",
       "Move": [
-       -11,
+       -31,
        -14
       ],
       "Ease": "line",
       "Speed": 1.44,
       "After": 7.57,
       "Enter": [
-       47,
+       27,
        -14
       ]
      },
      {
       "Actor": "오군#9",
-      "Strike": "조조군#23",
+      "Strike": "조조군#22",
       "React": "hit",
       "Kill": true,
       "After": 18.66
@@ -26678,11 +27375,11 @@
      {
       "Actor": "오군#10",
       "Enter": [
-       48,
+       28,
        -15
       ],
       "Move": [
-       -10,
+       -30,
        -15
       ],
       "Ease": "line",
@@ -26692,11 +27389,11 @@
      {
       "Actor": "오군#11",
       "Enter": [
-       50,
+       30,
        -15
       ],
       "Move": [
-       -8,
+       -28,
        -15
       ],
       "Ease": "line",
@@ -26705,663 +27402,275 @@
      },
      {
       "Actor": "오군#1",
-      "Speed": 1.2,
       "Move": [
-       6,
-       -27
-      ],
-      "Via": [
-       [
-        7,
-        -27
-       ]
-      ],
-      "End": "SE",
-      "After": 14.71
-     },
-     {
-      "Actor": "오군#1",
-      "Strike": "조조군#7",
-      "React": "hit",
-      "After": 15.21
-     },
-     {
-      "Actor": "오군#1",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 16.21
-     },
-     {
-      "Actor": "오군#1",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 17.3
-     },
-     {
-      "Actor": "오군#1",
-      "Move": [
-       -68,
-       -27
+       -84,
+       -29
       ],
       "Ease": "line",
-      "Speed": 0.58,
-      "After": 18.8,
+      "Speed": 0.56,
+      "After": 10.4,
       "Free": true
      },
      {
       "Actor": "오군#2",
-      "Speed": 1.2,
       "Move": [
-       6,
-       -27
-      ],
-      "Via": [
-       [
-        6,
-        -30
-       ]
-      ],
-      "End": "SE",
-      "After": 14.71
-     },
-     {
-      "Actor": "오군#2",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 15.67
-     },
-     {
-      "Actor": "오군#2",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 16.83
-     },
-     {
-      "Actor": "오군#2",
-      "Move": [
-       -68,
-       -27
+       -84,
+       -30
       ],
       "Ease": "line",
-      "Speed": 0.57,
-      "After": 18.92,
+      "Speed": 0.56,
+      "After": 10.23,
       "Free": true
      },
      {
       "Actor": "오군#3",
       "Move": [
-       -68,
-       -26
+       -84,
+       -30
       ],
       "Ease": "line",
       "Speed": 0.56,
-      "After": 19.11,
+      "After": 10.23,
       "Free": true
      },
      {
       "Actor": "오군#4",
       "Move": [
-       -68,
-       -23
+       -84,
+       -26
       ],
       "Ease": "line",
-      "Speed": 0.56,
-      "After": 9.25,
+      "Speed": 0.58,
+      "After": 19.53,
       "Free": true
      },
      {
       "Actor": "오군#5",
       "Move": [
-       -68,
-       -20
+       -84,
+       -27
       ],
       "Ease": "line",
-      "Speed": 0.56,
-      "After": 15.43,
+      "Speed": 0.58,
+      "After": 19.41,
       "Free": true
      },
      {
       "Actor": "오군#6",
       "Move": [
-       -68,
-       -21
+       -84,
+       -23
       ],
       "Ease": "line",
       "Speed": 0.55,
-      "After": 15.4,
+      "After": 10.19,
       "Free": true
      },
      {
       "Actor": "오군#7",
-      "Speed": 1.2,
       "Move": [
-       6,
-       -27
-      ],
-      "Via": [
-       [
-        0,
-        -27
-       ]
-      ],
-      "End": "SE",
-      "After": 14.84
-     },
-     {
-      "Actor": "오군#7",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 17.44
-     },
-     {
-      "Actor": "오군#7",
-      "Move": [
-       -68,
-       -27
+       -84,
+       -20
       ],
       "Ease": "line",
-      "Speed": 0.58,
-      "After": 19.02,
+      "Speed": 0.57,
+      "After": 11.67,
       "Free": true
      },
      {
       "Actor": "오군#8",
       "Move": [
-       -68,
+       -84,
        -17
       ],
       "Ease": "line",
-      "Speed": 0.56,
-      "After": 15.28,
+      "Speed": 0.58,
+      "After": 13.45,
       "Free": true
      },
      {
       "Actor": "오군#9",
       "Move": [
-       -68,
+       -84,
        -14
       ],
       "Ease": "line",
-      "Speed": 0.57,
-      "After": 19.96,
+      "Speed": 0.56,
+      "After": 19.61,
       "Free": true
      },
      {
       "Actor": "오군#10",
       "Move": [
-       -68,
+       -84,
        -15
       ],
       "Ease": "line",
       "Speed": 0.56,
-      "After": 19.4,
+      "After": 19.38,
       "Free": true
      },
      {
       "Actor": "오군#11",
       "Move": [
-       -68,
+       -84,
        -15
       ],
       "Ease": "line",
-      "Speed": 0.56,
-      "After": 19.4,
+      "Speed": 0.57,
+      "After": 19.52,
       "Free": true
+     },
+     {
+      "Actor": "오군#12",
+      "Enter": [
+       5,
+       10
+      ],
+      "Move": [
+       5,
+       -6
+      ],
+      "Ease": "line",
+      "Speed": 1.6,
+      "After": 0.33
      },
      {
       "Prop": [
        "boat_v#오군#12",
-       12,
+       5,
        10
       ],
-      "After": 0.2
+      "After": 0.33
      },
      {
       "Prop": [
        "boat_v#오군#12",
        "오군#12"
       ],
-      "After": 0.22
+      "After": 0.35
      },
      {
       "Prop": [
        "boat_v#오군#12",
-       12,
+       5,
        -4.8
       ],
-      "After": 2.83
+      "After": 2.96
+     },
+     {
+      "Actor": "오군#12",
+      "Speed": 0.93,
+      "After": 3.25,
+      "Free": true,
+      "Move": [
+       -84,
+       -14
+      ],
+      "Via": [
+       [
+        5,
+        -14
+       ]
+      ]
+     },
+     {
+      "Actor": "오군#13",
+      "Enter": [
+       7,
+       10
+      ],
+      "Move": [
+       7,
+       -6
+      ],
+      "Ease": "line",
+      "Speed": 1.6,
+      "After": 0.55
      },
      {
       "Prop": [
        "boat_v#오군#13",
-       14,
+       7,
        10
       ],
-      "After": 0.69
+      "After": 0.55
      },
      {
       "Prop": [
        "boat_v#오군#13",
        "오군#13"
       ],
-      "After": 0.71
+      "After": 0.57
      },
      {
       "Prop": [
        "boat_v#오군#13",
-       14,
+       7,
        -4.8
       ],
-      "After": 3.31
+      "After": 3.17
+     },
+     {
+      "Actor": "오군#13",
+      "Speed": 0.98,
+      "After": 3.47,
+      "Free": true,
+      "Move": [
+       -84,
+       -14
+      ],
+      "Via": [
+       [
+        7,
+        -14
+       ]
+      ]
      },
      {
       "Actor": "오군#14",
       "Enter": [
-       16,
+       9,
        10
       ],
       "Move": [
-       16,
+       9,
        -6
       ],
       "Ease": "line",
       "Speed": 1.6,
-      "After": 1.26
+      "After": 1.35
      },
      {
       "Prop": [
        "boat_v#오군#14",
-       16,
+       9,
        10
       ],
-      "After": 1.26
+      "After": 1.35
      },
      {
       "Prop": [
        "boat_v#오군#14",
        "오군#14"
       ],
-      "After": 1.28
+      "After": 1.37
      },
      {
       "Prop": [
        "boat_v#오군#14",
-       16,
+       9,
        -4.8
       ],
-      "After": 3.88
+      "After": 3.98
      },
      {
       "Actor": "오군#14",
       "Speed": 0.83,
-      "After": 4.18,
+      "After": 4.28,
       "Free": true,
       "Move": [
-       -68,
-       -14
-      ],
-      "Via": [
-       [
-        16,
-        -14
-       ]
-      ]
-     },
-     {
-      "Prop": [
-       "boat_v#오군#15",
-       18,
-       10
-      ],
-      "After": 0.2
-     },
-     {
-      "Prop": [
-       "boat_v#오군#15",
-       "오군#15"
-      ],
-      "After": 0.22
-     },
-     {
-      "Prop": [
-       "boat_v#오군#15",
-       18,
-       -4.8
-      ],
-      "After": 2.83
-     },
-     {
-      "Prop": [
-       "boat_v#오군#16",
-       20,
-       10
-      ],
-      "After": 0.68
-     },
-     {
-      "Prop": [
-       "boat_v#오군#16",
-       "오군#16"
-      ],
-      "After": 0.7
-     },
-     {
-      "Prop": [
-       "boat_v#오군#16",
-       20,
-       -4.8
-      ],
-      "After": 3.31
-     },
-     {
-      "Actor": "오군#17",
-      "Enter": [
-       22,
-       10
-      ],
-      "Move": [
-       22,
-       -6
-      ],
-      "Ease": "line",
-      "Speed": 1.6,
-      "After": 1.33
-     },
-     {
-      "Prop": [
-       "boat_v#오군#17",
-       22,
-       10
-      ],
-      "After": 1.33
-     },
-     {
-      "Prop": [
-       "boat_v#오군#17",
-       "오군#17"
-      ],
-      "After": 1.35
-     },
-     {
-      "Prop": [
-       "boat_v#오군#17",
-       22,
-       -4.8
-      ],
-      "After": 3.96
-     },
-     {
-      "Actor": "오군#17",
-      "Speed": 0.84,
-      "After": 4.25,
-      "Free": true,
-      "Move": [
-       -68,
-       -14
-      ],
-      "Via": [
-       [
-        22,
-        -14
-       ]
-      ]
-     },
-     {
-      "Actor": "오군#18",
-      "Enter": [
-       24,
-       10
-      ],
-      "Move": [
-       24,
-       -6
-      ],
-      "Ease": "line",
-      "Speed": 1.6,
-      "After": 0.12
-     },
-     {
-      "Prop": [
-       "boat_v#오군#18",
-       24,
-       10
-      ],
-      "After": 0.12
-     },
-     {
-      "Prop": [
-       "boat_v#오군#18",
-       "오군#18"
-      ],
-      "After": 0.14
-     },
-     {
-      "Prop": [
-       "boat_v#오군#18",
-       24,
-       -4.8
-      ],
-      "After": 2.75
-     },
-     {
-      "Actor": "오군#18",
-      "Speed": 0.84,
-      "After": 3.04,
-      "Free": true,
-      "Move": [
-       -68,
-       -14
-      ],
-      "Via": [
-       [
-        24,
-        -14
-       ]
-      ]
-     },
-     {
-      "Actor": "오군#19",
-      "Enter": [
-       26,
-       10
-      ],
-      "Move": [
-       26,
-       -6
-      ],
-      "Ease": "line",
-      "Speed": 1.6,
-      "After": 0.69
-     },
-     {
-      "Prop": [
-       "boat_v#오군#19",
-       26,
-       10
-      ],
-      "After": 0.69
-     },
-     {
-      "Prop": [
-       "boat_v#오군#19",
-       "오군#19"
-      ],
-      "After": 0.71
-     },
-     {
-      "Prop": [
-       "boat_v#오군#19",
-       26,
-       -4.8
-      ],
-      "After": 3.31
-     },
-     {
-      "Actor": "오군#19",
-      "Speed": 0.97,
-      "After": 3.61,
-      "Free": true,
-      "Move": [
-       -68,
-       -14
-      ],
-      "Via": [
-       [
-        26,
-        -14
-       ]
-      ]
-     },
-     {
-      "Actor": "오군#20",
-      "Enter": [
-       28,
-       10
-      ],
-      "Move": [
-       28,
-       -6
-      ],
-      "Ease": "line",
-      "Speed": 1.6,
-      "After": 1.25
-     },
-     {
-      "Prop": [
-       "boat_v#오군#20",
-       28,
-       10
-      ],
-      "After": 1.25
-     },
-     {
-      "Prop": [
-       "boat_v#오군#20",
-       "오군#20"
-      ],
-      "After": 1.27
-     },
-     {
-      "Prop": [
-       "boat_v#오군#20",
-       28,
-       -4.8
-      ],
-      "After": 3.88
-     },
-     {
-      "Actor": "오군#20",
-      "Speed": 0.82,
-      "After": 4.17,
-      "Free": true,
-      "Move": [
-       -68,
-       -14
-      ],
-      "Via": [
-       [
-        28,
-        -14
-       ]
-      ]
-     },
-     {
-      "Actor": "오군#21",
-      "Enter": [
-       30,
-       10
-      ],
-      "Move": [
-       30,
-       -6
-      ],
-      "Ease": "line",
-      "Speed": 1.6,
-      "After": 0.29
-     },
-     {
-      "Prop": [
-       "boat_v#오군#21",
-       30,
-       10
-      ],
-      "After": 0.29
-     },
-     {
-      "Prop": [
-       "boat_v#오군#21",
-       "오군#21"
-      ],
-      "After": 0.31
-     },
-     {
-      "Prop": [
-       "boat_v#오군#21",
-       30,
-       -4.8
-      ],
-      "After": 2.92
-     },
-     {
-      "Actor": "오군#21",
-      "Speed": 0.97,
-      "After": 3.21,
-      "Free": true,
-      "Move": [
-       -68,
-       -14
-      ],
-      "Via": [
-       [
-        30,
-        -14
-       ]
-      ]
-     },
-     {
-      "Actor": "오군#22",
-      "Enter": [
-       32,
-       10
-      ],
-      "Move": [
-       32,
-       -6
-      ],
-      "Ease": "line",
-      "Speed": 1.6,
-      "After": 0.79
-     },
-     {
-      "Prop": [
-       "boat_v#오군#22",
-       32,
-       10
-      ],
-      "After": 0.79
-     },
-     {
-      "Prop": [
-       "boat_v#오군#22",
-       "오군#22"
-      ],
-      "After": 0.81
-     },
-     {
-      "Prop": [
-       "boat_v#오군#22",
-       32,
-       -4.8
-      ],
-      "After": 3.42
-     },
-     {
-      "Actor": "오군#22",
-      "Speed": 0.97,
-      "After": 3.71,
-      "Free": true,
-      "Move": [
-       -68,
+       -84,
        -14
       ],
       "Via": [
@@ -27376,222 +27685,413 @@
       ]
      },
      {
-      "Actor": "오군#23",
+      "Actor": "오군#15",
       "Enter": [
-       21,
-       -18
+       11,
+       10
       ],
-      "Speed": 1.2,
       "Move": [
-       6,
-       -18
-      ],
-      "End": "SE",
-      "After": 8.67
-     },
-     {
-      "Actor": "오군#23",
-      "Strike": "조조군#19",
-      "React": "hit",
-      "After": 11.97
-     },
-     {
-      "Actor": "오군#23",
-      "Strike": "조조군#19",
-      "React": "hit",
-      "After": 13.1
-     },
-     {
-      "Actor": "오군#23",
-      "Move": [
-       -68,
-       -18
+       11,
+       -6
       ],
       "Ease": "line",
-      "Speed": 0.57,
-      "After": 15.26,
-      "Free": true
+      "Speed": 1.6,
+      "After": 0.1
      },
      {
-      "Actor": "오군#24",
-      "Enter": [
-       6,
-       -33
+      "Prop": [
+       "boat_v#오군#15",
+       11,
+       10
       ],
-      "Speed": 1.2,
+      "After": 0.1
+     },
+     {
+      "Prop": [
+       "boat_v#오군#15",
+       "오군#15"
+      ],
+      "After": 0.12
+     },
+     {
+      "Prop": [
+       "boat_v#오군#15",
+       11,
+       -4.8
+      ],
+      "After": 2.73
+     },
+     {
+      "Actor": "오군#15",
+      "Speed": 0.96,
+      "After": 3.02,
+      "Free": true,
       "Move": [
-       6,
-       -18
+       -84,
+       -14
       ],
       "Via": [
        [
-        7,
-        -33
+        4,
+        -6
        ],
        [
-        7,
-        -18
+        4,
+        -14
        ]
+      ]
+     },
+     {
+      "Actor": "오군#16",
+      "Enter": [
+       13,
+       10
+      ],
+      "Move": [
+       13,
+       -6
+      ],
+      "Ease": "line",
+      "Speed": 1.6,
+      "After": 0.53
+     },
+     {
+      "Prop": [
+       "boat_v#오군#16",
+       13,
+       10
+      ],
+      "After": 0.53
+     },
+     {
+      "Prop": [
+       "boat_v#오군#16",
+       "오군#16"
+      ],
+      "After": 0.55
+     },
+     {
+      "Prop": [
+       "boat_v#오군#16",
+       13,
+       -4.8
+      ],
+      "After": 3.16
+     },
+     {
+      "Actor": "오군#16",
+      "Speed": 0.85,
+      "After": 3.46,
+      "Free": true,
+      "Move": [
+       -84,
+       -14
+      ],
+      "Via": [
+       [
+        13,
+        -14
+       ]
+      ]
+     },
+     {
+      "Actor": "오군#17",
+      "Enter": [
+       7,
+       -24
+      ],
+      "Speed": 1.2,
+      "Move": [
+       -1,
+       -24
       ],
       "End": "SE",
-      "After": 8.73
+      "After": 3.92
      },
      {
-      "Actor": "오군#24",
-      "Strike": "조조군#19",
+      "Actor": "오군#17",
+      "Strike": "조조군#10",
       "React": "block",
-      "After": 12.5
+      "After": 5.59
      },
      {
-      "Actor": "오군#24",
-      "Strike": "조조군#19",
+      "Actor": "오군#17",
+      "Strike": "조조군#10",
+      "React": "hit",
+      "After": 6.69
+     },
+     {
+      "Actor": "오군#17",
+      "Strike": "조조군#10",
       "React": "block",
-      "After": 13.51
+      "After": 7.78
      },
      {
-      "Actor": "오군#24",
+      "Actor": "오군#17",
       "Move": [
-       -68,
-       -18
+       -84,
+       -24
       ],
       "Ease": "line",
       "Speed": 0.57,
-      "After": 15.29,
+      "After": 9.49,
       "Free": true
      },
      {
-      "Actor": "오군#25",
+      "Actor": "오군#18",
       "Enter": [
-       6,
+       -1,
        -32
       ],
       "Speed": 1.2,
       "Move": [
-       6,
-       -18
-      ],
-      "Via": [
-       [
-        7,
-        -32
-       ],
-       [
-        7,
-        -18
-       ]
+       -1,
+       -24
       ],
       "End": "SE",
-      "After": 9.49
+      "After": 5.1
      },
      {
-      "Actor": "오군#25",
-      "Strike": "조조군#19",
+      "Actor": "오군#18",
+      "Strike": "조조군#10",
       "React": "block",
-      "After": 13.02
+      "After": 6.77
      },
      {
-      "Actor": "오군#25",
+      "Actor": "오군#18",
+      "Strike": "조조군#10",
+      "React": "block",
+      "After": 8.0
+     },
+     {
+      "Actor": "오군#18",
       "Move": [
-       -68,
-       -18
+       -84,
+       -24
       ],
       "Ease": "line",
-      "Speed": 0.56,
-      "After": 14.91,
+      "Speed": 0.57,
+      "After": 9.72,
       "Free": true
      },
      {
-      "Actor": "오군#26",
+      "Actor": "오군#19",
       "Enter": [
-       14,
-       -27
+       -7,
+       -26
       ],
       "Speed": 1.2,
       "Move": [
-       6,
-       -27
+       -7,
+       -18
       ],
       "End": "SE",
-      "After": 13.22
+      "After": 6.62
      },
      {
-      "Actor": "오군#26",
-      "Strike": "조조군#7",
+      "Actor": "오군#19",
+      "Strike": "조조군#18",
       "React": "block",
-      "After": 14.88
+      "After": 8.29
      },
      {
-      "Actor": "오군#26",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 15.89
+      "Actor": "오군#19",
+      "Strike": "조조군#18",
+      "React": "hit",
+      "After": 9.3
      },
      {
-      "Actor": "오군#26",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 17.1
+      "Actor": "오군#19",
+      "Strike": "조조군#18",
+      "React": "hit",
+      "After": 10.56
      },
      {
-      "Actor": "오군#26",
+      "Actor": "오군#19",
+      "Strike": "조조군#18",
+      "React": "hit",
+      "After": 11.59
+     },
+     {
+      "Actor": "오군#19",
       "Move": [
-       -68,
-       -27
+       -84,
+       -18
       ],
       "Ease": "line",
       "Speed": 0.55,
-      "After": 18.61,
+      "After": 13.09,
       "Free": true
      },
      {
-      "Actor": "오군#27",
+      "Actor": "오군#20",
       "Enter": [
-       6,
-       -35
+       1,
+       -18
       ],
       "Speed": 1.2,
       "Move": [
-       6,
-       -27
+       -7,
+       -18
       ],
       "End": "SE",
-      "After": 13.73
+      "After": 7.64
      },
      {
-      "Actor": "오군#27",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 15.39
-     },
-     {
-      "Actor": "오군#27",
-      "Strike": "조조군#7",
-      "React": "block",
-      "After": 16.47
-     },
-     {
-      "Actor": "오군#27",
-      "Strike": "조조군#7",
+      "Actor": "오군#20",
+      "Strike": "조조군#18",
       "React": "hit",
-      "After": 17.48
+      "After": 9.31
      },
      {
-      "Actor": "오군#27",
+      "Actor": "오군#20",
+      "Strike": "조조군#18",
+      "React": "hit",
+      "After": 10.6
+     },
+     {
+      "Actor": "오군#20",
       "Move": [
-       -68,
-       -27
+       -84,
+       -18
       ],
       "Ease": "line",
       "Speed": 0.56,
-      "After": 18.73,
+      "After": 13.2,
       "Free": true
      },
      {
-      "Wait": 25.6
+      "Actor": "오군#21",
+      "Enter": [
+       4,
+       -13
+      ],
+      "Speed": 1.2,
+      "Move": [
+       4,
+       -21
+      ],
+      "End": "NW",
+      "After": 6.19
+     },
+     {
+      "Actor": "오군#21",
+      "Strike": "조조군#13",
+      "React": "block",
+      "After": 7.86
+     },
+     {
+      "Actor": "오군#21",
+      "Strike": "조조군#13",
+      "React": "block",
+      "After": 9.11
+     },
+     {
+      "Actor": "오군#21",
+      "Move": [
+       -84,
+       -21
+      ],
+      "Ease": "line",
+      "Speed": 0.57,
+      "After": 10.98,
+      "Free": true
+     },
+     {
+      "Actor": "오군#22",
+      "Enter": [
+       2,
+       -29
+      ],
+      "Speed": 1.2,
+      "Move": [
+       2,
+       -21
+      ],
+      "Via": [
+       [
+        1,
+        -29
+       ],
+       [
+        1,
+        -21
+       ]
+      ],
+      "End": "SE",
+      "After": 6.35
+     },
+     {
+      "Actor": "오군#22",
+      "Strike": "조조군#13",
+      "React": "block",
+      "After": 8.48
+     },
+     {
+      "Actor": "오군#22",
+      "Strike": "조조군#13",
+      "React": "block",
+      "After": 9.71
+     },
+     {
+      "Actor": "오군#22",
+      "Move": [
+       -84,
+       -21
+      ],
+      "Ease": "line",
+      "Speed": 0.57,
+      "After": 11.02,
+      "Free": true
+     },
+     {
+      "Actor": "오군#23",
+      "Enter": [
+       2,
+       -29
+      ],
+      "Speed": 1.2,
+      "Move": [
+       2,
+       -21
+      ],
+      "Via": [
+       [
+        1,
+        -29
+       ],
+       [
+        1,
+        -21
+       ]
+      ],
+      "End": "SE",
+      "After": 6.91
+     },
+     {
+      "Actor": "오군#23",
+      "Strike": "조조군#13",
+      "React": "block",
+      "After": 9.04
+     },
+     {
+      "Actor": "오군#23",
+      "Move": [
+       -84,
+       -21
+      ],
+      "Ease": "line",
+      "Speed": 0.56,
+      "After": 11.09,
+      "Free": true
+     },
+     {
+      "Wait": 24.22
      }
     ]
    ],
-   "Hold": 0.4
+   "Hold": 0.4,
+   "End": 23.72
   },
   {
    "ID": "huarong",

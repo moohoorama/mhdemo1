@@ -68,6 +68,7 @@ type scene struct {
 	swing     map[string]string      // riders dealing a blow on the move: the motion the walk must not cut short
 	dust      []dustPuff             // dust kicked up by targets driven back by a blow
 	arrows    []*sceneArrow          // arrows loosed by Play steps with an Arrow
+	shouts    []*shout               // words cried out over actors' heads (scene_shout.go)
 	tied      map[string]*sprite.Art // bound prisoners, with the art they stand in once untied
 	arrive    map[string]string      // adopted actors walking to their places, with the facing they take there
 	base      *scenes.Scene          // the scene the stage was built from (an adopted event keeps the walk's)
@@ -272,6 +273,9 @@ func (g *Game) actorArt(key, pick, faction, mount string) *sprite.Art {
 	if faction == "" {
 		faction = c.Look.Faction
 	}
+	if f := g.S.Data.Factions[faction]; f.PlainExtras && scenes.Extra(key) {
+		return g.sceneArtIn(def, pick, faction, mount)
+	}
 	return g.sceneArt(def, pick, faction, mount)
 }
 
@@ -389,6 +393,7 @@ func (g *Game) updateScene(dt float64) {
 			delete(s.emotes, k)
 		}
 	}
+	g.updateShouts(dt)
 	s.shake = math.Max(0, s.shake-dt)
 	if s.leaving {
 		if s.fade = math.Min(1, s.fade+dt/fadeTime); s.fade == 1 {
@@ -619,6 +624,9 @@ func (g *Game) startStep(st scenes.Step) {
 			g.looseArrow(v, anim, st.Arrow[0], st.Arrow[1], st.FireArrow)
 		}
 	}
+	if st.Shout != "" {
+		g.startShout(st.Actor, st.Shout, st.ShoutSize)
+	}
 	if st.Emote != "" {
 		s.emotes[v.id] = &emote{text: st.Emote, life: emoteTime}
 		g.sfx(emoteCues[st.Emote])
@@ -640,7 +648,12 @@ func (g *Game) startStep(st scenes.Step) {
 	}
 	switch st.Chatter {
 	case "":
-	case "-":
+	case "-": // the murmur stops, and its line still up goes with it (a crowd falling silent)
+		if s.chatter[v.id] != nil {
+			if e := s.emotes[v.id]; e != nil && !e.block {
+				delete(s.emotes, v.id)
+			}
+		}
 		delete(s.chatter, v.id)
 	default:
 		s.chatter[v.id] = &chatterLine{id: v.id, lines: strings.Split(st.Chatter, "|"), t: chatStart(st, len(s.chatter))}
@@ -666,8 +679,8 @@ func (g *Game) stageStep(st scenes.Step) {
 	if st.Effect != "" && g.field != nil {
 		g.field.night.fires = g.field.night.fires[:0]
 		for _, e := range s.effects {
-			if e.kind == "fire" || e.kind == "smallfire" || e.kind == "bigfire" || e.kind == "blaze" {
-				g.field.night.fires = append(g.field.night.fires, nightFire{e.u, e.v, e.kind == "bigfire" || e.kind == "blaze"})
+			if e.kind == "fire" || e.kind == "smallfire" || e.kind == "bigfire" || e.kind == "bonfire" {
+				g.field.night.fires = append(g.field.night.fires, nightFire{e.u, e.v, e.kind == "bigfire" || e.kind == "bonfire"})
 			}
 		}
 	}
@@ -1156,6 +1169,7 @@ func (g *Game) drawBalloons(dst *ebiten.Image, speakers []string) {
 	for _, b := range balloons {
 		g.bubble(dst, b.v, b.mark, b.talking)
 	}
+	g.drawShouts(dst)
 }
 
 // glowImage is a corner light fading out along the diagonal, white at the top left corner.
@@ -1244,7 +1258,7 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 		switch e.kind {
 		case "petals":
 			g.drawPetals(dst, e.t)
-		case "fire", "blaze": // a blaze is a fire built up high in a brazier: no bigger, but it lights as far as a burning house
+		case "fire", "bonfire": // a bonfire is a fire built up high in a brazier: no bigger, but it lights as far as a burning house
 			g.flames(dst, x, y, e.t, true)
 		case "smallfire":
 			g.flames(dst, x, y, e.t, false)

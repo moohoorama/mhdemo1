@@ -334,6 +334,7 @@
     "tactics_primer"
    ],
    "Look": {
+    "Scene": "zhangjiao_noncombat",
     "Portrait": "zhangjiao",
     "Faction": "turban",
     "Palette": {

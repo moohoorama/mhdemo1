@@ -274,7 +274,9 @@ func (f *Field) addScenePieces(pieces []scenemap.Piece, level int) {
 			}
 		}
 		sunk := slices.ContainsFunc(p.Draws, func(d scenemap.Draw) bool { return d.Kind == scenemap.DrawWaterline })
-		if pr, ok := f.A.Props[p.Name]; ok && p.Rank == scenemap.RankObject && !pr.NoShadow && !sunk { // the flood takes no shadow
+		pr, ok := f.A.Props[p.Name]
+		casts := p.Rank == scenemap.RankObject || p.Rank == scenemap.RankWall && pr.Masked
+		if ok && casts && !pr.NoShadow && !sunk { // the flood takes no shadow
 			sp.shadow = pr.Shadow
 		}
 		f.scenePieces = append(f.scenePieces, sp)

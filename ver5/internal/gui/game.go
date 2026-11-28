@@ -148,6 +148,7 @@ type Game struct {
 	hudInfo                   image.Rectangle // the info panel at the bottom right as last drawn
 	hudFolded, hudAnimated    bool            // the panel (or the right corner panel) shows its head only; it has been drawn before
 	leftFolded                bool            // the left corner panel shows its head only
+	leftFold, hudFold         foldAnim        // how far open the two upper corner panels are
 	infoFolded                bool            // the battle's info panel at the bottom right shows its tab row only
 	hudIdle, hudModeSet       bool            // the folds are those of the idle (not commanding) battle, and have been set for a mode
 	hudApplied                [3]bool         // the folds last loaded from or saved to the settings: left, upper right, lower right

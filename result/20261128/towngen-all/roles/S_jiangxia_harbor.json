@@ -1,0 +1,30 @@
+{
+ "map": "S_jiangxia_harbor",
+ "region": "jiangnan",
+ "uses": [
+  "explore27_jiangxia.json/harbor",
+  "explore27_redcliff.json/camp",
+  "ch27.json/c27-arrive"
+ ],
+ "roles": {
+  "관청": [
+   "관청"
+  ],
+  "도구점": [
+   "보급소"
+  ]
+ },
+ "placed": {},
+ "zones": [],
+ "ok": true,
+ "missing": [],
+ "covered": [],
+ "fenced_cottages": 0,
+ "main_avenue": null,
+ "cross_avenue": null,
+ "bounds": null,
+ "notes": [
+  "원래 배치 그대로, 집만 지역 그림, 흙 띠 지움"
+ ],
+ "grow": 0
+}

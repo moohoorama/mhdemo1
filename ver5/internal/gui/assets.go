@@ -91,6 +91,7 @@ type Prop struct {
 	Ground   bool
 	NoShadow bool   // a story scene lays no ground shadow under it (index.json "shadow": false)
 	Shadow   Sprite // its silhouette cast on the ground as the units' shadows are; nil Image for a ground prop or NoShadow
+	Masked   bool   // Shadow comes from the mask its model gave (index.json "shadow_mask"); a wall line piece casts only then
 }
 
 // Sprite is an image whose pivot lands on the drawing position.
@@ -366,6 +367,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 				mr := image.Rect(m.Rect[0], m.Rect[1], m.Rect[0]+m.Rect[2], m.Rect[1]+m.Rect[3])
 				sd := sprite.MaskShadow(pix.SubImage(mr).(*image.RGBA), m.Pivot)
 				pr.Shadow = Sprite{ebiten.NewImageFromImage(sprite.Tint(sd.Image, shade)), float64(sd.Pivot[0]), float64(sd.Pivot[1])}
+				pr.Masked = true
 			} else if !pr.Ground && !pr.NoShadow {
 				pr.Shadow = castShadow(pix.SubImage(r).(*image.RGBA), p.Pivot, shade)
 			}

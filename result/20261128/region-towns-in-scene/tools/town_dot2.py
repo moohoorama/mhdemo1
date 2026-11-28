@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import town_dot as T
 from town_dot import Body, box, flat, earth, plaster, thatch, tiles, stone, bricks, wood, trough, logs, jar_body, post, lit
 import gen_pixel_castle as pc
+import shade
 
 pc.PAL.update({
     "vG": (120, 146, 62), "vg": (84, 108, 44), "vS": (118, 86, 54), "vs": (96, 68, 42),
@@ -92,7 +93,7 @@ def tile_hip(L, a0, a1, c0, c1, ze, s, ridge=True, skirt=None):
         r0, r1 = a0 + half, a1 - half
         out.append(Body(L.box(r0 - .05, r1 + .05, cm - .07, cm + .07, zr - 3, zr + 2), flat("gK", "gK", "gB")))
         for a in (r0 - .1, r1 - .02):
-            out.append(Body(L.box(a, a + .12, cm - .08, cm + .08, zr - 3, zr + 7), flat("gK", "gK", "gB")))
+            out.append(Body(L.box(a, a + .12, cm - .08, cm + .08, zr - 3, zr + 4), flat("gK", "gK", "gB")))
     return out
 
 
@@ -247,7 +248,7 @@ def cwall(u0, u1, v0, v1, h=14):
     along_u = (u1 - u0) >= (v1 - v0)
     L = U if along_u else Vv
     a0, a1, c0, c1 = (u0, u1, v0, v1) if along_u else (v0, v1, u0, u1)
-    return T.gable_house(L, a0, a1, c0, c1, h, 14, plaster(beam=None), "tiles", ov=.06, ova=.0, t=2)
+    return T.gable_house(L, a0, a1, c0, c1, h, 10, plaster(beam=None), "tiles", ov=.06, ova=.0, t=2)
 
 
 def gate(u0, u1, v, h=26, roof_h=None):
@@ -255,7 +256,7 @@ def gate(u0, u1, v, h=26, roof_h=None):
     out = [post(u0, v, 0, h, .06, flat("mF", "mf")), post(u1, v, 0, h, .06, flat("mF", "mf"))]
     out.append(Body(box(u0 + .06, u1 - .06, v - .03, v + .03, 0, h - 4),
                     lambda f, u, vv, z, s, hh: np.where(np.mod(s, 4) == 0, "mf", np.where((hh % 8 == 4) & (np.mod(s, 4) == 2), "qG", "mF"))))
-    out += T.gable_house(U, u0 - .15, u1 + .15, v - .22, v + .22, h, 22, flat("mF", "mf"), "tiles", ov=.1, ova=.0, t=3)[1:]
+    out += T.gable_house(U, u0 - .15, u1 + .15, v - .22, v + .22, h, 14, flat("mF", "mf"), "tiles", ov=.1, ova=.0, t=3)[1:]
     return out
 
 
@@ -277,6 +278,13 @@ def mansion_wall(holes=()):
     return p
 
 
+def yard_from(out, n):
+    """out[n:]은 마당 것(담장·울타리·소품·밭): 집만 그릴 때 뺀다"""
+    for b in out[n:]:
+        b.yard = True
+    return out
+
+
 def jar_at(u, v, r, h, z0=0):
     return [Body(box(u - r, u + r, v - r, v + r, z0, z0 + h - 2), T.jar),
             Body(box(u - r * .6, u + r * .6, v - r * .6, v + r * .6, z0 + h - 2, z0 + h), flat("jT", "ja", "ja"))]
@@ -291,15 +299,16 @@ def stone_base(u0, u1, v0, v1, h=5):
 def cottage_1():
     """기본: 한 채, 굴뚝, 장작더미·항아리, 앞마당 울타리 한 줄"""
     holes = [("+v", 1.0, 1.3, 3, 25, "door"), ("+v", 1.8, 2.3, 13, 21, "lattice"), ("+u", 1.3, 1.8, 13, 21, "lattice")]
-    h = [Body(box(.6, 3.2, .7, 2.4, 0, 30), folk(holes))] + folk_roof(U, .6, 3.2, .7, 2.4, 30, 18, .95)
+    h = [Body(box(.6, 3.2, .7, 2.4, 0, 30), folk(holes))] + folk_roof(U, .6, 3.2, .7, 2.4, 30, 13, .95)
     out = stilt(h, .6, 3.2, .7, 2.4)
     if not ST.get("stilts"):
         out += chimney(.8, .85, 56 + 8 * (ST["slope"] - 1) * 4)
+    n = len(out)
     out.append(Body(box(3.35, 3.7, .9, 1.6, 0, 9), logs))
     out.append(Body(box(3.35, 3.7, .9, 1.6, 9, 10), flat("tE", "tw")))
     out += jar_body(3.5, 2.0, .1, 9) + jar_body(3.62, 2.3, .08, 7)
     out += fence([(.4, 3.5), (2.4, 3.5)])
-    return out, (4, 4)
+    return yard_from(out, n), (4, 4)
 
 
 def cottage_2():
@@ -307,14 +316,15 @@ def cottage_2():
     holes = [("+v", .9, 1.2, 3, 25, "door"), ("+v", 1.5, 1.9, 13, 21, "lattice"),
              ("+v", 2.75, 3.05, 3, 25, "door"), ("+u", 1.5, 1.9, 13, 21, "lattice"), ("+u", 2.4, 2.8, 13, 21, "lattice")]
     h = [Body(box(.4, 2.5, .5, 1.9, 0, 30), folk(holes)), Body(box(2.4, 3.6, .5, 3.2, 0, 30), folk(holes))]
-    h += folk_roof(U, .4, 3.6, .5, 1.9, 30, 18, .88) + folk_roof(Vv, .5, 3.2, 2.4, 3.6, 30, 18, .78)
+    h += folk_roof(U, .4, 3.6, .5, 1.9, 30, 13, .88) + folk_roof(Vv, .5, 3.2, 2.4, 3.6, 30, 13, .78)
     out = stilt(h, .4, 3.6, .5, 1.9) if ST.get("stilts") else h
     if not ST.get("stilts"):
         out += chimney(.6, .62, 54 + 8 * (ST["slope"] - 1) * 4)
+    n = len(out)
     out.append(Body(box(.6, 1.6, 2.4, 3.0, 0, 3), stone))
     for u, v, r, hh in ((.8, 2.6, .11, 10), (1.1, 2.55, .12, 11), (1.4, 2.65, .09, 8), (.95, 2.85, .08, 7), (1.3, 2.85, .1, 9)):
         out += jar_at(u, v, r, hh, 3)
-    return out, (4, 4)
+    return yard_from(out, n), (4, 4)
 
 
 def cottage_3():
@@ -322,7 +332,7 @@ def cottage_3():
     holes = [("+v", .9, 1.2, 3, 25, "door"), ("+v", 1.5, 2.0, 13, 21, "lattice")]
     k = ST["slope"]
     mat = ST["folk_mat"]
-    h = gable(U, .45, 2.55, .7, 2.3, 30, 16, folk(holes), mat, ov=.18, ova=.16)
+    h = gable(U, .45, 2.55, .7, 2.3, 30, 12, folk(holes), mat, ov=.18, ova=.16)
     out = stilt(h, .45, 2.55, .7, 2.3)
     out += lean_to(2.55, 3.65, .6, 2.45, 30, 22, mat if mat == "thatch" else "tiles")
     out.append(Body(box(2.55, 2.65, .7, 2.3, 0, 30), folk()))
@@ -331,18 +341,20 @@ def cottage_3():
     out += haystack(3.05, 1.2, .3, 14)
     out.append(Body(box(2.8, 3.3, 1.75, 2.15, 0, 7), wood))
     out.append(Body(box(3.38, 3.42, 1.6, 1.64, 0, 22), flat("tw", "tk")))
+    n = len(out)
     out += fence([(.3, 3.6), (3.7, 3.6)], 12)
     out += fence([(.3, 2.6), (.3, 3.6)], 12)
-    return out, (4, 4)
+    return yard_from(out, n), (4, 4)
 
 
 def cottage_4():
     """작은 집 + 앞 밭(또는 논), 오른쪽 낟가리, 빨랫줄"""
     holes = [("+v", .85, 1.15, 3, 25, "door"), ("+u", .8, 1.2, 13, 21, "lattice"), ("+v", 1.5, 1.9, 13, 21, "lattice")]
-    h = [Body(box(.45, 2.35, .45, 1.9, 0, 29), folk(holes))] + folk_roof(U, .45, 2.35, .45, 1.9, 29, 20, .7)
+    h = [Body(box(.45, 2.35, .45, 1.9, 0, 29), folk(holes))] + folk_roof(U, .45, 2.35, .45, 1.9, 29, 14, .7)
     out = stilt(h, .45, 2.35, .45, 1.9)
     if not ST.get("stilts"):
         out += chimney(2.2, .6, 50 + 8 * (ST["slope"] - 1) * 4)
+    n = len(out)
     out += field(.45, 2.6, 2.4, 3.7, ST["fields"][-1])
     out += haystack(3.2, .9, .4, 22)
     out += haystack(3.25, 1.95, .32, 18)
@@ -351,7 +363,7 @@ def cottage_4():
     out.append(Body(box(2.75, 3.75, 2.79, 2.81, 18, 18.6), flat("tk", "tk")))
     for u0, c in ((2.9, "wA"), (3.2, "rA"), (3.45, "wa")):
         out.append(Body(box(u0, u0 + .2, 2.79, 2.82, 10, 18), flat(c, c)))
-    return out, (4, 4)
+    return yard_from(out, n), (4, 4)
 
 
 # ---------------------------------------------------------------- 6×4
@@ -359,7 +371,7 @@ def cottage_4():
 def smithy():
     """대장간: 앞이 트인 넓은 초가 헛간, 안쪽 벽돌 화덕 둘과 풀무, 오른쪽 둥근 굴뚝, 앞마당 모루·물통·숫돌, 쇠 무더기"""
     a0, a1, c0, c1, zw = .4, 4.4, .5, 2.5, 30
-    out = folk_roof(U, a0, a1, c0, c1, zw, 18, .9)
+    out = folk_roof(U, a0, a1, c0, c1, zw, 13, .9)
     out.append(Body(box(a0, a1, c0, c0 + .1, 0, zw), folk()))
     out.append(Body(box(a0, a0 + .1, c0, c1, 0, zw), folk()))
     for u in (a0 + .05, 1.75, 3.05, a1 - .05):
@@ -372,6 +384,7 @@ def smithy():
     out.append(Body(box(1.5, 2.0, .7, 1.1, 0, 10), wood))                # 풀무
     out.append(Body(box(1.55, 1.95, .75, 1.05, 10, 12), flat("tk", "tk", "dL")))
     out += chimney(4.85, .9, 72, .17)
+    n = len(out)
     for u, v in ((1.6, 3.0), (3.3, 3.1)):                                # 모루 둘
         out.append(Body(box(u - .08, u + .08, v - .07, v + .07, 0, 6), wood))
         out.append(Body(box(u - .16, u + .16, v - .05, v + .05, 6, 9), flat("iA", "ia", "iU")))
@@ -380,7 +393,7 @@ def smithy():
     out.append(Body(box(.6, 1.1, 2.9, 3.3, 0, 5), flat("iA", "ia", "iU")))  # 쇠 무더기
     out.append(Body(box(.7, 1.0, 3.0, 3.2, 5, 8), flat("iA", "ia", "iU")))
     out.append(Body(box(5.0, 5.6, 1.2, 1.9, 0, 9), logs))                # 숯 장작
-    return out, (6, 4)
+    return yard_from(out, n), (6, 4)
 
 
 def forge_at(u0):
@@ -400,25 +413,28 @@ def tavern():
     """주점: 넓은 흙벽 기와집(앞 들창 셋), 오른쪽 외쪽 차양 아래 평상 둘, 술항아리 무더기, 붉은 등 둘, 술깃발"""
     holes = [("+v", .7, 1.0, 3, 26, "door"), ("+v", 1.3, 2.1, 13, 22, "lattice"), ("+v", 2.4, 3.2, 13, 22, "lattice"),
              ("+v", 3.5, 3.8, 3, 26, "door"), ("+u", 1.0, 1.6, 13, 21, "lattice")]
-    out = gable(U, .4, 4.2, .5, 2.2, 31, 15, folk(holes), "tiles", ov=.16, ova=.14)
+    out = gable(U, .4, 4.2, .5, 2.2, 31, 11, folk(holes), "tiles", ov=.16, ova=.14)
     for u0 in (1.3, 2.4):
         out.append(Body(box(u0 - .02, u0 + .82, 2.2, 2.3, 11, 13), wood))
     out += lean_to(4.2, 5.7, .6, 2.3, 27, 20, "tiles", t=3)
     for v in (.65, 2.25):
         out.append(post(5.62, v, 0, 20, .04))
+    for u in (1.2, 3.3):
+        out.append(Body(box(u - .05, u + .05, 2.38, 2.48, 20, 26), flat("lR", "lr")))
+        out.append(Body(box(u - .01, u + .01, 2.42, 2.44, 26, 29), flat("tk", "tk")))
+    n = None
     for (u, v) in ((4.5, 1.2), (4.6, 2.9)):
+        if n is None and v > 2.5:
+            n = len(out)
         out.append(Body(box(u, u + .8, v, v + .45, 5, 7), flat("tE", "tw")))
         for du in (.05, .72):
             for dv in (.05, .38):
                 out.append(Body(box(u + du, u + du + .06, v + dv, v + dv + .06, 0, 5), wood))
     for u, v, r, h in ((.5, 2.6, .12, 11), (.75, 2.75, .12, 12), (.6, 3.0, .1, 9), (.95, 3.05, .13, 12), (.45, 3.3, .1, 9), (.8, 3.4, .11, 10)):
         out += jar_body(u, v, r, h)
-    for u in (1.2, 3.3):
-        out.append(Body(box(u - .05, u + .05, 2.38, 2.48, 20, 26), flat("lR", "lr")))
-        out.append(Body(box(u - .01, u + .01, 2.42, 2.44, 26, 29), flat("tk", "tk")))
     out.append(post(5.8, 3.4, 0, 56, .035))
     out.append(Body(box(5.4, 5.77, 3.38, 3.42, 32, 54), flag_white(5.4, 5.77)))
-    return out, (6, 4)
+    return yard_from(out, n), (6, 4)
 
 
 def flag_white(u0, u1):
@@ -431,7 +447,7 @@ def flag_white(u0, u1):
 def shop():
     """도구점: 회벽 기와집, 앞 전체에 홍백 천 차양과 진열대 셋(연장·바구니·항아리), 왼쪽 창 걸이, 오른쪽 통 무더기"""
     holes = [("+v", .6, .9, 3, 26, "door"), ("+v", 1.2, 4.2, 6, 24, "dark"), ("+u", 1.0, 1.5, 13, 21, "lattice")]
-    out = gable(U, .4, 4.6, .4, 1.9, 31, 16, plaster(holes, beam=28), "tiles", ov=.14, ova=.14)
+    out = gable(U, .4, 4.6, .4, 1.9, 31, 11, plaster(holes, beam=28), "tiles", ov=.14, ova=.14)
     out += lean_v(1.1, 4.3, 1.9, 2.75, 26, 19, T.awning)
     for u in (1.13, 2.7, 4.27):
         out.append(post(u, 2.72, 0, 19, .03))
@@ -441,6 +457,7 @@ def shop():
             u = u0 + .15 + i * .28
             out.append(Body(box(u - .07, u + .07, 2.15, 2.35, 8, 10),
                             flat("iA", "ia", "iU") if goods == "iron" else flat("hA", "hb", "hB")))
+    n = len(out)
     out.append(Body(box(.35, 1.0, 2.75, 2.85, 0, 3), wood))
     for u in (.38, .97):
         out.append(post(u, 2.8, 0, 22, .035))
@@ -451,7 +468,7 @@ def shop():
     for u, v in ((4.9, .8), (5.25, .9), (5.0, 1.25), (5.35, 1.3)):
         out.append(Body(box(u - .13, u + .13, v - .13, v + .13, 0, 11), barrel))
     out += jar_body(5.1, 2.6, .12, 11) + jar_body(5.4, 2.9, .1, 9)
-    return out, (6, 4)
+    return yard_from(out, n), (6, 4)
 
 
 def barrel(f, u, v, z, s, h):
@@ -474,12 +491,12 @@ def yamen():
         out.append(post(u, 1.9, zb, zw, .055, flat("cR", "cr")))
     out.append(Body(box(2.15, 5.85, 1.85, 1.95, zw - 4, zw), flat("cr", "cr", "cR")))
     out.append(Body(box(3.7, 4.3, 1.95, 1.98, zw - 14, zw - 5), plaque(3.7, 4.3)))
-    out += tile_hip(U, 1.9, 6.1, .2, 2.2, zw - 2, 22, skirt=12)
+    out += tile_hip(U, 1.9, 6.1, .2, 2.2, zw - 2, 13, skirt=7)
     # 곁채
     for (a0, a1) in ((.45, 2.15), (5.85, 7.55)):
         h2 = [("+v", a0 + .35, a1 - .35, 3, 20, "redlattice"), ("+u", .8, 1.4, 10, 18, "redlattice")]
         out.append(Body(box(a0, a1, .55, 1.65, zb, zb + 28), plaster(h2, beam=23)))
-        out += tile_hip(U, a0 - .2, a1 + .2, .3, 1.95, zb + 26, 18)
+        out += tile_hip(U, a0 - .2, a1 + .2, .3, 1.95, zb + 26, 11)
     for u in (.35, 7.65):
         out.append(post(u, 2.55, 0, 64, .03))
         out.append(Body(box(u + .03, u + .06, 2.3, 2.52, 36, 62), banner_at(36, 62)))
@@ -508,15 +525,15 @@ def mansion_1():
     out.append(Body(box(1.3, 4.7, .55, 1.55, 5, 36), mansion_wall(holes)))
     for u in (1.3, 2.15, 3.0, 3.85, 4.7):
         out.append(post(u, 1.75, 5, 36, .05, flat("mF", "mf")))
-    out += tile_hip(U, 1.05, 4.95, .3, 2.0, 33, 20)
-    # 담장: 왼쪽·오른쪽·앞 (앞 가운데 대문)
+    out += tile_hip(U, 1.05, 4.95, .3, 2.0, 33, 12)
+    n = len(out)
     out += cwall(.2, .38, .2, 3.8) + cwall(5.62, 5.8, .2, 3.8)
     out += cwall(.2, 2.55, 3.62, 3.8) + cwall(3.45, 5.8, 3.62, 3.8)
     out += gate(2.6, 3.4, 3.71)
     out += shrub(1.0, 2.7, .3, 22) + shrub(4.8, 2.6, .25, 14) + shrub(5.1, 3.1, .2, 10)
     out.append(Body(box(3.9, 4.1, 2.5, 2.7, 0, 9), stone))         # 석등
     out.append(Body(box(3.85, 4.15, 2.45, 2.75, 9, 11), flat("sS", "sR", "sU")))
-    return out, (6, 4)
+    return yard_from(out, n), (6, 4)
 
 
 def mansion_2():
@@ -524,13 +541,14 @@ def mansion_2():
     out = [stone_base(.4, 4.2, .4, 1.8), stone_base(4.0, 5.5, .4, 3.4)]
     h1 = [("+v", 1.0, 1.4, 5, 26, "redlattice"), ("+v", 1.9, 2.3, 5, 26, "redlattice"), ("+v", 2.8, 3.2, 5, 26, "redlattice")]
     out.append(Body(box(.6, 4.1, .55, 1.6, 5, 35), mansion_wall(h1)))
-    out += tile_hip(U, .35, 4.35, .3, 1.85, 32, 20)
+    out += tile_hip(U, .35, 4.35, .3, 1.85, 32, 12)
     h2 = [("+u", 1.0, 1.5, 13, 24, "lattice"), ("+u", 2.0, 2.6, 5, 27, "redlattice"), ("+v", 4.45, 5.05, 13, 24, "lattice")]
-    out += gable(Vv, .6, 3.2, 4.15, 5.35, 35, 18, mansion_wall(h2), "tiles", ov=.14, ova=.14)
+    out += gable(Vv, .6, 3.2, 4.15, 5.35, 35, 12, mansion_wall(h2), "tiles", ov=.14, ova=.14)
+    n = len(out)
     out += pond(.7, 2.4, 2.3, 3.3)
     out += shrub(2.8, 2.5, .25, 14) + shrub(.55, 2.2, .2, 10) + shrub(3.3, 3.2, .3, 22)
     out += cwall(.2, 3.85, 3.62, 3.8, 12) + cwall(.2, .38, 1.9, 3.8, 12)
-    return out, (6, 4)
+    return yard_from(out, n), (6, 4)
 
 
 def mansion_3():
@@ -540,7 +558,7 @@ def mansion_3():
     out.append(Body(box(.6, 5.8, .45, 1.35, 6, 36), mansion_wall(holes)))
     for u in np.linspace(.6, 5.8, 7):
         out.append(post(u, 1.5, 6, 36, .045, flat("mF", "mf")))
-    out += gable(U, .6, 5.8, .45, 1.6, 36, 18, flat("mS", "mS"), "tiles", ov=.16, ova=.2)[1:]
+    out += gable(U, .6, 5.8, .45, 1.6, 36, 12, flat("mS", "mS"), "tiles", ov=.16, ova=.2)[1:]
     # 누각: 아래 기둥층, 위 난간 방
     out.append(stone_base(6.1, 7.7, .3, 1.9, 6))
     for u in (6.25, 7.55):
@@ -548,11 +566,12 @@ def mansion_3():
             out.append(post(u, v, 6, 30, .06, flat("cR", "cr")))
     out.append(Body(box(6.15, 7.65, .35, 1.85, 30, 34), flat("mF", "mf", "tE")))
     out.append(Body(box(6.3, 7.5, .5, 1.7, 34, 54), mansion_wall([("+v", 6.5, 7.3, 8, 18, "redlattice"), ("+u", .7, 1.5, 8, 18, "redlattice")])))
-    out += tile_hip(U, 5.95, 7.85, .15, 2.05, 52, 22, skirt=12)
+    out += tile_hip(U, 5.95, 7.85, .15, 2.05, 52, 13, skirt=7)
+    n = len(out)
     out += cwall(.2, 3.45, 2.62, 2.8, 12) + cwall(4.55, 7.8, 2.62, 2.8, 12)
     out += gate(3.5, 4.5, 2.71, 30)
     out += shrub(1.2, 2.1, .22, 12) + shrub(6.6, 2.2, .25, 16)
-    return out, (8, 3)
+    return yard_from(out, n), (8, 3)
 
 
 def mansion_4():
@@ -562,11 +581,12 @@ def mansion_4():
     out.append(Body(box(.7, 3.3, .55, 1.8, 5, 35), mansion_wall(holes)))
     for u in (.7, 1.6, 2.4, 3.3):
         out.append(post(u, 1.95, 5, 35, .045, flat("mF", "mf")))
-    out += tile_hip(U, .45, 3.55, .3, 2.2, 32, 20)
+    out += tile_hip(U, .45, 3.55, .3, 2.2, 32, 12)
+    n = len(out)
     out += cwall(1.4, 3.8, 3.62, 3.8, 12) + cwall(3.62, 3.8, 1.5, 3.8, 12) + cwall(.2, .5, 3.62, 3.8, 12)
     out += gate(.55, 1.35, 3.71, 22)
     out += shrub(2.9, 2.8, .32, 26) + shrub(1.6, 2.9, .18, 9)
-    return out, (4, 4)
+    return yard_from(out, n), (4, 4)
 
 
 BUILDINGS = {
@@ -595,7 +615,7 @@ REGIONS = {
                         "gA": (96, 112, 114), "gB": (74, 88, 90), "ga": (72, 84, 88), "gb": (52, 62, 66), "gE": (150, 166, 166), "gK": (40, 48, 52),
                         "mL": (238, 236, 224), "mS": (200, 200, 188), "kG": (124, 164, 82), "kg": (88, 124, 60), "kL": (164, 196, 108),
                         "vG": (136, 172, 76), "vg": (96, 132, 58), "nW": (96, 136, 132), "nw": (74, 110, 108)},
-                "st": dict(slope=1.45, tslope=1.2, eave=1, folk_roof="hip", folk_mat="thatch", folk_wall="earth", fields=["paddy", "dry"])},
+                "st": dict(slope=1.35, tslope=1.15, eave=1, folk_roof="hip", folk_mat="thatch", folk_wall="earth", fields=["paddy", "dry"])},
     "jiangnan": {"name": "강남", "ground": ((128, 136, 118), (104, 112, 98)),
                  "pal": {"tW": (124, 88, 58), "tw": (92, 64, 42), "tk": (60, 42, 30), "tE": (156, 118, 80),
                          "gA": (86, 100, 102), "gB": (64, 78, 82), "ga": (62, 74, 78), "gb": (46, 56, 60), "gE": (140, 158, 160), "gK": (34, 42, 46),
@@ -610,13 +630,32 @@ REGIONS = {
                       "sS": (150, 154, 136), "ss": (112, 122, 100), "sR": (118, 122, 106), "sr": (84, 92, 74), "sU": (140, 146, 126),
                       "mL": (226, 220, 200), "mS": (186, 180, 160), "mF": (96, 62, 40), "mf": (70, 44, 30),
                       "kG": (54, 98, 54), "kg": (36, 70, 40), "kL": (84, 130, 72), "vG": (80, 128, 60), "vg": (56, 96, 44)},
-              "st": dict(slope=1.7, tslope=1.3, eave=1.1, folk_roof="gable", folk_mat="thatch", folk_wall="bamboo", fields=["paddy"])},
+              "st": dict(slope=1.5, tslope=1.2, eave=1.1, folk_roof="gable", folk_mat="thatch", folk_wall="bamboo", fields=["paddy"])},
 }
+
+
+def house_only(bodies):
+    """마당 것을 빼고, 남은 몸체에 맞춰 바닥을 다시 잡아 (0, 0)으로 옮긴다 (처마는 0.3칸까지 바닥 밖으로 나가도 됨)"""
+    bodies = [b for b in bodies if not getattr(b, "yard", False)]
+    u0 = min(-d for b in bodies for n, d, f in b.planes if n == (-1, 0, 0))
+    u1 = max(d for b in bodies for n, d, f in b.planes if n == (1, 0, 0))
+    v0 = min(-d for b in bodies for n, d, f in b.planes if n == (0, -1, 0))
+    v1 = max(d for b in bodies for n, d, f in b.planes if n == (0, 1, 0))
+    fu0, fv0 = int(np.floor(u0 + .3)), int(np.floor(v0 + .3))
+    fu1, fv1 = int(np.ceil(u1 - .3)), int(np.ceil(v1 - .3))
+    out = []
+    for b in bodies:
+        planes = [(n, d - n[0] * fu0 - n[1] * fv0, f) for n, d, f in b.planes]
+        paint = (lambda p: lambda f, u, v, z, s, h: p(f, u + fu0, v + fv0, z, s, h))(b.paint)
+        out.append(Body(planes, paint, b.tile))
+    return out, (fu1 - fu0, fv1 - fv0)
 
 
 def make(name):
     bodies, (nu, nv) = BUILDINGS[name]()
-    a, own, o = pc.render(bodies, bounds=(-16 * nv - 30, -140, 16 * nu + 30, 8 * (nu + nv) + 12))
+    if not name.startswith("field_"):
+        bodies, (nu, nv) = house_only(bodies)
+    a, o = shade.render(bodies, (-16 * nv - 30, -140, 16 * nu + 30, 8 * (nu + nv) + 12))
     im = Image.fromarray(a)
     bb = im.getbbox()
     im = im.crop(bb)

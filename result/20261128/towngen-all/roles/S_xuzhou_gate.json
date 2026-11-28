@@ -1,0 +1,68 @@
+{
+ "map": "S_xuzhou_gate",
+ "region": "huainan",
+ "uses": [
+  "ch13.json/c13-gate",
+  "ch14.json/c14-gate",
+  "ch23.json/c23-gate"
+ ],
+ "roles": {},
+ "placed": {
+  "관청": {
+   "name": "mansion_1_r",
+   "door": [
+    33,
+    10
+   ]
+  }
+ },
+ "zones": [
+  {
+   "u0": 28,
+   "u1": 34,
+   "v0": -9,
+   "v1": 1,
+   "zone": "부유층"
+  },
+  {
+   "u0": 28,
+   "u1": 34,
+   "v0": 2,
+   "v1": 12,
+   "zone": "관아"
+  },
+  {
+   "u0": 28,
+   "u1": 34,
+   "v0": 14,
+   "v1": 24,
+   "zone": "민가"
+  },
+  {
+   "u0": 28,
+   "u1": 34,
+   "v0": 25,
+   "v1": 33,
+   "zone": "밭"
+  }
+ ],
+ "ok": true,
+ "missing": [],
+ "covered": [],
+ "fenced_cottages": 0,
+ "main_avenue": [
+  "u",
+  12
+ ],
+ "cross_avenue": 34,
+ "bounds": [
+  28,
+  37,
+  -9,
+  33
+ ],
+ "notes": [
+  "성 밖(왼쪽 위): 넓은 대로 4칸, 밭 4판, 나무"
+ ],
+ "grow": 0
+}

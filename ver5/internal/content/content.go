@@ -125,6 +125,9 @@ type Faction struct {
 	Colors         []string          // light, middle, dark
 	OfficerColors  []string          `json:",omitempty"` // the same three shades for its named officers and its commanders, so they stand apart from the troops
 	OfficerPalette map[string]Colors `json:",omitempty"` // palette groups shared by the faction's officers
+	// PlainExtras: the nameless men of its scenes (a cast key with '#') wear the troops' Colors as in battle, not the
+	// officers' (황건: the yellow band, where the officers' shades are near white)
+	PlainExtras bool `json:",omitempty"`
 }
 
 type Class struct {

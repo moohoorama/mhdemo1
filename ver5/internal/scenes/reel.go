@@ -21,6 +21,11 @@ type Shot struct {
 	Hold   float64
 	Zoom   float64 // camera zoom, whole numbers (1 when 0)
 	Radius float64 // the remembered circle's radius as a share of the screen height (.36 when 0)
+	// End is when the shot starts darkening to the next, in seconds from the start of its last group, though its
+	// people are still at it; 0 waits for its beats to be done and lingers Hold seconds
+	End float64 `json:",omitempty"`
+	// Lead is how many seconds the shot plays in the dark before it opens: it opens on people already on the run
+	Lead float64 `json:",omitempty"`
 }
 
 // LoadReel reads the title reel.

@@ -1,0 +1,360 @@
+[
+ {
+  "map": "S_zhuo",
+  "name": "탁군 성 안",
+  "region": "huabei",
+  "uses": [
+   "explore01.json/zhuo",
+   "explore02.json/zhuo"
+  ],
+  "report": [
+   "건물 7 → 9, 담장·울타리 줄 15, 뺀 소품 ['bench', 'straw_mat', 'stree_bush_0', 'stree_bush_1', 'table_wine', 'water_jar']",
+   "yamen → mansion_1",
+   "shop → mansion_4",
+   "yamen 출구 → [10, 2]",
+   "tavern 출구 → [21, 6]",
+   "shop 출구 → [23, 13]",
+   "mansion_1 출구 → [5, 2]",
+   "대장간 바깥으로: 대장장이 소타일 [2, 18], explore01.json/zhuo, explore02.json/zhuo"
+  ],
+  "smith": {
+   "front": [
+    2,
+    18
+   ],
+   "files": [
+    "explore01.json/zhuo",
+    "explore02.json/zhuo"
+   ]
+  }
+ },
+ {
+  "map": "S_pingyuan",
+  "name": "평원현",
+  "region": "huabei",
+  "uses": [
+   "explore08.json/pingyuan",
+   "explore11_camp.json/pingyuan"
+  ],
+  "report": [
+   "건물 14 → 15, 담장·울타리 줄 20, 뺀 소품 ['straw_mat', 'stree_bush_0', 'water_bucket']",
+   "yamen 출구 → [5, 24]",
+   "tavern 출구 → [9, 5]",
+   "shop 출구 → [18, 21]",
+   "대장간 바깥으로: 대장장이 소타일 [29, 10], explore08.json/pingyuan, explore11_camp.json/pingyuan"
+  ],
+  "smith": {
+   "front": [
+    29,
+    10
+   ],
+   "files": [
+    "explore08.json/pingyuan",
+    "explore11_camp.json/pingyuan"
+   ]
+  }
+ },
+ {
+  "map": "S_xindu",
+  "name": "신도성 안",
+  "region": "huabei",
+  "uses": [
+   "explore09.json/town",
+   "explore11.json/town"
+  ],
+  "report": [
+   "건물 6 → 6, 담장·울타리 줄 15, 뺀 소품 ['grain_sack', 'wine_jar']",
+   "yamen 출구 → [5, 2]",
+   "tavern 출구 → [3, 13]",
+   "shop 출구 → [23, 13]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_ye",
+  "name": "업 거리",
+  "region": "huabei",
+  "uses": [
+   "explore19_ye.json/street"
+  ],
+  "report": [
+   "건물 17 → 18, 담장·울타리 줄 44, 뺀 소품 ['grain_cart_v', 'grain_sack', 'lantern', 'wine_jar']",
+   "tavern 출구 → [20, 26]",
+   "shop 출구 → [38, 22]",
+   "mansion_1 출구 → [17, 41]",
+   "대장간 바깥으로: 대장장이 소타일 [44, 48], explore19_ye.json/street"
+  ],
+  "smith": {
+   "front": [
+    44,
+    48
+   ],
+   "files": [
+    "explore19_ye.json/street"
+   ]
+  }
+ },
+ {
+  "map": "S_beihai",
+  "name": "북해성 안",
+  "region": "huabei",
+  "uses": [
+   "explore12.json/city"
+  ],
+  "report": [
+   "건물 7 → 8, 담장·울타리 줄 20, 뺀 소품 ['bench', 'grain_cart_v', 'straw_mat', 'weapon_rack']",
+   "tavern 출구 → [3, 23]",
+   "shop 출구 → [19, 20]",
+   "대장간 바깥으로: 대장장이 소타일 [28, 20], explore12.json/city"
+  ],
+  "smith": {
+   "front": [
+    28,
+    20
+   ],
+   "files": [
+    "explore12.json/city"
+   ]
+  }
+ },
+ {
+  "map": "S_luoyang",
+  "name": "낙양 저잣거리",
+  "region": "zhongyuan",
+  "uses": [
+   "explore03.json/street"
+  ],
+  "report": [
+   "건물 25 → 25, 담장·울타리 줄 40, 뺀 소품 ['grain_cart_v', 'grain_sack']",
+   "tavern 출구 → [19, 28]",
+   "shop 출구 → [35, 28]",
+   "mansion_1 출구 → [9, 13]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_xudu",
+  "name": "허도 거리",
+  "region": "zhongyuan",
+  "uses": [
+   "explore17.json/street"
+  ],
+  "report": [
+   "건물 16 → 17, 담장·울타리 줄 25, 뺀 소품 ['grain_cart_v', 'water_bucket', 'wine_jar']",
+   "tavern 출구 → [51, 22]",
+   "shop 출구 → [35, 28]",
+   "mansion_1 출구 → [6, 44]",
+   "대장간 바깥으로: 대장장이 소타일 [41, 44], explore17.json/street"
+  ],
+  "smith": {
+   "front": [
+    41,
+    44
+   ],
+   "files": [
+    "explore17.json/street"
+   ]
+  }
+ },
+ {
+  "map": "S_runan",
+  "name": "여남성 안",
+  "region": "zhongyuan",
+  "uses": [
+   "explore21.json/town"
+  ],
+  "report": [
+   "건물 6 → 6, 담장·울타리 줄 15, 뺀 소품 없음",
+   "yamen 출구 → [4, 24]",
+   "tavern 출구 → [23, 21]",
+   "shop 출구 → [0, 10]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_road_town",
+  "name": "낙양 가는 길 · 작은 고을",
+  "region": "zhongyuan",
+  "uses": [
+   "explore05_town.json/town"
+  ],
+  "report": [
+   "건물 5 → 5, 담장·울타리 줄 14, 뺀 소품 ['water_jar']",
+   "tavern 출구 → [7, 4]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_xiaopei",
+  "name": "소패",
+  "region": "huainan",
+  "uses": [
+   "explore13.json/town",
+   "explore15.json/town"
+  ],
+  "report": [
+   "건물 11 → 11, 담장·울타리 줄 29, 뺀 소품 없음",
+   "yamen 출구 → [4, 20]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_xuzhou_town",
+  "name": "서주성",
+  "region": "huainan",
+  "uses": [
+   "explore14.json/town"
+  ],
+  "report": [
+   "건물 32 → 33, 담장·울타리 줄 85, 뺀 소품 ['grain_cart_v', 'grain_sack', 'stree_bush_0', 'water_bucket', 'weapon_rack', 'wine_jar']",
+   "tavern 출구 → [32, 14]",
+   "shop 출구 → [29, 9]",
+   "대장간 바깥으로: 대장장이 소타일 [42, 8], explore14.json/town"
+  ],
+  "smith": {
+   "front": [
+    42,
+    8
+   ],
+   "files": [
+    "explore14.json/town"
+   ]
+  }
+ },
+ {
+  "map": "S_xiapi",
+  "name": "하비",
+  "region": "huainan",
+  "uses": [
+   "explore18.json/town"
+  ],
+  "report": [
+   "건물 21 → 22, 담장·울타리 줄 25, 뺀 소품 ['armor_stand', 'grain_cart_v', 'grain_sack', 'lantern', 'weapon_rack', 'wine_jar']",
+   "yamen 출구 → [31, 11]",
+   "tavern 출구 → [41, 11]",
+   "shop 출구 → [31, 3]",
+   "대장간 바깥으로: 대장장이 소타일 [40, 5], explore18.json/town"
+  ],
+  "smith": {
+   "front": [
+    40,
+    5
+   ],
+   "files": [
+    "explore18.json/town"
+   ]
+  }
+ },
+ {
+  "map": "S_xiapi_inner",
+  "name": "하비 성안",
+  "region": "huainan",
+  "uses": [],
+  "report": [
+   "건물 3 → 3, 담장·울타리 줄 5, 뺀 소품 ['grain_sack']"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_xiangyang",
+  "name": "양양성",
+  "region": "huainan",
+  "uses": [
+   "explore22_xiangyang.json/town",
+   "explore23_xiangyang.json/town",
+   "explore24.json/xiangyang",
+   "explore25_back.json/town",
+   "explore25_visit.json/xiangyang",
+   "explore27v_town.json/town"
+  ],
+  "report": [
+   "건물 21 → 21, 담장·울타리 줄 69, 뺀 소품 ['stree_bush_1']",
+   "yamen 출구 → [33, 9]",
+   "tavern 출구 → [32, 39]",
+   "shop 출구 → [38, 39]",
+   "mansion_1 출구 → [42, 12]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_xinye",
+  "name": "신야성",
+  "region": "huainan",
+  "uses": [
+   "explore23.json/town",
+   "explore23b.json/town",
+   "explore24.json/town",
+   "explore24_return.json/town",
+   "explore25_report.json/road",
+   "explore25_visit.json/town"
+  ],
+  "report": [
+   "건물 8 → 9, 담장·울타리 줄 19, 뺀 소품 ['grain_cart_v']",
+   "yamen 출구 → [5, 23]",
+   "tavern 출구 → [11, 7]",
+   "shop 출구 → [23, 8]",
+   "mansion_1 출구 → [5, 4]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_mangdang",
+  "name": "망탕산 산속 마을",
+  "region": "huainan",
+  "uses": [
+   "explore20.json/village",
+   "explore20_depart.json/foot"
+  ],
+  "report": [
+   "건물 4 → 4, 담장·울타리 줄 14, 뺀 소품 ['stree_bush_1']"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_vil_peace",
+  "name": "마을(울타리)",
+  "region": "huainan",
+  "uses": [
+   "explore23.json/longzhong",
+   "explore23b.json/longzhong",
+   "explore24.json/longzhong",
+   "explore24_return.json/longzhong"
+  ],
+  "report": [
+   "건물 3 → 3, 담장·울타리 줄 10, 뺀 소품 ['stree_bush_1']"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_jiangling",
+  "name": "강릉성",
+  "region": "jiangnan",
+  "uses": [
+   "explore27v_travel.json/town"
+  ],
+  "report": [
+   "건물 6 → 6, 담장·울타리 줄 15, 뺀 소품 없음",
+   "yamen 출구 → [11, 10]",
+   "tavern 출구 → [22, 11]",
+   "shop 출구 → [33, 12]"
+  ],
+  "smith": null
+ },
+ {
+  "map": "S_jiangxia_harbor",
+  "name": "강하 나루",
+  "region": "jiangnan",
+  "uses": [
+   "explore27_jiangxia.json/harbor",
+   "explore27_redcliff.json/camp"
+  ],
+  "report": [
+   "건물 1 → 2, 담장·울타리 줄 0, 뺀 소품 없음",
+   "yamen → mansion_1",
+   "shop → mansion_4",
+   "yamen 출구 → [4, 27]",
+   "shop 출구 → [26, 27]"
+  ],
+  "smith": null
+ }
+]

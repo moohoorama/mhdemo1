@@ -53,6 +53,7 @@
     "cotton_clothes"
    ],
    "Look": {
+    "Scene": "zhangliang_noncombat",
     "Portrait": "zhangliang",
     "Faction": "turban",
     "Palette": {
@@ -83,6 +84,7 @@
     "cotton_clothes"
    ],
    "Look": {
+    "Scene": "zhangbao_noncombat",
     "Portrait": "zhangbao",
     "Faction": "turban",
     "Palette": {

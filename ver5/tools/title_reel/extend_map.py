@@ -8,6 +8,7 @@ so that no edge of the map comes into the title's remembered circle at zoom 1. T
 Each copy is listed in assets/graphics/index.json "maps".
 """
 import json
+import random
 import subprocess
 import sys
 from pathlib import Path
@@ -23,11 +24,69 @@ def pad_rows(rows, n):
     return [rows[0]] * n + rows + [rows[-1]] * n
 
 
+# maps whose grass and waste lie in long straight stripes, which on the screen turn into flat zigzags and diagonals:
+# the copy lays the two out again in soft patches (smooth_ground), the waste's share kept
+SMOOTH = {'S_jiangxia_harbor', 'S_guandu_field'}
+# maps of plain grass that the reel shows wide: patches of waste laid over a share of the grass, the roads kept
+MOTTLE = {'S_long_field': .3}
 BARE = {'S_long_field'}  # the open plain the reel marches whole armies across: its scattered trees go
 # game-cell rows (v) the reel uses of a long map: the copy keeps these alone, since a scene draws its whole map
 # into one picture and the full 165-row field padded out would make a picture of some 13000 x 7000 px
 CROP = {'S_long_field': (-30, 92)}
 CROP_U = {'S_long_field': (-50, 62)}  # likewise the columns (u)
+
+
+def value_noise(w, h, cell, seed):
+    """Smooth noise in [0, 1) over a w x h grid, a random value every `cell` tiles eased between."""
+    rnd = random.Random(seed)
+    gw, gh = w // cell + 2, h // cell + 2
+    grid = [[rnd.random() for _ in range(gw)] for _ in range(gh)]
+    ease = lambda f: f * f * (3 - 2 * f)
+    out = []
+    for y in range(h):
+        gy, fy = divmod(y / cell, 1)
+        gy, fy = int(gy), ease(fy)
+        row = []
+        for x in range(w):
+            gx, fx = divmod(x / cell, 1)
+            gx, fx = int(gx), ease(fx)
+            top = grid[gy][gx] * (1 - fx) + grid[gy][gx + 1] * fx
+            bottom = grid[gy + 1][gx] * (1 - fx) + grid[gy + 1][gx + 1] * fx
+            row.append(top * (1 - fy) + bottom * fy)
+        out.append(row)
+    return out
+
+
+def smooth_ground(rows, seed=7):
+    """Grass ('.') and waste ('d') laid out again in soft rounded patches: noise of three sizes summed and cut at the
+    level that keeps the waste's share. Other ground (water, floors, bridges) stays as it is."""
+    h, w = len(rows), len(rows[0])
+    layers = [(value_noise(w, h, c, seed + c), k) for c, k in ((24, .55), (10, .3), (4, .15))]
+    field = [[sum(n[y][x] * k for n, k in layers) for x in range(w)] for y in range(h)]
+    open_ = [(y, x) for y in range(h) for x in range(w) if rows[y][x] in '.d']
+    share = sum(rows[y][x] == 'd' for y, x in open_) / max(1, len(open_))
+    cut = sorted(field[y][x] for y, x in open_)[int(len(open_) * (1 - share))] if open_ else 1
+    out = [list(r) for r in rows]
+    for y, x in open_:
+        out[y][x] = 'd' if field[y][x] >= cut else '.'
+    return [''.join(r) for r in out]
+
+
+def mottle_ground(rows, share, seed=11):
+    """Grass ('.') with soft rounded patches of waste over about `share` of it; what is already waste (a road)
+    stays, and so does all other ground."""
+    h, w = len(rows), len(rows[0])
+    layers = [(value_noise(w, h, c, seed + c), k) for c, k in ((22, .55), (9, .3), (4, .15))]
+    grass = [(y, x) for y in range(h) for x in range(w) if rows[y][x] == '.']
+    if not grass:
+        return rows
+    field = {(y, x): sum(n[y][x] * k for n, k in layers) for y, x in grass}
+    cut = sorted(field.values())[int(len(grass) * (1 - share))]
+    out = [list(r) for r in rows]
+    for at, f in field.items():
+        if f >= cut:
+            out[at[0]][at[1]] = 'd'
+    return [''.join(r) for r in out]
 
 
 def extend(base, pad):
@@ -43,6 +102,8 @@ def extend(base, pad):
     art['ground'] = pad_rows(art['ground'], n)
     if 'height' in art:
         art['height'] = pad_rows(art['height'], n)
+    if base in SMOOTH:
+        art['ground'] = smooth_ground(art['ground'])
     if base in CROP:  # keep small-tile rows 2*v0 .. 2*v1+1 and what stands on them
         v0, v1 = CROP[base]
         top = 2 * v0 - art['origin'][1]
@@ -62,6 +123,8 @@ def extend(base, pad):
             art['height'] = [r[cols] for r in art['height']]
         art['origin'][0] = max(art['origin'][0], 2 * u0)
         art['objects'] = [o for o in art['objects'] if 2 * u0 <= o[1] <= 2 * u1 + 1]
+    if base in MOTTLE:
+        art['ground'] = mottle_ground(art['ground'], MOTTLE[base])
     (MAPS / f'{name}.json').write_text(json.dumps(art, ensure_ascii=False, separators=(',', ':')) + '\n')
     return name
 

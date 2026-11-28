@@ -13,6 +13,9 @@ for r in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), 're
     p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'reg', r, 'meta.json')
     if os.path.exists(p):
         REG[r] = json.load(open(p))
+        lp = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lines', r, 'lines.json')
+        if os.path.exists(lp):
+            REG[r].update({k[len(r) + 1:]: v for k, v in json.load(open(lp)).items()})
 
 OLD = ('house_thatch', 'house_thatch_x', 'house_tile', 'house_tile_x', 'tavern', 'hall_u', 'hall_v')
 SMALL = ('wine_jar', 'grain_sack', 'water_jar', 'bench', 'table_wine', 'straw_mat', 'lantern', 'flagstones_0',
@@ -53,6 +56,24 @@ def place_obj(name, bu, bv, fu, fv):
     U, V = math.floor(cu), math.floor(cv)
     du, dv = cu - U - .5, cv - V - .5
     return [name, U, V, round(16 * (du - dv)), round(8 * (du + dv))]
+
+
+def find(u0, v0, fu, fv, pu0, pv0, pu1, pv1, bounds, hard, taken, wall, glyph, blocked):
+    """(u0, v0) 둘레로 넓혀 가며 첫 빈자리: 마당 칸이 막힌 칸·막는 땅에 안 걸리고, 둘레 한 칸이 다른 건물·줄과 안 닿음"""
+    for r in range(0, 45):
+        for bu in range(u0 - r, u0 + r + 1):
+            for bv in range(v0 - r, v0 + r + 1):
+                if max(abs(bu - u0), abs(bv - v0)) != r:
+                    continue
+                a0, b0, a1, b1 = bu + pu0, bv + pv0, bu + fu + pu1, bv + fv + pv1
+                if a0 < bounds[0] or b0 < bounds[2] or a1 > bounds[1] or b1 > bounds[3]:
+                    continue
+                tiles = {(a, b) for a in range(a0, a1) for b in range(b0, b1)}
+                ring = {(a, b) for a in range(a0 - 1, a1 + 1) for b in range(b0 - 1, b1 + 1)}
+                if tiles & hard or ring & (taken | wall) or any(glyph(a, b) in blocked for a, b in tiles):
+                    continue
+                return bu, bv, tiles
+    return None
 
 
 def convert(new_id, title, src, region, blocked, grass, bounds):
@@ -102,26 +123,22 @@ def convert(new_id, title, src, region, blocked, grass, bounds):
     fields = [k for k in ('field_dry', 'field_paddy') if k in REG[region]]
     for k, (n, u, v) in enumerate(FILL.get(new_id, [])):
         plan.append((fields[k % len(fields)] if n == 'field' else n, [n, u, v]))
-    taken, out, small_hit = set(), [], set()
+    taken, out, small_hit, lines = set(), [], set(), []
+    nfolk = 0
     for new, o in plan:
         fu, fv = REG[region][new]['footprint']
+        if new == 'yamen' or new.startswith('mansion'):
+            encl = 'twall'
+        elif new.startswith('cottage'):
+            encl = ('ewall', 'fence', None)[nfolk % 3]; nfolk += 1
+        else:
+            encl = None
+        # 마당까지 친 자리: 집 앞(+v)으로 2칸, 옆·뒤로 1칸, 그 테두리에 담장. 자리가 없으면 담장 없이
         u0, v0 = o[1] - fu // 2, o[2] - fv // 2
         best = None
-        for r in range(0, 45):
-            for bu in range(u0 - r, u0 + r + 1):
-                for bv in range(v0 - r, v0 + r + 1):
-                    if max(abs(bu - u0), abs(bv - v0)) != r:
-                        continue
-                    if bu < bounds[0] or bv < bounds[2] or bu + fu > bounds[1] or bv + fv > bounds[3]:
-                        continue
-                    tiles = {(a, b) for a in range(bu, bu + fu) for b in range(bv, bv + fv)}
-                    ring = {(a, b) for a in range(bu - 1, bu + fu + 1) for b in range(bv - 1, bv + fv + 1)}
-                    if tiles & hard or ring & taken or any(glyph(a, b) in blocked for a, b in tiles):
-                        continue
-                    best = (bu, bv, tiles)
-                    break
-                if best:
-                    break
+        for encl in ([encl, None] if encl else [None]):
+            pu0, pv0, pu1, pv1 = (-1, -1, 1, 3) if encl else (0, 0, 0, 0)
+            best = find(u0, v0, fu, fv, pu0, pv0, pu1, pv1, bounds, hard, taken, wall, glyph, blocked)
             if best:
                 break
         if not best:
@@ -130,6 +147,19 @@ def convert(new_id, title, src, region, blocked, grass, bounds):
         bu, bv, tiles = best
         taken |= tiles
         out.append(place_obj(f'{region}_{new}', bu, bv, fu, fv))
+        if encl:
+            fam = f'{region}_{encl}'
+            L, R, B, F = bu - 1, bu + fu, bv - 1, bv + fv + 1
+            lines += [[fam, [L, B], [R, B]], [fam, [L, B + 1], [L, F]], [fam, [R, B + 1], [R, F]]]
+            gw = 1 if encl == 'fence' else 2
+            g0 = bu + (fu - gw) // 2
+            if g0 - 1 >= bu:
+                lines.append([fam, [bu, F], [g0 - 1, F]])
+            if g0 + gw <= R - 1:
+                lines.append([fam, [g0 + gw, F], [R - 1, F]])
+            if encl != 'fence':
+                gate = 'tgate' if encl == 'twall' else 'egate'
+                out.append(place_obj(f'{region}_{gate}_u', g0, F, 2, 1))
     kept = []
     for o in keep:
         if o[0] in SMALL and foot(o[0], o[1], o[2]) & taken:
@@ -137,6 +167,7 @@ def convert(new_id, title, src, region, blocked, grass, bounds):
             continue
         kept.append(o)
     d['objects'] = out + kept
+    d['walls'] = d.get('walls', []) + lines
     d['id'], d['name'] = new_id, title
     if grass is not None:
         d['grass'] = grass

@@ -5,6 +5,7 @@ import json, os, shutil, sys
 from PIL import Image
 VER5 = '/Users/younwookim/orca/mhdemo1/ver5'
 reg, root = sys.argv[1], sys.argv[2]
+lines_dir = sys.argv[3] if len(sys.argv) > 3 else None
 if os.path.exists(root):
     shutil.rmtree(root)
 os.makedirs(os.path.join(root, 'assets'))
@@ -27,6 +28,12 @@ for region in sorted(os.listdir(reg)):
     meta = json.load(open(os.path.join(d, 'meta.json')))
     for n, m in meta.items():
         items.append((f'{region}_{n}', Image.open(os.path.join(d, n + '.png')), m))
+if lines_dir:
+    for region in sorted(os.listdir(lines_dir)):
+        lp = os.path.join(lines_dir, region, 'lines.json')
+        if os.path.exists(lp):
+            for n, m in json.load(open(lp)).items():
+                items.append((n, Image.open(os.path.join(lines_dir, region, n + '.png')), dict(m, line=True)))
 # 시트 아래에 줄지어 붙인다
 W = sheet.width
 x, y, rowh, placed = 0, sheet.height + 2, 0, []
@@ -45,9 +52,14 @@ for name, im, m, x, y in placed:
     if '_field_' in name:
         e['layer'] = 'ground'
         e['shadow'] = False
+    is_piece = m.get('line') and '_gate_' not in name and name.rsplit('_', 1)[-1].isdigit()
+    if is_piece:
+        e['shadow'] = False
+        fam = name.rsplit('_', 1)[0]
+        scene['walls'][fam] = {'piece': fam}
     idx['extra']['sprites'][name] = e
     fu, fv = m['footprint']
-    if '_field_' not in name:
+    if '_field_' not in name and not is_piece:
         scene['footprints'][name] = [-fu / 2, -fv / 2, fu, fv]
 out.save(sheet_path)
 json.dump(idx, open(os.path.join(g, 'index.json'), 'w'), ensure_ascii=False)

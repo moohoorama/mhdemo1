@@ -1704,7 +1704,8 @@
   "maps/S_title_xuzhou_town.json",
   "maps/S_title_gyeqiao.json",
   "maps/S_title_guandu_field.json",
-  "maps/S_title_chibi_shore.json"
+  "maps/S_title_chibi_shore.json",
+  "maps/S_title_turban_camp.json"
  ],
  "extra": {
   "version": 1,

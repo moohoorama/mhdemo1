@@ -74,7 +74,8 @@ func (r *renderer) shadows(ps []scenemap.Piece, top *image.RGBA) {
 	layer := image.NewRGBA(r.dst.Rect)
 	cast := false
 	for _, p := range ps {
-		if p.Rank != scenemap.RankObject || slices.ContainsFunc(p.Draws, func(d scenemap.Draw) bool { return d.Kind == scenemap.DrawWaterline }) {
+		casts := p.Rank == scenemap.RankObject || p.Rank == scenemap.RankWall && r.a.maskedShadow(p.Name)
+		if !casts || slices.ContainsFunc(p.Draws, func(d scenemap.Draw) bool { return d.Kind == scenemap.DrawWaterline }) {
 			continue
 		}
 		sh := r.a.shadowOf(p.Name)

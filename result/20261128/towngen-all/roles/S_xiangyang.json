@@ -1,0 +1,250 @@
+{
+ "map": "S_xiangyang",
+ "region": "huainan",
+ "uses": [
+  "explore22_xiangyang.json/town",
+  "explore23_xiangyang.json/town",
+  "explore24.json/xiangyang",
+  "explore25_back.json/town",
+  "explore25_visit.json/xiangyang",
+  "explore27v_town.json/town"
+ ],
+ "roles": {
+  "주점": [
+   "주점",
+   "주점",
+   "주점",
+   "주점",
+   "주점",
+   "주점"
+  ],
+  "도구점": [
+   "도구점",
+   "도구점",
+   "도구점",
+   "도구점",
+   "도구점",
+   "도구점"
+  ],
+  "저택": [
+   "유표의 저택",
+   "유표의 저택",
+   "유표의 저택",
+   "유표의 저택",
+   "유표의 저택"
+  ],
+  "관청": [
+   "관청",
+   "관청"
+  ]
+ },
+ "placed": {
+  "관청": {
+   "name": "yamen",
+   "door": [
+    19,
+    10
+   ]
+  },
+  "주점": {
+   "name": "tavern_r",
+   "door": [
+    12,
+    17
+   ]
+  },
+  "도구점": {
+   "name": "shop_r",
+   "door": [
+    33,
+    25
+   ]
+  },
+  "저택": {
+   "name": "mansion_1",
+   "door": [
+    8,
+    10
+   ]
+  }
+ },
+ "zones": [
+  {
+   "u0": 0,
+   "u1": 13,
+   "v0": 0,
+   "v1": 11,
+   "zone": "부유층"
+  },
+  {
+   "u0": 0,
+   "u1": 13,
+   "v0": 12,
+   "v1": 21,
+   "zone": "상업"
+  },
+  {
+   "u0": 0,
+   "u1": 13,
+   "v0": 23,
+   "v1": 32,
+   "zone": "부유층"
+  },
+  {
+   "u0": 0,
+   "u1": 13,
+   "v0": 33,
+   "v1": 40,
+   "zone": "민가"
+  },
+  {
+   "u0": 14,
+   "u1": 23,
+   "v0": 0,
+   "v1": 11,
+   "zone": "관아"
+  },
+  {
+   "u0": 14,
+   "u1": 23,
+   "v0": 12,
+   "v1": 21,
+   "zone": "시장"
+  },
+  {
+   "u0": 14,
+   "u1": 23,
+   "v0": 23,
+   "v1": 32,
+   "zone": "민가"
+  },
+  {
+   "u0": 14,
+   "u1": 23,
+   "v0": 33,
+   "v1": 40,
+   "zone": "민가"
+  },
+  {
+   "u0": 25,
+   "u1": 34,
+   "v0": 0,
+   "v1": 11,
+   "zone": "부유층"
+  },
+  {
+   "u0": 25,
+   "u1": 34,
+   "v0": 12,
+   "v1": 21,
+   "zone": "민가"
+  },
+  {
+   "u0": 25,
+   "u1": 34,
+   "v0": 23,
+   "v1": 32,
+   "zone": "상업"
+  },
+  {
+   "u0": 25,
+   "u1": 34,
+   "v0": 33,
+   "v1": 40,
+   "zone": "민가"
+  },
+  {
+   "u0": 35,
+   "u1": 44,
+   "v0": 0,
+   "v1": 11,
+   "zone": "민가"
+  },
+  {
+   "u0": 35,
+   "u1": 44,
+   "v0": 12,
+   "v1": 21,
+   "zone": "민가"
+  },
+  {
+   "u0": 35,
+   "u1": 44,
+   "v0": 23,
+   "v1": 32,
+   "zone": "민가"
+  },
+  {
+   "u0": 35,
+   "u1": 44,
+   "v0": 33,
+   "v1": 40,
+   "zone": "민가"
+  },
+  {
+   "u0": 45,
+   "u1": 48,
+   "v0": 0,
+   "v1": 11,
+   "zone": "민가"
+  },
+  {
+   "u0": 45,
+   "u1": 48,
+   "v0": 12,
+   "v1": 21,
+   "zone": "민가"
+  },
+  {
+   "u0": 45,
+   "u1": 48,
+   "v0": 23,
+   "v1": 32,
+   "zone": "민가"
+  },
+  {
+   "u0": 45,
+   "u1": 48,
+   "v0": 33,
+   "v1": 40,
+   "zone": "민가"
+  }
+ ],
+ "ok": true,
+ "missing": [],
+ "covered": [],
+ "fenced_cottages": 0,
+ "main_avenue": [
+  "u",
+  21
+ ],
+ "cross_avenue": 23,
+ "bounds": [
+  0,
+  48,
+  0,
+  40
+ ],
+ "notes": [
+  "explore22_xiangyang.json/town: 주점 출구 → [12, 17]",
+  "explore22_xiangyang.json/town: 도구점 출구 → [33, 25]",
+  "explore22_xiangyang.json/town: 유표의 저택 출구 → [8, 10]",
+  "explore23_xiangyang.json/town: 주점 출구 → [12, 17]",
+  "explore23_xiangyang.json/town: 도구점 출구 → [33, 25]",
+  "explore23_xiangyang.json/town: 유표의 저택 출구 → [8, 10]",
+  "explore24.json/xiangyang: 주점 출구 → [12, 17]",
+  "explore24.json/xiangyang: 도구점 출구 → [33, 25]",
+  "explore24.json/xiangyang: 유표의 저택 출구 → [8, 10]",
+  "explore25_back.json/town: 주점 출구 → [12, 17]",
+  "explore25_back.json/town: 도구점 출구 → [33, 25]",
+  "explore25_back.json/town: 유표의 저택 출구 → [8, 10]",
+  "explore25_back.json/town: 관청 출구 → [19, 10]",
+  "explore25_visit.json/xiangyang: 주점 출구 → [12, 17]",
+  "explore25_visit.json/xiangyang: 도구점 출구 → [33, 25]",
+  "explore25_visit.json/xiangyang: 관청 출구 → [19, 10]",
+  "explore27v_town.json/town: 주점 출구 → [12, 17]",
+  "explore27v_town.json/town: 도구점 출구 → [33, 25]",
+  "explore27v_town.json/town: 유표의 저택 출구 → [8, 10]"
+ ],
+ "grow": 0
+}

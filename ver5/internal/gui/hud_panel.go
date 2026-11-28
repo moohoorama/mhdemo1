@@ -105,18 +105,14 @@ const hudGripH = 12
 func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.hudFollowTurn(o)
 	tab := g.hudCurrent(o)
-	head := hudHeaderH + cornerRowH
 	x, y := uiW-12-infoW, hudTop()
-	topH := head
-	if g.hudFolded {
-		topH = hudHeaderH
-	}
+	topH := hudHeaderH + int(cornerRowH*g.foldK(&g.hudFold, g.hudFolded)+.5)
 	top := image.Rect(x, y, x+infoW, y+topH)
 	g.window(dst, top)
 	g.block(top)
 	g.hudHead(dst, o, top)
-	if !g.hudFolded {
-		g.cornerButtons(dst, x, y+hudHeaderH, func() { g.openOverlay("roster") })
+	if topH > hudHeaderH {
+		g.cornerButtons(clipTo(dst, top), x, y+hudHeaderH, func() { g.openOverlay("roster") })
 	}
 	g.hudRect, g.hudShown, g.hudBody = top, "", image.Rectangle{}
 	grip := 4

@@ -40,7 +40,7 @@ type Step struct {
 	Say     string // a speech bubble on the map, without the dialogue scroll
 	Wait    float64
 	Intro   string // an officer's first appearance
-	Effect  string // petals, fire, blaze (a brazier fire lighting far), smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
+	Effect  string // petals, fire, bonfire (a brazier fire lighting far), smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
 	At      []float64
 	Shake   float64 // seconds of screen shake
 	Cam     string  // look at this actor
@@ -60,6 +60,8 @@ type Step struct {
 	Shoot     *Shoot    // the actor looses an arrow at the stage's halberd and the camera chases it
 	Arrow     []float64 // with Play "attack": the actor's arrow leaves as the bow is let go and lands on this [u, v] (volleys from a wall)
 	FireArrow bool      // with Arrow: the arrow flies burning and goes on burning a while where it comes down
+	Shout     string    // the actor cries these words out: big bold letters stamped over its head, rising and fading (not a balloon)
+	ShoutSize float64   // with Shout: the letters' size in UI px (30 when 0)
 	Tempo     float64   // with Strike or Play: the motions (the blow and the answer to it) play this many times their speed
 	Free      bool      // the walk goes on without holding up the beats: people talking as they ride
 	Stop      bool      // the actor stops walking at the next whole cell

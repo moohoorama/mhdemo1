@@ -1,0 +1,146 @@
+<title>황건 진채 외침 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Sans+KR:wght@400;700&display=swap">
+<style>
+/* layout: one dark film frame as the page's subject, notes and the headband comparison below it */
+:root {
+  --bg: #121110;
+  --panel: #1c1a17;
+  --fg: #e9e2d2;
+  --muted: #a39b8a;
+  --yellow: #f3d23a;
+  --ink: #3a2408;
+  --line: #34302a;
+  --brush: "Nanum Brush Script", "Nanum Pen Script", cursive;
+  --body: "Noto Sans KR", system-ui, sans-serif;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--body); line-height: 1.6; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+h1 { font-family: var(--brush); font-weight: 400; font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.1; margin: 0; color: var(--yellow); text-wrap: balance; }
+h2 { font-size: 1.05rem; margin: 0 0 8px; letter-spacing: .02em; }
+p { margin: 0; color: var(--muted); max-width: 65ch; }
+
+/* the title reel's look: the shot faded like old film inside a remembered circle */
+.film { position: relative; width: 100%; aspect-ratio: 1280 / 850; max-width: 100%; overflow: hidden; background: #000; border-radius: 4px; }
+.film .shot { position: absolute; inset: 0; filter: sepia(.5) saturate(.62) contrast(1.06) brightness(.92); }
+.film .shot img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.film .veil { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 47% 48%, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 33%, rgba(0,0,0,.92) 52%, #000 60%); }
+.film.open .veil { background: none; }
+
+/* the shout: brush letters stamped big over the man, shrinking a little as they rise and fade */
+.shout { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; pointer-events: none;
+  font-family: var(--brush); color: var(--yellow); line-height: 1;
+  -webkit-text-stroke: 1px var(--ink); text-shadow: 0 2px 0 var(--ink), 0 0 10px rgba(0,0,0,.6);
+  opacity: 0; }
+.shout.lead { font-size: clamp(1.6rem, 5.4vw, 3.6rem); }
+.shout.kin { font-size: clamp(1.2rem, 3.8vw, 2.5rem); }
+.shout.crowd { font-size: clamp(.8rem, 2.4vw, 1.5rem); }
+.shout.on { animation: stamp 1.6s cubic-bezier(.2, .9, .3, 1) forwards; }
+/* the plain gothic alternative: Gulim where the viewer has it, else a free gothic of the same build */
+.film.gothic .shout { font-family: Gulim, "굴림", "Nanum Gothic", "Noto Sans KR", sans-serif; font-weight: 700; letter-spacing: -.02em; }
+.film.gothic .shout.lead { font-size: clamp(1.2rem, 4.2vw, 2.8rem); }
+.film.gothic .shout.kin { font-size: clamp(.95rem, 3vw, 2rem); }
+.film.gothic .shout.crowd { font-size: clamp(.7rem, 1.9vw, 1.2rem); }
+@keyframes stamp {
+  0% { opacity: 0; transform: translate(-50%, -100%) scale(1.7); }
+  12% { opacity: 1; transform: translate(-50%, -100%) scale(.96); }
+  20% { transform: translate(-50%, -100%) scale(1); }
+  75% { opacity: 1; transform: translate(-50%, -118%) scale(.98); }
+  100% { opacity: 0; transform: translate(-50%, -135%) scale(.95); }
+}
+@media (prefers-reduced-motion: reduce) { .shout.on { animation: none; opacity: 1; } }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+button { font: inherit; color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+button:hover { border-color: var(--yellow); }
+button:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+.cap { font-size: .85rem; color: var(--muted); }
+
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.note { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; min-width: 0; }
+.note p { font-size: .92rem; }
+.band img { width: 100%; image-rendering: pixelated; border-radius: 4px; display: block; }
+.band .legend { display: grid; grid-template-columns: repeat(4, 1fr); font-size: .8rem; color: var(--muted); text-align: center; margin-top: 6px; }
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:8px">
+    <h1>창천이사 황천당립</h1>
+    <p>타이틀 영상 2번 컷 시안입니다. 진채를 세운 실제 게임 화면 위에 외침 글자만 웹으로 얹었습니다. 글자 타이밍과 크기는 게임에 넣을 때의 계획대로입니다.</p>
+  </header>
+
+  <section style="display:grid;gap:10px">
+    <div class="film" id="film">
+      <div class="shot"><img src="rally.png" alt="진채 앞에서 장각 삼형제가 외치고 황건병들이 모여 있는 장면" width="1280" height="850"></div>
+      <div class="veil"></div>
+      <!-- positions: share of the 1280x850 frame, at each man's head -->
+      <div class="shout lead" data-t="0.2" style="left:40%;top:38%">창천이사!</div>
+      <div class="shout lead" data-t="1.9" style="left:40%;top:38%">황천당립!</div>
+      <div class="shout kin" data-t="3.4" style="left:50%;top:31%">황천당립!</div>
+      <div class="shout kin" data-t="3.6" style="left:30%;top:46%">황천당립!</div>
+      <div class="shout crowd" data-t="4.6" style="left:55%;top:50%">황천당립!</div>
+      <div class="shout crowd" data-t="4.8" style="left:65%;top:44%">황천당립!</div>
+      <div class="shout crowd" data-t="5.0" style="left:50%;top:60%">황천당립!</div>
+      <div class="shout crowd" data-t="5.15" style="left:75%;top:37%">황천당립!</div>
+      <div class="shout crowd" data-t="5.3" style="left:70%;top:63%">황천당립!</div>
+      <div class="shout crowd" data-t="5.45" style="left:80%;top:53%">황천당립!</div>
+      <div class="shout crowd" data-t="5.6" style="left:60%;top:73%">황천당립!</div>
+      <div class="shout crowd" data-t="5.8" style="left:90%;top:40%">황천당립!</div>
+    </div>
+    <div class="controls">
+      <button id="replay" type="button">다시 보기</button>
+      <button id="veil" type="button">원 밖도 보기</button>
+      <button id="font" type="button">글꼴: 붓글씨</button>
+      <span class="cap">장각 → 장량·장보 → 앞줄부터 뒤로 번지는 병사들, 한 바퀴 약 7.5초</span>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div class="note"><h2>진채</h2><p>장각 뒤에 제단과 향로 둘, 양옆에 노란 깃발과 화로를 둡니다. 그 뒤로 목책과 문(녹각), 모서리 망루, 군막 셋을 맵 오브젝트로 세워 해질녘 어둠도 같이 받습니다.</p></div>
+    <div class="note"><h2>외침 글자</h2><p>말풍선 대신 머리 위에 붓글씨를 크게 찍습니다. 툭 커졌다가 줄며 떠오르고 사라집니다. 병사는 몇 명만 작은 글씨로 띄우고 나머지는 뛰기만 합니다. 필름 색을 입히기 전에 그려서 글자도 같이 바랩니다.</p></div>
+    <div class="note"><h2>군중</h2><p>노란 옷의 경보병은 투구라 머리띠가 없어서, 황건 군중은 머리띠를 맨 산적·무뢰배 차림으로 맞춥니다. 화면 속 병사들이 이미 그렇게 바뀐 모습입니다.</p></div>
+  </section>
+
+  <section class="band" style="display:grid;gap:8px">
+    <h2>노란 머리띠: 지금 / 바꾼 뒤</h2>
+    <p>위 줄은 산적, 아래 줄은 무뢰배입니다. 띠를 한 줄 굵게 하고, 뒤로 날리는 띠 자락을 붙였습니다. 도트를 고치면 곡식 나눔·외침·약탈 세 컷과 스토리·전투의 황건병에 함께 적용됩니다. 이 그림은 시안이라 띠 자락은 정식 작업 때 다듬습니다.</p>
+    <img src="headband.png" alt="산적과 무뢰배 도트의 머리띠, 지금 모습과 굵게 하고 띠 자락을 단 모습을 남서·북서 방향으로 나란히 놓은 비교" width="1404" height="552">
+    <div class="legend"><span>남서 · 지금</span><span>남서 · 바꾼 뒤</span><span>북서 · 지금</span><span>북서 · 바꾼 뒤</span></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const shouts = [...document.querySelectorAll('.shout')];
+  const film = document.getElementById('film');
+  let timers = [];
+  function play() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    shouts.forEach(s => s.classList.remove('on'));
+    void film.offsetWidth; // restart the animations
+    shouts.forEach(s => timers.push(setTimeout(() => s.classList.add('on'), parseFloat(s.dataset.t) * 1000)));
+    timers.push(setTimeout(play, 7500));
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    shouts.slice(0, 1).concat(shouts.slice(4, 8)).forEach(s => s.classList.add('on'));
+  } else {
+    play();
+  }
+  document.getElementById('replay').addEventListener('click', play);
+  const fontBtn = document.getElementById('font');
+  fontBtn.addEventListener('click', () => {
+    const gothic = film.classList.toggle('gothic');
+    fontBtn.textContent = gothic ? '글꼴: 굴림(고딕)' : '글꼴: 붓글씨';
+  });
+  const veilBtn = document.getElementById('veil');
+  veilBtn.addEventListener('click', () => {
+    const open = film.classList.toggle('open');
+    veilBtn.textContent = open ? '원으로 보기' : '원 밖도 보기';
+  });
+})();
+</script>

@@ -130,7 +130,7 @@
    "Time": "memory",
    "Nodes": ["c25-flash1", "c25-d03", "c25-d04", "c25-d05", "c25-d06", "c25-d07", "c25-d08", "c25-d09"],
    "Cast": {
-    "관우": {"At": [5, 5], "Face": "SE", "Sprite": "guanyu"},
+    "관우": {"At": [5, 5], "Face": "SE"},
     "병사": {"At": [4, 4], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
     "병사#1": {"At": [4, 6], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
     "노파": {"At": [7, 5], "Face": "NW"}

@@ -38,7 +38,7 @@ import looks as L  # noqa: E402
 import render as R  # noqa: E402
 import units as U  # noqa: E402
 import scene_people as SP  # noqa: E402
-from story_heads import DARK_TOPKNOT, bearded, cap, helmet  # noqa: E402
+from story_heads import DARK_TOPKNOT, bearded, cap, helmet, loose  # noqa: E402
 
 W, H = 56, 46
 LEATHER = U.BROWN
@@ -105,6 +105,11 @@ def soldier(p, kit, weapon=True):
     if apron:
         U.m.box(T([0, -.3, .7]), [.58, .05, .62], apron)
         U.m.box(T([0, -.29, 1.2]), [.36, .04, .32], apron)
+    mane = U.KITS[kit].get('mane')
+    if mane:  # hair let down: a mass behind the head falling over the shoulder blades, locks behind the ears
+        U.m.box(T([0, .33, 1.52]), [.52, .1, .7], mane)  # clear of the back (the coat reaches y .27)
+        for side in (-.24, .24):  # spilling over the shoulders
+            U.m.box(T([side, .26, 1.52]), [.14, .1, .26], mane)
     cape = U.KITS[kit].get('cape')
     if cape:
         U.m.box(T([0, .29, 1.03]), [.7, .05, .84], cape)
@@ -170,6 +175,12 @@ def serve():
         U.m.ell(c, [.24, .24, .11], SP.STOOL)
         U.m.ell(c + U.V([0, 0, .07]), [.19, .19, .03], SP.IVORY)
     return p, extra
+
+
+def preach():
+    """Both arms flung up over the head, calling on Heaven (장각 before his host)."""
+    p = rest_pose(hands=[[-.42, -.18, 2.25], [.42, -.18, 2.25]], elbows=[[-.5, -.1, 1.82], [.5, -.1, 1.82]])
+    return p, lambda T, p: None
 
 
 # 삿갓: a low, wide straw cone in the themeC keys (m sunlit half, l shaded half, k the rim's near edge), drawn from
@@ -300,6 +311,10 @@ U.WEAPON_COLORS.add(FAN)
 EXTRA_KEYS = {'N': 'x', 'O': 'w', 'P': 'v', 'K': 'A', 'L': 'z', 'M': 'y', 'Q': 'D', 'R': 'C', 'S': 'B'}
 
 
+TURBAN_BAND = tags('saddle', ['#fae070', '#e0b828', '#9a7a10'])
+TURBAN_KEYS = {'k': 'D', 'l': 'C', 'm': 'B', 'f': 'A', 'g': 'z', 'h': 'y'}  # gold -> saddle, leather/hair -> horse mane
+
+
 STORY.update({
     # 제갈량: the teal cap with a gold band, a goatee, the white robe with blue lapels (themeA, the shoes and the fan's
     # handle too), a teal ribbon at the neck (iron), a purple sash (XTRA), the crane-feather fan in a whiter white
@@ -365,6 +380,23 @@ STORY.update({
                                            crest=Hd.FEATHER_ROWS),
                          cloth=U.STEEL, robe=U.RED, guard=U.BLUE, shoulder=U.GOLD, tabard=U.GOLD, cape=LEATHER),
              'lubu', HAIR),
+    # 황건 (2026-11-28): the three brothers as Taoist masters — hair let down under a yellow cloth band (the sash too),
+    # a long ochre robe (themeB), the hair falling down the back (the mane). The band and sash (gold keys) go to the
+    # saddle tags and the hair, mane and shoes (leather keys) to the horse mane tags (TURBAN_KEYS): their Look.Palette
+    # recolours themeA, themeC and hair for their battle sheet and must not touch these. 장각 old and grey with a long
+    # beard, 장량 black-haired with a goatee, 장보 black-haired with a bristling beard
+    'zhangjiao': ('장각', work(scene('zhangjiao', 1, Hd.heads(bearded(loose(), 'long', 'h')),
+                                   cloth=U.RED, robe=U.RED, guard=U.RED, tabard=U.GOLD, mane=LEATHER), 'preach', preach),
+                  'light_infantry', TURBAN_BAND + tags('horseMane', ['#e2ded4', '#aaa69c', '#6c6a64'])
+                  + tags('themeB', ['#d8b44a', '#a8862c', '#6a5418'])),
+    'zhangliang': ('장량', scene('zhangliang', 1, Hd.heads(bearded(loose(), 'goatee', 'g')),
+                               cloth=U.RED, robe=U.RED, guard=U.RED, tabard=U.GOLD, mane=LEATHER),
+                   'light_infantry', TURBAN_BAND + tags('horseMane', ['#4a3e36', '#2c241e', '#161210'])
+                   + tags('themeB', ['#c8a440', '#987826', '#604a14'])),
+    'zhangbao': ('장보', scene('zhangbao', 1, Hd.heads(bearded(loose(), 'bristle', 'g')),
+                             cloth=U.RED, robe=U.RED, guard=U.RED, tabard=U.GOLD, mane=LEATHER),
+                 'light_infantry', TURBAN_BAND + tags('horseMane', ['#4a3e36', '#2c241e', '#161210'])
+                 + tags('themeB', ['#b89838', '#886c22', '#564410'])),
 })
 # 제갈현's nephews and niece (13장, 2026-11-04): children of a gentry house on the road, plain but decent and a little
 # worn (tools/unit3d/scene_people.py child): the boy in a slate-blue coat and trousers, the girl in a dusty rose robe
@@ -387,7 +419,7 @@ STORY_POSES['jianyong'] = ['sit']
 STORY_POSES['taoqian'] = ['sit', 'bed']  # 도겸 on his sickbed (서주 양도, his last words)
 STORY_POSES['liuyan'] = ['sit', 'bed']  # 유표 (who wears 유언's look) on his sickbed (25장, 형주를 맡기려 할 때)
 STORY_POSES.update(child_boy=['bow'], child_girl=['bow'])
-ACTION = {'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
+ACTION = {'zhangjiao': ('preach', 0), 'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
 for _key, (_name, _look, _battle, _colors) in STORY.items():
     LOOKS[_key] = _look
 # 유비: in shu his green coat (themeB) and the team robe and sash were one green; gold shoulders and a leather belt as
@@ -405,6 +437,7 @@ for _key, (_name, _look, _battle, _colors) in STORY.items():
 # 노식·황보숭: their light infantry helmet is the battle sheet's leather (themeA), not iron
 HEAD_TAGS = {k: {'1': 'o', '2': 'o', '3': 'n', '4': 'm', '5': 'm'} for k in ('luzhi', 'huangfusong')}
 KEY_TAGS = {k: EXTRA_KEYS for k in ('zhugeliang', 'simayi', 'luxun', 'zhouyu')}
+KEY_TAGS.update({k: TURBAN_KEYS for k in ('zhangjiao', 'zhangliang', 'zhangbao')})
 # hand retouches laid over a rendered pose frame: (unit, pose, direction) -> [(row, first column, pixels)] in grid
 # characters ('.' clears); 도겸's sleeping head (the modelled head is too small for its face to read unaided)
 RETOUCH = {

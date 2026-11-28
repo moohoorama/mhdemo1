@@ -177,7 +177,7 @@ def gable_house(L, a0, a1, c0, c1, zw, s, wall_paint, roof="thatch", ov=.16, ova
     out.append(Body(L.box(A0 - .02, A1 + .02, cm - rw, cm + rw, zr - 2, zr + 2), ridge(roof)))
     if roof != "thatch":
         for a in (A0 - .02, A1 - .1):
-            out.append(Body(L.box(a, a + .12, cm - .08, cm + .08, zr - 2, zr + 6), ridge(roof)))
+            out.append(Body(L.box(a, a + .12, cm - .08, cm + .08, zr - 2, zr + 3), ridge(roof)))
     return out
 
 

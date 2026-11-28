@@ -29,6 +29,13 @@ func (a *Atlas) shadowOf(name string) *Sprite {
 	return out
 }
 
+// maskedShadow reports whether the picture's shadow comes from a mask its model gave: a wall line piece casts a
+// ground shadow only then (the old wall pieces cast none).
+func (a *Atlas) maskedShadow(name string) bool {
+	src, ok := a.shadowSrc[name]
+	return ok && src.mask != nil
+}
+
 // maxBlit lays s over the shadow layer taking the larger of each channel, so shadows that overlap do not darken
 // each other.
 func maxBlit(dst *image.RGBA, s *image.RGBA, x, y int) {

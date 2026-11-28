@@ -1,3 +1,19 @@
+## 2026-11-28 세력 모습 정리 문서·스킬
+
+- `docs/presentation-faction-look.md`(색인 등록), `~/orca/mhdemo1/.claude/skills/faction-look/SKILL.md`: 황건적 작업(비전투 도트·병사 표식·세력 색·진채·외침)을 다섯 겹의 절차와 걸린 점으로 정리 — 다른 세력에 같은 일을 이어 하기 위해(사용자 요청). 결과 화면 `result/20261128/turban-look/`.
+
+## 2026-11-28 황건병 노란 머리띠
+
+- `tools/doteditor/units/{bandit,ruffian}.yaml`, `assets/sprites/{bandit,ruffian}.spr`, `internal/sprite/testdata/units/`: 산적·무뢰배 192프레임씩 머리띠를 한 줄 굵게 하고 뒤로 날리는 매듭 꼬리 두 가닥(측면·뒷모습)을 프레임마다 손으로 찍음 — 1배율에서도 황건 띠가 읽히게.
+- `internal/content/content.go` `Faction.PlainExtras`, `assets/data/game.json`(turban), `internal/gui/scene.go`·`look.go`: 장면 엑스트라(`#` 붙은 배우)가 장수용 진영색(황건은 흰빛)으로 칠해져 머리띠가 희게 보이던 것을, 황건만 전투의 일반 병사처럼 노란색으로. 전투의 장수급은 그대로 흰 띠.
+- 효과 이름 `blaze` → `bonfire`(스킬 ID와 겹쳐 엔진 순수성 검사에 걸림).
+
+## 2026-11-28 타이틀 영상: 황건 진채와 외침 글자
+
+- `internal/gui/scene_shout.go`, `scene.go`, `internal/scenes/scenes.go`: `Shout`·`ShoutSize` — 머리 위에 굵은 고딕(Noto Sans KR 800) 글자를 노란 글자에 어두운 테두리로 크게 찍어 외침, 필름 색 전에 그려 함께 바램. 문구는 데이터 문자열이라 번역은 문구만 바꿈. `Chatter "-"`가 떠 있던 웅성거림 말풍선도 거둠.
+- `tools/title_reel/turban_camp.py`, `assets/graphics/maps/S_title_turban_camp.json`, `index.json`: 평원에 제단·향로·노란 깃발·화로, 문 난 목책·망루·군막을 맵 오브젝트로 세운 황건 진채.
+- `tools/title_reel/build.py` `rally`: 진채 앞에서 군중이 조용해지고 장각이 "창천이사!" "황천당립!", 장량·장보가 받아 외치고 군중 몇이 앞줄부터 따라 외침; 군중은 머리띠 맨 산적·무뢰배만 — 사용자 승인 시안(https://claude.ai/artifact/8pddAmQH5uVYw4kNxTM6wP, 고딕).
+
 ## 2026-11-28 여울을 걷는 대군이 버벅이지 않게: 다리 잠김을 레이어 없이
 
 - `internal/gui/field_wade.go`, `field.go`, `field_render.go`, `editor.go`: 물에 선 사람을 그릴 때 사람마다 화면 크기 임시 레이어를 비우고 합성하던 것(552명이면 매 프레임 1천 번 넘게 그릴 곳이 바뀜)을, 그림을 물 높이에서 잘라 위는 그대로·아래는 물빛으로 어둡게 반투명하게 캔버스에 바로 그리게 바꿈. 다리 둘레 물결은 매 프레임 벡터로 긋던 것을 크기(반 픽셀 단위)·앞뒤·배율별로 한 번 그려 둔 그림으로(`rippleRing`). 백하 하류 장면 1500프레임 재생 56.7초 → 24.4초, 유닛 그리기 CPU 1.62초 → 0.20초. 물 높이의 1px 밝은 줄은 없어짐 — 사용자 지적(버벅임).
@@ -20,6 +36,12 @@
 - `assets/scenario/hero/story02.json`, `stage02.json`, `tools/mapgen/layouts/hero/stage02.txt`, `docs/fullstory.md`: 영천 방위를 화면 기준(우상단 북)으로 — 남동→동, 동북→북, 남서→남, 서북→서, 성문은 북문·남문.
 - `docs/logic-suigong.md`: 위 내용 반영.
 
+## 2026-11-28 장각·장량·장보 비전투 도트, 타이틀 장각의 외침
+
+- `tools/doteditor/tools/civ3d.py`, `story_heads.py` `loose`, `tools/doteditor/units/{zhangjiao,zhangliang,zhangbao}_noncombat.yaml`, `assets/sprites/…_noncombat.spr`: 황건 세 형제를 도사로 — 상투 없이 풀어헤친 머리 위에 노란 천 띠 한 줄, 등 뒤로 늘어진 머리, 누런 도포와 황색 띠. 장각은 희끗한 머리와 긴 수염에 두 팔을 하늘로 치켜드는 동작, 장량은 검은 머리와 염소수염, 장보는 검은 머리와 텁석부리. 머리털·띠는 말갈기·안장 태그에 두어 전투 도트용 `Look.Palette`(themeA·themeC·hair)가 바꾸지 않게 함.
+- `assets/data/characters.json`·`characters_story.json`: 세 사람 `Look.Scene`.
+- `tools/title_reel/build.py`: 장각의 외침 컷에서 양옆 황건병 대신 장량·장보, 장각은 두 팔을 치켜들고 외침 — 사용자 피드백(황건적 느낌).
+
 ## 2026-11-28 25장 신야 서문, 방위 규칙, 영천 파재 대사, 수공 배율 2
 
 - `assets/scenario/hero/story25.json`, `docs/fullstory.md`, `docs/presentation-scene.md`: 조홍 대사를 "동문·남문·북문은 불, 서문만 불이 없다 — 서문으로!"로, 백하는 신야에서 서쪽 — 조인군이 서쪽으로 건너가는 방향과 맞춤.
@@ -27,6 +49,20 @@
 - `assets/scenario/hero/stage02.json`, `docs/fullstory.md`: 파재 "북쪽에도…… 남쪽에도…… 동쪽에도!"(장보 북·장량 남·파재 동 진영 위치 기준).
 - `internal/gui/field_surge_show.go`, `uidemo_suigong.go`: 수공 연출 배율 4 → 2.
 - `../AGENTS.md`: 화면 방위(우상단 북·좌상단 서·우하단 동·좌하단 남) 규칙 추가.
+
+## 2026-11-28 타이틀 영상: 평원 얼룩, 이미 뛰는 중에 열리는 서주, 쉬지 않는 관우, 정박선 피하는 상륙
+
+- `internal/scenes/reel.go`, `internal/gui/title_reel.go`: 컷의 `Lead` — 열리기 전 어둠 속에서 그만큼 먼저 돌림(서주는 백성이 이미 뛰는 중에 밝아짐).
+- `tools/title_reel/extend_map.py` `mottle_ground`, `S_title_long_field.json`, `S_title_gyeqiao.json`: 진군·삼영전·계교의 평원에 황무지 얼룩을 덩어리로 얹음(흙길은 그대로).
+- `tools/title_reel/build.py`: 서주는 백성을 벤 조조군이 곧장 관우 쪽으로 달려와, 관우가 첫 적을 벤 뒤 0.7초 만에 다음 적과 붙음(전에는 다음 적이 아직 멀어 3.7초 서 있었음), 유비·장비가 한두 합 싸울 즈음 어두워짐; 적벽은 원이 실제로 가는 곧은 길을 따라 들어오는 병사의 등장 위치를 계산(원 안에서 나타나던 병사), 상륙하는 배는 매어 둔 배·부두가 있는 줄과 그 양옆을 피함 — 사용자 피드백.
+
+## 2026-11-28 타이틀 영상: 움직이는 중에 닫기, 숨 쉬지 않는 일기토, 갑자기 생기는 것 검사, 나루에서 시작하는 적벽, 땅 무늬
+
+- `internal/scenes/reel.go`, `internal/gui/title_reel.go`: 컷의 `End` — 마지막 무리가 시작한 지 그만큼 지나면 사람들이 움직이는 채로 어두워짐(전에는 모든 동작이 끝나 멈춘 뒤 어두워졌음). 관도·서주·삼영전·계교·적벽에 씀, 잘라 내던 뒤 동작은 남김.
+- `tools/title_reel/build.py` `duel`: 막은 쪽이 칼이 닿는 순간 되받아침, 같은 사람이 이어 칠 때만 휘두름이 끝나길 기다림, 센 일격은 멈추는 힘 모으기 대신 크게 밀어냄, 밀려날 때 때린 쪽이 함께 들어감, 네 합마다 한 칸 물러섰다 다시 붙음 — 합 사이 대기 자세로 서는 순간이 없게.
+- `internal/gui/title_reel_test.go` `TestTitleReelNoPopIn`: 컷을 프레임마다 돌려 원 안쪽에서 갑자기 나타나거나 사라지는 사람·소품을 잡음. 잡힌 것: 적벽에서 겹침 검사로 뺀 병사의 배가 물 위에 남았다가 나루로 순간이동(병사와 함께 뺌), 곡식 나눔의 자루가 손 앞에 생겨남(뺌).
+- 적벽은 부두·매어 둔 배·등롱이 보이는 나루에서 시작해 북서로 쫓아감.
+- `tools/title_reel/extend_map.py` `smooth_ground`: 초원·황무지가 긴 띠로 놓여 화면에서 지그재그 가로선과 대각선이 되던 맵(강하 나루→적벽, 관도 들판)을, 황무지 비율은 그대로 두고 세 크기 노이즈를 그 비율로 잘라 둥근 덩어리로 다시 깖.
 
 ## 2026-11-28 타이틀 영상: 일기토 뒷걸음·템포, 구출 관우, 서주·적벽 다시 짬, 칸 크기 바로잡음
 
@@ -38,7 +74,7 @@
 
 ## 2026-11-27 타이틀 영상: 관도 밤 불화살, 적벽 추격 다시 짬, 회피 방향·삼영전·서주·구출 고침
 
-- `internal/gui/scene_arrow.go`, `internal/gui/field_night.go`, `internal/gui/scene.go`, `internal/scenes/scenes.go`: `FireArrow` 불화살(촉의 불꽃·연기 꼬리·주변 빛, 꽂힌 자리에서 잠시 탐), `Time` `deepnight`(짙은 어둠, 사람은 횃불 없이 불빛 곁만 보임), `blaze` 효과(화로의 큰 불빛) — 관도를 밤으로.
+- `internal/gui/scene_arrow.go`, `internal/gui/field_night.go`, `internal/gui/scene.go`, `internal/scenes/scenes.go`: `FireArrow` 불화살(촉의 불꽃·연기 꼬리·주변 빛, 꽂힌 자리에서 잠시 탐), `Time` `deepnight`(짙은 어둠, 사람은 횃불 없이 불빛 곁만 보임), `bonfire` 효과(화로의 큰 불빛, 처음엔 blaze였으나 스킬 ID와 겹쳐 바꿈) — 관도를 밤으로.
 - `tools/title_reel/guandu_camp.py`, `assets/graphics/maps/S_title_guandu_field.json`: 진영 녹각·목책·망루와 화로 둘을 맵 오브젝트로(장면 소품은 밤 어둠 위에 그려져 밝게 뜸), 목책은 원 가장자리 쪽 양옆에만.
 - `tools/title_reel/build.py`, `assets/scenes/title/reel.json`: 일기토 회피는 피하는 쪽이 상대를 보고 뒷걸음, 따라붙는 쪽은 앞을 봄(예전엔 따라붙는 쪽이 등을 보임); 삼영전은 여포가 우세; 서주에 유비·장비가 실제로 나옴(등장 전 경로 계산이 실패해 빠지던 것), 남서쪽 조조군이 허공을 찌르던 것 대신 백성을 쫓다 관우에게 몰림; 구출은 황건적이 포위를 좁히고 유관장이 달려와 베고 유비가 다가가 인사받음; 헌제 맞이를 백문루 앞으로; 관도는 몇 기가 둘째 줄에 닿을 즈음 닫음; 적벽은 줄마다 달아나는 조조군을 화면이 북서로 따라가고 손권군(조조군과 비슷한 수)이 맨 뒤부터 베거나 둘러싸며 남서·북동에서도 옴, 진영 곳곳 불; 조조 도주 컷 뺌 — 사용자 피드백.
 - `assets/graphics/maps/S_title_jiangxia_harbor.json`: 추격을 따라가게 사방 66칸으로 넓힘.
@@ -4642,6 +4678,9 @@
 - `internal/gui/view.go`: 수공이 도는 동안 `speedRate`는 1 — 시나리오 1.5배속·전투 배속이 구워 둔 속도에 곱해지지 않음.
 - B25 전투 이벤트 `suigong` 삭제, 직전 임시 방식(엔진 사본으로 출전 준비 앞에서 재생, `field_surge_prelude.go`)과 전투 컷신의 `surge` 건너뜀 삭제. 전투 지도용 개발 데모 `suigong`(`-stage B25`)은 이야기 장면의 `Surge` 단계에서 배역을 읽어 그대로 둠.
 
+## 2026-11-28 수공 문서
+- `docs/logic-suigong.md`(새): 수공을 만든 방법을 한 문서로 — 구운 데이터(`floodsim.py`·형식), 게임이 그리는 법, 쇼 시간표, 이야기 장면 연결(`Surge`·`Army`, 25장 데이터), 소리, 데모·테스트, 바꾸는 법, 한계. `docs/tools-build.md`에서 가리킴. 사용자 요청.
+
 ## 2026-11-24 수공 앞 도강을 일반 시나리오 연출로
 - `assets/scenes/ch25.json` `c25-flood`: 병사가 강을 건너는 데까지는 보통 장면 연출 — 동쪽 기슭의 조홍과 병사 열(보병 8·기병 2)이 `Move`(`Free`)로 모래톱을 건너 서쪽으로 걷고, 그 사이 조홍의 줄이 뜸. 줄을 넘기면 `Surge`가 이어받고, 장면의 병사는 어둠 속에서 수공의 대군에게 자리를 내줌(`Army`는 장면 병사 하나씩). 사용자 지적: 대사와 병사가 건너는 지점이 안 맞음, 건너는 데까지는 일반 시나리오로.
 - `assets/scenario/hero/story25.json` `c25-e05`: "물이 얕다! 건너라, 건너!" → "강바닥이 드러났다! 유비가 달아난 길이다, 놓치지 말고 건너라!" (사용자 의견: 대사 자체가 별로).
@@ -4663,9 +4702,6 @@
 - internal/gui/sortie_unified.go, party.go: 부관 칸을 정사각형(카드 폭의 절반, 60%~110%)·둥근 모서리로, 초상은 위쪽 기준 정사각 크롭, 비었으면 + 표시(`sortieDeputyPlate`, `roundedPath`; 4배 크기 레이어에 그려 둥근 마스크) — 사용자 지시 "비율이 이상, 정사각형·RoundedRectangle, 비면 +"
 
 ## 2026-11-23: 수공 물·둑 해상도 2배
-
-## 2026-11-28 수공 문서
-- `docs/logic-suigong.md`(새): 수공을 만든 방법을 한 문서로 — 구운 데이터(`floodsim.py`·형식), 게임이 그리는 법, 쇼 시간표, 이야기 장면 연결(`Surge`·`Army`, 25장 데이터), 소리, 데모·테스트, 바꾸는 법, 한계. `docs/tools-build.md`에서 가리킴. 사용자 요청.
 
 - `tools/floodsim.py`: `FLOOD_RES`(기본 2)로 도트를 반으로 줄임 — 물 격자 2→1단위(캔버스 1×1픽셀), 둑 복셀 한 변 4→2(몸 하나는 그대로, 복셀 8개로 나뉘어 그려짐, 물리·난수 흐름 불변). 높이·폴리곤·거품 무늬는 도트 크기로 나눠 같은 모양을 유지. `FLOOD_RES=1`은 옛 굽기와 모양이 같다(흙 알갱이 난수만 다름).
 - 시트가 4096×17048(RGBA 279MB)이 되어 ebiten 아틀라스가 거부(too big)하므로 저장을 바꿈: 프레임마다 팔레트 번호를 deflate로 눌러 `suigong.idx`에, 게임(`field_surge.go`)은 보이는 프레임의 조각만 그림으로 만들고 지난 프레임은 `Dispose`. 스프레이도 같은 방식. `suigong.png`는 없어짐.
